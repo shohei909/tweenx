@@ -166,7 +166,7 @@ class TweenX extends CommandX {
 	static public function addRules( rules:Iterable<RuleX <Dynamic, Dynamic>> ) {
 		for ( r in rules ) addRule( r );
 	}
-    
+	
 	/*
 	 * トゥイーン生成
 	 */
@@ -270,17 +270,17 @@ class TweenX extends CommandX {
 	}
 	
 	/*
-     * 静的ユーティリティ
-     */
-    static private inline function getTime():Float {
-        #if( neko || php || cpp || cs || java )
-        return Sys.time() * 1000;
-        #else 
-        return Date.now().getTime();
-        #end
-    }
+	 * 静的ユーティリティ
+	 */
+	static private inline function getTime():Float {
+		#if( neko || php || cpp || cs || java )
+		return Sys.time() * 1000;
+		#else 
+		return Date.now().getTime();
+		#end
+	}
 	static private var _timer:Timer;
-    static private inline function setInterval(f:Void->Void, t:Int) {
+	static private inline function setInterval(f:Void->Void, t:Int) {
 		if ( _timer != null ) _timer.stop();
 		_timer 		= new Timer( t );
 		_timer.run 	= f;
@@ -384,8 +384,8 @@ class TweenX extends CommandX {
 	static private inline var _STOP 	= Type.enumIndex( EventX.STOP );
 	static private inline var _UPDATE 	= Type.enumIndex( EventX.UPDATE );
 	
-    
-    /*
+	
+	/*
 	 * コンストラクタ
 	 */
 	function new( type:TweenTypeX, ?time:Float, ?ease:Float->Float, ?delay:Float, ?repeat:Int, ?yoyo:Bool, ?zigzag:Bool, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos ) {
@@ -567,7 +567,7 @@ class TweenX extends CommandX {
 	private function _invert(){
 		_currentTime = _totalTime - _currentTime;
 		if( _repeat % 2 == 0 ) _odd = !_odd;
-        
+		
 		_inverted 	= !_inverted;
 		var d 		= _delay;
 		_delay 		= _rest;
@@ -625,7 +625,7 @@ class TweenX extends CommandX {
 	
 	private function _initFromTo( target, from, to ) {
 		throw error( "must be standard tween." );
-    }
+	}
 	
 	/*
 	 * メインループ
@@ -636,8 +636,8 @@ class TweenX extends CommandX {
 		#end
 		
 		if ( spent == 0 ) return;
-        if ( backward ) spent = -spent;
-        if ( spent < 0 ) {
+		if ( backward ) spent = -spent;
+		if ( spent < 0 ) {
 			_invert();
 			backward = !backward;
 			spent = -spent;
@@ -791,7 +791,7 @@ class TweenX extends CommandX {
 								_calc( field(from, key), field(to, key), t, t2 )
 							);
 					}
-                }
+				}
 			case FUNC( func, from, to ):
 				var t2 	= 1 - t;
 				var arr = [];
@@ -804,9 +804,9 @@ class TweenX extends CommandX {
 					if ( spent < 0 ) 	for ( i in (1-ts.length)...1 ) 	{ ts[ -i]._update( spent ); }
 					else 				for ( i in 0...ts.length ) 		{ ts[i]._update( spent ); }
 					g.current = g.tweens[0].currentTime;
-                    
-            case CALL( f ):
-                    if ( t == 1 ) f();
+					
+			case CALL( f ):
+					if ( t == 1 ) f();
 		}
 	}
 	

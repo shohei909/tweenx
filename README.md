@@ -1,5 +1,6 @@
 TweenX
 ======
+version: 0.0(beta)
 
 Crossplatform tween library for Haxe
 

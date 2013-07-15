@@ -25,7 +25,7 @@ class QuakeX {
 	public function new( value:Float, scale:Float, ?ease:Float->Float ) {
 		this.value = value;
 		this.scale = scale;
-		if ( ease == null )	 this.ease = none;
+		if ( ease == null )	 	this.ease = none;
 		else					this.ease = ease;
 	}
 	function none( t:Float ) { return t <= 0 ? 0 : 1; }
