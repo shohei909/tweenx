@@ -1,15 +1,12 @@
 TweenX
 ======
 
-Tween library for Haxe
+Crossplatform tween library for Haxe
 
-======
-##Document
-
-(Japanese)
+Documentation(Japanese)  
 http://tweenx.spheresofa.net
 
-======
+
 ##License
 
 The MIT License (MIT)
