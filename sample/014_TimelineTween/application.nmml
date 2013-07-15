@@ -14,7 +14,7 @@
 	
 	<!-- classpath, haxe libs -->
 	<source path="src" />
-	<source path="../../src" />
+	<source path="../../" />
 	<assets path="assets" />
 	<haxelib name="nme" />
 	<haxelib name="nme" />

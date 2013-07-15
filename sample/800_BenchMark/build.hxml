@@ -40,6 +40,6 @@
 
 -swf bin/TweenXBench.swf
 -cp src
--cp ../../src
+-cp ../../
 -swf-header 465:465:60:FFFFFF
 -main TweenXBench

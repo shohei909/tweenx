@@ -1,0 +1,11 @@
+{
+  "name": "tweenx",
+  "url" : "https://bitbucket.org/shohei909/tweenx",
+  "license": "MIT",
+  "tags": ["flash", "cpp", "js", "neko"],
+  "description": "crossplatform tween library",
+  "version": "0.0.1",
+  "releasenote": "Initial release",
+  "contributors": ["shohei909"],
+  "dependencies": {}
+}

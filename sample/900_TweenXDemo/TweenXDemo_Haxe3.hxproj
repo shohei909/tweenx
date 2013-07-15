@@ -17,7 +17,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
-    <class path="../../src" />
+    <class path="../../" />
     <class path="C:\HaxeToolkit\haxe/lib\openfl-compatibility/1,0,1/" />
     <class path="C:\HaxeToolkit\haxe/lib\openfl/1,0,4/" />
     <class path="bin/html5/haxe" />

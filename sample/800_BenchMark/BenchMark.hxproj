@@ -25,7 +25,7 @@
     <option flashStrict="False" />
     <option mainClass="TweenXBench" />
     <option enabledebug="True" />
-    <option additional="-swf-lib lib/tween24.swc&#xA;-swf-lib lib/BetweenAS3.swc&#xA;-swf-lib lib/tweener.swc&#xA;-swf-lib lib/TweensyOriginalCS4.swc&#xA;-cp ../../src" />
+    <option additional="-swf-lib lib/tween24.swc&#xA;-swf-lib lib/BetweenAS3.swc&#xA;-swf-lib lib/tweener.swc&#xA;-swf-lib lib/TweensyOriginalCS4.swc&#xA;-cp ../../" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

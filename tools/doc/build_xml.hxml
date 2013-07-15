@@ -1,6 +1,6 @@
--cp ../../src
+-cp ../../
 --no-output
 -swf _.swf
--xml docs/output.xml
+-xml ../../haxedoc/output.xml
 -D doc_gen
 --macro Import.run()
