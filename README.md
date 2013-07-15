@@ -4,7 +4,7 @@ TweenX
 Crossplatform tween library for Haxe
 
 Documentation(Japanese)  
-http://tweenx.spheresofa.net
+[http://tweenx.spheresofa.net](http://tweenx.spheresofa.net)
 
 
 ##License
