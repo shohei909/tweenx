@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<!-- NMML reference: https://gist.github.com/1763850 -->
+	
+	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
+	<meta title="TweenXDemo" package="net.spheresofa.tweenx" version="1.0.0" company="shohei909" />
+	
+	<!-- output -->
+	<app main="net.spheresofa.tweenx.Main" file="TweenXDemoHaxe3" path="bin" />
+	
+	<window background="#FFFFFF" fps="60" />
+	<window width="720" height="512" unless="mobile" />
+	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
+	
+	<!-- classpath, haxe libs -->
+	<source path="src" />
+	<source path="../../src" />
+	<haxelib name="nme" />
+	
+	<!-- assets -->
+	<assets path="../assets/font" rename="font" />
+	<assets path="../assets/img" rename="img" />
+	
+	<!-- optimize output -->
+</project>

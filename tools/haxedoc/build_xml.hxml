@@ -1,0 +1,6 @@
+-cp ../../src
+--no-output
+-swf _.swf
+-xml docs/output.xml
+-D doc_gen
+--macro Import.run()

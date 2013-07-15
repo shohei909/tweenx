@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project version="2">
+  <!-- Output SWF options -->
+  <output>
+    <movie outputType="Application" />
+    <movie input="" />
+    <movie path="application.xml" />
+    <movie fps="60" />
+    <movie width="720" />
+    <movie height="512" />
+    <movie version="3" />
+    <movie minorVersion="0" />
+    <movie platform="NME" />
+    <movie background="000000" />
+    <movie preferredSDK="Haxe 3.0.0;3.0.0;" />
+  </output>
+  <!-- Other classes to be compiled into your SWF -->
+  <classpaths>
+    <class path="src" />
+    <class path="../../src" />
+    <class path="C:\HaxeToolkit\haxe/lib\openfl-compatibility/1,0,1/" />
+    <class path="C:\HaxeToolkit\haxe/lib\openfl/1,0,4/" />
+    <class path="bin/html5/haxe" />
+  </classpaths>
+  <!-- Build options -->
+  <build>
+    <option directives="tools=1&#xA;openfl_ver=1.0.4&#xA;nme&#xA;openfl&#xA;nme_install_tool&#xA;display&#xA;html5&#xA;web&#xA;html5&#xA;html" />
+    <option flashStrict="False" />
+    <option mainClass="ApplicationMain" />
+    <option enabledebug="True" />
+    <option additional="--no-output&#xA;--remap flash:flash" />
+  </build>
+  <!-- haxelib libraries -->
+  <haxelib>
+    <library name="openfl-compatibility" />
+    <library name="openfl" />
+  </haxelib>
+  <!-- Class files to compile (other referenced classes will automatically be included) -->
+  <compileTargets>
+    <compile path="src\net\spheresofa\tweenx\Main.hx" />
+  </compileTargets>
+  <!-- Assets to embed into the output SWF -->
+  <library>
+    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
+  </library>
+  <!-- Paths to exclude from the Project Explorer tree -->
+  <hiddenPaths>
+    <!-- example: <hidden path="..." /> -->
+  </hiddenPaths>
+  <!-- Executed before build -->
+  <preBuildCommand />
+  <!-- Executed after build -->
+  <postBuildCommand alwaysRun="False" />
+  <!-- Other project options -->
+  <options>
+    <option showHiddenPaths="True" />
+    <option testMovie="Custom" />
+    <option testMovieCommand="" />
+  </options>
+  <!-- Plugin storage -->
+  <storage />
+</project>
