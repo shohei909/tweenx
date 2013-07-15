@@ -11,18 +11,18 @@ class StandardTweenX<T> extends TweenX {
 	private var _autoFrom:Null<Bool> = true;
 	public function new( type:TweenTypeX, ?time:Float, ?ease:Float->Float, ?delay:Float, ?repeat:Int, ?yoyo:Bool, ?zigzag:Bool, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos ) {
 		switch( type ) {
-            case ARRAY( targets, fromArr, toArr ):
-                var from    = fromArr.pop();
-                var to      = toArr.pop();
-                for ( t in targets ) {
-                    toArr.push( clone(to) );
-                    fromArr.push( clone(from) );
-                }
+			case ARRAY( targets, fromArr, toArr ):
+				var from	= fromArr.pop();
+				var to	  	= toArr.pop();
+				for ( t in targets ) {
+					toArr.push( clone(to) );
+					fromArr.push( clone(from) );
+				}
 			default:
 		}
 		super( type, time, ease, delay, repeat, yoyo, zigzag, interval, autoPlay, posInfos );
 	}
-    
+	
 	static private function clone( obj:Dynamic ) {
 		var result = {};
 		for ( key in Reflect.fields(obj) ) Reflect.setProperty( result, key, Reflect.getProperty( obj, key ) );
@@ -49,11 +49,11 @@ class StandardTweenX<T> extends TweenX {
 				TweenX.setField( to, key, value );
 			case ARRAY( targets, fromArr, toArr ):
 				var i = 0;
-                for ( t in targets ){
+				for ( t in targets ){
 					checkField( t, key );
 					var to = toArr[ i++ ];
 					Reflect.deleteField( to, "$$$$" + key );
-				    TweenX.setField( to, key, value );
+					TweenX.setField( to, key, value );
 				}
 			default:
 		}
@@ -67,11 +67,11 @@ class StandardTweenX<T> extends TweenX {
 				TweenX.setField( to, key, TweenX.field(target, key) + value );
 			case ARRAY( targets, fromArr, toArr ):
 				var i = 0;
-                for ( t in targets ){
+				for ( t in targets ){
 					checkField( t, key );
 					var to = toArr[ i++ ];
 					Reflect.deleteField( to, "$$$$" + key );
-				    TweenX.setField( to, key, TweenX.field(t, key) + value );
+					TweenX.setField( to, key, TweenX.field(t, key) + value );
 				}
 			default:
 		}
@@ -85,11 +85,11 @@ class StandardTweenX<T> extends TweenX {
 				TweenX.setField( to, "$$$$" + key, value );
 			case ARRAY( targets, fromArr, toArr ):
 				var i = 0;
-                for ( t in targets ){
+				for ( t in targets ){
 					checkField( t, key );
 					var to = toArr[ i++ ];
 					Reflect.deleteField( to, key );
-				    TweenX.setField( to, "$$$$" + key, value );
+					TweenX.setField( to, "$$$$" + key, value );
 				}
 			default:
 		}
@@ -167,16 +167,16 @@ class StandardTweenX<T> extends TweenX {
 		}
 	}
 	
-    private function _defaultFrom( value:Dynamic, to:Dynamic ):Dynamic {
-        if ( Std.is(to, Float) ) return value;
-        for ( r in TweenX._rules ) {
-            if ( Std.is( to, r.inputClass) ) {
-                return r.defaultFrom( value, to, this );
-            }
-        }
+	private function _defaultFrom( value:Dynamic, to:Dynamic ):Dynamic {
+		if ( Std.is(to, Float) ) return value;
+		for ( r in TweenX._rules ) {
+			if ( Std.is( to, r.inputClass) ) {
+				return r.defaultFrom( value, to, this );
+			}
+		}
 		throw error( "The tween rule for " + Type.getClassName(Type.getClass(to)) + " is not defined" );
-        return null;
-    }
+		return null;
+	}
 	
 	
 	override public function play( #if(tweenx_debug) ?posInfo:PosInfos #end ) {

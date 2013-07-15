@@ -17,34 +17,34 @@ class EaseX {
 		 * SINE
 		 */
 		static public function sineIn(t:Float):Float {
-            return 
-                if ( t == 0 )       0
-                else if ( t == 1 )  1
-			    else                1 - Math.cos(t * PI_H);
+			return 
+				if ( t == 0 )	   	0
+				else if ( t == 1 )  1
+				else				1 - Math.cos(t * PI_H);
 		}
 		
 		static public function sineOut(t:Float):Float {
 			return 
-                if ( t == 0 )       0
-                else if ( t == 1 )  1
-			    else                Math.sin(t * PI_H);
+				if ( t == 0 )	   	0
+				else if ( t == 1 )  1
+				else				Math.sin(t * PI_H);
 		}
 		
 		static public function sineInOut(t:Float):Float {
 			return 
-                if ( t == 0 )       0
-                else if ( t == 1 )  1
-			    else                -0.5 * (Math.cos(Math.PI * t) - 1);
+				if ( t == 0 )	   	0
+				else if ( t == 1 )  1
+				else				-0.5 * (Math.cos(Math.PI * t) - 1);
 		}
 		
 		static public function sineOutIn(t:Float):Float {
 			return 
-                if ( t == 0 )       0
-                else if ( t == 1 )  1
-			    else (t < 0.5) ?
-                         0.5 * Math.sin((t * 2) * PI_H) 
-                        :
-                        -0.5 * Math.cos((t * 2 - 1) * PI_H) + 1;
+				if ( t == 0 )		0
+				else if ( t == 1 )  1
+				else (t < 0.5) ?
+						 0.5 * Math.sin((t * 2) * PI_H) 
+						:
+						-0.5 * Math.cos((t * 2 - 1) * PI_H) + 1;
 		}
 		
 		/*
@@ -189,46 +189,46 @@ class EaseX {
 		 */
 		static public function bounceIn(t:Float):Float {
 			if ((t = 1 - t) < (1 / 2.75)) 	return 1 - ((7.5625 * t * t));
-			if (t < (2 / 2.75))             return 1 - ((7.5625 * (t -= (1.5 / 2.75)) * t + 0.75));
-			if (t < (2.5 / 2.75))           return 1 - ((7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375));
-			                                return 1 - ((7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375));
+			if (t < (2 / 2.75))			 return 1 - ((7.5625 * (t -= (1.5 / 2.75)) * t + 0.75));
+			if (t < (2.5 / 2.75))		   return 1 - ((7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375));
+											return 1 - ((7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375));
 		}
 		static public function bounceOut(t:Float):Float {
 			if (t < (1 / 2.75)) 	return (7.5625 * t * t);
-			if (t < (2 / 2.75))     return (7.5625 * (t -= (1.5 / 2.75)) * t + 0.75);
+			if (t < (2 / 2.75))	 return (7.5625 * (t -= (1.5 / 2.75)) * t + 0.75);
 			if (t < (2.5 / 2.75))   return (7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375);
-			                        return (7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375);
+									return (7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375);
 		}
 		static public function bounceInOut(t:Float):Float {
 			if (t < 0.5){
 				if ((t = (1 - t * 2)) < (1 / 2.75)) 	return (1 - ((7.5625 * t * t))) * 0.5;
-				if (t < (2 / 2.75))                     return (1 - ((7.5625 * (t -= (1.5 / 2.75)) * t + 0.75))) * 0.5;
-				if (t < (2.5 / 2.75))                   return (1 - ((7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375))) * 0.5;
-				                                        return (1 - ((7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375))) * 0.5;
+				if (t < (2 / 2.75))					 return (1 - ((7.5625 * (t -= (1.5 / 2.75)) * t + 0.75))) * 0.5;
+				if (t < (2.5 / 2.75))				   return (1 - ((7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375))) * 0.5;
+														return (1 - ((7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375))) * 0.5;
 			}else{
 				if ((t = (t * 2 - 1)) < (1 / 2.75)) 	return ((7.5625 * t * t)) * 0.5 + 0.5;
-				if (t < (2 / 2.75))                     return ((7.5625 * (t -= (1.5 / 2.75)) * t + 0.75)) * 0.5 + 0.5;
-				if (t < (2.5 / 2.75))                   return ((7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375)) * 0.5 + 0.5;
-				                                        return ((7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375)) * 0.5 + 0.5;
+				if (t < (2 / 2.75))					 return ((7.5625 * (t -= (1.5 / 2.75)) * t + 0.75)) * 0.5 + 0.5;
+				if (t < (2.5 / 2.75))				   return ((7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375)) * 0.5 + 0.5;
+														return ((7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375)) * 0.5 + 0.5;
 			}
 		}
 		static public function bounceOutIn(t:Float):Float {
 			if (t < 0.5) {
 				if ((t = (t * 2)) < (1 / 2.75)) 	return 0.5 * (7.5625 * t * t);
-				if (t < (2 / 2.75))                 return 0.5 * (7.5625 * (t -= (1.5 / 2.75)) * t + 0.75);
-				if (t < (2.5 / 2.75))               return 0.5 * (7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375);
-				                                    return 0.5 * (7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375);
+				if (t < (2 / 2.75))				 return 0.5 * (7.5625 * (t -= (1.5 / 2.75)) * t + 0.75);
+				if (t < (2.5 / 2.75))			   return 0.5 * (7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375);
+													return 0.5 * (7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375);
 			}else{
 				if ((t = (1 - (t * 2 - 1))) < (1 / 2.75))	return 0.5 - (0.5 * (7.5625 * t * t)) + 0.5;
-				if (t < (2 / 2.75))                         return 0.5 - (0.5 * (7.5625 * (t -= (1.5 / 2.75)) * t + 0.75)) + 0.5;
-				if (t < (2.5 / 2.75))                       return 0.5 - (0.5 * (7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375)) + 0.5;
-				                                            return 0.5 - (0.5 * (7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375)) + 0.5;
+				if (t < (2 / 2.75))						 return 0.5 - (0.5 * (7.5625 * (t -= (1.5 / 2.75)) * t + 0.75)) + 0.5;
+				if (t < (2.5 / 2.75))					   return 0.5 - (0.5 * (7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375)) + 0.5;
+															return 0.5 - (0.5 * (7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375)) + 0.5;
 			}
 		}
 		
 		static public inline var overshoot:Float = 1.70158;
 		
-        /*
+		/*
 		 * BACK EASING
 		 */
 		static public function backIn(t:Float):Float {
@@ -261,9 +261,9 @@ class EaseX {
 		 * ELASTIC EASING
 		 */
 		static private inline var amplitude:Float   = 1;
-        static private inline var period:Float      = 0.0003;
-		    
-        static public function elasticIn(t:Float):Float {
+		static private inline var period:Float	  = 0.0003;
+			
+		static public function elasticIn(t:Float):Float {
 			if (t == 0) return 0;
 			if (t == 1) return 1;
 			

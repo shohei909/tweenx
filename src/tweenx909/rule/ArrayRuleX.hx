@@ -51,16 +51,16 @@ class ArrayRuleX{
 	}
 	
 	static private function _defaultFrom( value:Dynamic, to:Dynamic, tween:TweenX ):Dynamic {
-        if ( Std.is(to, Float) ) return value;
-        for ( r in TweenX.rules ) {
-            if ( Std.is( to, r.inputClass) ) {
-                return r.defaultFrom( value, to, tween );
-            }
-        }
+		if ( Std.is(to, Float) ) return value;
+		for ( r in TweenX.rules ) {
+			if ( Std.is( to, r.inputClass) ) {
+				return r.defaultFrom( value, to, tween );
+			}
+		}
 		var eh:ErrorHandler = tween;
 		throw eh.error( "The tween rule for " + Type.getClassName(Type.getClass(to)) + " is not defined" );
-        return null;
-    }
+		return null;
+	}
 }
 
 private typedef ErrorHandler = { 
