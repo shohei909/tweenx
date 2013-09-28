@@ -1,11 +1,11 @@
 TweenX
 ======
-version: 0.0(beta)
+version: 0.0
 
-Crossplatform tween library for Haxe
+Cross platform tween library for Haxe
 
-Documentation(Japanese)  
-[http://tweenx.spheresofa.net](http://tweenx.spheresofa.net)
+Documentation 
+[http://tweenx.spheresofa.net/en.html](http://tweenx.spheresofa.net/en.html)
 
 
 ##License
