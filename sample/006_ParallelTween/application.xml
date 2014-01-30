@@ -3,10 +3,10 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="GroupTween" package="net.spheresofa.tweenx.GroupTween" version="1.0.0" company="shohei909" />
+	<meta title="ParallelTween" package="net.spheresofa.tweenx.ParallelTween" version="1.0.0" company="shohei909" />
 	
 	<!-- output -->
-	<app main="Main" file="GroupTween" path="bin" />
+	<app main="Main" file="ParallelTween" path="bin" />
 	
 	<window background="#FFFFFF" fps="60" />
 	<window width="401" height="401" unless="mobile" />
@@ -15,8 +15,11 @@
 	<!-- classpath, haxe libs -->
 	<source path="src" />
 	<source path="../../" />
-	<haxelib name="nme" />
+	<haxelib name="nme" if="haxe2" />
+	<haxelib name="openfl" unless="haxe2" />
+	<haxelib name="openfl-nme-compatibility" unless="haxe2" />
 	
 	<!-- optimize output -->
 	<haxeflag name="--dead-code-elimination" if="haxe2" />
+	<haxeflag name="-dce std" if="haxe3" />
 </project>

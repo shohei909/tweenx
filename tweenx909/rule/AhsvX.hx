@@ -19,14 +19,14 @@ class AhsvX {
 	}
 	
 	static public var inputClass(default, null):Dynamic = AhsvX;
-	static public function calc(from:AhsvX, to:AhsvX, t1:Float, t2:Float, tween:TweenX):Int {
-		var a = from.a * t2 + to.a * t1;
+	static public function calc(_from:AhsvX, _to:AhsvX, t1:Float, t2:Float, tween:TweenX):Int {
+		var a = _from.a * t2 + _to.a * t1;
 		if ( a > 1 ) a = 1;
 		if ( a < 0 ) a = 0;
 		
-		var h = from.h * t2 + to.h * t1;
-		var s = from.s * t2 + to.s * t1;
-		var v = from.v * t2 + to.v * t1;
+		var h = _from.h * t2 + _to.h * t1;
+		var s = _from.s * t2 + _to.s * t1;
+		var v = _from.v * t2 + _to.v * t1;
 		
 		h = (h - Math.floor(h)) * 6;
 		var hi = Math.floor( h );
@@ -51,7 +51,7 @@ class AhsvX {
 		
 		return (Std.int(a * 0xFF) << 24) | (Std.int(r * 0xFF) << 16) | (Std.int(g * 0xFF) << 8) | Std.int(b * 0xFF);
 	}
-	static public function defaultFrom( value:Int, to:AhsvX, tween:TweenX ) { 
+	static public function defaultFrom( value:Int, _to:AhsvX, tween:TweenX ) { 
 		return AhsvX.of( value );
 	}
 	

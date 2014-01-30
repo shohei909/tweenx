@@ -6,8 +6,8 @@ package tweenx909.advanced;
  */
 enum TweenTypeX {
 	GROUP( group:GroupX );
-	ARRAY( targets:Iterable<Dynamic>, from:Array<Dynamic>, to:Array<Dynamic> );
-	FROM_TO( target:Dynamic, from:Dynamic, to:Dynamic );
-	FUNC( func:Dynamic, from:Array<Dynamic>, to:Array<Dynamic> );
+	ARRAY( targets:Iterable<Dynamic>, _from:Array<Dynamic>, _to:Array<Dynamic> );
+	FROM_TO( target:Dynamic, _from:Dynamic, _to:Dynamic );
+	FUNC( func:Dynamic, _from:Array<Dynamic>, _to:Array<Dynamic> );
 	CALL( func:Void->Void );
 }

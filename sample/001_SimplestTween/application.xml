@@ -15,8 +15,9 @@
 	<!-- classpath, haxe libs -->
 	<source path="src" />
 	<source path="../../" />
-	<haxelib name="nme" />
-	<haxelib name="actuate" />
+	<haxelib name="nme" if="haxe2" />
+	<haxelib name="openfl" unless="haxe2" />
+	<haxelib name="openfl-nme-compatibility" unless="haxe2" />
 	
 	<!-- optimize output -->
 	<haxeflag name="--dead-code-elimination" if="haxe2" />

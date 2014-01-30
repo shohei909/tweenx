@@ -106,7 +106,9 @@ class TweenXPlayer extends Sprite {
                 count++;
             }
         }
+		
         selected = num;
+		onUpdate(null);
     }
     
     function addButton( data, x, func ) {
@@ -121,14 +123,15 @@ class TweenXPlayer extends Sprite {
     function onStop( e ) { change( 1 ); }
     
     function onUpdate( e ) {
-		for ( i in 0...btns.length )                btns[i].mouseEnabled  = (i != selected);
-        if ( tween.currentTime == 0 )                  backBtn.mouseEnabled = false;
+		for ( i in 0...btns.length )
+			btns[i].mouseEnabled  = (i != selected);
+			
+		if ( tween.currentTime == 0 )                  backBtn.mouseEnabled = false;
         if ( tween.currentTime == tween.totalTime )    forwardBtn.mouseEnabled = playBtn.mouseEnabled = false;
         for ( b in btns ) b.draw();
 
         bar.update( tween.currentTime / tween.totalTime );
     }
-	
 }
 
 private class BitmapButton extends Sprite {
@@ -232,10 +235,10 @@ private class ProgressBar extends Sprite {
     var playing:Bool;
     function onThumbUp(e) {
         if (! thumbDown ) return;
+        thumbDown = false;
         var x = (length * time) + mouseX - startPos;
         tween.play();
         tween.goto( tween.totalTime * (x / length) ); 
-        thumbDown = false;     
     }
     function onThumbDown(e) { 
         thumbDown = true;

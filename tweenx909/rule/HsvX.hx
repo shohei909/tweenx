@@ -18,10 +18,10 @@ class HsvX {
 	}
 	
 	static public var inputClass(default, null):Dynamic = HsvX;
-	static public function calc(from:HsvX, to:HsvX, t1:Float, t2:Float, tween:TweenX):Int {
-		var h = from.h * t2 + to.h * t1;
-		var s = from.s * t2 + to.s * t1;
-		var v = from.v * t2 + to.v * t1;
+	static public function calc(_from:HsvX, _to:HsvX, t1:Float, t2:Float, tween:TweenX):Int {
+		var h = _from.h * t2 + _to.h * t1;
+		var s = _from.s * t2 + _to.s * t1;
+		var v = _from.v * t2 + _to.v * t1;
 		
 		h = (h - Math.floor(h)) * 6;
 		var hi = Math.floor( h );
@@ -47,7 +47,7 @@ class HsvX {
 		return (Std.int(r * 0xFF) << 16) | (Std.int(g * 0xFF) << 8) | Std.int(b * 0xFF);
 	}
 	
-	static public function defaultFrom( value:Int, to:HsvX, tween:TweenX ) { 
+	static public function defaultFrom( value:Int, _to:HsvX, tween:TweenX ) { 
 		return HsvX.of( value );
 	}
 	

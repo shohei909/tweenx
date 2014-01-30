@@ -3,21 +3,21 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="TimelineTween" package="net.spheresofa.tweenx.TimelineTween" version="1.0.0" company="shohei909" />
+	<meta title="Easing" package="net.spheresofa.tweenx.Easing" version="1.0.0" company="shohei909" />
 	
 	<!-- output -->
-	<app main="Main" file="TimelineTween" path="bin" />
+	<app main="Main" file="Easing" path="bin" />
 	
 	<window background="#FFFFFF" fps="60" />
-	<window width="401" height="401" unless="mobile" />
+	<window width="750" height="520" unless="mobile" />
 	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
 	
 	<!-- classpath, haxe libs -->
 	<source path="src" />
 	<source path="../../" />
-	<assets path="assets" />
-	<haxelib name="nme" />
-	<haxelib name="nme" />
+	<haxelib name="nme" if="haxe2" />
+	<haxelib name="openfl" unless="haxe2" />
+	<haxelib name="openfl-nme-compatibility" unless="haxe2" />
 	
 	<!-- optimize output -->
 	<haxeflag name="--dead-code-elimination" if="haxe2" />

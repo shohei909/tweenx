@@ -12,11 +12,11 @@ class StandardTweenX<T> extends TweenX {
 	public function new( type:TweenTypeX, ?time:Float, ?ease:Float->Float, ?delay:Float, ?repeat:Int, ?yoyo:Bool, ?zigzag:Bool, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos ) {
 		switch( type ) {
 			case ARRAY( targets, fromArr, toArr ):
-				var from	= fromArr.pop();
-				var to	  	= toArr.pop();
+				var _from	= fromArr.pop();
+				var _to	  	= toArr.pop();
 				for ( t in targets ) {
-					toArr.push( clone(to) );
-					fromArr.push( clone(from) );
+					toArr.push( clone(_to) );
+					fromArr.push( clone(_from) );
 				}
 			default:
 		}
@@ -43,17 +43,17 @@ class StandardTweenX<T> extends TweenX {
 	private function _setTo( key:String, value:Dynamic ):Void {
 		checkInited();
 		switch( _type ) {
-			case FROM_TO( target, from, to ):
+			case FROM_TO( target, _from, _to ):
 				checkField( target, key );
-				Reflect.deleteField( to, "$$$$" + key );
-				TweenX.setField( to, key, value );
+				Reflect.deleteField( _to, "$$$$" + key );
+				TweenX.setField( _to, key, value );
 			case ARRAY( targets, fromArr, toArr ):
 				var i = 0;
 				for ( t in targets ){
 					checkField( t, key );
-					var to = toArr[ i++ ];
-					Reflect.deleteField( to, "$$$$" + key );
-					TweenX.setField( to, key, value );
+					var _to = toArr[ i++ ];
+					Reflect.deleteField( _to, "$$$$" + key );
+					TweenX.setField( _to, key, value );
 				}
 			default:
 		}
@@ -61,17 +61,17 @@ class StandardTweenX<T> extends TweenX {
 	private function _setRelativeTo( key:String, value:Dynamic ):Void {
 		checkInited();
 		switch( _type ) {
-			case FROM_TO( target, from, to ):
+			case FROM_TO( target, _from, _to ):
 				checkField( target, key );
-				Reflect.deleteField( to, "$$$$" + key );
-				TweenX.setField( to, key, TweenX.field(target, key) + value );
+				Reflect.deleteField( _to, "$$$$" + key );
+				TweenX.setField( _to, key, TweenX.field(target, key) + value );
 			case ARRAY( targets, fromArr, toArr ):
 				var i = 0;
 				for ( t in targets ){
 					checkField( t, key );
-					var to = toArr[ i++ ];
-					Reflect.deleteField( to, "$$$$" + key );
-					TweenX.setField( to, key, TweenX.field(t, key) + value );
+					var _to = toArr[ i++ ];
+					Reflect.deleteField( _to, "$$$$" + key );
+					TweenX.setField( _to, key, TweenX.field(t, key) + value );
 				}
 			default:
 		}
@@ -79,35 +79,35 @@ class StandardTweenX<T> extends TweenX {
 	private function _setRelativeTo2( key:String, value:Dynamic ):Void {
 		checkInited();
 		switch( _type ) {
-			case FROM_TO( target, from, to ):
+			case FROM_TO( target, _from, _to ):
 				checkField( target, key );
-				Reflect.deleteField( to, key );
-				TweenX.setField( to, "$$$$" + key, value );
+				Reflect.deleteField( _to, key );
+				TweenX.setField( _to, "$$$$" + key, value );
 			case ARRAY( targets, fromArr, toArr ):
 				var i = 0;
 				for ( t in targets ){
 					checkField( t, key );
-					var to = toArr[ i++ ];
-					Reflect.deleteField( to, key );
-					TweenX.setField( to, "$$$$" + key, value );
+					var _to = toArr[ i++ ];
+					Reflect.deleteField( _to, key );
+					TweenX.setField( _to, "$$$$" + key, value );
 				}
 			default:
 		}
 	}
 	
-	override private function _initFromTo(target, from, to) {
+	override private function _initFromTo(target, _from, _to) {
 		if ( _autoFrom == null ) _autoFrom = TweenX.defaultAutoFrom;
-		_initFrom( target, from, to );
+		_initFrom( target, _from, _to );
 		
 		var data = {};
-		var fs = TweenX.fields( from );
+		var fs = TweenX.fields( _from );
 		for ( key in fs ){
-			if (! Reflect.hasField( to, key ) ){
-				TweenX.setField( to, key, TweenX.field( from, key ) );
+			if (! Reflect.hasField( _to, key ) ){
+				TweenX.setField( _to, key, TweenX.field( _from, key ) );
 			}
 			
 			var t = _getPosition( _time, (_repeat % 2) == 0 );
-			TweenX.setField( data, key, _calc( TweenX.field(from,key), TweenX.field(to,key), t, 1 - t ) );
+			TweenX.setField( data, key, _calc( TweenX.field(_from,key), TweenX.field(_to,key), t, 1 - t ) );
 		}
 		
 		var id = TweenX.hashObject( target );
@@ -128,16 +128,16 @@ class StandardTweenX<T> extends TweenX {
 		}
 	}
 	
-	private inline function _initFrom(target, from, to) {
+	private inline function _initFrom(target, _from, _to) {
 		var data = null;
-		for ( key0 in TweenX.fields( to ) ) {
-			if (! Std.is( TweenX.field(to, key0), Float ) ) _fastMode = false;
+		for ( key0 in TweenX.fields( _to ) ) {
+			if (! Std.is( TweenX.field(_to, key0), Float ) ) _fastMode = false;
 			
 			var relative 	= (key0.substr( 0, 4 ) == "$$$$");
 			var key 		= relative ?  key0.substr( 4 ) : key0;
 			
-			var fromValue:Dynamic, toValue:Dynamic = TweenX.field( to, key0 );
-			if (! Reflect.hasField( from, key ) ) {
+			var fromValue:Dynamic, toValue:Dynamic = TweenX.field( _to, key0 );
+			if (! Reflect.hasField( _from, key ) ) {
 				if( _autoFrom ){
 					if ( data == null ) {
 						data = {};
@@ -155,26 +155,26 @@ class StandardTweenX<T> extends TweenX {
 				} else {
 					fromValue = _defaultFrom( TweenX.field( target, key ), toValue );
 				}
-				TweenX.setField( from, key, fromValue );
+				TweenX.setField( _from, key, fromValue );
 			}else {
-				fromValue = TweenX.field( from, key );
+				fromValue = TweenX.field( _from, key );
 			}
 			
 			if ( relative ) {
-				TweenX.setField( to, key, toValue + fromValue );
-				Reflect.deleteField( to, key0 );
+				TweenX.setField( _to, key, toValue + fromValue );
+				Reflect.deleteField( _to, key0 );
 			}
 		}
 	}
 	
-	private function _defaultFrom( value:Dynamic, to:Dynamic ):Dynamic {
-		if ( Std.is(to, Float) ) return value;
+	private function _defaultFrom( value:Dynamic, _to:Dynamic ):Dynamic {
+		if ( Std.is(_to, Float) ) return value;
 		for ( r in TweenX._rules ) {
-			if ( Std.is( to, r.inputClass) ) {
-				return r.defaultFrom( value, to, this );
+			if ( Std.is( _to, r.inputClass) ) {
+				return r.defaultFrom( value, _to, this );
 			}
 		}
-		throw error( "The tween rule for " + Type.getClassName(Type.getClass(to)) + " is not defined" );
+		throw error( "The tween rule for " + Type.getClassName(Type.getClass(_to)) + " is not defined" );
 		return null;
 	}
 	

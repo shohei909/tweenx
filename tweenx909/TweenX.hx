@@ -170,18 +170,18 @@ class TweenX extends CommandX {
 	/*
 	 * トゥイーン生成
 	 */
-	static public function from<T>( target:T, ?to:Dynamic, ?delay:Float, ?repeat:Int, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos ){
-		if ( to == null ) to = {};
-		if(! isIterable( target ) ) return new StandardTweenX<T>( FROM_TO( target, {}, to ), 0, EaseX.linear, delay, repeat, false, false, interval, autoPlay, posInfos );
-		else						return new StandardTweenX<T>( ARRAY( untyped target, [{}], [to] ), 0, EaseX.linear, delay, repeat, false, false, interval, autoPlay, posInfos );
+	static public function from<T>( target:T, ?_to:Dynamic, ?delay:Float, ?repeat:Int, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos ){
+		if ( _to == null ) _to = {};
+		if(! isIterable( target ) ) return new StandardTweenX<T>( FROM_TO( target, {}, _to ), 0, EaseX.linear, delay, repeat, false, false, interval, autoPlay, posInfos );
+		else						return new StandardTweenX<T>( ARRAY( untyped target, [{}], [_to] ), 0, EaseX.linear, delay, repeat, false, false, interval, autoPlay, posInfos );
 	}
-	static public function to<T>( target:T, ?to:Dynamic, ?time:Float, ?ease:Float->Float, ?delay:Float, ?repeat:Int, ?yoyo:Bool, ?zigzag:Bool, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos ) {
-		if ( to == null ) to = {};
-		if(! isIterable( target ) ) return new StandardTweenX<T>( FROM_TO( target, {}, to ), time, ease, delay, repeat, yoyo, zigzag, interval, autoPlay, posInfos );
-		else						return new StandardTweenX<T>( ARRAY( untyped target, [{}], [to] ), time, ease, delay, repeat, yoyo, zigzag, interval, autoPlay, posInfos );
+	static public function to<T>( target:T, ?_to:Dynamic, ?time:Float, ?ease:Float->Float, ?delay:Float, ?repeat:Int, ?yoyo:Bool, ?zigzag:Bool, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos ) {
+		if ( _to == null ) _to = {};
+		if(! isIterable( target ) ) return new StandardTweenX<T>( FROM_TO( target, {}, _to ), time, ease, delay, repeat, yoyo, zigzag, interval, autoPlay, posInfos );
+		else						return new StandardTweenX<T>( ARRAY( untyped target, [{}], [_to] ), time, ease, delay, repeat, yoyo, zigzag, interval, autoPlay, posInfos );
 	}
-	static public function tweenFunc( func:Dynamic, from:Iterable<Dynamic>, to:Iterable<Dynamic>, ?time:Float, ?ease:Float->Float, ?delay:Float, ?repeat:Int, ?yoyo:Bool, ?zigzag:Bool, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos ) {
-		return new TweenX( FUNC( func, Lambda.array(from), Lambda.array(to)), time, ease, delay, repeat, yoyo, zigzag, interval, autoPlay, posInfos );
+	static public function tweenFunc( func:Dynamic, _from:Iterable<Dynamic>, _to:Iterable<Dynamic>, ?time:Float, ?ease:Float->Float, ?delay:Float, ?repeat:Int, ?yoyo:Bool, ?zigzag:Bool, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos ) {
+		return new TweenX( FUNC( func, Lambda.array(_from), Lambda.array(_to)), time, ease, delay, repeat, yoyo, zigzag, interval, autoPlay, posInfos );
 	}
 	static public function tweenFunc1( func:Float->Void, from1:Float, to1:Float, ?time:Float, ?ease:Float->Float, ?delay:Float, ?repeat:Int, ?yoyo:Bool, ?zigzag:Bool, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos ) {
 		return new TweenX( FUNC( func, [from1], [to1] ), time, ease, delay, repeat, yoyo, zigzag, interval, autoPlay, posInfos );
@@ -600,15 +600,15 @@ class TweenX extends CommandX {
 		_fastMode = true;
 		
 		switch( _type ) {
-			case FROM_TO( target, from, to ):
-				_initFromTo( target, from, to );
-				_toKeys = fields( to );
+			case FROM_TO( target, _from, _to ):
+				_initFromTo( target, _from, _to );
+				_toKeys = fields( _to );
 			case ARRAY( targets, fromArr, toArr ):	
 				var i = 0;
 				for ( target in targets ) {
-					var from = fromArr[i], to = toArr[i];
-					_initFromTo( target, from, to );
-					if ( i == 0 ) _toKeys = fields( to );
+					var _from = fromArr[i], _to = toArr[i];
+					_initFromTo( target, _from, _to );
+					if ( i == 0 ) _toKeys = fields( _to );
 					i++;
 				}
 			case GROUP( g ):
@@ -623,7 +623,7 @@ class TweenX extends CommandX {
 		if ( _autoPlay ) { play(); }
 	}
 	
-	private function _initFromTo( target, from, to ) {
+	private function _initFromTo( target, _from, _to ) {
 		throw error( "must be standard tween." );
 	}
 	
@@ -750,20 +750,20 @@ class TweenX extends CommandX {
 		var t = _getPosition( p, (repeatNum % 2) == 1 );
 		
 		switch( _type ) {
-			case FROM_TO( target, from, to ):
+			case FROM_TO( target, _from, _to ):
 				var t2 	= 1 - t;
 				if ( _fastMode ) {
 					for ( key in _toKeys ){
 						setField( 
 							target, key, 
-							_fastCalc( field(from, key), field(to, key), t, t2 )
+							_fastCalc( field(_from, key), field(_to, key), t, t2 )
 						);
 					}
 				}else{
 					for ( key in _toKeys ){
 						setField( 
 							target, key, 
-							_calc( field(from, key), field(to, key), t, t2 )
+							_calc( field(_from, key), field(_to, key), t, t2 )
 						);
 					}
 				}
@@ -773,29 +773,29 @@ class TweenX extends CommandX {
 				var i = 0;
 				if ( false ) {
 					for ( target in targets ) {
-						var to = tos[i];
-						var from = froms[i++];
+						var _to = tos[i];
+						var _from = froms[i++];
 						for ( key in _toKeys )
 							setField( 
 								target, key, 
-								_fastCalc( field(from, key), field(to, key), t, t2 )
+								_fastCalc( field(_from, key), field(_to, key), t, t2 )
 							);
 					}
 				}else{
 					for ( target in targets ) {
-						var to = tos[i];
-						var from = froms[i++];
+						var _to = tos[i];
+						var _from = froms[i++];
 						for ( key in _toKeys )
 							setField( 
 								target, key, 
-								_calc( field(from, key), field(to, key), t, t2 )
+								_calc( field(_from, key), field(_to, key), t, t2 )
 							);
 					}
 				}
-			case FUNC( func, from, to ):
+			case FUNC( func, _from, _to ):
 				var t2 	= 1 - t;
 				var arr = [];
-				for ( i in 0...to.length ) arr[i] = _calc( from[i], to[i], t, t2 );
+				for ( i in 0..._to.length ) arr[i] = _calc( _from[i], _to[i], t, t2 );
 				Reflect.callMethod( null, func, arr );
 				
 			case GROUP( g ):
@@ -810,24 +810,24 @@ class TweenX extends CommandX {
 		}
 	}
 	
-	private inline function _fastCalc( from:Dynamic, to:Dynamic, t1:Float, t2:Float ):Dynamic {
-		return from * t2 + to * t1;
+	private inline function _fastCalc( _from:Dynamic, _to:Dynamic, t1:Float, t2:Float ):Dynamic {
+		return _from * t2 + _to * t1;
 	}
 	
-	private inline function _calc( from:Dynamic, to:Dynamic, t1:Float, t2:Float ):Dynamic {
-		if ( Std.is( to, Float ) ) {
-			var d:Dynamic = from * t2 + to * t1;
+	private inline function _calc( _from:Dynamic, _to:Dynamic, t1:Float, t2:Float ):Dynamic {
+		if ( Std.is( _to, Float ) ) {
+			var d:Dynamic = _from * t2 + _to * t1;
 			return d;
 		}else {
 			var i = 0, l = _rules.length, f:RuleX<Dynamic,Dynamic>, result:Dynamic = null, ok:Bool = false;
 			while ( i < l ) {
-				if ( Std.is( to, (f = _rules[i++]).inputClass ) ) {
+				if ( Std.is( _to, (f = _rules[i++]).inputClass ) ) {
 					ok = true;
-					result = f.calc( from, to, t1, t2, this );
+					result = f.calc( _from, _to, t1, t2, this );
 					break;
 				}
 			}
-			if(! ok ) throw error( "The tween rule for " + Type.getClassName(Type.getClass(to)) + " is not defined" );
+			if(! ok ) throw error( "The tween rule for " + Type.getClassName(Type.getClass(_to)) + " is not defined" );
 			return result;
 		}
 	}

@@ -10,8 +10,8 @@ import tweenx909.TweenX;
 
 class BoolRuleX{
 	static public var inputClass(default,null):Dynamic = Bool;
-	static public function calc(from:Bool, to:Bool, t1:Float, t2:Float, tween:TweenX ):Bool {
-		return 0 < (from?1:0) * t2 + (to?1:0) * t1;
+	static public function calc(_from:Bool, _to:Bool, t1:Float, t2:Float, tween:TweenX ):Bool {
+		return 0 < (_from?1:0) * t2 + (_to?1:0) * t1;
 	}
-	static public function defaultFrom( value:Bool, to:Bool, tween:TweenX ):Bool { return value; }
+	static public function defaultFrom( value:Bool, _to:Bool, tween:TweenX ):Bool { return value; }
 }

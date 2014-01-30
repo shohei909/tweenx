@@ -15,7 +15,8 @@
 	<!-- classpath, haxe libs -->
 	<source path="src" />
 	<source path="../../" />
-	<haxelib name="nme" />
+	<haxelib name="openfl" />
+	<haxelib name="openfl-nme-compatibility" />
 	
 	<!-- assets -->
 	<assets path="../assets/font" rename="font" />

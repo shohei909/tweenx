@@ -29,9 +29,9 @@ class TimelineX {
 	
 	static public var inputClass(default, null):Dynamic = TimelineX;
 	
-	static public function calc(from:TimelineX, to:TimelineX, t1:Float, t2:Float, tween:TweenX) {
-		var t	= t1 * to.length;
-		var ts 	= to.timeline;
+	static public function calc(_from:TimelineX, _to:TimelineX, t1:Float, t2:Float, tween:TweenX) {
+		var t	= t1 * _to.length;
+		var ts 	= _to.timeline;
 		var l 	= ts.length;
 		var min = 0;
 		var max = l;
@@ -44,8 +44,8 @@ class TimelineX {
 			n = min + ((max - min) >> 1);
 		}
 		
-		return to.data[ min ];
+		return _to.data[ min ];
 	}
 	
-	static public function defaultFrom( value:Dynamic, to:TimelineX, tween:TweenX ) { return null; }
+	static public function defaultFrom( value:Dynamic, _to:TimelineX, tween:TweenX ) { return null; }
 }

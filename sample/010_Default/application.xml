@@ -3,10 +3,10 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="TweenFunction" package="net.spheresofa.tweenx.TweenFunction" version="1.0.0" company="shohei909" />
+	<meta title="Default" package="net.spheresofa.tweenx.Default" version="1.0.0" company="shohei909" />
 	
 	<!-- output -->
-	<app main="Main" file="TweenFunction" path="bin" />
+	<app main="Main" file="Default" path="bin" />
 	
 	<window background="#FFFFFF" fps="60" />
 	<window width="401" height="401" unless="mobile" />
@@ -15,7 +15,9 @@
 	<!-- classpath, haxe libs -->
 	<source path="src" />
 	<source path="../../" />
-	<haxelib name="nme" />
+	<haxelib name="nme" if="haxe2" />
+	<haxelib name="openfl" unless="haxe2" />
+	<haxelib name="openfl-nme-compatibility" unless="haxe2" />
 	
 	<!-- optimize output -->
 	<haxeflag name="--dead-code-elimination" if="haxe2" />
