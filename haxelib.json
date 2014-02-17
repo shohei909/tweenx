@@ -4,8 +4,8 @@
   "license": "MIT",
   "tags": ["flash", "cpp", "js", "neko"],
   "description": "crossplatform tween library",
-  "version": "0.0.2",
-  "releasenote": "remove samples from haxelib",
+  "version": "0.0.3",
+  "releasenote": "fix a bug",
   "contributors": ["shohei909"],
   "dependencies": {}
 }
