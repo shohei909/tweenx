@@ -10,7 +10,7 @@ class RgbX {
 	public var g:Float;
 	public var b:Float;
 	
-	static public function new( red:Float, green:Float, blue:Float ) {
+	public function new( red:Float, green:Float, blue:Float ) {
 		this.r = red; 
 		this.g = green; 
 		this.b = blue;
