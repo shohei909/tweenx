@@ -39,7 +39,7 @@ class StandardTweenX<T> extends TweenX {
 		#end
 	}
 	
-	private function _getTarget():T { return untyped this; }
+	private function _getTarget():T { return cast this; }
 	private function _setTo( key:String, value:Dynamic ):Void {
 		checkInited();
 		switch( _type ) {
