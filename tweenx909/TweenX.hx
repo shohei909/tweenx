@@ -635,6 +635,7 @@ class TweenX extends CommandX {
 		_updatePosInfo = posInfo;
 		#end
 		
+		if ( !_inited ) _init();
 		if ( spent == 0 ) return;
 		if ( backward ) spent = -spent;
 		if ( spent < 0 ) {
