@@ -46,7 +46,7 @@ class ArgbX {
 		return new ArgbX(
 			((color >>> 24) & 0xFF) / 0xFF,
 			((color >> 16) & 0xFF) / 0xFF,
-			((color >> 08) & 0xFF) / 0xFF,
+			((color >> 8) & 0xFF) / 0xFF,
 			(color & 0xFF) / 0xFF
 		);
 	}

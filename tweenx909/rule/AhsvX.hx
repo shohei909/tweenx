@@ -58,7 +58,7 @@ class AhsvX {
 	static public function of( color:Int, hueIndex:Int = 0 ) {
 		var a = ((color >>> 24) & 0xFF) / 0xFF;
 		var r = ((color >> 16) & 0xFF) / 0xFF;
-		var g = ((color >> 08) & 0xFF) / 0xFF;
+		var g = ((color >> 8) & 0xFF) / 0xFF;
 		var b = (color & 0xFF) / 0xFF;
 		
 		var max, min, diff, h;
