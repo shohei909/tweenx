@@ -4,8 +4,8 @@
   "license": "MIT",
   "tags": ["flash", "cpp", "js", "neko", "tween"],
   "description": "crossplatform tween library",
-  "version": "0.0.4",
-  "releasenote": "fix bugs",
+  "version": "0.0.5",
+  "releasenote": "fix for new version",
   "contributors": ["shohei909"],
   "dependencies": {}
 }
