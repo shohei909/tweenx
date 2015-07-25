@@ -20,10 +20,10 @@ class BetweenAS3Bench extends Sprite {
 	static inline var HEIGHT	= 465;
 	static inline var COLOR		= 0xFFFFFFFF;
 	static inline var TIME_LIMIT 	= 60000;
-	static var colorTransform 	= new ColorTransform( 0.9, 0.7, 0.8 );
+	static var colorTransform 	= new ColorTransform(0.9, 0.7, 0.8);
 	
-	static public function main() {
-		Lib.current.stage.addChild( new BetweenAS3Bench() );
+	public static function main() {
+		Lib.current.stage.addChild(new BetweenAS3Bench());
 	}
 	
 	var seconds:Float 	= 0;
@@ -41,44 +41,44 @@ class BetweenAS3Bench extends Sprite {
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 
 		
-		addChild( new Bitmap( bitmapData = new BitmapData( WIDTH, HEIGHT, false, 0 ) ) );
-		addChild( fpsField = new TextField() );
-		fpsField.defaultTextFormat = new TextFormat( "_sans", 15, 0xFFFFFF );
+		addChild(new Bitmap(bitmapData = new BitmapData(WIDTH, HEIGHT, false, 0)));
+		addChild(fpsField = new TextField());
+		fpsField.defaultTextFormat = new TextFormat("_sans", 15, 0xFFFFFF);
 		fpsField.text = "fps:--";
 		fpsField.width = WIDTH;
 		
-		points = new Vector<Point>( LENGTH );
-		for( i in 0...LENGTH ){
-			var p = points[i] = new Point( WIDTH * Math.random(), HEIGHT );
+		points = new Vector<Point>(LENGTH);
+		for(i in 0...LENGTH){
+			var p = points[i] = new Point(WIDTH * Math.random(), HEIGHT);
 			
-			var t:ITween = BetweenAS3.to( p, { "y":0 }, 0.2 + 10 * Math.random(), Expo.easeIn );
+			var t:ITween = BetweenAS3.to(p, { "y":0 }, 0.2 + 10 * Math.random(), Expo.easeIn);
 			t.stopOnComplete = false;
 			
 			t.play();
 		}
 		
 		
-		addEventListener( Event.EXIT_FRAME, onFrame );
+		addEventListener(Event.EXIT_FRAME, onFrame);
 		startTime = Date.now().getTime();
 	}
 	
 	public function onFrame(e) {
 		var b = bitmapData;
 		b.lock();
-		b.colorTransform( b.rect, colorTransform );
-		for ( i in 0...LENGTH ) {
+		b.colorTransform(b.rect, colorTransform);
+		for (i in 0...LENGTH) {
 			var p = points[i];
-			b.setPixel( Std.int(p.x), Std.int(p.y), COLOR );
+			b.setPixel(Std.int(p.x), Std.int(p.y), COLOR);
 		}
 		b.unlock();
 		
 		var time = Date.now().getTime();
-		if ( count++ > 0 ) {
+		if (count++ > 0) {
 			seconds *= (count - 1) / count;
 			seconds += (time - oldTime) / count;
-			fpsField.text = untyped "BetweenAS3 fps:" + ( 1000 / seconds ).toFixed(2);  
-			if ( time - startTime >= TIME_LIMIT ) {
-				if ( result == null ) result = ( 1000 / seconds );
+			fpsField.text = untyped "BetweenAS3 fps:" + (1000 / seconds).toFixed(2);  
+			if (time - startTime >= TIME_LIMIT) {
+				if (result == null) result = (1000 / seconds);
 				fpsField.text += untyped " result:" + result.toFixed(2); 
 			}
 		}

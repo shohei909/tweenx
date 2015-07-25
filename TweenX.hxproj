@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project version="2">
+  <!-- Output SWF options -->
+  <output>
+    <movie outputType="CustomBuild" />
+    <movie input="" />
+    <movie path="" />
+    <movie fps="0" />
+    <movie width="0" />
+    <movie height="0" />
+    <movie version="1" />
+    <movie minorVersion="0" />
+    <movie platform="Custom" />
+    <movie background="#FFFFFF" />
+  </output>
+  <!-- Other classes to be compiled into your SWF -->
+  <classpaths>
+    <class path="tweenx" />
+    <class path="tweenxcore" />
+    <class path="sample\020_Bezier" />
+    <class path="sample\021_Music" />
+  </classpaths>
+  <!-- Build options -->
+  <build>
+    <option directives="" />
+    <option flashStrict="False" />
+    <option noInlineOnDebug="False" />
+    <option mainClass="" />
+    <option enabledebug="False" />
+    <option additional="-swf-lib sample/021_Music/swc/hookOggVorbisLib.swc" />
+  </build>
+  <!-- haxelib libraries -->
+  <haxelib>
+    <library name="openfl" />
+    <library name="lime" />
+    <library name="format" />
+  </haxelib>
+  <!-- Class files to compile (other referenced classes will automatically be included) -->
+  <compileTargets>
+    <!-- example: <compile path="..." /> -->
+  </compileTargets>
+  <!-- Paths to exclude from the Project Explorer tree -->
+  <hiddenPaths>
+    <hidden path="obj" />
+  </hiddenPaths>
+  <!-- Executed before build -->
+  <preBuildCommand>haxelib run lime test SampleProject.hxp $(TargetBuild) -$(BuildConfig)</preBuildCommand>
+  <!-- Executed after build -->
+  <postBuildCommand alwaysRun="False" />
+  <!-- Other project options -->
+  <options>
+    <option showHiddenPaths="False" />
+    <option testMovie="Custom" />
+    <option testMovieCommand="" />
+  </options>
+  <!-- Plugin storage -->
+  <storage />
+</project>

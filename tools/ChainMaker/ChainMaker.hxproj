@@ -21,6 +21,7 @@
   <build>
     <option directives="" />
     <option flashStrict="False" />
+    <option noInlineOnDebug="False" />
     <option mainClass="Main" />
     <option enabledebug="False" />
     <option additional="-resource mtt/func1.mtt@func1&#xA;-resource mtt/func2.mtt@func2&#xA;-resource mtt/func3.mtt@func3&#xA;-resource mtt/top.mtt@top" />
