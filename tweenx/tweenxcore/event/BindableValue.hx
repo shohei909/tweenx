@@ -1,4 +1,4 @@
-package tweenx909.core.event;
+package tweenxcore.event;
 
 /**
  * ...

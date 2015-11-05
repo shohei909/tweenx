@@ -14,7 +14,6 @@ class Main extends Sprite {
 		super();
 		Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
 
-		
 		//Draw background
 		graphics.lineStyle(1, 0xEEEEEE);
 		var end = CELL_SIZE * 20;
@@ -25,14 +24,14 @@ class Main extends Sprite {
 			graphics.moveTo(p, 0);
 			graphics.lineTo(p, end);
 		}
-		
+
 		//Make square
 		var square = new Square(CELL_SIZE * 2);
 		addChild(square);
-		
+
 		var defaults = TweenX.dumpDefaults();
 		defaults.time(1).ease(EaseX.quartOut);
-		
+
 		//Tween!!
 		TweenX.serial([
 			TweenX.to(square).x(360).y(  0),

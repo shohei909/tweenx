@@ -1,10 +1,10 @@
-package tweenx909.core.event;
+package tweenxcore.event;
 
 /**
  * ...
  * @author shohei909
  */
-class GenericUnitEventDispatcher<T>
+class GenericSingleEventDispatcher<T>
 {
 	var handlers:Array<T->Void>;
 

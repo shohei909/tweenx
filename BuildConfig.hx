@@ -3,7 +3,7 @@ import sys.io.File;
 import sys.io.Process;
 
 class BuildConfig {
-	
+
 	public static function sampleName(num:Int) {
 		for (file in FileSystem.readDirectory("sample")) {
 			if (FileSystem.isDirectory("sample/" + file)) {
@@ -15,7 +15,7 @@ class BuildConfig {
 		}
 		return null;
 	}
-	
+
 	static var windows:Map<Int, WindowSize> = [
 		4 => {
 			width : 750,
@@ -26,7 +26,7 @@ class BuildConfig {
 			height : 512,
 		}
 	];
-	
+
 	public static function sampleWindowSize(num:Int):WindowSize {
 		return if (windows.exists(num)){
 			windows[num];
@@ -37,10 +37,10 @@ class BuildConfig {
 			}
 		}
 	}
-	
+
 	public static function buildAll() {
 		var keys = [];
-		
+
 		for (file in FileSystem.readDirectory("sample")) {
 			if (FileSystem.isDirectory("sample/" + file)) {
 				var segs = file.split("_");
@@ -49,12 +49,16 @@ class BuildConfig {
 				}
 			}
 		}
-		
+
 		keys.sort(function (a, b) return a - b);
-		
+
+        var server = new Process("haxe", ["--wait", "6000"]);
+
 		for (key in keys) {
 			Sys.command("haxelib", ["run", "lime", "build", "SampleProject.hxp", "flash", "-release", "-sample-" + key]);
 		}
+
+        server.kill();
 	}
 }
 

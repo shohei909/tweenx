@@ -1,6 +1,6 @@
-package tweenx909.core.color;
-import tweenx909.core.tools.FloatTools;
-import tweenx909.core.tools.FloatTools.*;
+package tweenxcore.color;
+import tweenxcore.tools.FloatTools;
+import tweenxcore.tools.FloatTools.*;
 
 /**
  * ...

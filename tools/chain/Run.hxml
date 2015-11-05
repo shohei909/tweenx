@@ -1,0 +1,7 @@
+-cp src
+-resource mtt/top.mtt@top
+-resource mtt/func1.mtt@func1
+-resource mtt/func2.mtt@func2
+-resource mtt/func3.mtt@func3
+-main Main
+--interp

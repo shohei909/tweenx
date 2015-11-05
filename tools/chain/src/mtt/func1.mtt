@@ -1,0 +1,1 @@
+	::if !array::#if haxe3	::end::static public function ::(prefix + name)::<T:IStandardTweenX<::t::>>(tween:T, ::name:::::class::):T {	::if !array::#else	static public function ::(prefix + name)::<T>(tween:StandardTweenX<T>, ::name:::::class::) {	#end	::end::	var t:IStandardTweenX<Dynamic> = tween; 		t._::method::("::name::", ::name::);		return tween;	}

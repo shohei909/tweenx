@@ -1,6 +1,6 @@
-package tweenx909.core.color;
-import tweenx909.core.tools.FloatTools;
-import tweenx909.core.tools.FloatTools.*;
+package tweenxcore.color;
+import tweenxcore.tools.FloatTools;
+import tweenxcore.tools.FloatTools.*;
 
 /**
  * ...
@@ -25,7 +25,7 @@ class ArgbColor extends RgbColor
             ((color >> 16) & 0xFF) / 0xFF,
             ((color >> 8) & 0xFF) / 0xFF,
             (color & 0xFF) / 0xFF
-       );
+        );
     }
 
 	public static function fromAhsv(a:Float, h:Float, s:Float, v:Float, hueIndex:Int = 0) {

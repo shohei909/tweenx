@@ -1,0 +1,10 @@
+-cp tweenx
+-D doc-gen
+--macro include('tweenx909')
+--macro include('tweenxcore')
+--no-output
+-xml doc/xml/flash.xml
+-swf dummy.swf
+
+--next
+-cmd haxelib run dox -i website/api/xml -o website/api/pages -in tweenx --title "TweenX API"

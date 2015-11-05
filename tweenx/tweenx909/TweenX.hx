@@ -2,6 +2,7 @@ package tweenx909;
 
 import haxe.PosInfos;
 import haxe.Timer;
+import tweenx909.EaseX;
 import tweenx909.advanced.CommandX;
 import tweenx909.advanced.DefaultsX;
 import tweenx909.advanced.GroupX;
@@ -24,7 +25,7 @@ using Lambda;
  * @author shohei909
  */
 class TweenX extends CommandX {
-	
+
 	/*
 	 * 全体情報
 	 */
@@ -32,13 +33,13 @@ class TweenX extends CommandX {
 	static private var _addedTweens:Array<TweenX>					= new Array<TweenX>();
 	public static var tweens(#if haxe3 get #else get_tweens #end, never):Iterable<TweenX>;
 	static private function get_tweens():Iterable<TweenX> { return _tweens; }
-	
+
 	/*
 	 * マネージャ基本値
 	 */
 	static private var prevTime:Float;
 	static private var managerInited 	= false;
-	
+
 	/*
 	 * 基本パラメータデフォルト値
 	 */
@@ -51,7 +52,7 @@ class TweenX extends CommandX {
 	public static inline 	var DEFAULT_ZIGZAG:Bool		= false;
 	public static inline 	var DEFAULT_AUTO_PLAY:Bool	= true;
 	static private inline 	var DEFAULT_AUTO_FROM:Bool	= true;
-	
+
 	public static var 	defaultEase:Float->Float	= TweenX.DEFAULT_EASE;
 	public static var 	defaultTime:Float 			= TweenX.DEFAULT_TIME;
 	public static var 	defaultDelay:Float			= TweenX.DEFAULT_DELAY;
@@ -61,15 +62,15 @@ class TweenX extends CommandX {
 	public static var 	defaultZigZag:Bool 			= TweenX.DEFAULT_ZIGZAG;
 	public static var 	defaultAutoPlay:Bool		= TweenX.DEFAULT_AUTO_PLAY;
 	static private var 	defaultAutoFrom:Bool		= TweenX.DEFAULT_AUTO_FROM;
-	
+
 	static private	var _rules:Array<RuleX<Dynamic,Dynamic>> 			= [BoolRuleX, ArrayRuleX, TimelineRuleX, ArgbRuleX, AhsvRuleX, RgbRuleX, HsvRuleX, QuakeRuleX];
 	public static 	var rules(#if haxe3 get #else get_rules #end, never):Iterable<RuleX<Dynamic,Dynamic>>;
 	static private function get_rules():Iterable<RuleX<Dynamic,Dynamic>> { return _rules; }
-	
-	
+
+
 	static public	var topLevelTimeScale:Float							= 1;
 	static private 	var _groupDefaults:Bool 								= false;
-	
+
 	public static function dumpDefaults() {
 		return new DefaultsX().dump();
 	}
@@ -79,16 +80,16 @@ class TweenX extends CommandX {
 	public static function initDefaults() {
 		new DefaultsX().apply();
 	}
-	
-	public static 	var updateMode(default, #if haxe3 set #else set_updateMode #end):UpdateModeX	
+
+	public static 	var updateMode(default, #if haxe3 set #else set_updateMode #end):UpdateModeX
 		= #if (flash) UpdateModeX.FRAME; #else UpdateModeX.TIME(60); #end
-		
+
 	static function set_updateMode(value) {
 		updateMode = value;
 		initManager();
 		return value;
 	}
-		
+
 	/*
 	 * マネージャ関数
 	 */
@@ -104,7 +105,7 @@ class TweenX extends CommandX {
 			prevTime = getTime();
 			setInterval(mainLoop, Math.round(1000 / f));
 		case MANUAL:
-		}	
+		}
 	}
 	static private function mainLoop() {
 		switch(updateMode) {
@@ -132,11 +133,11 @@ class TweenX extends CommandX {
 		}
 		#end
 	}
-	
+
 	public static function manualUpdate(time:Float #if (tweenx_debug) ,?posInfo:PosInfos #end) {
 		initTweens();
 		var l = _tweens.length, i = 0;
-		while (i < l){ 
+		while (i < l){
 			var t = _tweens[i++];
 			t._update(time * t.timeScale * topLevelTimeScale #if (tweenx_debug) ,posInfo #end);
 			if (!t.playing) { _tweens.splice(--i, 1); l--; }
@@ -147,11 +148,11 @@ class TweenX extends CommandX {
 		for (t in _addedTweens) { t._init(); }
 		_addedTweens.splice(0, _addedTweens.length);
 	}
-	public static function clear() { 
+	public static function clear() {
 		for (t in _addedTweens) { t._autoPlay = false; }
-		stopAll(tweens); 
+		stopAll(tweens);
 	}
-	
+
 	/*
 	 * 変則ルールの管理
 	 */
@@ -166,7 +167,7 @@ class TweenX extends CommandX {
 	public static function addRules(rules:Iterable<RuleX <Dynamic, Dynamic>>) {
 		for (r in rules) addRule(r);
 	}
-	
+
 	/*
 	 * トゥイーン生成
 	 */
@@ -198,13 +199,13 @@ class TweenX extends CommandX {
 	public static function func(func:Void->Void, ?delay:Float, ?repeat:Int, ?interval:Float, ?posInfos:PosInfos) {
 		return new TweenX(CALL(func), 0, EaseX.linear, delay, repeat, false, false, interval, false, posInfos);
 	}
-	
-	
+
+
 	/*
 	 * 一括制御
 	 */
 	public static function playAll(tweens:Iterable<TweenX> #if (tweenx_debug) ,?posInfo:PosInfos #end) {
-		for (t in tweens) 
+		for (t in tweens)
 			switch(t.command) {
 				case WAIT(_):
 				case TWEEN(o):
@@ -220,7 +221,7 @@ class TweenX extends CommandX {
 			}
 	}
 	public static function gotoAll(tweens:Iterable<TweenX>, time:Float = 0, andPlay:Bool = false #if (tweenx_debug) ,?posInfo:PosInfos #end){
-		for (t in tweens) 
+		for (t in tweens)
 			switch(t.command) {
 				case WAIT(_):
 				case TWEEN(o):
@@ -228,7 +229,7 @@ class TweenX extends CommandX {
 			}
 	}
 	public static function updateAll(tweens:Iterable<TweenX>, time:Float #if (tweenx_debug) ,?posInfo:PosInfos #end) {
-		for (t in tweens) 
+		for (t in tweens)
 			switch(t.command) {
 				case WAIT(_):
 				case TWEEN(o):
@@ -236,8 +237,8 @@ class TweenX extends CommandX {
 					o.update(time #if (tweenx_debug) ,posInfo #end);
 			}
 	}
-	
-	
+
+
 	/*
 	 * シリアライズ
 	 */
@@ -247,16 +248,16 @@ class TweenX extends CommandX {
 	public static function lag(tweens:Iterable<CommandX>, ?delay:Float = 0.1, ?defaults:DefaultsX, ?posInfos:PosInfos) {
 		return _group(tweens, LAG(delay), defaults, posInfos);
 	}
-	public static function parallel(tweens:Iterable<CommandX>, ?defaults:DefaultsX, ?posInfos:PosInfos) { 
+	public static function parallel(tweens:Iterable<CommandX>, ?defaults:DefaultsX, ?posInfos:PosInfos) {
 		return _group(tweens, LAG(0), defaults, posInfos);
 	}
 	public static function wait(?delay:Float = 0.1, ?posInfos:PosInfos) { return new CommandX(WAIT(delay), posInfos); }
 	static private inline function _group(tweens:Iterable<CommandX>, type, defaults, posInfos:PosInfos) {
 		var parent = new TweenX(GROUP(new GroupX(tweens, type, defaults)), null, null, null, null, null, null, null, null, posInfos);
-		for (t in tweens) { 
+		for (t in tweens) {
 			if (t == null) continue;
 			switch(t.command) {
-				case TWEEN(o): 
+				case TWEEN(o):
 					_lock(o);
 					o._parent = parent;
 				default:
@@ -268,14 +269,14 @@ class TweenX extends CommandX {
 		if (o._inited) throw o.error("Can't serialize initialized TweenCommandX");
 		o._autoPlay = false;
 	}
-	
+
 	/*
 	 * 静的ユーティリティ
 	 */
 	static private inline function getTime():Float {
 		#if (neko || php || cpp || cs || java)
 		return Sys.time() * 1000;
-		#else 
+		#else
 		return Date.now().getTime();
 		#end
 	}
@@ -285,7 +286,7 @@ class TweenX extends CommandX {
 		_timer 		= new Timer(t);
 		_timer.run 	= f;
 	}
-	
+
 	#if (flash9)
 	static var _engine:flash.display.Sprite;
 	static var _frameHandler:Dynamic->Void;
@@ -295,11 +296,11 @@ class TweenX extends CommandX {
 		_engine.addEventListener("exitFrame", _frameHandler = f2);
 	}
 	#end
-	
+
 	static private inline function fields(t:Dynamic) {
 		return Reflect.fields(t);
 	}
-	
+
 	private static var _initLog:Array<Array<Log>> = [];
 	#if haxe3
 	private static	var dictionary:haxe.ds.ObjectMap<Dynamic,Int> = new haxe.ds.ObjectMap();
@@ -310,14 +311,14 @@ class TweenX extends CommandX {
 	static private inline function hashObject(o:Dynamic) {
 		#if haxe3
 		if (dictionary.get(o) != null) return dictionary.get(o);
-		else {				
+		else {
 			_objCounter = 1 + (_objCounter % 33029);
 			dictionary.set(o, _objCounter);
 			return _objCounter;
 		}
 		#elseif flash9
 		untyped if (dictionary[o] != null) return untyped dictionary[o];
-		else {				
+		else {
 			_objCounter = 1 + (_objCounter % 33029);
 			untyped dictionary[o ] = _objCounter;
 			return _objCounter;
@@ -342,7 +343,7 @@ class TweenX extends CommandX {
 		dictionary = new flash.utils.Dictionary(true);
 		#end
 	}
-	
+
 	static private inline function field(o:Dynamic, key:String) {
 		#if (flash)
 		return untyped o[key ];
@@ -364,11 +365,11 @@ class TweenX extends CommandX {
 		Reflect.setProperty(o, key, value);
 		#end
 	}
-	
+
 	static private function isIterable(d:Dynamic) {
 		return (d != null && (Std.is(d, Array) || Reflect.hasField(d, "iterator") && Reflect.isFunction(d.iterator) && d.iterator() != null));
 	}
-	
+
 	/*
 	 * 定数
 	 */
@@ -387,23 +388,23 @@ class TweenX extends CommandX {
 	static private inline var _REST 	= 7;
 	static private inline var _FINISH 	= 8;
 	static private inline var _STOP 	= 9;
-	
-	
+
+
 	/*
 	 * コンストラクタ
 	 */
 	function new(type:TweenTypeX, ?time:Float, ?ease:Float->Float, ?delay:Float, ?repeat:Int, ?yoyo:Bool, ?zigzag:Bool, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos) {
 		super(TWEEN(this), posInfos);
 		this._type 		= type;
-		
+
 		_currentTime		= 0;
 		switch(type) {
-			case GROUP(g):	
+			case GROUP(g):
 				_easeIsDefault = false;
 				_ease = (ease == null) ? EaseX.linear : ease;
 			default: _ease = (_easeIsDefault = ease == null) ? defaultEase : ease;
 		}
-		
+
 		_time		= (_timeIsDefault 		= time 		== null) ? defaultTime		: time;
 		_delay 		= (_delayIsDefault 		= delay 	== null) ? defaultDelay		: delay;
 		_interval 	= (_intervalIsDefault 	= interval 	== null) ? defaultInterval	: interval;
@@ -411,15 +412,15 @@ class TweenX extends CommandX {
 		_yoyo 		= (_yoyoIsDefault 		= yoyo 		== null) ? defaultYoyo		: yoyo;
 		_zigzag 	= (_zigzagIsDefault 	= zigzag 	== null) ? defaultZigZag	: zigzag;
 		_autoPlay 	= (_autoPlayIsDefault 	= autoPlay 	== null) ? defaultAutoPlay	: autoPlay;
-		
+
 		_rest		= 0;
 		_eventListeners = [];
-		
+
 		id = idCounter++;
 		TweenX._addedTweens.push(this);
 		if (! TweenX.managerInited) { TweenX.initManager(); }
 	}
-	
+
 	/*
 	 * 状態情報
 	 */
@@ -435,8 +436,8 @@ class TweenX extends CommandX {
 	private var _parent:TweenX;
 	private var _fastMode:Bool;
 	private var _toKeys:Array<String>;
-	
-	
+
+
 	/*
 	 * プロパティ
 	 */
@@ -469,13 +470,13 @@ class TweenX extends CommandX {
 			if (_parent != null) 	throw error("Can't change timeScale of serialized object directly");
 			else 					timeScale = value;
 	}
-	
+
 	/*
 	 * 基本パラメータ
 	 */
 	private var _inverted:Bool;
 	private var _odd:Bool;
-	
+
 	private var _time:Float;
 	private var _ease:Float->Float;
 	private var _interval:Float;
@@ -485,7 +486,7 @@ class TweenX extends CommandX {
 	private var _delay:Float;
 	private var _autoPlay:Bool;
 	private var _rest:Float;
-	
+
 	private var _timeIsDefault:Bool;
 	private var _easeIsDefault:Bool;
 	private var _intervalIsDefault:Bool;
@@ -494,7 +495,7 @@ class TweenX extends CommandX {
 	private var _yoyoIsDefault:Bool;
 	private var _delayIsDefault:Bool;
 	private var _autoPlayIsDefault:Bool;
-	
+
 	/*
 	 * コールバック関数
 	 */
@@ -509,30 +510,30 @@ class TweenX extends CommandX {
 	private var _onFoot:Void->Void;
 	private var _onFinish:Void->Void;
 	private var _eventListeners:Array <Array<Dynamic>>;
-	
-	
+
+
 	/*
 	 * デバッグ
 	 */
-	#if (tweenx_debug) 
+	#if (tweenx_debug)
 	private var _updatePosInfo:PosInfos;
-	#end 
+	#end
 	public var id(default, null):Int;
 	public static var idCounter:Int = 0;
 	function error(msg:String) {
 		var p = definedPosInfos;
 		return msg + "(Tween_" + id + " was generated at " + p.className + "/" + p.methodName + "() [" + p.fileName + ":" + p.lineNumber + "])";
 	}
-	
+
 	/* 個別制御	 */
 	public function play(#if (tweenx_debug) ?posInfo:PosInfos #end) {
 		if (_parent != null) throw error("Can't play serialized object directly");
 		if (playing) return this;
 		if (! _inited) _init();
-		
+
 		playing = true;
 		_tweens.push(this);
-		
+
 		#if (tweenx_debug) _updatePosInfo = posInfo; #end
 		dispatch(_PLAY);
 		if (_onPlay != null) _onPlay();
@@ -550,13 +551,13 @@ class TweenX extends CommandX {
 		dispatch(_STOP);
 		if (_onStop != null) _onStop();
 	}
-	
+
 	public function update(time:Float #if (tweenx_debug) ,?posInfo:PosInfos #end) {
 		if (_parent != null) throw error("Can't stop serialized object directly");
 		_update(time * timeScale * TweenX.topLevelTimeScale #if (tweenx_debug) ,posInfo #end);
 		return this;
 	}
-	
+
 	public function goto(time:Float = 0, andPlay:Bool = false #if (tweenx_debug) ,?posInfo:PosInfos #end) {
 		if (_parent != null) throw error("Can't move serialized object directly");
 		if (! _inited) { _init(); }
@@ -567,47 +568,47 @@ class TweenX extends CommandX {
 		if (andPlay) { play(#if (tweenx_debug) posInfo #end); }
 		return this;
 	}
-	
+
 	private function _invert(){
 		_currentTime = _totalTime - _currentTime;
 		if (_repeat % 2 == 0) _odd = !_odd;
-		
+
 		_inverted 	= !_inverted;
 		var d 		= _delay;
 		_delay 		= _rest;
 		_rest 		= d;
 	}
-	
-	
+
+
 	/*
 	 * 初期化
 	 */
 	private function _init() {
 		if (_inited) { return; }
 		_inited = true;
-		
+
 		if (_groupDefaults){
-			if (_easeIsDefault) 		_ease		= defaultEase; 
-			if (_timeIsDefault) 		_time 		= defaultTime; 
-			if (_delayIsDefault) 		_delay 		= defaultDelay; 
-			if (_intervalIsDefault) 	_interval 	= defaultInterval; 
-			if (_repeatIsDefault) 		_repeat 	= defaultRepeat; 
-			if (_yoyoIsDefault) 		_yoyo 		= defaultYoyo; 
-			if (_zigzagIsDefault) 		_zigzag 	= defaultZigZag; 
-			if (_autoPlayIsDefault) 	_autoPlay 	= defaultAutoPlay; 
+			if (_easeIsDefault) 		_ease		= defaultEase;
+			if (_timeIsDefault) 		_time 		= defaultTime;
+			if (_delayIsDefault) 		_delay 		= defaultDelay;
+			if (_intervalIsDefault) 	_interval 	= defaultInterval;
+			if (_repeatIsDefault) 		_repeat 	= defaultRepeat;
+			if (_yoyoIsDefault) 		_yoyo 		= defaultYoyo;
+			if (_zigzagIsDefault) 		_zigzag 	= defaultZigZag;
+			if (_autoPlayIsDefault) 	_autoPlay 	= defaultAutoPlay;
 		}
-		
+
 		if (_repeat == 0) _repeat = #if (neko && !haxe3) 0x3FFFFFFE #else 0x7FFFFFFE #end ;
 		if (_time < _MIN) _time = _MIN;
-		
+
 		var ot = getTime();
 		_fastMode = true;
-		
+
 		switch(_type) {
 			case FROM_TO(target, _from, _to):
 				_initFromTo(target, _from, _to);
 				_toKeys = fields(_to);
-			case ARRAY(targets, fromArr, toArr):	
+			case ARRAY(targets, fromArr, toArr):
 				var i = 0;
 				for (target in targets) {
 					var _from = fromArr[i], _to = toArr[i];
@@ -619,26 +620,26 @@ class TweenX extends CommandX {
 				initGroup(g);
 			default:
 		}
-		
-		
+
+
 		_singleTime	= get_singleTime();
 		_totalTime 	= get_totalTime();
-		
+
 		if (_autoPlay) { play(); }
 	}
-	
+
 	private function _initFromTo(target, _from, _to) {
 		throw error("must be standard tween.");
 	}
-	
+
 	/*
 	 * メインループ
 	 */
 	private function _update(spent:Float #if (tweenx_debug) ,?posInfo:PosInfos #end) {
-		#if (tweenx_debug) 
+		#if (tweenx_debug)
 		_updatePosInfo = posInfo;
 		#end
-		
+
 		if (!_inited) _init();
 		if (spent == 0) return;
 		if (backward) spent = -spent;
@@ -648,7 +649,7 @@ class TweenX extends CommandX {
 			spent = -spent;
 		}
 		var _currentTime = this._currentTime, _singleTime = this.singleTime, _totalTime = this._totalTime;
-		
+
 		var time			= _time;
 		var delay			= _delay;
 		var untilRest		= _totalTime - _rest;
@@ -658,13 +659,13 @@ class TweenX extends CommandX {
 		var repeatNum		= Math.floor(body / _singleTime);
 		var position		= body - repeatNum * _singleTime;
 		var intervending	= (_MIN > time - position);
-		
+
 		this._currentTime = _currentTime 	+= spent;
 		position	+= spent;
 		body		+= spent;
-		
-		
-		
+
+
+
 		//delayのチェック
 		if (_currentTime - delay < _MIN) {
 			dispatch(_DELAY);
@@ -674,20 +675,20 @@ class TweenX extends CommandX {
 			_head(0);
 			delaying = false;
 		}
-		
+
 		//restのチェック
 		if (_MIN > untilRest -_currentTime) {
-			if (! resting) { 
+			if (! resting) {
 				if (intervending) {
 					dispatch(_REPEAT);
 					if (_onRepeat != null) _onRepeat();
-					_head(repeatNum); 
+					_head(repeatNum);
 				}
 				_foot(_repeat - 1);
 			}
 			//finishのチェック
-			if (_MIN > _totalTime - _currentTime) { 
-				_finish(); 
+			if (_MIN > _totalTime - _currentTime) {
+				_finish();
 			} else {
 				dispatch(_REST);
 				if (_onRest != null) _onRest();
@@ -708,8 +709,8 @@ class TweenX extends CommandX {
 					}
 					repeatNum	= Std.int(body / _singleTime);
 					position	= body - repeatNum * _singleTime;
-					
-					if (_MIN > time - position) { 
+
+					if (_MIN > time - position) {
 						_foot(repeatNum);
 						dispatch(_INTERVAL);
 						if (_onInterval != null) _onInterval();
@@ -717,10 +718,10 @@ class TweenX extends CommandX {
 					}
 				}
 			}else {
-				if (intervending) { 
+				if (intervending) {
 					dispatch(_REPEAT);
 					if (_onRepeat != null) { _onRepeat(); }
-					_head(repeatNum); 
+					_head(repeatNum);
 				}
 			}
 			_apply(position, repeatNum);
@@ -728,7 +729,7 @@ class TweenX extends CommandX {
 			if (_onUpdate != null) _onUpdate();
 		}
 	}
-	
+
 	private inline function _head(repeatNum:Int) {
 		_apply(0, repeatNum);
 		dispatch(_HEAD);
@@ -743,36 +744,36 @@ class TweenX extends CommandX {
 		dispatch(_FOOT);
 		if (_onFoot != null) 		_onFoot();
 	}
-	
+
 	private inline function _finish() {
 		_currentTime = _totalTime;
 		dispatch(_FINISH);
 		if (_onFinish != null) _onFinish();
 		_stop();
 	}
-	
+
 	private function _apply(p:Float, repeatNum:Int) {
 		var t = _getPosition(p, (repeatNum % 2) == 1);
-		
+
 		switch(_type) {
 			case FROM_TO(target, _from, _to):
 				var t2 	= 1 - t;
 				if (_fastMode) {
 					for (key in _toKeys){
 						setField(
-							target, key, 
+							target, key,
 							_fastCalc(field(_from, key), field(_to, key), t, t2)
 						);
 					}
 				} else {
 					for (key in _toKeys){
 						setField(
-							target, key, 
+							target, key,
 							_calc(field(_from, key), field(_to, key), t, t2)
 						);
 					}
 				}
-				
+
 			case ARRAY(targets, froms, tos):
 				var t2 	= 1 - t;
 				var i = 0;
@@ -782,7 +783,7 @@ class TweenX extends CommandX {
 						var _from = froms[i++];
 						for (key in _toKeys)
 							setField(
-								target, key, 
+								target, key,
 								_fastCalc(field(_from, key), field(_to, key), t, t2)
 							);
 					}
@@ -792,7 +793,7 @@ class TweenX extends CommandX {
 						var _from = froms[i++];
 						for (key in _toKeys)
 							setField(
-								target, key, 
+								target, key,
 								_calc(field(_from, key), field(_to, key), t, t2)
 							);
 					}
@@ -802,23 +803,23 @@ class TweenX extends CommandX {
 				var arr = [];
 				for (i in 0..._to.length) arr[i] = _calc(_from[i], _to[i], t, t2);
 				Reflect.callMethod(null, func, arr);
-				
+
 			case GROUP(g):
 					var ts = g.tweens;
 					var spent 	= (_time * t - g.current) * 1.00000001;
 					if (spent < 0) 	for (i in (1-ts.length)...1) 	{ ts[-i]._update(spent); }
 					else 				for (i in 0...ts.length) 		{ ts[i]._update(spent); }
 					g.current = g.tweens[0].currentTime;
-					
+
 			case CALL(f):
 					if (t == 1) f();
 		}
 	}
-	
+
 	private inline function _fastCalc(_from:Dynamic, _to:Dynamic, t1:Float, t2:Float):Dynamic {
 		return _from * t2 + _to * t1;
 	}
-	
+
 	private inline function _calc(_from:Dynamic, _to:Dynamic, t1:Float, t2:Float):Dynamic {
 		if (Std.is(_to, Float)) {
 			var d:Dynamic = _from * t2 + _to * t1;
@@ -836,7 +837,7 @@ class TweenX extends CommandX {
 			return result;
 		}
 	}
-	
+
 	/*
 	 * パラメータ変更
 	 */
@@ -898,16 +899,16 @@ class TweenX extends CommandX {
 		_autoPlay = value;
 		return this;
 	}
-	public function skip(delay:Float = 0) { 
+	public function skip(delay:Float = 0) {
 		checkInited();
-		_skip = delay; 
-		return this; 
+		_skip = delay;
+		return this;
 	}
-	public function setTimeScale(value:Float = 0) { 
+	public function setTimeScale(value:Float = 0) {
 		timeScale = value;
 		return this;
 	}
-	
+
 	/*
 	 * イベントハンドラの設定
 	 */
@@ -951,7 +952,7 @@ class TweenX extends CommandX {
 		_onFinish = handler;
 		return this;
 	}
-	
+
 	public function addEventListener(type:String, listener:TweenX->Void) {
 		_addEventListener(type, listener);
 		return this;
@@ -973,12 +974,12 @@ class TweenX extends CommandX {
 		if (_eventListeners[i] != null)
 			_eventListeners[i].remove(listener);
 	}
-	
-	
+
+
 	/*
 	 * 動的ユーティリティ
 	 */
-	private inline function _getPosition(p:Float, back:Bool):Float { 
+	private inline function _getPosition(p:Float, back:Bool):Float {
 		var t = (p / _time);
 		if (_odd) 		back 	= !back;
 		if (_inverted) t 		= 1 - t;
@@ -1006,10 +1007,10 @@ class TweenX extends CommandX {
 		var listeners = _eventListeners[num ];
 		if (listeners != null) for (f in listeners) f(this);
 	}
-	
+
 	private function initGroup(g:GroupX) {
 		var df = null, gd:Bool = false;
-		
+
 		if (g.defaults != null){
 			df = dumpDefaults();
 			gd = _groupDefaults;
@@ -1017,11 +1018,11 @@ class TweenX extends CommandX {
 			setDefaults(g.defaults);
 			TweenX.defaultAutoPlay = false;
 		}
-		
+
 		var delay 				= 0.0;
 		var max					= 0.0;
 		var result	 			= [];
-		
+
 		switch(g.type) {
 		case SERIAL:
 			for (t in g.source) {
@@ -1031,48 +1032,48 @@ class TweenX extends CommandX {
 				case TWEEN(o):
 					result.push(o);
 					o._autoPlay = false;
-					
-					if (_groupDefaults && o._delayIsDefault) 
-						o._delay 	= TweenX.defaultDelay; 
-					
+
+					if (_groupDefaults && o._delayIsDefault)
+						o._delay 	= TweenX.defaultDelay;
+
 					o._init();
 					o._delay 		+= delay;
 					o._totalTime 	+= delay;
-					
+
 					var totalTime = o._totalTime;
 					delay = (o._skip != null) ? (delay + o._skip) : totalTime;
 					if (max < totalTime) max = totalTime;
 				}
 			}
 		case LAG(lag):
-			for (t in g.source){ 
+			for (t in g.source){
 				if (t == null) continue;
 				switch(t.command) {
-				case WAIT(d): 	
+				case WAIT(d):
 					delay += d;
 				case TWEEN(o):
 					result.push(o);
-						
+
 					o._init();
 					o._delay 		+= delay;
 					o._totalTime 	+= delay;
-					
+
 					var totalTime = o._totalTime;
 					delay += (o._skip != null) ? o._skip : lag;
 					if (max < totalTime) max = totalTime;
 				}
 			}
 		}
-		for (t in result) { 
+		for (t in result) {
 			var diff 		= 	max - t._totalTime;
 			t._rest 		+= 	diff;
 			t._totalTime 	+= 	diff;
 		}
-		
+
 		_time 		= max;
 		g.tweens 	= result;
 		g.source  	= null;
-		
+
 		if (g.defaults != null) {
 			_groupDefaults = gd;
 			setDefaults(df);
