@@ -8,10 +8,10 @@ using tweenx909.ChainX;
 
 class Main extends Sprite {
 	static inline var CELL_SIZE = 20;
-	
+
 	public function new() {
 		super();
-		
+
 		//Draw background
 		graphics.lineStyle(1, 0xEEEEEE);
 		var end = CELL_SIZE * 20;
@@ -22,12 +22,12 @@ class Main extends Sprite {
 			graphics.moveTo(p, 0);
 			graphics.lineTo(p, end);
 		}
-		
+
 		//Make square
 		var square = new Square(CELL_SIZE * 2);
 		addChild(square);
 		square.y = CELL_SIZE * 5;
-		
+
 		//Tween!!
 		TweenX.serial([
 			TweenX.to(square).time(0.48).x(120),

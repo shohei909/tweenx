@@ -13,7 +13,7 @@ class Main extends Sprite {
 	public function new() {
 		super();
 		Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
-		
+
 		//Draw background
 		graphics.lineStyle(1, 0xEEEEEE);
 		var end = CELL_SIZE * 20;
@@ -24,14 +24,14 @@ class Main extends Sprite {
 			graphics.moveTo(p, 0);
 			graphics.lineTo(p, end);
 		}
-		
-		
+
+
 		//Tween!!
 		function draw(x:Float, size:Float) {
 			graphics.lineStyle(1, 0x335F73);
 			graphics.drawCircle(x, 200, size);
 		}
-		
+
 		TweenX.tweenFunc2(draw, 10, 10, 300, 100).time(0.5).ease(EaseX.quadIn);
 	}
 }

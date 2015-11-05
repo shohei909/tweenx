@@ -14,7 +14,7 @@ using tweenx909.ChainX;
 
 class TweenXPlayer extends Sprite {
 	public static inline var HEIGHT 	= 72;
-	
+
     var pauseBtn:BitmapButton;
     var playBtn:BitmapButton;
     var backBtn:BitmapButton;
@@ -24,17 +24,17 @@ class TweenXPlayer extends Sprite {
     var selected:Int;
     var tween:TweenX;
     static var margin = 4;
-    
+
     public function new(tween:TweenX, width:Float) {
         super();
 
         this.tween = tween;
-        
+
         //event
         addEventListener(Event.EXIT_FRAME, onFrame);
         tween.addEventListener(EventX.STOP, onStop);
         tween.addEventListener(EventX.PLAY, onPlay);
-        
+
         //background
         var backFill = Assets.getBitmapData("assets/img/bar.png");
         var fill = new Shape();
@@ -42,7 +42,7 @@ class TweenXPlayer extends Sprite {
         g.beginBitmapFill(backFill);
         g.drawRect(0, 0, width, TweenXPlayer.HEIGHT);
         addChild(fill);
-        
+
 		//mask
 		var m = new Shape();
         g = m.graphics;
@@ -50,7 +50,7 @@ class TweenXPlayer extends Sprite {
         g.drawRect(0, 0, width, TweenXPlayer.HEIGHT);
         addChild(m);
         mask = m;
-        
+
         //button
         btns = [];
         var bx = -64;
@@ -60,13 +60,13 @@ class TweenXPlayer extends Sprite {
         forwardBtn      = addButton(Assets.getBitmapData("assets/img/forward.png"), (bx += 64 + margin), forward);
         playBtn.visible = false;
         selected = 2;
-        
+
         //bar
         bx += 64 + margin * 2;
         addChild(bar = new ProgressBar(width - bx - margin, TweenXPlayer.HEIGHT, tween));
         bar.x = bx;
     }
-    
+
     function back() {
         if (tween.currentTime <= 0) return;
         tween.timeScale = -8;
@@ -88,13 +88,13 @@ class TweenXPlayer extends Sprite {
         tween.play();
         change(3);
     }
-    
+
     function change(num:Int) {
         if (selected == num) return;
         var count:Int = 0;
         var t = 0.1;
         var ease = EaseX.linear;
-		
+
         for (i in 0...btns.length) {
             var b = btns[i];
             if (i == num) {
@@ -113,7 +113,7 @@ class TweenXPlayer extends Sprite {
         }
         selected = num;
     }
-    
+
     function addButton(data, x, func) {
         var btn;
         addChild(btn = new BitmapButton(data, func));
@@ -122,22 +122,22 @@ class TweenXPlayer extends Sprite {
         btns.push(btn);
         return btn;
     }
-	
-    function onStop(e) { 
+
+    function onStop(e) {
 		change(1);
 	}
     function onPlay(e) {
-		if (tween.timeScale == 1) 		change(2); 
-		else if (tween.timeScale < 1) 	change(1); 
-		else							 	change(3); 
+		if (tween.timeScale == 1) 		change(2);
+		else if (tween.timeScale < 1) 	change(1);
+		else							 	change(3);
 	}
-    
+
     function onFrame(e) {
 		for (i in 0...btns.length)                btns[i].mouseEnabled  = (i != selected);
         if (tween.currentTime <= 0)                  backBtn.mouseEnabled 	= false;
         if (tween.currentTime >= tween.totalTime)    forwardBtn.mouseEnabled = playBtn.mouseEnabled = false;
         for (b in btns) b.draw();
-		
+
         bar.update(tween.currentTime / tween.totalTime);
     }
 }
@@ -145,28 +145,28 @@ class TweenXPlayer extends Sprite {
 private class BitmapButton extends Sprite {
     var texture:Shape;
     var onClick:Void->Void;
-	
+
     public function new(data:BitmapData, onClick:Void->Void) {
         super();
 
         texture = new Shape();
         addChild(texture);
         draw();
-        
+
         addChild(new Bitmap(data));
-        
+
 		this.onClick = onClick;
         addEventListener(MouseEvent.MOUSE_DOWN, f);
     }
-    
+
 	public function f(e) {
-		onClick(); 
+		onClick();
 	}
-	
+
     public function draw() {
         var g = texture.graphics;
         g.clear();
-        
+
         if (mouseEnabled){
             var backFill = Assets.getBitmapData("assets/img/bar.png");
             g.lineStyle(1, 0x444444, 0.8);
@@ -183,32 +183,32 @@ private class BitmapButton extends Sprite {
 
 private class ProgressBar extends Sprite {
     static var thumbWidth:Float     = 40;
-    
+
     var right:Float;
     var left:Float;
     var length:Float;
-    
+
     var bar:Sprite;
     var thumb:Thumb;
     var tween:TweenX;
     var w:Float;
     var time:Float;
-    
+
     public function new(w:Float, h:Float, tween:TweenX) {
         super();
-		
+
         this.w = w;
         this.tween = tween;
         var thick = 11;
         bar = new Sprite();
         addChild(bar);
-        
+
         var g = bar.graphics;
         g.lineStyle(1, 0x444444, 0.8);
         g.beginFill(0xFFFFFF);
         g.drawRoundRect(right = (thumbWidth / 2), (h - thick) / 2, length = (w - thumbWidth), thick, 10, 10);
         left = length + right;
-        
+
 		bar.addEventListener(MouseEvent.MOUSE_DOWN, onClick);
         addChild(thumb = new Thumb(thumbWidth));
         thumb.y = h / 2;
@@ -217,52 +217,52 @@ private class ProgressBar extends Sprite {
         thumb.addEventListener(MouseEvent.MOUSE_DOWN, onThumbDown);
         update(0);
     }
-    
-    
+
+
     public function update(t:Float) {
         if (thumbDown) return;
         time = t;
         thumb.x = right + length * t;
     }
-    
+
     function addedToStage(e) {
         stage.addEventListener(MouseEvent.MOUSE_UP, onThumbUp);
         stage.addEventListener(MouseEvent.MOUSE_MOVE, onThumbMove);
     }
-    
+
     function removedFromStage(e) {
         stage.removeEventListener(MouseEvent.MOUSE_UP, onThumbUp);
         stage.removeEventListener(MouseEvent.MOUSE_MOVE, onThumbMove);
     }
-    
+
     function onClick(e) {
 		tween.goto(tween.totalTime * (mouseX - right) / length);
     }
-    
+
     var thumbDown:Bool;
     var startPos:Float;
     var playing:Bool;
     function onThumbUp(e) {
         if (! thumbDown) return;
         var x = mouseX + startPos;
-        tween.goto(tween.totalTime * ((x - right) / length), playing); 
+        tween.goto(tween.totalTime * ((x - right) / length), playing);
         thumbDown = false;
     }
-    
-	function onThumbDown(e) { 
+
+	function onThumbDown(e) {
         thumbDown = true;
         playing = tween.playing;
         tween.stop();
         startPos = thumb.x - mouseX;
     }
-	
-    function onThumbMove(e) { 
+
+    function onThumbMove(e) {
         if (! thumbDown) return;
         var x = mouseX + startPos;
         if (x < right) x = right;
         if (x > left) x = left;
         thumb.x = x;
-        tween.goto(tween.totalTime * ((x - right) / length)); 
+        tween.goto(tween.totalTime * ((x - right) / length));
      }
 }
 

@@ -10,7 +10,7 @@ class Main extends Sprite {
 	static inline var CELL_SIZE = 20;
 	public function new() {
 		super();
-		
+
 		//Draw background
 		graphics.lineStyle(1, 0xEEEEEE);
 		var end = CELL_SIZE * 20;
@@ -21,12 +21,12 @@ class Main extends Sprite {
 			graphics.moveTo(p, 0);
 			graphics.lineTo(p, end);
 		}
-		
+
 		//Make square
 		var square = new Square(CELL_SIZE * 2);
 		addChild(square);
 		square.y = CELL_SIZE * 8;
-		
+
 		var tween = TweenX.to(square)
 							.x(360)
 							.ease(EaseX.bounceOut)
@@ -35,7 +35,7 @@ class Main extends Sprite {
 							.time(1.5)
 							.zigzag()
 							.interval(0.5);
-			
+
 		var player = new TweenXPlayer(tween, 401);
 		player.y = 401 - TweenXPlayer.HEIGHT;
 		addChild(player);

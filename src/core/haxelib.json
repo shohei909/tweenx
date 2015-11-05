@@ -1,0 +1,11 @@
+{
+  "name": "tweenxcore",
+  "url" : "https://github.com/shohei909/tweenx",
+  "license": "MIT",
+  "tags": ["flash", "cpp", "js", "neko", "tween"],
+  "description": "crossplatform tween utility",
+  "version": "1.0.0",
+  "releasenote": "major version release",
+  "contributors": ["shohei909"],
+  "dependencies": {}
+}

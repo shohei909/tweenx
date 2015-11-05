@@ -14,15 +14,15 @@ using tweenx909.ChainX;
 
 class Main extends Sprite {
 	public static inline var CELL_SIZE = 20;
-	
+
 	public function new() {
 		super();
 		Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
-		
-		
+
+
 		TweenX.updateMode = UpdateModeX.MANUAL;
 		addEventListener(Event.EXIT_FRAME, onFrame);
-		
+
 		var eases:Array<Array<Array<Dynamic>>> = [
 			[
 				[ "linear", EaseX.linear ],
@@ -94,7 +94,7 @@ class Main extends Sprite {
 				[ "warpOutIn", 		EaseX.warpOutIn ],
 			],
 		];
-		
+
 		var y = CELL_SIZE, i = 0, sx =  CELL_SIZE * 0.5;
 		var ts = [];
 		for (arr in eases) {
@@ -104,17 +104,17 @@ class Main extends Sprite {
 				addChild(chart);
 				chart.x = x;
 				chart.y = y;
-				
+
 				var t = TweenX.parallel([
 					TweenX.to(chart, { "ny": CELL_SIZE * 3 }).ease(e[1]),
 					TweenX.to(chart, { "nx": CELL_SIZE * 4 })
 				]).onUpdate(chart.update);
-				
+
 				ts.push(t);
-				
+
 				x += CELL_SIZE * 4.5;
 			}
-			
+
 			if (++i % 6 == 0) {
 				y 	= CELL_SIZE;
 				sx  = CELL_SIZE * ((4.5 * 4 + 1) * (i / 6) + 0.5);
@@ -122,12 +122,12 @@ class Main extends Sprite {
 				y += CELL_SIZE * 4;
 			}
 		}
-		
+
 		TweenX.lag(ts, 0.06).ease(EaseX.cubicInOut);
 		TweenX.updateMode = UpdateModeX.MANUAL;
 		addEventListener(Event.EXIT_FRAME, onFrame);
 	}
-	
+
 	function onFrame(e) {
 		for(i in 0...16) TweenX.manualUpdate(1 / 60 / 16);
 	}
@@ -138,14 +138,14 @@ private class Chart extends Sprite {
 	public var py:Float = 0;
 	public var nx:Float = 0;
 	public var ny:Float = 0;
-	public static inline var H:Float = Main.CELL_SIZE * 3;  
-	public static inline var W:Float = Main.CELL_SIZE * 4;  
-	
+	public static inline var H:Float = Main.CELL_SIZE * 3;
+	public static inline var W:Float = Main.CELL_SIZE * 4;
+
 	public function new(title:String = "ease") {
 		super();
-		
+
 		graphics.lineStyle(1, 0xEEEEEE);
-		
+
 		var end;
 		end = Main.CELL_SIZE * 4;
 		for (i in 0...4) {
@@ -153,16 +153,16 @@ private class Chart extends Sprite {
 			graphics.moveTo(0, p);
 			graphics.lineTo(end, p);
 		}
-		
+
 		end = Main.CELL_SIZE * 3;
 		for (i in 0...5) {
 			var p = i * Main.CELL_SIZE;
 			graphics.moveTo(p, 0);
 			graphics.lineTo(p, end);
 		}
-		
+
 		graphics.lineStyle(1, 0x335F73);
-		
+
 		var tf = new TextField();
 		tf.defaultTextFormat = new TextFormat("_sans", 11, 0x666666);
 		tf.text 	= title + " ";
@@ -171,7 +171,7 @@ private class Chart extends Sprite {
 		tf.y 		= 4 - tf.height;
 		addChild(tf);
 	}
-	
+
 	public function update() {
 		graphics.moveTo(px, H - py);
 		graphics.lineTo(px = nx, H - (py = ny));

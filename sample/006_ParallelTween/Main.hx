@@ -12,8 +12,8 @@ class Main extends Sprite {
 	public function new() {
 		super();
 		Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
-		
-		
+
+
 		//Draw background
 		graphics.lineStyle(1, 0xEEEEEE);
 		var end = CELL_SIZE * 20;
@@ -24,20 +24,20 @@ class Main extends Sprite {
 			graphics.moveTo(p, 0);
 			graphics.lineTo(p, end);
 		}
-		
+
 		//Make square
 		var square1 = new Square(CELL_SIZE * 2);
 		var square2 = new Square(CELL_SIZE * 2);
 		var square3 = new Square(CELL_SIZE * 2);
-		
+
 		addChild(square1);
 		addChild(square2);
 		addChild(square3);
-		
+
 		square1.y = CELL_SIZE * 5;
 		square2.y = CELL_SIZE * 9;
 		square3.y = CELL_SIZE * 13;
-		
+
 		//Tween!!
 		TweenX.parallel([
 			TweenX.to(square1).x(360).ease(EaseX.expoOut),

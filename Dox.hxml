@@ -1,9 +1,10 @@
--cp tweenx
+-cp src/tweenx
+-cp src/core
 -D doc-gen
 --macro include('tweenx909')
 --macro include('tweenxcore')
 --no-output
--xml doc/xml/flash.xml
+-xml website/api/xml/flash.xml
 -swf dummy.swf
 
 --next

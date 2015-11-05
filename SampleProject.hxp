@@ -40,9 +40,10 @@ class SampleProject extends HXProject
 		sources.push("sample/" + samplePrefix + "_" + sampleName);
 		trace(samplePrefix + "_" + sampleName);
 
+		sources.push("src/tweenx");
+		sources.push("src/core");
+
 		haxelibs.push(new Haxelib("openfl"));
-		haxelibs.push(new Haxelib("tweenx"));
-		haxelibs.push(new Haxelib("tweenxcore"));
 
 		var dir = "sample/" + samplePrefix + "_" + sampleName + "/assets";
 		if (FileSystem.exists(dir) && FileSystem.isDirectory(dir)) {

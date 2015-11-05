@@ -11,7 +11,7 @@ class Main extends Sprite {
 	static inline var CELL_SIZE = 20;
 	public function new() {
 		super();
-		
+
 		//Draw background
 		graphics.lineStyle(1, 0xEEEEEE);
 		var end = CELL_SIZE * 20;
@@ -22,17 +22,17 @@ class Main extends Sprite {
 			graphics.moveTo(p, 0);
 			graphics.lineTo(p, end);
 		}
-		
+
 		//Make square
 		var square = new Square(CELL_SIZE * 2);
 		addChild(square);
 		square.y = CELL_SIZE * 9;
-		
+
 		//Tween!!
 		TweenX.from(square, { x:180, y:180 });
-		TweenX.to(square, { 
-							x:new QuakeRuleX(180, 80, EaseX.linear), 
-							y:new QuakeRuleX(180, 80, EaseX.linear) 
+		TweenX.to(square, {
+							x:new QuakeRuleX(180, 80, EaseX.linear),
+							y:new QuakeRuleX(180, 80, EaseX.linear)
 						}).time(2);
 	}
 }

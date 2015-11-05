@@ -15,7 +15,7 @@ class Main extends Sprite {
 	public function new() {
 		super();
 		Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
-		
+
 		//Draw background
 		graphics.lineStyle(1, 0xEEEEEE);
 		var end = CELL_SIZE * 20;
@@ -26,17 +26,17 @@ class Main extends Sprite {
 			graphics.moveTo(p, 0);
 			graphics.lineTo(p, end);
 		}
-		
+
 		//Make square
 		var walk0 = Assets.getBitmapData("assets/walk0.png");
 		var walk1 = Assets.getBitmapData("assets/walk1.png");
 		var walk2 = Assets.getBitmapData("assets/walk2.png");
-		
+
 		var bitmap = new Bitmap();
 		addChild(bitmap);
 		bitmap.y = CELL_SIZE * 9 + 7;
 		bitmap.x = CELL_SIZE * 9 + 7;
-		
+
 		//Tween!!
 	TweenX.to(bitmap, {bitmapData: new TimelineRuleX([walk0,walk1,walk2,walk1])}).time(1).repeat(0);
 	}

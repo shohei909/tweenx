@@ -14,7 +14,7 @@ class Main extends Sprite {
 	public function new() {
 		super();
 		Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
-		
+
 		//Draw background
 		graphics.lineStyle(1, 0xEEEEEE);
 		var end = CELL_SIZE * 20;
@@ -25,13 +25,13 @@ class Main extends Sprite {
 			graphics.moveTo(p, 0);
 			graphics.lineTo(p, end);
 		}
-		
+
 		//Make square
 		var square = new Square(CELL_SIZE * 2);
 		addChild(square);
 		square.y = CELL_SIZE * 9;
-		
-		
+
+
 		//以下の各動作設定のデフォルト値です
 		TweenX.defaultTime		= 0.3;
 		TweenX.defaultEase		= EaseX.linear;
@@ -41,19 +41,19 @@ class Main extends Sprite {
 		TweenX.defaultYoyo 		= false;
 		TweenX.defaultZigZag 	= false;
 		TweenX.defaultAutoPlay 	= true; //トゥイーンの自動開始
-		
+
 		//現在のデフォルトを取得
 		var defaults:DefaultsX = TweenX.dumpDefaults();
-		
+
 		//ダンプしたデフォルトの値を変更する
 		defaults.ease(EaseX.bounceOut).time(1);
-		
+
 		//デフォルトを変更
 		TweenX.setDefaults(defaults);
-		
+
 		//デフォルト値の初期化
 		TweenX.initDefaults();
-		
+
 		//グループ化したトゥイーンの内部にデフォルト値を適用する。
 		TweenX.serial([
 			TweenX.to(square).x(360),
