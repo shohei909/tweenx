@@ -4,9 +4,9 @@ import sys.io.Process;
 
 class BuildConfig {
 
-	public static function sampleName(num:Int) {
-		for (file in FileSystem.readDirectory("sample")) {
-			if (FileSystem.isDirectory("sample/" + file)) {
+	public static function sampleName(dir:String, num:Int) {
+		for (file in FileSystem.readDirectory("sample/" + dir)) {
+			if (FileSystem.isDirectory("sample/" + dir + "/" + file)) {
 				var segs = file.split("_");
 				if (segs.length == 2 && Std.parseInt(segs[0]) == num) {
 					return segs[1];
@@ -32,33 +32,32 @@ class BuildConfig {
 			windows[num];
 		} else {
 			{
-				width : 401,
-				height : 401,
+				width : 451,
+				height : 151,
 			}
 		}
 	}
 
 	public static function buildAll() {
-		var keys = [];
+        // TweenX
+        for (dir in FileSystem.readDirectory("sample")) {
+            var keys = [];
 
-		for (file in FileSystem.readDirectory("sample")) {
-			if (FileSystem.isDirectory("sample/" + file)) {
-				var segs = file.split("_");
-				if (segs.length == 2 && Std.parseInt(segs[0]) != null) {
-					keys.push(Std.parseInt(segs[0]));
-				}
-			}
-		}
+            for (file in FileSystem.readDirectory("sample/" + dir)) {
+                if (FileSystem.isDirectory("sample/" + dir + "/" + file)) {
+                    var segs = file.split("_");
+                    if (segs.length == 2 && Std.parseInt(segs[0]) != null) {
+                        keys.push(Std.parseInt(segs[0]));
+                    }
+                }
+            }
 
-		keys.sort(function (a, b) return a - b);
+            keys.sort(function (a, b) return a - b);
 
-        var server = new Process("haxe", ["--wait", "6000"]);
-
-		for (key in keys) {
-			Sys.command("haxelib", ["run", "lime", "build", "SampleProject.hxp", "flash", "-release", "-sample-" + key]);
-		}
-
-        server.kill();
+            for (key in keys) {
+                Sys.command("haxelib", ["run", "lime", "build", "SampleProject.hxp", "flash", "--time", "-release", "-sample-" + dir + "-" + key, ""]);
+            }
+        }
 	}
 }
 

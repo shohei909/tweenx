@@ -1,5 +1,8 @@
 package tweenx909;
+import tweenxcore.tools.Easing;
+
 /**
  * for backward compatibility
  */
-typedef EaseX = tweenxcore.easing.Easing;
+@:noCompletion
+typedef EaseX = Easing;

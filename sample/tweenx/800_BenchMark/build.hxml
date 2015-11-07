@@ -1,0 +1,69 @@
+-swf bin/ActuateBench.swf
+-cp src
+-lib actuate
+-swf-header 465:465:60:FFFFFF
+-main ActuateBench
+-D analyzer
+-dce full
+
+--next
+
+-swf bin/TweensyBench.swf
+-cp src
+-swf-lib lib/TweensyOriginalCS4.swc
+-swf-header 465:465:60:FFFFFF
+-main TweensyBench
+-D analyzer
+-dce full
+
+--next
+
+-swf bin/BetweenAS3Bench.swf
+-cp src
+-swf-lib lib/BetweenAS3.swc
+-swf-header 465:465:60:FFFFFF
+-main BetweenAS3Bench
+-D analyzer
+-dce full
+
+--next
+
+-swf bin/TweenerBench.swf
+-cp src
+-swf-lib lib/tweener.swc
+-swf-header 465:465:60:FFFFFF
+-main TweenerBench
+-D analyzer
+-dce full
+
+--next
+
+-swf bin/TweenXBench.swf
+-cp src
+-cp ../../../src/tweenx
+-cp ../../../src/tweenxcore
+-swf-header 465:465:60:FFFFFF
+-main TweenXBench
+-D analyzer
+-dce full
+
+--next
+
+-swf bin/TweenXCoreBench.swf
+-cp src
+-cp ../../../src/tweenxcore
+-swf-header 465:465:60:FFFFFF
+-main TweenXCoreBench
+-D analyzer
+-dce full
+
+
+--next
+
+-js bin/TweenXCoreBench.js
+-cp src
+-cp ../../../src/tweenxcore
+-swf-header 465:465:60:FFFFFF
+-main Test
+-D analyzer
+-dce full

@@ -1,5 +1,5 @@
 -cp src/tweenx
--cp src/core
+-cp src/tweenxcore
 -D doc-gen
 --macro include('tweenx909')
 --macro include('tweenxcore')

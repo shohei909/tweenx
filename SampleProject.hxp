@@ -3,24 +3,27 @@ import sys.FileSystem;
 
 class SampleProject extends HXProject
 {
-    var defaultSampleNum = 20;
+    var defaultSampleNum = 302;
+    var defaultDir = "tweenxcore";
 
 	function new()
 	{
 		super();
 
 		var sampleNum = defaultSampleNum;
+        var dir = defaultDir;
 
 		for (key in targetFlags.keys()) {
 			var segs = key.split("-");
-			if (segs.length == 2 && segs[0] == "sample") {
-				sampleNum = Std.parseInt(segs[1]);
+			if (segs.length == 3 && segs[0] == "sample") {
+				dir = segs[1];
+				sampleNum = Std.parseInt(segs[2]);
 				break;
 			}
 		}
 
 		var samplePrefix = ("000" + sampleNum).substr(-3);
-		var sampleName = BuildConfig.sampleName(sampleNum);
+		var sampleName = BuildConfig.sampleName(dir, sampleNum);
 		var size = BuildConfig.sampleWindowSize(sampleNum);
 
 		window.width = size.width;
@@ -28,7 +31,7 @@ class SampleProject extends HXProject
 		window.background = 0xFFFFFF;
 		window.fps = 60;
 
-		app.path = "bin";
+		app.path = "bin/" + dir;
 		app.main = "Main";
 		app.file = sampleName;
 
@@ -37,22 +40,17 @@ class SampleProject extends HXProject
 		meta.company = "shohei909";
 		meta.version = "1.0.0";
 
-		sources.push("sample/" + samplePrefix + "_" + sampleName);
-		trace(samplePrefix + "_" + sampleName);
+		sources.push("sample/" + dir + "/" + samplePrefix + "_" + sampleName);
 
 		sources.push("src/tweenx");
-		sources.push("src/core");
+		sources.push("src/tweenxcore");
+		sources.push("sample/common");
 
 		haxelibs.push(new Haxelib("openfl"));
 
-		var dir = "sample/" + samplePrefix + "_" + sampleName + "/assets";
-		if (FileSystem.exists(dir) && FileSystem.isDirectory(dir)) {
-			includeAssets(dir, "assets");
+		var assetsDir = "sample/" + samplePrefix + "_" + sampleName + "/assets";
+		if (FileSystem.exists(assetsDir) && FileSystem.isDirectory(assetsDir)) {
+			includeAssets(assetsDir, "assets");
 		}
-
-        haxeflags.push("--connect");
-        haxeflags.push("6000");
-
-        haxeflags.push("--times");
 	}
 }

@@ -1,7 +1,7 @@
 package tweenx909.rule;
 import tweenx909.TweenX;
 
-class ArrayRuleX{
+class ArrayRuleX {
 	public static var inputClass(default,null):Dynamic = Array;
 	public static function calc(_from:Iterable<Dynamic>, _to:Iterable<Dynamic>, t1:Float, t2:Float, tween:TweenX):Iterable<Dynamic> {
 		var fi 	= _from.iterator();
