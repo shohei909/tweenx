@@ -3,14 +3,14 @@ using tweenxcore.tools.Tools;
 
 class EasingTools {
 
-    public static function linearBlend(
+    public static function linearCrossfade(
         easing1:Float->Float,
         easing2:Float->Float,
         startOfEasing1Strength:Float,
         endOfEasing1Strength:Float
     ):Float->Float
     {
-        return blend(
+        return crossfade(
             easing1,
             easing2,
             function (time:Float) {
@@ -19,7 +19,7 @@ class EasingTools {
         );
     }
 
-    public static function blend(
+    public static function crossfade(
         easing1:Float->Float,
         easing2:Float->Float,
         functionForEasing1Strength:Float->Float

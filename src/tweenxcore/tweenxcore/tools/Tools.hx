@@ -13,4 +13,5 @@ typedef TFloatTools = FloatTools;
 typedef TOptionTools = OptionTools;
 @:noCompletion
 typedef TFunctionTools = FunctionTools;
-
+@:noCompletion
+typedef TMatrixTools = MatrixTools;

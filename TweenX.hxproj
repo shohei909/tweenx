@@ -17,7 +17,7 @@
   <classpaths>
     <class path="C:\HaxeToolkit\haxe\lib\openfl\3,3,0" />
     <class path="C:\HaxeToolkit\haxe\lib\lime\2,5,3" />
-    <class path="sample\tweenxcore\302_Easing" />
+    <class path="sample\tweenxcore\301_SimplestTween" />
     <class path="src\tweenx" />
     <class path="src\tweenxcore" />
     <class path="sample\common" />

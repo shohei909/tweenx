@@ -35,23 +35,23 @@ class FloatChange {
         return new FloatChange(func(previous), func(current));
     }
 
-    public inline function part(from:Float, to:Float):Option<FloatChangePart>
+    public inline function part(from:Float, to:Float, updatePart:FloatChangePart->Void):Void
     {
-        return if (from < to) {
+        if (from < to) {
             _part(
                 previous,
                 current,
                 from,
-                to
+                to,
+                updatePart
             );
-        } else if (from == to) {
-            None;
-        } else {
+        } else if (from > to) {
             _part(
                 -previous,
                 -current,
                 -from,
-                -to
+                -to,
+                updatePart
             );
         }
     }
@@ -60,17 +60,16 @@ class FloatChange {
         previous:Float,
         current:Float,
         from:Float,
-        to:Float)
+        to:Float,
+        updatePart:FloatChangePart->Void)
     {
-        return if ((from < previous && previous < to) || (from < current && current < to)) {
-            Option.Some(
+        if ((from < previous && previous < to) || (from < current && current < to)) {
+            updatePart(
                 new FloatChangePart(
                     previous.inverseLerp(from, to).clamp(),
                     current.inverseLerp(from, to).clamp()
                 )
             );
-        } else {
-            None;
         }
     }
 }

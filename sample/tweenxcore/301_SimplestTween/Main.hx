@@ -15,17 +15,18 @@ class SampleSprite extends GridSprite {
 	public function new() {
 		super();
         addChild(square = new Square(0, GridSprite.CELL_SIZE * 4));
-
-        //Event
         addEventListener(Event.ENTER_FRAME, onFrame);
     }
 
+    // フレームごとに実行される。
     function onFrame(e:Event) {
-        var change = new FloatChange(frame, frame += 1);
-        change.part(0, 20).ifSome(updateSquare);
+        var change = new FloatChange(frame, frame + 1);
+        change.part(0, 20, updateSquare);
+        frame++;
 	}
 
-    function updateSquare(change:FloatChangePart) {
+    // 四角の位置を更新する。
+    function updateSquare(change:FloatChange) {
         square.x = change.current.lerp(0, 420);
     }
 }

@@ -3,9 +3,6 @@ import tweenxcore.structure.Direction;
 
 class FloatTools
 {
-    public static inline var START:Float = 0.0;
-    public static inline var END:Float = 1.0;
-
 	public static inline function revert(rate:Float):Float
 	{
 		return 1 - rate;
@@ -26,18 +23,11 @@ class FloatTools
 		return (value - from) / (to - from);
 	}
 
-    /*
 	public static inline function repeat(value:Float, from:Float = 0.0, to:Float = 1.0):Float
 	{
 		var p = inverseLerp(value, from, to);
 		return p - Math.floor(p);
 	}
-
-    public static inline function repeatCount(value:Float, from:Float = 0.0, to:Float = 1.0):Int
-	{
-		return Math.floor(inverseLerp(value, from, to));
-	}
-    */
 
 	public static inline function yoyo(rate:Float, easing:Float->Float):Float
 	{
@@ -62,9 +52,10 @@ class FloatTools
 		return Math.cos(rate * 2 * Math.PI);
 	}
 
-    public static inline function isBetween(rate:Float, from:Float, to:Float):Bool {
-        return from <= rate || rate <= to;
-    }
+
+    // =================================================
+    // Float Array
+    // =================================================
 
 	public static inline function binarySearch(sortedValues:Array<Float>, value:Float):Int
 	{
@@ -90,20 +81,20 @@ class FloatTools
 
 
     // =================================================
-    // Bezier Curve
+    // Bernstein Polynomial
     // =================================================
 
-	public static inline function bezier2(rate:Float, from:Float, control:Float, to:Float):Float
+	public static inline function bernstein2(rate:Float, from:Float, control:Float, to:Float):Float
 	{
 		return lerp(rate, lerp(rate, from, control), lerp(rate, control, to));
 	}
 
-	public static inline function bezier3(rate:Float, from:Float, control1:Float, control2:Float, to:Float):Float
+	public static inline function bernstein3(rate:Float, from:Float, control1:Float, control2:Float, to:Float):Float
 	{
 		return bezier2(rate, lerp(rate, from, control1), lerp(rate, control1, control2), lerp(rate, control2, to));
 	}
 
-	public static inline function bezier(rate:Float, points:Array<Float>):Float
+	public static inline function bernstein(rate:Float, points:Array<Float>):Float
 	{
 		if (points.length < 2) {
 			throw "points length must be more than 2";
@@ -116,7 +107,7 @@ class FloatTools
 		return _bezier(rate, points);
 	}
 
-	static function _bezier(rate:Float, points:Array<Float>)
+	static function _bernstein(rate:Float, points:Array<Float>)
 	{
 		if (points.length == 4) {
 			return bezier3(rate, points[0], points[1], points[2], points[3]);
@@ -124,6 +115,8 @@ class FloatTools
 
 		return _bezier(rate, [for (i in 0...points.length - 1) lerp(rate, points[i], points[i + 1])]);
 	}
+
+
 
     // =================================================
     // Converter

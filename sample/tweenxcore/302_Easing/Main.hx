@@ -25,7 +25,7 @@ class SampleSprite extends GridSprite {
 
     function onFrame(e:Event) {
         var change = new FloatChange(frame, frame += 1);
-        change.part(0, 20).ifSome(updateSquare);
+        change.part(0, 20, updateSquare);
 	}
 
     function updateSquare(change:FloatChangePart) {

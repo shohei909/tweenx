@@ -3,7 +3,7 @@ import sys.FileSystem;
 
 class SampleProject extends HXProject
 {
-    var defaultSampleNum = 302;
+    var defaultSampleNum = 301;
     var defaultDir = "tweenxcore";
 
 	function new()
