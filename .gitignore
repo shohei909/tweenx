@@ -1,4 +1,6 @@
-obj
-bin
-archive
-website/api/doc/xml
+/obj/*
+/archive/*
+**/bin/**/*.*
+/website/api/doc/xml/*
+
+!**/bin/**/*.swf
