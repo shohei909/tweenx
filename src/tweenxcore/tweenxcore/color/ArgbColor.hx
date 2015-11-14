@@ -1,11 +1,6 @@
 package tweenxcore.color;
-import tweenxcore.tools.FloatTools;
-import tweenxcore.tools.FloatTools.*;
+using tweenxcore.Tools;
 
-/**
- * ...
- * @author shohei909
- */
 class ArgbColor extends RgbColor
 {
 	public var a:Float;
@@ -15,11 +10,11 @@ class ArgbColor extends RgbColor
 		super(red, green, blue);
 	}
 
-	public static function argbToInt(a:Float, r:Float, g:Float, b:Float):Int {
-		return (Std.int(clamp(a) * 0xFF) << 24) | RgbColor.rgbToInt(r, g, b);
+	public static inline function argbToInt(a:Float, r:Float, g:Float, b:Float):Int {
+		return (Std.int(a.clamp() * 0xFF) << 24) | RgbColor.rgbToInt(r, g, b);
 	}
 
-	public static function of(color:Int) {
+	public static inline function of(color:Int) {
         return new ArgbColor(
             ((color >>> 24) & 0xFF) / 0xFF,
             ((color >> 16) & 0xFF) / 0xFF,
@@ -28,11 +23,11 @@ class ArgbColor extends RgbColor
         );
     }
 
-	public static function fromAhsv(a:Float, h:Float, s:Float, v:Float, hueIndex:Int = 0) {
+	public static inline function fromAhsv(a:Float, h:Float, s:Float, v:Float, hueIndex:Int = 0) {
 		return RgbColor.fromHsv(h, s, v).toArgb(a);
 	}
 
-	public function toAhsv():AhsvColor {
+	public inline function toAhsv():AhsvColor {
 		return AhsvColor.fromArgb(a, r, g, b);
 	}
 }

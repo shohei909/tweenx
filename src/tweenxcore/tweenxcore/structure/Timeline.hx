@@ -1,5 +1,5 @@
 package tweenxcore.structure;
-using tweenxcore.tools.FloatTools;
+using tweenxcore.Tools;
 
 /**
  * TODO: Implement
@@ -7,22 +7,69 @@ using tweenxcore.tools.FloatTools;
 class Timeline<T>
 {
     var totalWeight:Float;
-    var data:Array<Float>;
-    var weightData:Array<Float>;
+    var dataArray:Array<T>;
+    var weightArray:Array<Float>;
+    public var length(get, null):Int;
 
-    public function new(firstData:T, weight:Float)
+    function get_length():Int
     {
-        if (weight <= 0)
-        {
-            throw "weight must be positive number";
-        }
-        data = [firstData];
-        weightData = [];
-        totalWeight = weight;
+        return dataArray.length;
     }
 
-    public function get(rate:Float):T
+    public inline function new()
     {
-        return data[weightData.binarySearch(rate * totalWeight)];
+        this.dataArray = [];
+        this.weightArray = [];
+        totalWeight = 0;
+    }
+
+    public inline function add(data:T, weight:Float = 1.0):Timeline<T>
+    {
+        if (weight <= 0) {
+            throw "weight must be positive number";
+        }
+        if (dataArray.length == 0) {
+            totalWeight = weight;
+        } else {
+            weightArray.push(totalWeight);
+            totalWeight += weight;
+        }
+        dataArray.push(data);
+        return this;
+    }
+
+    public inline function searchByRate(rate:Float, boundaryMode:BoundaryMode = BoundaryMode.Left):TimelineSeachResult<T>
+    {
+        if (dataArray.length == 0) {
+            throw "timeline is not initialized";
+        }
+
+        var searchResult = weightArray.binarySearch(rate * totalWeight, boundaryMode);
+        var baseWeight = if (searchResult == 0) {
+            0;
+        } else {
+            weightArray[searchResult - 1] / totalWeight;
+        }
+
+        var nextWeight = if (searchResult == dataArray.length - 1) {
+            1;
+        } else {
+            weightArray[searchResult] / totalWeight;
+        }
+
+        return new TimelineSeachResult(
+            dataArray[searchResult],
+            searchResult,
+            baseWeight,
+            nextWeight
+        );
+    }
+
+    public inline function dataAt(index:Int):T
+    {
+        if (dataArray.length == 0) {
+            throw "timeline is not initialized";
+        }
+        return dataArray[index];
     }
 }

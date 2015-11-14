@@ -1,12 +1,6 @@
 package tweenxcore.color;
-import tweenxcore.tools.FloatTools;
 import tweenx909.TweenX;
-import tweenxcore.tools.FloatTools.*;
-
-/**
- * ...
- * @author shohei909
- */
+using tweenxcore.Tools;
 
 class HsvColor {
 	public var h:Float;
@@ -23,8 +17,8 @@ class HsvColor {
 		h = (h - Math.floor(h)) * 6;
 		var hi = Math.floor(h);
 
-		s = clamp(s);
-		v = clamp(v);
+		s = s.clamp();
+		v = v.clamp();
 
 		var m = v * (1 - s);
 		var f = h - hi;
@@ -42,7 +36,7 @@ class HsvColor {
 		return (Std.int(r * 0xFF) << 16) | (Std.int(g * 0xFF) << 8) | Std.int(b * 0xFF);
 	}
 
-	public static function of(color:Int, hueIndex:Int = 0) {
+	public static inline function of(color:Int, hueIndex:Int = 0) {
 		var r = ((color >> 16) & 0xFF) / 0xFF;
 		var g = ((color >> 8) & 0xFF) / 0xFF;
 		var b = (color & 0xFF) / 0xFF;
@@ -78,15 +72,15 @@ class HsvColor {
 		return new HsvColor(h + hueIndex, s, max);
 	}
 
-	public function toInt():Int {
+	public inline function toInt():Int {
 		return hsvToInt(h, s, v);
 	}
 
-	public function toRgb():RgbColor {
+	public inline function toRgb():RgbColor {
 		return RgbColor.fromHsv(h, s, v);
 	}
 
-	public function toAhsv(a:Float):AhsvColor {
+	public inline function toAhsv(a:Float):AhsvColor {
 		return new AhsvColor(a, h, s, v);
 	}
 }

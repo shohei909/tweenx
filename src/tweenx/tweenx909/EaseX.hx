@@ -1,5 +1,5 @@
 package tweenx909;
-import tweenxcore.tools.Easing;
+import tweenxcore.Tools.Easing;
 
 /**
  * for backward compatibility

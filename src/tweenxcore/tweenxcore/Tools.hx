@@ -1,4 +1,263 @@
-package tweenxcore.tools;
+package tweenxcore;
+import tweenxcore.geom.Matrix;
+import tweenxcore.geom.Point;
+import tweenxcore.structure.BoundaryMode;
+using tweenxcore.Tools;
+
+class FloatTools
+{
+	public static inline function clamp(value:Float, min:Float = 0.0, max:Float = 1.0):Float
+	{
+		return if (value <= min) min else if (max <= value) max else value;
+	}
+
+	public static inline function lerp(rate:Float, from:Float, to:Float):Float
+	{
+		return from * (1 - rate) + to * rate;
+	}
+
+	public static inline function inverseLerp(value:Float, from:Float, to:Float):Float
+	{
+		return (value - from) / (to - from);
+	}
+
+	public static inline function repeat(value:Float, from:Float = 0.0, to:Float = 1.0):Float
+	{
+		var p = inverseLerp(value, from, to);
+		return p - Math.floor(p);
+	}
+
+	public static inline function shake(rate:Float, center:Float = 0.0)
+	{
+		return center + rate * (1 - 2 * Math.random());
+	}
+
+	public static inline function sinByRate(rate:Float) {
+		return Math.sin(rate * 2 * Math.PI);
+	}
+
+	public static inline function cosByRate(rate:Float) {
+		return Math.cos(rate * 2 * Math.PI);
+	}
+
+
+
+    // =================================================
+    // Round Trip
+    // =================================================
+
+
+	public static inline function yoyo(rate:Float, easing:Float->Float):Float
+	{
+		return easing((if (rate < 0.5) rate else (1 - rate)) * 2);
+	}
+
+	public static inline function zigzag(rate:Float, easing:Float->Float):Float
+	{
+		return if (rate < 0.5) easing(rate * 2) else 1 - easing((rate - 0.5) * 2);
+	}
+
+
+    // =================================================
+    // Custom Easing
+    // =================================================
+
+    public static inline function mixEase(
+        rate:Float,
+        easing1:Float->Float,
+        easing2:Float->Float,
+        easing2Strength:Float):Float
+    {
+        return easing2Strength.lerp(
+            easing1(rate),
+            easing2(rate)
+        );
+    }
+
+    public static inline function crossEase(
+        rate:Float,
+        easing1:Float->Float,
+        easing2:Float->Float,
+        easing2StrengthEasing:Float->Float,
+        easing2StrengthStart:Float = 0,
+        easing2StrengthEnd:Float = 1):Float
+    {
+        return easing2StrengthEasing(rate).lerp(
+            easing2StrengthStart,
+            easing2StrengthEnd
+        ).lerp(
+            easing1(rate),
+            easing2(rate)
+        );
+    }
+
+    public static inline function oneTwoEase(
+        rate:Float,
+        switchRate:Float,
+        easingOne:Float->Float,
+        easingTwo:Float->Float):Float
+    {
+        return if (rate < switchRate) {
+            easingOne(rate);
+        } else {
+            easingTwo(rate);
+        }
+    }
+
+    public static inline function chainEase(
+        time:Float,
+        switchTime:Float,
+        switchValue:Float,
+        easing1:Float->Float,
+        easing2:Float->Float):Float
+    {
+        return if (time < switchTime) {
+            easing1(time).lerp(0, switchValue);
+        } else {
+            easing2(time).lerp(switchValue, 1);
+        }
+    }
+
+
+    // =================================================
+    // Float Array
+    // =================================================
+
+	public static inline function binarySearch(sortedValues:Array<Float>, value:Float, boundaryMode:BoundaryMode = BoundaryMode.Left):Int
+	{
+		var min = 0;
+		var max = sortedValues.length;
+		if (boundaryMode == BoundaryMode.Left) {
+            while (true) {
+                var next = Std.int((max - min) / 2) + min;
+                var dv = sortedValues[next];
+                if (dv <= value) {
+                    min = next + 1;
+                } else {
+                    max = next;
+                }
+                if (min == max) break;
+            }
+        } else {
+            while (true) {
+                var next = Std.int((max - min) / 2) + min;
+                var dv = sortedValues[next];
+                if (dv < value) {
+                    min = next + 1;
+                } else {
+                    max = next;
+                }
+                if (min == max) break;
+            }
+        }
+		return min;
+	}
+
+
+    // =================================================
+    // Bernstein Polynomial
+    // =================================================
+
+	public static inline function bezier2(rate:Float, from:Float, control:Float, to:Float):Float
+	{
+		return lerp(rate, lerp(rate, from, control), lerp(rate, control, to));
+	}
+
+	public static inline function bezier3(rate:Float, from:Float, control1:Float, control2:Float, to:Float):Float
+	{
+		return bezier2(rate, lerp(rate, from, control1), lerp(rate, control1, control2), lerp(rate, control2, to));
+	}
+
+	public static inline function bezier(rate:Float, values:Array<Float>):Float
+	{
+		return if (values.length < 2) {
+			throw "points length must be more than 2";
+		} else if (values.length == 2) {
+			lerp(rate, values[0], values[1]);
+		} else if (values.length == 3) {
+			bezier2(rate, values[0], values[1], values[2]);
+		} else {
+            _bezier(rate, values);
+        }
+	}
+
+	static function _bezier(rate:Float, values:Array<Float>)
+	{
+		if (values.length == 4) {
+			return bezier3(rate, values[0], values[1], values[2], values[3]);
+		}
+
+		return _bezier(rate, [for (i in 0...values.length - 1) lerp(rate, values[i], values[i + 1])]);
+	}
+
+
+    // =================================================
+    // Converter
+    // =================================================
+
+    public static inline function frameToSecond(frame:Float, fps:Float):Float {
+        return frame / fps;
+    }
+    public static inline function secondToFrame(second:Float, fps:Float):Float {
+        return second * fps;
+    }
+    public static inline function degreeToRate(degree:Float) {
+        return degree / 360;
+    }
+    public static inline function rateToDegree(rate:Float) {
+        return rate * 360;
+    }
+    public static inline function radianToRate(radian:Float) {
+        return radian / (2 * Math.PI);
+    }
+    public static inline function rateToRadian(rate:Float) {
+        return rate * 2 * Math.PI;
+    }
+}
+
+class PointTools {
+    @:generic
+    public static inline function bezier2<T:Point>(outputPoint:T, rate:Float, from:T, control:T, to:T):Void {
+        outputPoint.x = rate.bezier2(from.x, control.x, from.x);
+        outputPoint.y = rate.bezier2(from.y, control.y, from.y);
+    }
+
+    @:generic
+    public static inline function bezier3<T:Point>(outputPoint:T, rate:Float, from:T, control1:T, control2:T, to:T):Void {
+        outputPoint.x = rate.bezier3(from.x, control1.x, control2.x, from.x);
+        outputPoint.y = rate.bezier3(from.y, control1.y, control2.y, from.y);
+    }
+
+    @:generic
+    public static inline function bezier<T:Point>(outputPoint:T, rate:Float, points:Iterable<T>):Void {
+        var xs = [];
+        var ys = [];
+        for (p in points) {
+            xs.push(p.x);
+            ys.push(p.y);
+        }
+        outputPoint.x = rate.bezier(xs);
+        outputPoint.y = rate.bezier(ys);
+    }
+}
+
+
+class MatrixTools {
+    @:generic
+    public static inline function createSimilarityTransform<T:Matrix>(outputMatrix:T, fromX:Float, fromY:Float, toX:Float, toY:Float) {
+        var dx = toX - fromX;
+        var dy = toY - fromY;
+        var rot = Math.atan2(dy, dx);
+
+        outputMatrix.a = rot * Math.cos(rot);
+        outputMatrix.b = -rot * Math.sin(rot);
+        outputMatrix.c = rot * Math.sin(rot);
+        outputMatrix.d = rot * Math.cos(rot);
+        outputMatrix.tx = fromX;
+        outputMatrix.ty = fromY;
+    }
+}
+
 
 class Easing {
 	static inline var PI = 3.1415926535897932384626433832795;

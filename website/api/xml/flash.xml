@@ -7070,8 +7070,9 @@
 	<_getTarget set="method"><f a=""><c path="tweenx909._ChainX.IStandardTweenX.T"/></f></_getTarget>
 </a></typedef>
 	<typedef path="tweenx909.EaseX" params="" file="src/tweenx/tweenx909/EaseX.hx">
-		<c path="tweenxcore.easing.Easing"/>
+		<c path="tweenxcore.Easing"/>
 		<haxe_doc>* for backward compatibility</haxe_doc>
+		<meta><m n=":noCompletion"/></meta>
 	</typedef>
 	<class path="tweenx909.EventX" params="" file="src/tweenx/tweenx909/EventX.hx">
 		<PLAY public="1" get="inline" set="null" expr="&quot;play&quot;" line="9" static="1">
@@ -7127,204 +7128,204 @@
 </f></new>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
-	<class path="tweenxcore.easing.Easing" params="" file="src/core/tweenxcore/easing/Easing.hx">
-		<PI get="inline" set="null" expr="3.1415926535897932384626433832795" line="4" static="1">
+	<class path="tweenxcore.Easing" params="" file="src/tweenxcore/tweenxcore/Tools.hx" module="tweenxcore.Tools">
+		<PI get="inline" set="null" expr="3.1415926535897932384626433832795" line="233" static="1">
 			<x path="Float"/>
 			<meta><m n=":value"><e>3.1415926535897932384626433832795</e></m></meta>
 		</PI>
-		<PI_H get="inline" set="null" expr="PI/2" line="5" static="1">
+		<PI_H get="inline" set="null" expr="PI/2" line="234" static="1">
 			<x path="Float"/>
 			<meta><m n=":value"><e>PI/2</e></m></meta>
 		</PI_H>
-		<linear public="1" get="inline" set="null" line="10" static="1"><f a="t">
+		<linear public="1" get="inline" set="null" line="239" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></linear>
-		<sineIn public="1" get="inline" set="null" line="17" static="1"><f a="t">
+		<sineIn public="1" get="inline" set="null" line="246" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></sineIn>
-		<sineOut public="1" get="inline" set="null" line="26" static="1"><f a="t">
+		<sineOut public="1" get="inline" set="null" line="255" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></sineOut>
-		<sineInOut public="1" get="inline" set="null" line="35" static="1"><f a="t">
+		<sineInOut public="1" get="inline" set="null" line="264" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></sineInOut>
-		<sineOutIn public="1" get="inline" set="null" line="44" static="1"><f a="t">
+		<sineOutIn public="1" get="inline" set="null" line="273" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></sineOutIn>
-		<quadIn public="1" get="inline" set="null" line="60" static="1"><f a="t">
+		<quadIn public="1" get="inline" set="null" line="289" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quadIn>
-		<quadOut public="1" get="inline" set="null" line="63" static="1"><f a="t">
+		<quadOut public="1" get="inline" set="null" line="292" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quadOut>
-		<quadInOut public="1" get="inline" set="null" line="66" static="1"><f a="t">
+		<quadInOut public="1" get="inline" set="null" line="295" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quadInOut>
-		<quadOutIn public="1" get="inline" set="null" line="69" static="1"><f a="t">
+		<quadOutIn public="1" get="inline" set="null" line="298" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quadOutIn>
-		<cubicIn public="1" get="inline" set="null" line="77" static="1"><f a="t">
+		<cubicIn public="1" get="inline" set="null" line="306" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></cubicIn>
-		<cubicOut public="1" get="inline" set="null" line="80" static="1"><f a="t">
+		<cubicOut public="1" get="inline" set="null" line="309" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></cubicOut>
-		<cubicInOut public="1" get="inline" set="null" line="83" static="1"><f a="t">
+		<cubicInOut public="1" get="inline" set="null" line="312" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></cubicInOut>
-		<cubicOutIn public="1" get="inline" set="null" line="88" static="1"><f a="t">
+		<cubicOutIn public="1" get="inline" set="null" line="317" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></cubicOutIn>
-		<quartIn public="1" get="inline" set="null" line="96" static="1"><f a="t">
+		<quartIn public="1" get="inline" set="null" line="325" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quartIn>
-		<quartOut public="1" get="inline" set="null" line="99" static="1"><f a="t">
+		<quartOut public="1" get="inline" set="null" line="328" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quartOut>
-		<quartInOut public="1" get="inline" set="null" line="102" static="1"><f a="t">
+		<quartInOut public="1" get="inline" set="null" line="331" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quartInOut>
-		<quartOutIn public="1" get="inline" set="null" line="105" static="1"><f a="t">
+		<quartOutIn public="1" get="inline" set="null" line="334" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quartOutIn>
-		<quintIn public="1" get="inline" set="null" line="113" static="1"><f a="t">
+		<quintIn public="1" get="inline" set="null" line="342" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quintIn>
-		<quintOut public="1" get="inline" set="null" line="116" static="1"><f a="t">
+		<quintOut public="1" get="inline" set="null" line="345" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quintOut>
-		<quintInOut public="1" get="inline" set="null" line="119" static="1"><f a="t">
+		<quintInOut public="1" get="inline" set="null" line="348" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quintInOut>
-		<quintOutIn public="1" get="inline" set="null" line="122" static="1"><f a="t">
+		<quintOutIn public="1" get="inline" set="null" line="351" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></quintOutIn>
-		<expoIn public="1" get="inline" set="null" line="130" static="1"><f a="t">
+		<expoIn public="1" get="inline" set="null" line="359" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></expoIn>
-		<expoOut public="1" get="inline" set="null" line="133" static="1"><f a="t">
+		<expoOut public="1" get="inline" set="null" line="362" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></expoOut>
-		<expoInOut public="1" get="inline" set="null" line="136" static="1"><f a="t">
+		<expoInOut public="1" get="inline" set="null" line="365" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></expoInOut>
-		<expoOutIn public="1" get="inline" set="null" line="147" static="1"><f a="t">
+		<expoOutIn public="1" get="inline" set="null" line="376" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></expoOutIn>
-		<circIn public="1" get="inline" set="null" line="161" static="1"><f a="t">
+		<circIn public="1" get="inline" set="null" line="390" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></circIn>
-		<circOut public="1" get="inline" set="null" line="164" static="1"><f a="t">
+		<circOut public="1" get="inline" set="null" line="393" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></circOut>
-		<circInOut public="1" get="inline" set="null" line="167" static="1"><f a="t">
+		<circInOut public="1" get="inline" set="null" line="396" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></circInOut>
-		<circOutIn public="1" get="inline" set="null" line="170" static="1"><f a="t">
+		<circOutIn public="1" get="inline" set="null" line="399" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></circOutIn>
-		<bounceIn public="1" get="inline" set="null" line="178" static="1"><f a="t">
+		<bounceIn public="1" get="inline" set="null" line="407" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></bounceIn>
-		<bounceOut public="1" get="inline" set="null" line="189" static="1"><f a="t">
+		<bounceOut public="1" get="inline" set="null" line="418" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></bounceOut>
-		<bounceInOut public="1" get="inline" set="null" line="200" static="1"><f a="t">
+		<bounceInOut public="1" get="inline" set="null" line="429" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></bounceInOut>
-		<bounceOutIn public="1" get="inline" set="null" line="223" static="1"><f a="t">
+		<bounceOutIn public="1" get="inline" set="null" line="452" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></bounceOutIn>
-		<overshoot public="1" get="inline" set="null" expr="1.70158" line="247" static="1">
+		<overshoot public="1" get="inline" set="null" expr="1.70158" line="476" static="1">
 			<x path="Float"/>
 			<meta><m n=":value"><e>1.70158</e></m></meta>
 		</overshoot>
-		<backIn public="1" get="inline" set="null" line="252" static="1"><f a="t">
+		<backIn public="1" get="inline" set="null" line="481" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></backIn>
-		<backOut public="1" get="inline" set="null" line="261" static="1"><f a="t">
+		<backOut public="1" get="inline" set="null" line="490" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></backOut>
-		<backInOut public="1" get="inline" set="null" line="270" static="1"><f a="t">
+		<backInOut public="1" get="inline" set="null" line="499" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></backInOut>
-		<backOutIn public="1" get="inline" set="null" line="281" static="1"><f a="t">
+		<backOutIn public="1" get="inline" set="null" line="510" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></backOutIn>
-		<amplitude get="inline" set="null" expr="1" line="297" static="1">
+		<amplitude get="inline" set="null" expr="1" line="526" static="1">
 			<x path="Float"/>
 			<meta><m n=":value"><e>1</e></m></meta>
 		</amplitude>
-		<period get="inline" set="null" expr="0.0003" line="298" static="1">
+		<period get="inline" set="null" expr="0.0003" line="527" static="1">
 			<x path="Float"/>
 			<meta><m n=":value"><e>0.0003</e></m></meta>
 		</period>
-		<elasticIn public="1" get="inline" set="null" line="299" static="1"><f a="t">
+		<elasticIn public="1" get="inline" set="null" line="528" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></elasticIn>
-		<elasticOut public="1" get="inline" set="null" line="309" static="1"><f a="t">
+		<elasticOut public="1" get="inline" set="null" line="538" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></elasticOut>
-		<elasticInOut public="1" get="inline" set="null" line="319" static="1"><f a="t">
+		<elasticInOut public="1" get="inline" set="null" line="548" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></elasticInOut>
-		<elasticOutIn public="1" get="inline" set="null" line="334" static="1"><f a="t">
+		<elasticOutIn public="1" get="inline" set="null" line="563" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></elasticOutIn>
-		<warpOut public="1" get="inline" set="null" line="358" static="1"><f a="t">
+		<warpOut public="1" get="inline" set="null" line="587" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Int"/>
 </f></warpOut>
-		<warpIn public="1" get="inline" set="null" line="361" static="1"><f a="t">
+		<warpIn public="1" get="inline" set="null" line="590" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Int"/>
 </f></warpIn>
-		<warpInOut public="1" get="inline" set="null" line="364" static="1"><f a="t">
+		<warpInOut public="1" get="inline" set="null" line="593" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Int"/>
 </f></warpInOut>
-		<warpOutIn public="1" get="inline" set="null" line="367" static="1"><f a="t">
+		<warpOutIn public="1" get="inline" set="null" line="596" static="1"><f a="t">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></warpOutIn>
@@ -7420,18 +7421,18 @@
 		<haxe_doc>* @author shohei909</haxe_doc>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
-	<class path="tweenxcore.color.RgbColor" params="" file="src/core/tweenxcore/color/RgbColor.hx">
-		<rgbToInt public="1" set="method" line="21" static="1"><f a="r:g:b">
+	<class path="tweenxcore.color.RgbColor" params="" file="src/tweenxcore/tweenxcore/color/RgbColor.hx">
+		<rgbToInt public="1" get="inline" set="null" line="19" static="1"><f a="r:g:b">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Int"/>
 </f></rgbToInt>
-		<of public="1" set="method" line="29" static="1"><f a="color">
+		<of public="1" get="inline" set="null" line="27" static="1"><f a="color">
 	<x path="Int"/>
 	<c path="tweenxcore.color.RgbColor"/>
 </f></of>
-		<fromHsv public="1" set="method" line="37" static="1"><f a="h:s:v">
+		<fromHsv public="1" set="method" line="35" static="1"><f a="h:s:v">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -7440,13 +7441,13 @@
 		<r public="1"><x path="Float"/></r>
 		<g public="1"><x path="Float"/></g>
 		<b public="1"><x path="Float"/></b>
-		<toInt public="1" set="method" line="60"><f a=""><x path="Int"/></f></toInt>
-		<toArgb public="1" set="method" line="64"><f a="a">
+		<toInt public="1" get="inline" set="null" line="58"><f a=""><x path="Int"/></f></toInt>
+		<toArgb public="1" get="inline" set="null" line="62"><f a="a">
 	<x path="Float"/>
 	<c path="tweenxcore.color.ArgbColor"/>
 </f></toArgb>
-		<toHsv public="1" set="method" line="68"><f a=""><c path="tweenxcore.color.HsvColor"/></f></toHsv>
-		<new public="1" set="method" line="15"><f a="red:green:blue">
+		<toHsv public="1" get="inline" set="null" line="66"><f a=""><c path="tweenxcore.color.HsvColor"/></f></toHsv>
+		<new public="1" get="inline" set="null" line="13"><f a="red:green:blue">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -7456,20 +7457,20 @@
  * @author shohei909</haxe_doc>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
-	<class path="tweenxcore.color.ArgbColor" params="" file="src/core/tweenxcore/color/ArgbColor.hx">
+	<class path="tweenxcore.color.ArgbColor" params="" file="src/tweenxcore/tweenxcore/color/ArgbColor.hx">
 		<extends path="tweenxcore.color.RgbColor"/>
-		<argbToInt public="1" set="method" line="18" static="1"><f a="a:r:g:b">
+		<argbToInt public="1" set="method" line="17" static="1"><f a="a:r:g:b">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Int"/>
 </f></argbToInt>
-		<of public="1" set="method" line="22" static="1"><f a="color">
+		<of public="1" set="method" line="21" static="1"><f a="color">
 	<x path="Int"/>
 	<c path="tweenxcore.color.ArgbColor"/>
 </f></of>
-		<fromAhsv public="1" set="method" line="31" static="1">
+		<fromAhsv public="1" set="method" line="30" static="1">
 			<f a="a:h:s:v:?hueIndex" v="::::0">
 				<x path="Float"/>
 				<x path="Float"/>
@@ -7481,8 +7482,8 @@
 			<meta><m n=":value"><e>{hueIndex:0}</e></m></meta>
 		</fromAhsv>
 		<a public="1"><x path="Float"/></a>
-		<toAhsv public="1" set="method" line="35"><f a=""><c path="tweenxcore.color.AhsvColor"/></f></toAhsv>
-		<new public="1" set="method" line="13"><f a="alpha:red:green:blue">
+		<toAhsv public="1" set="method" line="34"><f a=""><c path="tweenxcore.color.AhsvColor"/></f></toAhsv>
+		<new public="1" set="method" line="12"><f a="alpha:red:green:blue">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -7516,14 +7517,14 @@
  * @author shohei909</haxe_doc>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
-	<class path="tweenxcore.color.HsvColor" params="" file="src/core/tweenxcore/color/HsvColor.hx">
-		<hsvToInt public="1" set="method" line="22" static="1"><f a="h:s:v">
+	<class path="tweenxcore.color.HsvColor" params="" file="src/tweenxcore/tweenxcore/color/HsvColor.hx">
+		<hsvToInt public="1" set="method" line="16" static="1"><f a="h:s:v">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Int"/>
 </f></hsvToInt>
-		<of public="1" set="method" line="45" static="1">
+		<of public="1" set="method" line="39" static="1">
 			<f a="color:?hueIndex" v=":0">
 				<x path="Int"/>
 				<x path="Int"/>
@@ -7531,7 +7532,7 @@
 			</f>
 			<meta><m n=":value"><e>{hueIndex:0}</e></m></meta>
 		</of>
-		<fromRgb public="1" set="method" line="52" static="1">
+		<fromRgb public="1" set="method" line="46" static="1">
 			<f a="r:g:b:?hueIndex" v=":::0">
 				<x path="Float"/>
 				<x path="Float"/>
@@ -7544,32 +7545,30 @@
 		<h public="1"><x path="Float"/></h>
 		<s public="1"><x path="Float"/></s>
 		<v public="1"><x path="Float"/></v>
-		<toInt public="1" set="method" line="81"><f a=""><x path="Int"/></f></toInt>
-		<toRgb public="1" set="method" line="85"><f a=""><c path="tweenxcore.color.RgbColor"/></f></toRgb>
-		<toAhsv public="1" set="method" line="89"><f a="a">
+		<toInt public="1" set="method" line="75"><f a=""><x path="Int"/></f></toInt>
+		<toRgb public="1" set="method" line="79"><f a=""><c path="tweenxcore.color.RgbColor"/></f></toRgb>
+		<toAhsv public="1" set="method" line="83"><f a="a">
 	<x path="Float"/>
 	<c path="tweenxcore.color.AhsvColor"/>
 </f></toAhsv>
-		<new public="1" set="method" line="16"><f a="hue:saturation:value">
+		<new public="1" set="method" line="10"><f a="hue:saturation:value">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Void"/>
 </f></new>
-		<haxe_doc>* ...
- * @author shohei909</haxe_doc>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
-	<class path="tweenxcore.color.AhsvColor" params="" file="src/core/tweenxcore/color/AhsvColor.hx">
+	<class path="tweenxcore.color.AhsvColor" params="" file="src/tweenxcore/tweenxcore/color/AhsvColor.hx">
 		<extends path="tweenxcore.color.HsvColor"/>
-		<ahsvToInt public="1" set="method" line="17" static="1"><f a="a:h:s:v">
+		<ahsvToInt public="1" set="method" line="16" static="1"><f a="a:h:s:v">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Int"/>
 </f></ahsvToInt>
-		<of public="1" set="method" line="21" static="1">
+		<of public="1" set="method" line="20" static="1">
 			<f a="color:?hueIndex" v=":0">
 				<x path="Int"/>
 				<x path="Int"/>
@@ -7577,7 +7576,7 @@
 			</f>
 			<meta><m n=":value"><e>{hueIndex:0}</e></m></meta>
 		</of>
-		<fromArgb public="1" set="method" line="26" static="1">
+		<fromArgb public="1" set="method" line="25" static="1">
 			<f a="a:r:g:b:?hueIndex" v="::::0">
 				<x path="Float"/>
 				<x path="Float"/>
@@ -7589,8 +7588,8 @@
 			<meta><m n=":value"><e>{hueIndex:0}</e></m></meta>
 		</fromArgb>
 		<a public="1"><x path="Float"/></a>
-		<toArgb public="1" set="method" line="30"><f a=""><c path="tweenxcore.color.ArgbColor"/></f></toArgb>
-		<new public="1" set="method" line="12"><f a="alpha:hue:saturation:value">
+		<toArgb public="1" set="method" line="29"><f a=""><c path="tweenxcore.color.ArgbColor"/></f></toArgb>
+		<new public="1" set="method" line="11"><f a="alpha:hue:saturation:value">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -7670,32 +7669,14 @@
  * @author shohei909</haxe_doc>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
-	<class path="tweenx909.rule.QuakeRuleX" params="" file="src/tweenx/tweenx909/rule/QuakeRuleX.hx">
-		<inputClass public="1" set="null" expr="QuakeRuleX" line="11" static="1">
-			<d/>
-			<meta><m n=":value"><e>QuakeRuleX</e></m></meta>
-		</inputClass>
-		<calc public="1" set="method" line="12" static="1"><f a="_from:_to:t1:t2:tween">
-	<c path="tweenx909.rule.QuakeRuleX"/>
-	<c path="tweenx909.rule.QuakeRuleX"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<c path="tweenx909.TweenX"/>
-	<x path="Float"/>
-</f></calc>
-		<defaultFrom public="1" set="method" line="18" static="1"><f a="value:_to:tween">
-	<x path="Float"/>
-	<c path="tweenx909.rule.QuakeRuleX"/>
-	<c path="tweenx909.TweenX"/>
-	<c path="tweenx909.rule.QuakeRuleX"/>
-</f></defaultFrom>
+	<class path="tweenx909.rule.QuakeX" params="" file="src/tweenx/tweenx909/rule/QuakeX.hx">
 		<ease public="1"><f a="">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></ease>
 		<value public="1"><x path="Float"/></value>
 		<scale public="1"><x path="Float"/></scale>
-		<new public="1" set="method" line="26">
+		<new public="1" set="method" line="14">
 			<f a="value:scale:?ease" v="::null">
 				<x path="Float"/>
 				<x path="Float"/>
@@ -7707,6 +7688,29 @@
 			</f>
 			<meta><m n=":value"><e>{ease:null}</e></m></meta>
 		</new>
+		<haxe_doc>* ...
+ * @author shohei909</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="tweenx909.rule.QuakeRuleX" params="" file="src/tweenx/tweenx909/rule/QuakeRuleX.hx">
+		<inputClass public="1" set="null" expr="QuakeX" line="13" static="1">
+			<d/>
+			<meta><m n=":value"><e>QuakeX</e></m></meta>
+		</inputClass>
+		<calc public="1" set="method" line="14" static="1"><f a="_from:_to:t1:t2:tween">
+	<c path="tweenx909.rule.QuakeX"/>
+	<c path="tweenx909.rule.QuakeX"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<c path="tweenx909.TweenX"/>
+	<x path="Float"/>
+</f></calc>
+		<defaultFrom public="1" set="method" line="20" static="1"><f a="value:_to:tween">
+	<x path="Float"/>
+	<c path="tweenx909.rule.QuakeX"/>
+	<c path="tweenx909.TweenX"/>
+	<c path="tweenx909.rule.QuakeX"/>
+</f></defaultFrom>
 		<haxe_doc>* ...
  * @author shohei909</haxe_doc>
 		<meta><m n=":directlyUsed"/></meta>
@@ -8883,104 +8887,12 @@
 		<haxe_doc>* ...
  * @author shohei909</haxe_doc>
 	</typedef>
-	<class path="tweenxcore.easing.EasingTools" params="" file="src/core/tweenxcore/easing/EasingTools.hx"/>
-	<class path="tweenxcore.event.BindableValue" params="T" file="src/core/tweenxcore/event/BindableValue.hx">
-		<handlers><c path="Array"><f a=":">
-	<c path="tweenxcore.event.BindableValue.T"/>
-	<c path="tweenxcore.event.BindableValue.T"/>
-	<x path="Void"/>
-</f></c></handlers>
-		<_value><c path="tweenxcore.event.BindableValue.T"/></_value>
-		<value public="1" get="accessor" set="accessor"><c path="tweenxcore.event.BindableValue.T"/></value>
-		<get_value public="1" set="method" line="12"><f a=""><c path="tweenxcore.event.BindableValue.T"/></f></get_value>
-		<set_value public="1" set="method" line="15"><f a="value">
-	<c path="tweenxcore.event.BindableValue.T"/>
-	<c path="tweenxcore.event.BindableValue.T"/>
-</f></set_value>
-		<addHandler public="1" set="method" line="27"><f a="onChange">
-	<f a=":">
-		<c path="tweenxcore.event.BindableValue.T"/>
-		<c path="tweenxcore.event.BindableValue.T"/>
-		<x path="Void"/>
-	</f>
-	<x path="Void"/>
-</f></addHandler>
-		<removeHandler public="1" set="method" line="31"><f a="onChange">
-	<f a=":">
-		<c path="tweenxcore.event.BindableValue.T"/>
-		<c path="tweenxcore.event.BindableValue.T"/>
-		<x path="Void"/>
-	</f>
-	<x path="Void"/>
-</f></removeHandler>
-		<dispatchChange set="method" line="35"><f a="oldValue:newValue">
-	<c path="tweenxcore.event.BindableValue.T"/>
-	<c path="tweenxcore.event.BindableValue.T"/>
-	<x path="Void"/>
-</f></dispatchChange>
-		<update public="1" set="method" line="41"><f a="value">
-	<c path="tweenxcore.event.BindableValue.T"/>
-	<x path="Void"/>
-</f></update>
-		<silentUpdate public="1" set="method" line="45"><f a="value">
-	<c path="tweenxcore.event.BindableValue.T"/>
-	<x path="Void"/>
-</f></silentUpdate>
-		<new public="1" set="method" line="22"><f a="value">
-	<c path="tweenxcore.event.BindableValue.T"/>
-	<x path="Void"/>
-</f></new>
-		<haxe_doc>* ...
- * @author shohei909</haxe_doc>
-	</class>
-	<class path="tweenxcore.event.GenericSingleEventDispatcher" params="T" file="src/core/tweenxcore/event/GenericSingleEventDispatcher.hx">
-		<handlers><c path="Array"><f a="">
-	<c path="tweenxcore.event.GenericSingleEventDispatcher.T"/>
-	<x path="Void"/>
-</f></c></handlers>
-		<addHandler public="1" set="method" line="16"><f a="handler">
-	<f a="">
-		<c path="tweenxcore.event.GenericSingleEventDispatcher.T"/>
-		<x path="Void"/>
-	</f>
-	<x path="Void"/>
-</f></addHandler>
-		<removeHandler public="1" set="method" line="20"><f a="handler">
-	<f a="">
-		<c path="tweenxcore.event.GenericSingleEventDispatcher.T"/>
-		<x path="Void"/>
-	</f>
-	<x path="Void"/>
-</f></removeHandler>
-		<dispatchEvent public="1" set="method" line="24"><f a="event">
-	<c path="tweenxcore.event.GenericSingleEventDispatcher.T"/>
-	<x path="Void"/>
-</f></dispatchEvent>
-		<new public="1" set="method" line="11"><f a=""><x path="Void"/></f></new>
-		<haxe_doc>* ...
- * @author shohei909</haxe_doc>
-	</class>
-	<class path="tweenxcore.event.SingleEventDispatcher" params="" file="src/core/tweenxcore/event/SingleEventDispatcher.hx">
-		<handlers><c path="Array"><f a=""><x path="Void"/></f></c></handlers>
-		<addHandler public="1" set="method" line="16"><f a="handler">
-	<f a=""><x path="Void"/></f>
-	<x path="Void"/>
-</f></addHandler>
-		<removeHandler public="1" set="method" line="20"><f a="handler">
-	<f a=""><x path="Void"/></f>
-	<x path="Void"/>
-</f></removeHandler>
-		<dispatchEvent public="1" set="method" line="24"><f a=""><x path="Void"/></f></dispatchEvent>
-		<new public="1" set="method" line="11"><f a=""><x path="Void"/></f></new>
-		<haxe_doc>* ...
- * @author shohei909</haxe_doc>
-	</class>
-	<class path="tweenxcore.tools.FloatTools" params="" file="src/core/tweenxcore/tools/FloatTools.hx">
-		<revert public="1" get="inline" set="null" line="5" static="1"><f a="rate">
+	<class path="tweenxcore.FloatTools" params="" file="src/tweenxcore/tweenxcore/Tools.hx" module="tweenxcore.Tools">
+		<revert public="1" get="inline" set="null" line="8" static="1"><f a="rate">
 	<x path="Float"/>
 	<x path="Float"/>
 </f></revert>
-		<clamp public="1" get="inline" set="null" line="10" static="1">
+		<clamp public="1" get="inline" set="null" line="13" static="1">
 			<f a="value:?min:?max" v=":0.0:1.0">
 				<x path="Float"/>
 				<x path="Float"/>
@@ -8989,19 +8901,19 @@
 			</f>
 			<meta><m n=":value"><e>{max:1.0,min:0.0}</e></m></meta>
 		</clamp>
-		<lerp public="1" get="inline" set="null" line="15" static="1"><f a="rate:from:to">
+		<lerp public="1" get="inline" set="null" line="18" static="1"><f a="rate:from:to">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></lerp>
-		<inverseLerp public="1" get="inline" set="null" line="20" static="1"><f a="value:from:to">
+		<inverseLerp public="1" get="inline" set="null" line="23" static="1"><f a="value:from:to">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></inverseLerp>
-		<repeat public="1" get="inline" set="null" line="25" static="1">
+		<repeat public="1" get="inline" set="null" line="28" static="1">
 			<f a="value:?from:?to" v=":0.0:1.0">
 				<x path="Float"/>
 				<x path="Float"/>
@@ -9010,7 +8922,23 @@
 			</f>
 			<meta><m n=":value"><e>{to:1.0,from:0.0}</e></m></meta>
 		</repeat>
-		<yoyo public="1" get="inline" set="null" line="31" static="1"><f a="rate:easing">
+		<shake public="1" get="inline" set="null" line="34" static="1">
+			<f a="rate:?center" v=":0.0">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<meta><m n=":value"><e>{center:0.0}</e></m></meta>
+		</shake>
+		<sinWithRate public="1" get="inline" set="null" line="39" static="1"><f a="rate">
+	<x path="Float"/>
+	<x path="Float"/>
+</f></sinWithRate>
+		<cosWithRate public="1" get="inline" set="null" line="43" static="1"><f a="rate">
+	<x path="Float"/>
+	<x path="Float"/>
+</f></cosWithRate>
+		<yoyo public="1" get="inline" set="null" line="54" static="1"><f a="rate:easing">
 	<x path="Float"/>
 	<f a="">
 		<x path="Float"/>
@@ -9018,7 +8946,7 @@
 	</f>
 	<x path="Float"/>
 </f></yoyo>
-		<zigzag public="1" get="inline" set="null" line="36" static="1"><f a="rate:easing">
+		<zigzag public="1" get="inline" set="null" line="59" static="1"><f a="rate:easing">
 	<x path="Float"/>
 	<f a="">
 		<x path="Float"/>
@@ -9026,60 +8954,418 @@
 	</f>
 	<x path="Float"/>
 </f></zigzag>
-		<bezier2 public="1" get="inline" set="null" line="41" static="1"><f a="rate:from:control:to">
+		<mixEase public="1" get="inline" set="null" line="69" static="1"><f a="rate:easing1:easing2:easing2Strength">
+	<x path="Float"/>
+	<f a="">
+		<x path="Float"/>
+		<x path="Float"/>
+	</f>
+	<f a="">
+		<x path="Float"/>
+		<x path="Float"/>
+	</f>
 	<x path="Float"/>
 	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-</f></bezier2>
-		<bezier3 public="1" get="inline" set="null" line="46" static="1"><f a="rate:from:control1:control2:to">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-</f></bezier3>
-		<bezier public="1" get="inline" set="null" line="51" static="1"><f a="rate:points">
-	<x path="Float"/>
-	<c path="Array"><x path="Float"/></c>
-	<x path="Float"/>
-</f></bezier>
-		<_bezier set="method" line="64" static="1"><f a="rate:points">
-	<x path="Float"/>
-	<c path="Array"><x path="Float"/></c>
-	<x path="Float"/>
-</f></_bezier>
-		<shake public="1" set="method" line="73" static="1">
-			<f a="scale:?center" v=":0.0">
+</f></mixEase>
+		<crossEase public="1" get="inline" set="null" line="81" static="1">
+			<f a="rate:easing1:easing2:easing2StrengthEasing:?easing2StrengthStart:?easing2StrengthEnd" v="::::0:1">
+				<x path="Float"/>
+				<f a="">
+					<x path="Float"/>
+					<x path="Float"/>
+				</f>
+				<f a="">
+					<x path="Float"/>
+					<x path="Float"/>
+				</f>
+				<f a="">
+					<x path="Float"/>
+					<x path="Float"/>
+				</f>
 				<x path="Float"/>
 				<x path="Float"/>
 				<x path="Float"/>
 			</f>
-			<meta><m n=":value"><e>{center:0.0}</e></m></meta>
-		</shake>
-		<random public="1" set="method" line="78" static="1">
-			<f a="?min:max" v="0.0:">
+			<meta><m n=":value"><e>{easing2StrengthEnd:1,easing2StrengthStart:0}</e></m></meta>
+		</crossEase>
+		<oneTwoEase public="1" get="inline" set="null" line="98" static="1"><f a="rate:switchRate:easingOne:easingTwo">
+	<x path="Float"/>
+	<x path="Float"/>
+	<f a="">
+		<x path="Float"/>
+		<x path="Float"/>
+	</f>
+	<f a="">
+		<x path="Float"/>
+		<x path="Float"/>
+	</f>
+	<x path="Float"/>
+</f></oneTwoEase>
+		<chainEase public="1" get="inline" set="null" line="111" static="1"><f a="time:switchTime:switchValue:easing1:easing2">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<f a="">
+		<x path="Float"/>
+		<x path="Float"/>
+	</f>
+	<f a="">
+		<x path="Float"/>
+		<x path="Float"/>
+	</f>
+	<x path="Float"/>
+</f></chainEase>
+		<binarySearch public="1" get="inline" set="null" line="130" static="1">
+			<f a="sortedValues:value:?boundaryMode" v="::BoundaryMode.Left">
+				<c path="Array"><x path="Float"/></c>
 				<x path="Float"/>
-				<x path="Float"/>
-				<x path="Float"/>
+				<x path="tweenxcore.structure.BoundaryMode"/>
+				<x path="Int"/>
 			</f>
-			<meta><m n=":value"><e>{min:0.0}</e></m></meta>
-		</random>
-		<binarySearch public="1" set="method" line="83" static="1"><f a="value:sortedValues">
+			<meta><m n=":value"><e>{boundaryMode:BoundaryMode.Left}</e></m></meta>
+		</binarySearch>
+		<bernstein2 public="1" get="inline" set="null" line="165" static="1"><f a="rate:from:control:to">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+</f></bernstein2>
+		<bernstein3 public="1" get="inline" set="null" line="170" static="1"><f a="rate:from:control1:control2:to">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+</f></bernstein3>
+		<bernstein public="1" get="inline" set="null" line="175" static="1"><f a="rate:points">
 	<x path="Float"/>
 	<c path="Array"><x path="Float"/></c>
+	<x path="Float"/>
+</f></bernstein>
+		<_bernstein set="method" line="188" static="1"><f a="rate:points">
+	<x path="Float"/>
+	<c path="Array"><x path="Float"/></c>
+	<x path="Float"/>
+</f></_bernstein>
+		<frameToSecond public="1" get="inline" set="null" line="202" static="1"><f a="frame:fps">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+</f></frameToSecond>
+		<secondToFrame public="1" get="inline" set="null" line="205" static="1"><f a="second:fps">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+</f></secondToFrame>
+		<degreeToRate public="1" get="inline" set="null" line="208" static="1"><f a="degree">
+	<x path="Float"/>
+	<x path="Float"/>
+</f></degreeToRate>
+		<rateToDegree public="1" get="inline" set="null" line="211" static="1"><f a="rate">
+	<x path="Float"/>
+	<x path="Float"/>
+</f></rateToDegree>
+		<radianToRate public="1" get="inline" set="null" line="214" static="1"><f a="radian">
+	<x path="Float"/>
+	<x path="Float"/>
+</f></radianToRate>
+		<rateToRadian public="1" get="inline" set="null" line="217" static="1"><f a="rate">
+	<x path="Float"/>
+	<x path="Float"/>
+</f></rateToRadian>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="tweenxcore.PointTools" params="" file="src/tweenxcore/tweenxcore/Tools.hx" module="tweenxcore.Tools"/>
+	<class path="tweenxcore.MatrixTools" params="" file="src/tweenxcore/tweenxcore/Tools.hx" module="tweenxcore.Tools"><createSimilarityTransform public="1" get="inline" set="null" line="228" static="1">
+	<f a="matrix:startX:startY:endX:endY:?reverse" v=":::::false">
+		<t path="tweenxcore.geom.Matrix"/>
+		<x path="Float"/>
+		<x path="Float"/>
+		<x path="Float"/>
+		<x path="Float"/>
+		<x path="Bool"/>
+		<x path="Void"/>
+	</f>
+	<meta><m n=":value"><e>{reverse:false}</e></m></meta>
+</createSimilarityTransform></class>
+	<typedef path="tweenxcore.geom.Matrix" params="" file="src/tweenxcore/tweenxcore/geom/Matrix.hx"><a>
+	<ty><x path="Float"/></ty>
+	<tx><x path="Float"/></tx>
+	<new set="method"><f a="a:b:c:d:tx:ty">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Void"/>
+</f></new>
+	<d><x path="Float"/></d>
+	<c><x path="Float"/></c>
+	<b><x path="Float"/></b>
+	<a><x path="Float"/></a>
+</a></typedef>
+	<typedef path="tweenxcore.geom.Point" params="" file="src/tweenxcore/tweenxcore/geom/Point.hx"><a>
+	<y><x path="Float"/></y>
+	<x><x path="Float"/></x>
+	<new set="method"><f a="x:y">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Void"/>
+</f></new>
+</a></typedef>
+	<class path="tweenxcore.geom.PolarPoint" params="" file="src/tweenxcore/tweenxcore/geom/PolarPoint.hx">
+		<fromXy public="1" get="inline" set="null" line="23" static="1"><f a="x:y">
+	<x path="Float"/>
+	<x path="Float"/>
+	<c path="tweenxcore.geom.PolarPoint"/>
+</f></fromXy>
+		<fromPoint public="1" get="inline" set="null" line="27" static="1"><f a="point">
+	<t path="tweenxcore.geom.Point"/>
+	<c path="tweenxcore.geom.PolarPoint"/>
+</f></fromPoint>
+		<distance public="1"><x path="Float"/></distance>
+		<angle public="1"><x path="Float"/></angle>
+		<x public="1" get="accessor" set="null"><x path="Float"/></x>
+		<get_x set="method" line="9"><f a=""><x path="Float"/></f></get_x>
+		<y public="1" get="accessor" set="null"><x path="Float"/></y>
+		<get_y set="method" line="14"><f a=""><x path="Float"/></f></get_y>
+		<setXy public="1" get="inline" set="null" line="31"><f a="x:y">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Void"/>
+</f></setXy>
+		<setPoint public="1" get="inline" set="null" line="36"><f a="point">
+	<t path="tweenxcore.geom.Point"/>
+	<x path="Void"/>
+</f></setPoint>
+		<clone public="1" get="inline" set="null" line="41"><f a="point">
+	<c path="tweenxcore.geom.PolarPoint"/>
+	<c path="tweenxcore.geom.PolarPoint"/>
+</f></clone>
+		<new public="1" get="inline" set="null" line="18"><f a="distance:angle">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<abstract path="tweenxcore.structure.BoundaryMode" params="" file="src/tweenxcore/tweenxcore/structure/BoundaryMode.hx">
+		<this><x path="Int"/></this>
+		<meta><m n=":enum"/></meta>
+		<impl><class path="tweenxcore.structure._BoundaryMode.BoundaryMode_Impl_" params="" file="src/tweenxcore/tweenxcore/structure/BoundaryMode.hx" private="1" module="tweenxcore.structure.BoundaryMode" extern="1">
+	<Left public="1" get="inline" set="null" expr="&apos;???&apos;" line="4" static="1">
+		<x path="tweenxcore.structure.BoundaryMode"/>
+		<meta>
+			<m n=":value"><e>'???'</e></m>
+			<m n=":enum"/>
+			<m n=":impl"/>
+		</meta>
+	</Left>
+	<Right public="1" get="inline" set="null" expr="&apos;???&apos;" line="5" static="1">
+		<x path="tweenxcore.structure.BoundaryMode"/>
+		<meta>
+			<m n=":value"><e>'???'</e></m>
+			<m n=":enum"/>
+			<m n=":impl"/>
+		</meta>
+	</Right>
+	<meta><m n=":enum"/></meta>
+</class></impl>
+	</abstract>
+	<class path="tweenxcore.structure._BoundaryMode.BoundaryMode_Impl_" params="" file="src/tweenxcore/tweenxcore/structure/BoundaryMode.hx" private="1" module="tweenxcore.structure.BoundaryMode" extern="1">
+		<Left public="1" get="inline" set="null" expr="&apos;???&apos;" line="4" static="1">
+			<x path="tweenxcore.structure.BoundaryMode"/>
+			<meta>
+				<m n=":value"><e>'???'</e></m>
+				<m n=":enum"/>
+				<m n=":impl"/>
+			</meta>
+		</Left>
+		<Right public="1" get="inline" set="null" expr="&apos;???&apos;" line="5" static="1">
+			<x path="tweenxcore.structure.BoundaryMode"/>
+			<meta>
+				<m n=":value"><e>'???'</e></m>
+				<m n=":enum"/>
+				<m n=":impl"/>
+			</meta>
+		</Right>
+		<meta><m n=":enum"/></meta>
+	</class>
+	<abstract path="tweenxcore.structure.Direction" params="" file="src/tweenxcore/tweenxcore/structure/Direction.hx">
+		<this><x path="Int"/></this>
+		<meta><m n=":enum"/></meta>
+		<impl><class path="tweenxcore.structure._Direction.Direction_Impl_" params="" file="src/tweenxcore/tweenxcore/structure/Direction.hx" private="1" module="tweenxcore.structure.Direction" extern="1">
+	<Backward public="1" get="inline" set="null" expr="&apos;???&apos;" line="4" static="1">
+		<x path="tweenxcore.structure.Direction"/>
+		<meta>
+			<m n=":value"><e>'???'</e></m>
+			<m n=":enum"/>
+			<m n=":impl"/>
+		</meta>
+	</Backward>
+	<Stopped public="1" get="inline" set="null" expr="&apos;???&apos;" line="5" static="1">
+		<x path="tweenxcore.structure.Direction"/>
+		<meta>
+			<m n=":value"><e>'???'</e></m>
+			<m n=":enum"/>
+			<m n=":impl"/>
+		</meta>
+	</Stopped>
+	<Forward public="1" get="inline" set="null" expr="&apos;???&apos;" line="6" static="1">
+		<x path="tweenxcore.structure.Direction"/>
+		<meta>
+			<m n=":value"><e>'???'</e></m>
+			<m n=":enum"/>
+			<m n=":impl"/>
+		</meta>
+	</Forward>
+	<meta><m n=":enum"/></meta>
+</class></impl>
+	</abstract>
+	<class path="tweenxcore.structure._Direction.Direction_Impl_" params="" file="src/tweenxcore/tweenxcore/structure/Direction.hx" private="1" module="tweenxcore.structure.Direction" extern="1">
+		<Backward public="1" get="inline" set="null" expr="&apos;???&apos;" line="4" static="1">
+			<x path="tweenxcore.structure.Direction"/>
+			<meta>
+				<m n=":value"><e>'???'</e></m>
+				<m n=":enum"/>
+				<m n=":impl"/>
+			</meta>
+		</Backward>
+		<Stopped public="1" get="inline" set="null" expr="&apos;???&apos;" line="5" static="1">
+			<x path="tweenxcore.structure.Direction"/>
+			<meta>
+				<m n=":value"><e>'???'</e></m>
+				<m n=":enum"/>
+				<m n=":impl"/>
+			</meta>
+		</Stopped>
+		<Forward public="1" get="inline" set="null" expr="&apos;???&apos;" line="6" static="1">
+			<x path="tweenxcore.structure.Direction"/>
+			<meta>
+				<m n=":value"><e>'???'</e></m>
+				<m n=":enum"/>
+				<m n=":impl"/>
+			</meta>
+		</Forward>
+		<meta><m n=":enum"/></meta>
+	</class>
+	<class path="tweenxcore.structure.FloatChange" params="" file="src/tweenxcore/tweenxcore/structure/FloatChange.hx">
+		<previous public="1" set="null"><x path="Float"/></previous>
+		<current public="1" set="null"><x path="Float"/></current>
+		<direction public="1" get="inline" set="null" line="24"><f a=""><x path="tweenxcore.structure.Direction"/></f></direction>
+		<map public="1" get="inline" set="null" line="34"><f a="func">
+	<f a="">
+		<x path="Float"/>
+		<x path="Float"/>
+	</f>
+	<c path="tweenxcore.structure.FloatChange"/>
+</f></map>
+		<isCrossOver public="1" get="inline" set="null" line="39">
+			<f a="threshold:?boundaryMode" v=":BoundaryMode.Right">
+				<x path="Float"/>
+				<x path="tweenxcore.structure.BoundaryMode"/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":value"><e>{boundaryMode:BoundaryMode.Right}</e></m></meta>
+		</isCrossOver>
+		<handlePart public="1" get="inline" set="null" line="50"><f a="from:to:updatePart">
+	<x path="Float"/>
+	<x path="Float"/>
+	<f a="">
+		<c path="tweenxcore.structure.FloatChangePart"/>
+		<x path="Void"/>
+	</f>
+	<x path="Void"/>
+</f></handlePart>
+		<handleRepeatPart public="1" set="method" line="70"><f a="from:to:repeatLimit:updateRepeatPart">
+	<x path="Float"/>
+	<x path="Float"/>
 	<x path="Int"/>
-</f></binarySearch>
-		<sin public="1" set="method" line="104" static="1"><f a="rate">
+	<f a="">
+		<c path="tweenxcore.structure.FloatChangeRepeatPart"/>
+		<x path="Void"/>
+	</f>
+	<x path="Void"/>
+</f></handleRepeatPart>
+		<handleTimelinePart public="1" get="inline" set="null" line="112"><f a="from:to:updatePartTimeline">
 	<x path="Float"/>
 	<x path="Float"/>
-</f></sin>
-		<cos public="1" set="method" line="108" static="1"><f a="rate">
+	<c path="tweenxcore.structure.Timeline"><f a="">
+	<c path="tweenxcore.structure.FloatChangeRepeatPart"/>
+	<x path="Void"/>
+</f></c>
+	<x path="Void"/>
+</f></handleTimelinePart>
+		<new public="1" get="inline" set="null" line="15"><f a="previousValue:currentValue">
 	<x path="Float"/>
 	<x path="Float"/>
-</f></cos>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="tweenxcore.structure.FloatChangePart" params="" file="src/tweenxcore/tweenxcore/structure/FloatChangePart.hx">
+		<extends path="tweenxcore.structure.FloatChange"/>
+		<isPartEntrance public="1" get="inline" set="null" line="5"><f a=""><x path="Bool"/></f></isPartEntrance>
+		<isPartExit public="1" get="inline" set="null" line="9"><f a=""><x path="Bool"/></f></isPartExit>
+		<new public="1" get="inline" set="null" line="4"><f a="previousValue:currentValue">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="tweenxcore.structure.FloatChangeRepeatPart" params="" file="src/tweenxcore/tweenxcore/structure/FloatChangeRepeatPart.hx">
+		<extends path="tweenxcore.structure.FloatChangePart"/>
+		<repeatCount public="1" set="null"><x path="Float"/></repeatCount>
+		<repeatLimit public="1" set="null"><x path="Int"/></repeatLimit>
+		<isRepeatPartEntrance public="1" get="inline" set="null" line="17"><f a=""><x path="Bool"/></f></isRepeatPartEntrance>
+		<isRepeatPartExit public="1" get="inline" set="null" line="22"><f a=""><x path="Bool"/></f></isRepeatPartExit>
+		<new public="1" get="inline" set="null" line="9"><f a="previousValue:currentValue:repeatCount:repeatLimit">
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Int"/>
+	<x path="Int"/>
+	<x path="Void"/>
+</f></new>
+		<meta><m n=":directlyUsed"/></meta>
+	</class>
+	<class path="tweenxcore.structure.Timeline" params="T" file="src/tweenxcore/tweenxcore/structure/Timeline.hx">
+		<totalWeight><x path="Float"/></totalWeight>
+		<dataArray><c path="Array"><c path="tweenxcore.structure.Timeline.T"/></c></dataArray>
+		<weightArray><c path="Array"><x path="Float"/></c></weightArray>
+		<add public="1" get="inline" set="null" line="34"><f a="data:weight">
+	<c path="tweenxcore.structure.Timeline.T"/>
+	<x path="Float"/>
+	<x path="Void"/>
+</f></add>
+		<searchWithRate public="1" get="inline" set="null" line="44">
+			<f a="rate:?boundaryMode" v=":BoundaryMode.Left">
+				<x path="Float"/>
+				<x path="tweenxcore.structure.BoundaryMode"/>
+				<c path="tweenxcore.structure.TimelineSeachResult"><c path="tweenxcore.structure.Timeline.T"/></c>
+			</f>
+			<meta><m n=":value"><e>{boundaryMode:BoundaryMode.Left}</e></m></meta>
+		</searchWithRate>
+		<new public="1" get="inline" set="null" line="13"><f a="_data:_weightData">
+	<t path="Iterable"><c path="tweenxcore.structure.Timeline.T"/></t>
+	<t path="Iterable"><x path="Float"/></t>
+	<x path="Void"/>
+</f></new>
+		<haxe_doc>* TODO: Implement</haxe_doc>
+	</class>
+	<class path="tweenxcore.structure.TimelineSeachResult" params="T" file="src/tweenxcore/tweenxcore/structure/TimelineSeachResult.hx">
+		<data public="1" set="null"><c path="tweenxcore.structure.TimelineSeachResult.T"/></data>
+		<baseRate public="1" set="null"><x path="Float"/></baseRate>
+		<nextRate public="1" set="null"><x path="Float"/></nextRate>
+		<new public="1" get="inline" set="null" line="8"><f a="data:baseRate:nextRate">
+	<c path="tweenxcore.structure.TimelineSeachResult.T"/>
+	<x path="Float"/>
+	<x path="Float"/>
+	<x path="Void"/>
+</f></new>
 		<meta><m n=":directlyUsed"/></meta>
 	</class>
 </haxe>

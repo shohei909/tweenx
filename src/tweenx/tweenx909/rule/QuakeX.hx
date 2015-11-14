@@ -1,5 +1,5 @@
 package tweenx909.rule;
-import tweenxcore.tools.Easing;
+using tweenxcore.Tools.Easing;
 
 /**
  * ...

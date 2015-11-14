@@ -1,12 +1,6 @@
 package tweenxcore.color;
-import tweenxcore.tools.FloatTools;
-import tweenx909.TweenX;
-import tweenxcore.tools.FloatTools.*;
+using tweenxcore.Tools.FloatTools;
 
-/**
- * ...
- * @author shohei909
- */
 class RgbColor {
 	public var r:Float;
 	public var g:Float;
@@ -19,9 +13,9 @@ class RgbColor {
 	}
 
 	public static inline function rgbToInt(r:Float, g:Float, b:Float):Int {
-		r = clamp(r);
-		g = clamp(g);
-		b = clamp(b);
+		r = r.clamp();
+		g = g.clamp();
+		b = b.clamp();
 
 		return (Std.int(r * 0xFF) << 16) | (Std.int(g * 0xFF) << 8) | Std.int(b * 0xFF);
 	}
@@ -38,8 +32,8 @@ class RgbColor {
 		h = (h - Math.floor(h)) * 6;
 		var hi = Math.floor(h);
 
-		s = clamp(s);
-		v = clamp(v);
+		s = s.clamp();
+		v = v.clamp();
 
 		var m = v * (1 - s);
 		var f = h - hi;

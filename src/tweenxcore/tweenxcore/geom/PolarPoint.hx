@@ -1,6 +1,5 @@
 package tweenxcore.geom;
-import tweenxcore.tools.FloatTools;
-using tweenxcore.tools.Tools;
+using tweenxcore.Tools;
 
 class PolarPoint {
     public var distance:Float;
@@ -8,12 +7,12 @@ class PolarPoint {
 
     public var x(get, never):Float;
     function get_x() {
-        return angle.cosWithRate() * distance;
+        return angle.cosByRate() * distance;
     }
 
     public var y(get, never):Float;
     function get_y() {
-        return angle.sinWithRate() * distance;
+        return angle.sinByRate() * distance;
     }
 
     public inline function new(distance:Float, angle:Float) {

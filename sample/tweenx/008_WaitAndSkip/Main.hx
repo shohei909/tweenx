@@ -1,4 +1,4 @@
-import flash.display.StageScaleMode;
+import openfl.display.StageScaleMode;
 import openfl.display.Sprite;
 import openfl.display.Shape;
 import openfl.geom.Matrix;
