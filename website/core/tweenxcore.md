@@ -1,12 +1,26 @@
+---
+layout: default
+title: TweenXCore - lightweight motion library for haxe
+---
+
+
+
 # TweenXCore
 
 TweenXCoreはトゥイーンライブラリ**ではありません**。
 
 気持ちの良いモーションをトゥイーンライブラリは異なる方法で実現するためのライブラリです。
 
+{% include movie.html file="core/Demo" %}
 
-## デモ
 
+
+## 特徴
+* シンプル
+* 自由
+* 高速
+
+TweenXCoreは、実行速度と、開発速度、バグの少なさ、学習コストの少なさ、そしてモーションの面白さを両立するために作られています。
 
 
 
@@ -22,32 +36,21 @@ TweenXCoreはトゥイーンライブラリ**ではありません**。
 
 
 
-
-## TweenXCoreが持たないもの
+### TweenXCoreが持たないもの
 
 * バックグラウンドでの動作
  * TweenXCoreはバックグラウンドでオブジェクトを操作することはありません。今どういう状態であるべきか毎フレームごとで記述するスタイルを取ります。
-*　イベントハンドラ
- * TweenXCoreは何かしらの処理を予約しておくことはできません。今現在が特別なタイミングなのかを判定をするif文を書くことで、サウンドを鳴らしたり、表示リストを更新ししたりといった処理を書きます。
+* イベントリスナー
+ * TweenXCoreは何かしらの処理を予約しておくことはできません。モーションの終了タイミングなどはif文を書くことで、判別します。
 * ツリー構造
  * TweenXCoreは独自のツリー構造を持ちません。
 
 
-上記のような機能はこのライブラリの対象外です。これらはプラットフォームの標準的な機能やゲームのフレームワークに則って管理されるべき機能で、これらの機能を二重に持つとバグの発生しやすいコードが生まれます。
+上記のような機能はこのライブラリの対象外です。
 
 
 
-
-## 特徴
-* シンプル
-* 自由
-* 高速
-
-TweenXCoreは、実行速度と、開発速度、バグの少なさ、学習コストの少なさ、そしてモーションの面白さを両立するために作られています。
-
-
-
-### 速度
+## 速度
 
 既存のFlashプラットフォーム上で動作するトゥイーンライブラリとしておそらく最速であるBetweenAS3よりも、さらに高速に動作しています。
 
@@ -55,7 +58,15 @@ TweenXCoreは、実行速度と、開発速度、バグの少なさ、学習コ�
 
 
 
-## トゥイーンライブラリの問題点
+## 対応バージョン
+
+Haxeの3.1.3での動作を確認しています。
+
+
+## TweenXCoreが持つ思想
+
+
+### トゥイーンライブラリの反省
 
 トゥイーンライブラリはバグの温床になりやすいものです。
 
@@ -73,18 +84,9 @@ TweenXCoreは、実行速度と、開発速度、バグの少なさ、学習コ�
 
 そして、その方法のほうがより高いの表現力と使い勝手の良さを手に入れられることがわかりました。
 
-これがTweenXCoreの始まりです。
 
 
-
-
-## 対応バージョン
-
-Haxeの3.1.0以降での動作を確認しています。
-
-
-
-## 0.0から始まり、1.0で終わる
+### 0.0から始まり、1.0で終わる
 
 TweenXCoreの世界では、始まりの値は0.0であり、終わりの値は1.0です。
 
@@ -99,11 +101,12 @@ TweenXCoreはトゥイーンライブラリではありません。**この0.0�
 
 
 
+
 ## Hello TweenXCore
 
 TweenXCoreの最初のサンプルとして四角のx座標を0から420まで、動かすコードを見てみます。
 
-[[Flash]](https://github.com/shohei909/tweenx/blob/develop/bin/tweenxcore/flash/bin/SimplestTween.swf)
+{% include movie.html file="core/Simplest" %}
 
 ```haxe
 import sample.SampleSuport.GridSprite;
@@ -160,7 +163,10 @@ using tweenxcore.Tools;
     }
 ```
 
+
+
 それでは1つづつ要素を見ていきます。
+
 
 ### tweenxcore.tools.Tools
 `using tweenxcore.tools.Tools;`は、Floatなどの既存のデータ型に対する拡張のインポートです。
@@ -168,13 +174,11 @@ using tweenxcore.Tools;
 Tools.hxの中身は[このように](https://github.com/shohei909/tweenx/blob/develop/src/tweenxcore/tweenxcore/tools/Tools.hx)なっており、TweenXCoreが持つ6種類の拡張をいっぺんにインポートできます。それぞれがどのような機能を持っているのかは後々説明をします。
 
 
-### FloatChange
+
+### FloatChange、FloatChangePart
 `FloatChange`はTweenXCoreが提供している型で、直前のFloat値と現在のFloat値をまとめて1つの型に持つことで、値の変化を簡単に扱えるようにします。
 
 この`FloatChange`の`part`関数は、値が指定した範囲にあった場合にすぐに関数呼び出しを行います。つまり例では、`frame`または`frame + 1`が`0 < 値 < 20`の範囲にあるとき、`updateSquare`関数を呼び出します。
-
-
-### FloatChangePart
 
 `FloatChangePart`は、`FloatChange`のある範囲の値を0から1までの値に変換させた`FloatChange`です。例の場合、`frame`の0から20を、0.0から1.0の範囲に変換しています。
 
@@ -187,9 +191,9 @@ Tools.hxの中身は[このように](https://github.com/shohei909/tweenx/blob/d
 
 
 
-## Easing関数
+## イージング関数
 
-[[Flash]](https://github.com/shohei909/tweenx/blob/develop/bin/tweenx/flash/bin/Easing.swf)
+{% include movie.html file="core/EasingVisualizer" %}
 
 TweenXCoreでは、[Robert Pennerのイージング関数](http://easings.net/)を基本として、中央で減速して再度加速するInOutのモードと、瞬間的に移動を行うwarpが追加された計46個の関数が提供されています。
 
@@ -241,13 +245,14 @@ TweenXCoreの場合のEasing関数は、トゥイーン関数に渡すもので�
 
 `change.current`の0.0から1.0までの値を、cubicIn()を使ってカーブをつけた後に、`lerp`関数で0から420の値に変換しています。TweenXCoreを使用するコードでは、このようなFloatの値に対するメソッドチェーンがよく出てきます。
 
-[[Flash]](https://github.com/shohei909/tweenx/blob/develop/bin/tweenxcore/flash/bin/Easing.swf) [[サンプルコード全体]](https://github.com/shohei909/tweenx/blob/develop/sample/tweenxcore/302_Easing/Main.hx)
+{% include movie.html file="core/Easing" %}
+
+[[サンプルコード全体]](https://github.com/shohei909/tweenx/blob/develop/sample/tweenxcore/302_Easing/Main.hx)
 
 
+# Haxe/OpenFl アニメーションプログラミング
 
-# TweenXCoreチュートリアル
-
-##基本的な動き
+## 基本的な動き
 ### 繰り返し
 ### ヨーヨー、ジグザグ
 ### モーションの開始時、終了時の処理
@@ -266,14 +271,7 @@ TweenXCoreの場合のEasing関数は、トゥイーン関数に渡すもので�
 ### 極座標
 ### ベジェ曲線
 
-
 ## 色
 ### RGBカラー、HSVカラー
-
-
 ## パラパラアニメーション
-
-
 ## 音に合わせる
-
-

@@ -1,3 +1,8 @@
+---
+layout: default
+title: TweenX - tween library for haxe
+---
+
 # TweenX
 
 [[日本語](.)|[English](en.html)]
@@ -63,7 +68,7 @@ TweenXの最新バージョン(1.0)でのサポート対象Haxe 3.0以降です�
 
 ## ソースコード
 
-*   [Github](https://github.com/shohei909/tweenx)
+* [Github](https://github.com/shohei909/tweenx/src/tweenxcore)
 
 ## チュートリアル
 

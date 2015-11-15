@@ -1,0 +1,11 @@
+source 'https://rubygems.org'
+
+gem 'jekyll'
+gem 'asciidoctor'
+gem 'redcarpet'
+gem 'pygments.rb'
+
+group :jekyll_plugins do
+  gem "jekyll-asciidoc", github: "asciidoctor/jekyll-asciidoc"
+end
+
