@@ -12,8 +12,8 @@ class Sample extends Sprite {
     var square:Square;
     var frameCount = 0;
 
-	public function new() {
-		super();
+    public function new() {
+        super();
 
         //Initialize
         addChild(square = new Square());
@@ -31,7 +31,7 @@ class Sample extends Sprite {
             .add(updateSquareReverse, 16);
 
         change.handleTimelinePart(0, MOTION_END, timeline);
-	}
+    }
 
     function updateSquare(change:FloatChangeRepeatPart) {
         square.x = change.current.lerp(15, 435);

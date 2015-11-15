@@ -6,53 +6,53 @@ class SampleProject extends HXProject
     var defaultSampleNum = 302;
     var defaultDir = "tweenxcore";
 
-	function new()
-	{
-		super();
-		var sampleNum = defaultSampleNum;
+    function new()
+    {
+        super();
+        var sampleNum = defaultSampleNum;
         var dir = defaultDir;
 
-		for (key in targetFlags.keys()) {
-			var segs = key.split("-");
-			if (segs.length == 3 && segs[0] == "sample") {
-				dir = segs[1];
-				sampleNum = Std.parseInt(segs[2]);
-				break;
-			}
-		}
+        for (key in targetFlags.keys()) {
+            var segs = key.split("-");
+            if (segs.length == 3 && segs[0] == "sample") {
+                dir = segs[1];
+                sampleNum = Std.parseInt(segs[2]);
+                break;
+            }
+        }
 
-		var samplePrefix = ("000" + sampleNum).substr(-3);
-		var sampleName = BuildConfig.sampleName(dir, sampleNum);
-		var size = BuildConfig.sampleWindowSize(sampleNum);
+        var samplePrefix = ("000" + sampleNum).substr(-3);
+        var sampleName = BuildConfig.sampleName(dir, sampleNum);
+        var size = BuildConfig.sampleWindowSize(sampleNum);
 
-		window.width = size.width;
-		window.height = size.height;
-		window.background = 0xFFFFFF;
-		window.fps = 60;
+        window.width = size.width;
+        window.height = size.height;
+        window.background = 0xFFFFFF;
+        window.fps = 60;
 
-		app.path = "bin/" + dir;
-		app.main = "sample.main.RepeatableMain";
-		app.file = sampleName;
+        app.path = "bin/" + dir;
+        app.main = "sample.main.RepeatableMain";
+        app.file = sampleName;
 
-		meta.title = sampleName;
-		meta.packageName = "tweenx909.sample." + sampleName;
-		meta.company = "shohei909";
-		meta.version = "1.0.0";
+        meta.title = sampleName;
+        meta.packageName = "tweenx909.sample." + sampleName;
+        meta.company = "shohei909";
+        meta.version = "1.0.0";
 
-		sources.push("sample/" + dir + "/" + samplePrefix + "_" + sampleName);
+        sources.push("sample/" + dir + "/" + samplePrefix + "_" + sampleName);
 
-		sources.push("src/tweenx");
-		sources.push("src/tweenxcore");
-		sources.push("sample/common");
+        sources.push("src/tweenx");
+        sources.push("src/tweenxcore");
+        sources.push("sample/common");
 
-		haxelibs.push(new Haxelib("openfl"));
+        haxelibs.push(new Haxelib("openfl"));
 
-		var assetsDir = "sample/" + samplePrefix + "_" + sampleName + "/assets";
-		if (FileSystem.exists(assetsDir) && FileSystem.isDirectory(assetsDir)) {
-			includeAssets(assetsDir, "assets");
-		}
+        var assetsDir = "sample/" + samplePrefix + "_" + sampleName + "/assets";
+        if (FileSystem.exists(assetsDir) && FileSystem.isDirectory(assetsDir)) {
+            includeAssets(assetsDir, "assets");
+        }
 
         haxeflags.push("-D");
         haxeflags.push("no-inline");
-	}
+    }
 }

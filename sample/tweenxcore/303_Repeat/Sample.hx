@@ -11,8 +11,8 @@ class Sample extends Sprite {
     var square:Square;
     var frameCount = 0;
 
-	public function new() {
-		super();
+    public function new() {
+        super();
         addChild(square = new Square());
         square.x = 15;
         square.y = Square.SIZE * 2.5;
@@ -24,7 +24,7 @@ class Sample extends Sprite {
     function onFrame(e:Event) {
         var change = new FloatChange(frameCount, frameCount += 1);
         change.handleRepeatPart(0, 40 / 3, 3, updateSquare);
-	}
+    }
 
     function updateSquare(change:FloatChangeRepeatPart) {
         square.x = change.current.cubicIn().lerp(15, 435);

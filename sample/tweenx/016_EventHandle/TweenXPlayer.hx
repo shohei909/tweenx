@@ -13,7 +13,7 @@ import tweenx909.TweenX;
 using tweenx909.ChainX;
 
 class TweenXPlayer extends Sprite {
-	public static inline var HEIGHT 	= 72;
+    public static inline var HEIGHT     = 72;
 
     var pauseBtn:BitmapButton;
     var playBtn:BitmapButton;
@@ -43,8 +43,8 @@ class TweenXPlayer extends Sprite {
         g.drawRect(0, 0, width, TweenXPlayer.HEIGHT);
         addChild(fill);
 
-		//mask
-		var m = new Shape();
+        //mask
+        var m = new Shape();
         g = m.graphics;
         g.beginBitmapFill(backFill);
         g.drawRect(0, 0, width, TweenXPlayer.HEIGHT);
@@ -124,17 +124,17 @@ class TweenXPlayer extends Sprite {
     }
 
     function onStop(e) {
-		change(1);
-	}
+        change(1);
+    }
     function onPlay(e) {
-		if (tween.timeScale == 1) 		change(2);
-		else if (tween.timeScale < 1) 	change(1);
-		else							 	change(3);
-	}
+        if (tween.timeScale == 1)         change(2);
+        else if (tween.timeScale < 1)     change(1);
+        else                                 change(3);
+    }
 
     function onFrame(e) {
-		for (i in 0...btns.length)                btns[i].mouseEnabled  = (i != selected);
-        if (tween.currentTime <= 0)                  backBtn.mouseEnabled 	= false;
+        for (i in 0...btns.length)                btns[i].mouseEnabled  = (i != selected);
+        if (tween.currentTime <= 0)                  backBtn.mouseEnabled     = false;
         if (tween.currentTime >= tween.totalTime)    forwardBtn.mouseEnabled = playBtn.mouseEnabled = false;
         for (b in btns) b.draw();
 
@@ -155,13 +155,13 @@ private class BitmapButton extends Sprite {
 
         addChild(new Bitmap(data));
 
-		this.onClick = onClick;
+        this.onClick = onClick;
         addEventListener(MouseEvent.MOUSE_DOWN, f);
     }
 
-	public function f(e) {
-		onClick();
-	}
+    public function f(e) {
+        onClick();
+    }
 
     public function draw() {
         var g = texture.graphics;
@@ -209,7 +209,7 @@ private class ProgressBar extends Sprite {
         g.drawRoundRect(right = (thumbWidth / 2), (h - thick) / 2, length = (w - thumbWidth), thick, 10, 10);
         left = length + right;
 
-		bar.addEventListener(MouseEvent.MOUSE_DOWN, onClick);
+        bar.addEventListener(MouseEvent.MOUSE_DOWN, onClick);
         addChild(thumb = new Thumb(thumbWidth));
         thumb.y = h / 2;
         addEventListener(Event.ADDED_TO_STAGE, addedToStage);
@@ -236,7 +236,7 @@ private class ProgressBar extends Sprite {
     }
 
     function onClick(e) {
-		tween.goto(tween.totalTime * (mouseX - right) / length);
+        tween.goto(tween.totalTime * (mouseX - right) / length);
     }
 
     var thumbDown:Bool;
@@ -249,7 +249,7 @@ private class ProgressBar extends Sprite {
         thumbDown = false;
     }
 
-	function onThumbDown(e) {
+    function onThumbDown(e) {
         thumbDown = true;
         playing = tween.playing;
         tween.stop();

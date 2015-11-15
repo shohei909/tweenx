@@ -15,37 +15,37 @@ using tweenx909.TweenX;
 using tweenx909.ChainX;
 
 class Main extends Sprite {
-	public static inline var HEIGHT 	= 512 - 72;
-	public static inline var WIDTH 		= 720;
-	public static inline var BACK_COLOR = 0x000000;
+    public static inline var HEIGHT     = 512 - 72;
+    public static inline var WIDTH         = 720;
+    public static inline var BACK_COLOR = 0x000000;
 
     var font:Font;
     var format:TextFormat;
     var formatTheme:TextFormat;
     var formatBlack:TextFormat;
     var body:Sprite;
-	var tween:TweenX;
+    var tween:TweenX;
     var tfList:Array<TextField>;
     var player:TweenXPlayer;
 
-	public function new() {
-		//Init
+    public function new() {
+        //Init
         super();
 
-		TweenX.updateMode = UpdateModeX.MANUAL;
+        TweenX.updateMode = UpdateModeX.MANUAL;
 
         //Layer
         addChild(new Bitmap(new BitmapData(WIDTH, HEIGHT, false,BACK_COLOR))).y = HEIGHT + TweenXPlayer.HEIGHT;
         addChild(new Bitmap(new BitmapData(WIDTH, HEIGHT, false, BACK_COLOR)));
-		var back    = addChild(new Bitmap(new BitmapData(WIDTH, HEIGHT, false, 0xFFFFFF)));
-		back.alpha  = 0;
+        var back    = addChild(new Bitmap(new BitmapData(WIDTH, HEIGHT, false, 0xFFFFFF)));
+        back.alpha  = 0;
         addChild(body = new Sprite());
 
 
         //TextField
         font        = Assets.getFont("assets/font/Pixcell.ttf");
         tfList = [];
-		var tf0 = addTextField("HA E", format = new TextFormat(font.fontName, 64, 0xFFFFFF));
+        var tf0 = addTextField("HA E", format = new TextFormat(font.fontName, 64, 0xFFFFFF));
         var tf1 = addTextField("  X ", formatTheme = new TextFormat(font.fontName, 64, 0xFF2200));
         var tf2 = addTextField('Has A " " insidE',format);
         var tf3 = addTextField("       X        ",formatTheme);
@@ -55,19 +55,19 @@ class Main extends Sprite {
         var tf7 = addTextField("enjoy it!!", formatBlack = new TextFormat(font.fontName, 64, 0x000000));
 
 
-		//Value
+        //Value
         var centerY = (HEIGHT - tf0.height) / 2;
         var bottomY = (HEIGHT - 100 - tf0.height);
         tf7.from().y(centerY).play();
 
 
-		var defaults = TweenX.dumpDefaults();
-		defaults.time(2);
+        var defaults = TweenX.dumpDefaults();
+        defaults.time(2);
 
         //Tween
-		tween = [
+        tween = [
 
-			//HAXE
+            //HAXE
             [tf0, tf1].to()
                 .alpha(0.4)
                 .y(centerY)
@@ -85,7 +85,7 @@ class Main extends Sprite {
             //Has A X insideE
             TweenX.wait(1),
 
-			[
+            [
                 [tf0, tf1].to()
                     .y(bottomY)
                     .alpha(0)
@@ -105,7 +105,7 @@ class Main extends Sprite {
                 tf2.to().alpha(0),
 
                 [
-					tf3.to()
+                    tf3.to()
                         .x((WIDTH - tf3.width) / 2 + tf3.width * 3 / 14)
                         .ease(EaseX.quintOut),
 
@@ -119,11 +119,11 @@ class Main extends Sprite {
 
             body.to({ "x":new Quake(0,80,EaseX.quintIn), "y":new Quake(0,80,EaseX.quintIn) }).time(4),
 
-			TweenX.wait(1),
+            TweenX.wait(1),
 
             //the exciting library
             [
-				[tf3, tf4].to().alpha(0).y(bottomY),
+                [tf3, tf4].to().alpha(0).y(bottomY),
                 [tf5, tf6].to().alpha(1).y(centerY)
 
             ].parallel(defaults.clone().ease(EaseX.sineIn)),
@@ -137,22 +137,22 @@ class Main extends Sprite {
             //enjoy it!!
             tf7.to().alpha(1).ease(EaseX.expoIn),
 
-			TweenX.wait(1)
+            TweenX.wait(1)
 
-		].serial(defaults).play();
+        ].serial(defaults).play();
 
-		addChildAt(player = new TweenXPlayer(tween, WIDTH), 0).y = HEIGHT;
+        addChildAt(player = new TweenXPlayer(tween, WIDTH), 0).y = HEIGHT;
         addEventListener("enterFrame", onFrame);
-		onFrame(null);
-	}
+        onFrame(null);
+    }
 
     public function addTextField(str:String, format:TextFormat) {
         var tf = new TextField();
         tf.embedFonts = true;
-		tf.defaultTextFormat = format;
+        tf.defaultTextFormat = format;
         setTextField(tf, str);
 
-        tf.y 		    = 100;
+        tf.y             = 100;
         tf.alpha        = 0;
         tf.selectable   = false;
         body.addChild(tf);
@@ -161,11 +161,11 @@ class Main extends Sprite {
     }
 
     public function setTextField(tf:TextField, str:String) {
-        tf.text 		= str;
-		tf.width        = tf.textWidth;
-        tf.height		= tf.textHeight * 1.3;
-		tf.x 		    = (WIDTH - tf.width) / 2;
+        tf.text         = str;
+        tf.width        = tf.textWidth;
+        tf.height        = tf.textHeight * 1.3;
+        tf.x             = (WIDTH - tf.width) / 2;
     }
 
-	public function onFrame(e) { TweenX.manualUpdate(1/60); }
+    public function onFrame(e) { TweenX.manualUpdate(1/60); }
 }

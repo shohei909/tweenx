@@ -26,7 +26,7 @@ class RepeatableMain extends SamplePlayer {
     function new()
     {
         super();
-    	Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
+        Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
         Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, clickToStart);
         Lib.current.stage.addEventListener(Event.ENTER_FRAME, onFrame);
 
@@ -55,7 +55,7 @@ class RepeatableMain extends SamplePlayer {
         state = WaitToClick(WAIT_FRAME_END);
 
         updateState(new FloatChange(0, 1));
-	}
+    }
 
     function onFrame(e:Event):Void {
         state = switch (state) {
@@ -105,8 +105,8 @@ class RepeatableMain extends SamplePlayer {
     }
 
     function updateBackLayer(change:FloatChange) {
-        backLayer.alpha = change.current.lerp(1, 0.8);
-        backLayer.filters = [filterTimeline.searchByRate(change.current).data];
+        backLayer.alpha = change.current.lerp(1, 0.6);
+        // backLayer.filters = [filterTimeline.searchByRate(change.current).data];
     }
 
     function startToPlay():RepeatableMainState {

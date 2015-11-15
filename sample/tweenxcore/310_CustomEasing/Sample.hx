@@ -12,8 +12,8 @@ class Sample extends Sprite {
     var squares:Array<Square>;
     var frame = 0;
 
-	public function new() {
-		super();
+    public function new() {
+        super();
 
         squares = [];
         for (i in 0...5) {
@@ -33,7 +33,7 @@ class Sample extends Sprite {
         for (i in 0...5) {
             change.handlePart(i * 7 + 30, i * 7 + 63, updateSquare.bind(i));
         }
-	}
+    }
 
     function updateSquare(i:Int, change:FloatChangePart) {
         var square:Square = squares[i];
