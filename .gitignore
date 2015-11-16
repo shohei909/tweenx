@@ -1,6 +1,6 @@
 /obj/*
 /archive/*
-**/bin/**/*.*
+**/bin/**/*
 /website/api/doc/xml/*
 
 !**/bin/**/*.swf

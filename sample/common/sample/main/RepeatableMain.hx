@@ -37,7 +37,10 @@ class RepeatableMain extends SamplePlayer {
         var stageHeight = Lib.current.stage.stageHeight;
         var w = Math.ceil(stageWidth / cell);
         var h = Math.ceil(stageHeight / cell);
+
+        #if grid_background
         SamplePlayer.drawGrid(backLayer.graphics, cell, w, h);
+        #end
 
         filterTimeline = new Timeline();
         for (i in 0...4) {
@@ -63,7 +66,11 @@ class RepeatableMain extends SamplePlayer {
                 if (frameCount < Sample.MOTION_END) {
                     Playing(frameCount + 1);
                 } else {
+                    #if !endless
                     WaitToClick(0);
+                    #else
+                    state;
+                    #end
                 }
             case WaitToClick(frameCount):
                 if (frameCount < WAIT_FRAME_END) {
@@ -106,7 +113,7 @@ class RepeatableMain extends SamplePlayer {
 
     function updateBackLayer(change:FloatChange) {
         backLayer.alpha = change.current.lerp(1, 0.6);
-        // backLayer.filters = [filterTimeline.searchByRate(change.current).data];
+        backLayer.filters = [filterTimeline.searchByRate(change.current).data];
     }
 
     function startToPlay():RepeatableMainState {

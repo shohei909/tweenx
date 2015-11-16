@@ -31,7 +31,7 @@ class FloatChange {
         }
     }
 
-    public inline function map(func:Float->Float)
+    public function map(func:Float->Float)
     {
         return new FloatChange(func(previous), func(current));
     }

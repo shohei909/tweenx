@@ -1,9 +1,10 @@
 import lime.project.*;
 import sys.FileSystem;
 
+
 class SampleProject extends HXProject
 {
-    var defaultSampleNum = 302;
+    var defaultSampleNum = 400;
     var defaultDir = "tweenxcore";
 
     function new()
@@ -23,16 +24,16 @@ class SampleProject extends HXProject
 
         var samplePrefix = ("000" + sampleNum).substr(-3);
         var sampleName = BuildConfig.sampleName(dir, sampleNum);
-        var size = BuildConfig.sampleWindowSize(sampleNum);
+        var setting = BuildConfig.sampleSetting(sampleNum);
 
-        window.width = size.width;
-        window.height = size.height;
+        window.width = setting.width;
+        window.height = setting.height;
         window.background = 0xFFFFFF;
         window.fps = 60;
 
-        app.path = "bin/" + dir;
+        app.path = "bin/";
         app.main = "sample.main.RepeatableMain";
-        app.file = sampleName;
+        app.file = samplePrefix + "_" + sampleName;
 
         meta.title = sampleName;
         meta.packageName = "tweenx909.sample." + sampleName;
@@ -52,7 +53,15 @@ class SampleProject extends HXProject
             includeAssets(assetsDir, "assets");
         }
 
-        haxeflags.push("-D");
-        haxeflags.push("no-inline");
+        if (setting.endless)
+        {
+            haxeflags.push("-D");
+            haxeflags.push("endless");
+        }
+        if (setting.grid)
+        {
+            haxeflags.push("-D");
+            haxeflags.push("grid_background");
+        }
     }
 }

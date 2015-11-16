@@ -1,14 +1,12 @@
 package tweenxcore.structure;
 using tweenxcore.Tools;
 
-/**
- * TODO: Implement
- */
 class Timeline<T>
 {
     var totalWeight:Float;
     var dataArray:Array<T>;
     var weightArray:Array<Float>;
+
     public var length(get, null):Int;
 
     function get_length():Int

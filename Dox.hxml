@@ -1,7 +1,7 @@
 -cp src/tweenx
 -cp src/tweenxcore
 -D doc-gen
---macro include('tweenx909')
+# --macro include('tweenx909')
 --macro include('tweenxcore')
 --no-output
 -xml website/api/xml/flash.xml
