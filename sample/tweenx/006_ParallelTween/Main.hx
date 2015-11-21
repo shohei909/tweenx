@@ -1,7 +1,7 @@
-import openfl.display.Shape;
-import openfl.display.Sprite;
-import openfl.display.StageScaleMode;
-import openfl.Lib;
+import flash.display.Shape;
+import flash.display.Sprite;
+import flash.display.StageScaleMode;
+import flash.Lib;
 import tweenx909.EaseX;
 import tweenx909.TweenX;
 

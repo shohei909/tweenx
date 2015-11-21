@@ -1,8 +1,8 @@
-import openfl.display.Sprite;
-import openfl.display.Shape;
-import openfl.display.StageScaleMode;
-import openfl.geom.Matrix;
-import openfl.Lib;
+import flash.display.Sprite;
+import flash.display.Shape;
+import flash.display.StageScaleMode;
+import flash.geom.Matrix;
+import flash.Lib;
 import tweenxcore.color.HsvColor;
 import tweenxcore.color.RgbColor;
 

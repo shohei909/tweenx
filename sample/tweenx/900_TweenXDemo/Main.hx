@@ -1,12 +1,12 @@
 
 import haxe.Log;
-import openfl.Assets;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-import openfl.display.Sprite;
-import openfl.text.Font;
-import openfl.text.TextField;
-import openfl.text.TextFormat;
+import flash.Assets;
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.display.Sprite;
+import flash.text.Font;
+import flash.text.TextField;
+import flash.text.TextFormat;
 import tweenx909.advanced.UpdateModeX;
 import tweenx909.EaseX;
 import tweenx909.rule.QuakeRuleX;

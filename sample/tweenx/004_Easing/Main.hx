@@ -1,11 +1,11 @@
-import openfl.display.Sprite;
-import openfl.display.Shape;
-import openfl.display.StageScaleMode;
-import openfl.events.Event;
-import openfl.geom.Matrix;
-import openfl.Lib;
-import openfl.text.TextField;
-import openfl.text.TextFormat;
+import flash.display.Sprite;
+import flash.display.Shape;
+import flash.display.StageScaleMode;
+import flash.events.Event;
+import flash.geom.Matrix;
+import flash.Lib;
+import flash.text.TextField;
+import flash.text.TextFormat;
 import tweenx909.advanced.UpdateModeX;
 
 import tweenx909.TweenX;

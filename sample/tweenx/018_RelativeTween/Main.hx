@@ -1,6 +1,6 @@
-import openfl.display.Sprite;
-import openfl.display.Shape;
-import openfl.geom.Matrix;
+import flash.display.Sprite;
+import flash.display.Shape;
+import flash.geom.Matrix;
 
 import tweenx909.TweenX;
 import tweenx909.EaseX;

@@ -36,7 +36,7 @@ class FloatChange {
         return new FloatChange(func(previous), func(current));
     }
 
-    public inline function isCrossOver(threshold:Float, boundaryMode:BoundaryMode = BoundaryMode.Right)
+    public function isCrossOver(threshold:Float, boundaryMode:BoundaryMode = BoundaryMode.Right):Bool
     {
         return switch (boundaryMode) {
             case BoundaryMode.Left:
@@ -120,15 +120,22 @@ class FloatChange {
     public inline function handleTimelinePart(
         timelineFrom:Float,
         timelineTo:Float,
-        updatePartTimeline:Timeline<FloatChangeRepeatPart->Void>):Void
+        updatePartTimeline:Timeline<FloatChangeTimelinePart->Void>):Void
     {
         if (timelineFrom != timelineTo) {
             var p = previous.inverseLerp(timelineFrom, timelineTo);
             var c = current.inverseLerp(timelineFrom, timelineTo);
             if ((0 < p && c < 1) || (0 < c && p < 1)) {
                 var length = updatePartTimeline.length;
-                inline function update(previousValue:Float, currentValue:Float, index:Int, miner:Bool) {
-                    var part = new FloatChangeRepeatPart(previousValue, currentValue, index, length, miner);
+                inline function update(previousValue:Float, currentValue:Float, index:Int, isMiner:Bool) {
+                    var part = new FloatChangeTimelinePart(
+                        previousValue,
+                        currentValue,
+                        index,
+                        updatePartTimeline.rangeLeft(index),
+                        updatePartTimeline.rangeRight(index),
+                        isMiner
+                    );
                     updatePartTimeline.dataAt(index)(part);
                 }
                 p = p.clamp(0, 1);

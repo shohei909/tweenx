@@ -1,11 +1,1 @@
--cp src/tweenx
--cp src/tweenxcore
--D doc-gen
-# --macro include('tweenx909')
---macro include('tweenxcore')
---no-output
--xml website/api/xml/flash.xml
--swf dummy.swf
-
---next
--cmd haxelib run dox -i website/api/xml -o website/api/pages -in tweenx --title "TweenX API"
+--macro Project.buildAll()

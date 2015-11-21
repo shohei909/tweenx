@@ -248,7 +248,7 @@ class Easing {
         }
     }
 
-    public static inline var overshoot:Float = 1.70158;
+    private static inline var overshoot:Float = 1.70158;
 
     /*
      * BACK EASING
@@ -377,6 +377,11 @@ class Easing {
 
 class FloatTools
 {
+    public static inline function revert(rate:Float):Float
+    {
+        return 1 - rate;
+    }
+
     public static inline function clamp(value:Float, min:Float = 0.0, max:Float = 1.0):Float
     {
         return if (value <= min) min else if (max <= value) max else value;
@@ -433,11 +438,11 @@ class FloatTools
     // Custom Easing
     // =================================================
 
-    public static inline function mixEase(
+    public static inline function mixEasing(
         rate:Float,
         easing1:Float->Float,
         easing2:Float->Float,
-        easing2Strength:Float):Float
+        easing2Strength:Float = 0.5):Float
     {
         return easing2Strength.lerp(
             easing1(rate),
@@ -445,7 +450,7 @@ class FloatTools
         );
     }
 
-    public static inline function crossEase(
+    public static inline function crossfadeEasing(
         rate:Float,
         easing1:Float->Float,
         easing2:Float->Float,
@@ -462,30 +467,30 @@ class FloatTools
         );
     }
 
-    public static inline function oneTwoEase(
-        rate:Float,
-        switchRate:Float,
-        easingOne:Float->Float,
-        easingTwo:Float->Float):Float
-    {
-        return if (rate < switchRate) {
-            easingOne(rate);
-        } else {
-            easingTwo(rate);
-        }
-    }
-
-    public static inline function chainEase(
+    public static inline function connectEasing(
         time:Float,
+        easing1:Float->Float,
         switchTime:Float,
         switchValue:Float,
-        easing1:Float->Float,
         easing2:Float->Float):Float
     {
         return if (time < switchTime) {
-            easing1(time).lerp(0, switchValue);
+            easing1(time.inverseLerp(0, switchTime)).lerp(0, switchValue);
         } else {
-            easing2(time).lerp(switchValue, 1);
+            easing2(time.inverseLerp(switchTime, 1)).lerp(switchValue, 1);
+        }
+    }
+
+    public static inline function oneTwoEasing(
+        time:Float,
+        easingOne:Float->Float,
+        switchTime:Float,
+        easingTwo:Float->Float):Float
+    {
+        return if (time < switchTime) {
+            easingOne(time.inverseLerp(0, switchTime));
+        } else {
+            easingTwo(time.inverseLerp(switchTime, 1));
         }
     }
 
@@ -621,11 +626,12 @@ class MatrixTools {
         var dx = toX - fromX;
         var dy = toY - fromY;
         var rot = Math.atan2(dy, dx);
+        var d = Math.sqrt(dx * dx + dy * dy);
 
-        outputMatrix.a = rot * Math.cos(rot);
-        outputMatrix.b = -rot * Math.sin(rot);
-        outputMatrix.c = rot * Math.sin(rot);
-        outputMatrix.d = rot * Math.cos(rot);
+        outputMatrix.a = d * Math.cos(rot);
+        outputMatrix.b = d * Math.sin(rot);
+        outputMatrix.c = -d * Math.sin(rot);
+        outputMatrix.d = d * Math.cos(rot);
         outputMatrix.tx = fromX;
         outputMatrix.ty = fromY;
     }

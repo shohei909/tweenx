@@ -1,10 +1,10 @@
-import openfl.Assets;
-import openfl.display.Bitmap;
-import openfl.display.Sprite;
-import openfl.display.Shape;
-import openfl.display.StageScaleMode;
-import openfl.geom.Matrix;
-import openfl.Lib;
+import flash.Assets;
+import flash.display.Bitmap;
+import flash.display.Sprite;
+import flash.display.Shape;
+import flash.display.StageScaleMode;
+import flash.geom.Matrix;
+import flash.Lib;
 import tweenx909.rule.TimelineRuleX;
 import tweenx909.TweenX;
 import tweenx909.EaseX;

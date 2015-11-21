@@ -1,12 +1,12 @@
-import openfl.display.GradientType;
-import openfl.display.InterpolationMethod;
-import openfl.display.SpreadMethod;
-import openfl.display.Sprite;
-import openfl.display.Shape;
-import openfl.display.StageScaleMode;
-import openfl.geom.Matrix;
-import openfl.geom.Point;
-import openfl.Lib;
+import flash.display.GradientType;
+import flash.display.InterpolationMethod;
+import flash.display.SpreadMethod;
+import flash.display.Sprite;
+import flash.display.Shape;
+import flash.display.StageScaleMode;
+import flash.geom.Matrix;
+import flash.geom.Point;
+import flash.Lib;
 import tweenx909.rule.HsvRuleX;
 import tweenxcore.color.HsvColor;
 

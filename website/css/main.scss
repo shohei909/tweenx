@@ -11,7 +11,7 @@ $font: 			"Meiryo";
 
 body{
 	font-family: $font;
-	font-size: 14px;
+	font-size: 15px;
 	color: #454545;
 	background-color: #FFFFFF;
 	margin:0px;
@@ -49,9 +49,10 @@ h4{
 }
 
 p {
-    width:800px;
+    width:900px;
     text-indent: 1em;
     margin-bottom: 1em;
+    margin-right: 20px;
     line-height: 1.4em
 }
 
@@ -71,6 +72,7 @@ ul {
 ul, ol {
     margin-bottom: 1em;
     margin-left: 2em;
+    margin-right: 20px;
 }
 
 .sentence, .sectionbody{
@@ -83,19 +85,24 @@ strong{
 }
 
 code {
-    font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
-    border: solid 1px #E5E1C0;
+    font-family: 'Source Han Code JP', Consolas, 'Courier New', Courier, Monaco, monospace;
+    border: solid 1px #F5F1D0;
     background-color: #FCFCF0;
-    margin-left: 2px;
-    margin-right: 2px;
+    margin: 0px 4px;
+    padding: 0px 4px;
+    font-size: 13px;
 }
 
-pre>code{
+pre>code {
     display: block;
+    width:900px;
     border: solid 1px #E5E1C0;
     background-color: #FCFCF0;
     margin-bottom: 1em;
+    margin-right: 20px;
     padding: 5px;
+    line-height: 1.4em;
+    font-size: 13px;
 
     td.linenos {
         width:3em;
@@ -117,7 +124,7 @@ div.toc {
     margin-top: 30px;
     margin-bottom: 1em;
     padding: 5px;
-    width: 350px;
+    width: 500px;
 }
 
 .paragraph, .dlist, .ulist, olist{

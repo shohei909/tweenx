@@ -4,33 +4,27 @@
   <output>
     <movie outputType="CustomBuild" />
     <movie input="" />
-    <movie path="SampleProject.hxp" />
+    <movie path="build.hxml" />
     <movie fps="60" />
-    <movie width="750" />
-    <movie height="500" />
+    <movie width="200" />
+    <movie height="300" />
     <movie version="0" />
     <movie minorVersion="0" />
-    <movie platform="Lime" />
-    <movie background="FFFFFF" />
+    <movie platform="hxml" />
+    <movie background="#FFFFFF" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="C:\HaxeToolkit\haxe\lib\openfl\3,4,0" />
-    <class path="C:\HaxeToolkit\haxe\lib\lime\2,7,0" />
-    <class path="sample\tweenxcore\400_EasingVisualizer" />
-    <class path="src\tweenx" />
-    <class path="src\tweenxcore" />
-    <class path="sample\common" />
-    <class path="bin\flash\haxe" />
+    <class path="." />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="openfl=3.4.0&#xA;lime=2.7.0&#xA;openfl-next&#xA;tools=2.7.0&#xA;no-compilation&#xA;openfl-flash&#xA;web&#xA;endless&#xA;display" />
+    <option directives="" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="ApplicationMain" />
+    <option mainClass="sample.main.RepeatableMain" />
     <option enabledebug="False" />
-    <option additional="-swf-version 11.2" />
+    <option additional="" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
@@ -45,14 +39,14 @@
     <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>"$(CompilerPath)/haxelib" run lime build "$(OutputFile)" $(TargetBuild) -$(BuildConfig) -Dfdb</preBuildCommand>
+  <preBuildCommand>cmd /c haxe $(OutputFile) --times</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="True" />
-    <option testMovie="Custom" />
-    <option testMovieCommand="" />
+    <option testMovie="OpenDocument" />
+    <option testMovieCommand="bin/main.swf" />
   </options>
   <!-- Plugin storage -->
   <storage />

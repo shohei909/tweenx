@@ -1,5 +1,5 @@
-import openfl.display.Sprite;
-import openfl.events.Event;
+import flash.display.Sprite;
+import flash.events.Event;
 import sample.SampleSuport.Square;
 import tweenxcore.structure.FloatChange;
 import tweenxcore.structure.FloatChangePart;
@@ -26,7 +26,7 @@ class Sample extends Sprite {
         change.handlePart(0, 20, updateSquare);
     }
 
-    function updateSquare(change:FloatChangePart) {
-        square.x = change.current.cubicIn().lerp(15, 435);
+    function updateSquare(part:FloatChangePart) {
+        square.x = part.current.cubicIn().lerp(15, 435);
     }
 }

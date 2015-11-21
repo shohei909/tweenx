@@ -1,11 +1,12 @@
 package sample.main;
 
-import openfl.display.Sprite;
-import openfl.display.StageScaleMode;
-import openfl.events.Event;
-import openfl.events.MouseEvent;
-import openfl.Lib;
-import openfl.filters.BlurFilter;
+import flash.display.Sprite;
+import flash.display.StageQuality;
+import flash.display.StageScaleMode;
+import flash.events.Event;
+import flash.events.MouseEvent;
+import flash.Lib;
+import flash.filters.BlurFilter;
 import sample.SampleSuport.PlayButton;
 import sample.SampleSuport.PlayButtonShadow;
 import sample.SampleSuport.SamplePlayer;
@@ -13,6 +14,7 @@ import tweenxcore.structure.FloatChange;
 import tweenxcore.structure.Timeline;
 using tweenxcore.Tools;
 
+@:meta(SWF(width="451",height="151"))
 class RepeatableMain extends SamplePlayer {
     static inline var WAIT_FRAME_END = 60;
     static inline var READY_FRAME_END = 3;
@@ -23,10 +25,16 @@ class RepeatableMain extends SamplePlayer {
     var playButtonShadow:PlayButtonShadow;
     var state:RepeatableMainState;
 
+    static function main()
+    {
+        Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
+        Lib.current.stage.quality = StageQuality.MEDIUM;
+        Lib.current.addChild(new RepeatableMain());
+    }
+
     function new()
     {
         super();
-        Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
         Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, clickToStart);
         Lib.current.stage.addEventListener(Event.ENTER_FRAME, onFrame);
 
@@ -41,6 +49,8 @@ class RepeatableMain extends SamplePlayer {
         #if grid_background
         SamplePlayer.drawGrid(backLayer.graphics, cell, w, h);
         #end
+
+        backLayer.cacheAsBitmap = true;
 
         filterTimeline = new Timeline();
         for (i in 0...4) {
@@ -66,6 +76,7 @@ class RepeatableMain extends SamplePlayer {
                 if (frameCount < Sample.MOTION_END) {
                     Playing(frameCount + 1);
                 } else {
+                    cacheAsBitmap = true;
                     #if !endless
                     WaitToClick(0);
                     #else
@@ -128,6 +139,7 @@ class RepeatableMain extends SamplePlayer {
     }
 
     function clickToStart(e:MouseEvent) {
+        cacheAsBitmap = false;
         state = switch (state) {
             case Playing(_):
                 startToPlay();

@@ -36,7 +36,7 @@ class Timeline<T>
         return this;
     }
 
-    public inline function searchByRate(rate:Float, boundaryMode:BoundaryMode = BoundaryMode.Left):TimelineSeachResult<T>
+    public inline function searchByRate(rate:Float, boundaryMode:BoundaryMode = BoundaryMode.Left):TimelineSearchResult<T>
     {
         if (dataArray.length == 0) {
             throw "timeline is not initialized";
@@ -55,7 +55,7 @@ class Timeline<T>
             weightArray[searchResult] / totalWeight;
         }
 
-        return new TimelineSeachResult(
+        return new TimelineSearchResult(
             dataArray[searchResult],
             searchResult,
             baseWeight,
@@ -69,5 +69,25 @@ class Timeline<T>
             throw "timeline is not initialized";
         }
         return dataArray[index];
+    }
+
+    public inline function rangeLeft(index:Int):Float
+    {
+        if (index == 0)
+        {
+            return 0.0;
+        }
+
+        return weightArray[index - 1] / totalWeight;
+    }
+
+    public inline function rangeRight(index:Int):Float
+    {
+        if (index == dataArray.length)
+        {
+            return 1.0;
+        }
+
+        return weightArray[index] / totalWeight;
     }
 }

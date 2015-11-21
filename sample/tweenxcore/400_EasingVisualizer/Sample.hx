@@ -1,9 +1,9 @@
-import openfl.display.Sprite;
-import openfl.display.StageScaleMode;
-import openfl.events.Event;
-import openfl.Lib;
-import openfl.text.TextField;
-import openfl.text.TextFormat;
+import flash.display.Sprite;
+import flash.display.StageScaleMode;
+import flash.events.Event;
+import flash.Lib;
+import flash.text.TextField;
+import flash.text.TextFormat;
 import tweenxcore.structure.FloatChange;
 import tweenxcore.structure.FloatChangeRepeatPart;
 import tweenxcore.Tools.Easing;
@@ -182,8 +182,8 @@ private class Chart extends Sprite {
     }
 
     function draw(change:FloatChangeRepeatPart) {
-        if (change.isPartExit()) {
-            var c = (change.current + change.repeatCount) / change.repeatLimit;
+        if (change.isExit()) {
+            var c = (change.current + change.repeatIndex) / change.repeatLimit;
             graphics.lineTo(W * c, H * (1 - easing(c)));
         }
     }

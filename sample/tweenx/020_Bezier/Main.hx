@@ -1,12 +1,12 @@
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-import openfl.display.DisplayObject;
-import openfl.display.Sprite;
-import openfl.display.Shape;
-import openfl.events.Event;
-import openfl.events.MouseEvent;
-import openfl.geom.ColorTransform;
-import openfl.geom.Matrix;
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.display.DisplayObject;
+import flash.display.Sprite;
+import flash.display.Shape;
+import flash.events.Event;
+import flash.events.MouseEvent;
+import flash.geom.ColorTransform;
+import flash.geom.Matrix;
 
 import tweenxcore.tools.FloatTools;
 import tweenx909.rule.QuakeRuleX;

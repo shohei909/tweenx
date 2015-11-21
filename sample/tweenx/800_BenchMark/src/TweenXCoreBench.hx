@@ -1,13 +1,13 @@
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-import openfl.display.Sprite;
-import openfl.display.StageScaleMode;
-import openfl.events.Event;
-import openfl.geom.ColorTransform;
-import openfl.geom.Point;
-import openfl.Lib;
-import openfl.text.TextField;
-import openfl.text.TextFormat;
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.display.Sprite;
+import flash.display.StageScaleMode;
+import flash.events.Event;
+import flash.geom.ColorTransform;
+import flash.geom.Point;
+import flash.Lib;
+import flash.text.TextField;
+import flash.text.TextFormat;
 import haxe.ds.Vector;
 
 using tweenxcore.tools.Tools;

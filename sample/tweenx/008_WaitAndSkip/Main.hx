@@ -1,8 +1,8 @@
-import openfl.display.StageScaleMode;
-import openfl.display.Sprite;
-import openfl.display.Shape;
-import openfl.geom.Matrix;
-import openfl.Lib;
+import flash.display.StageScaleMode;
+import flash.display.Sprite;
+import flash.display.Shape;
+import flash.geom.Matrix;
+import flash.Lib;
 import tweenx909.rule.TimelineRuleX;
 
 import tweenx909.TweenX;

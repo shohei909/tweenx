@@ -1,34 +1,35 @@
 package sample;
 
-import openfl.display.BlendMode;
-import openfl.display.Graphics;
-import openfl.display.Shape;
-import openfl.display.Sprite;
-import openfl.display.StageScaleMode;
-import openfl.events.MouseEvent;
-import openfl.Lib;
+import flash.display.BlendMode;
+import flash.display.Graphics;
+import flash.display.Shape;
+import flash.display.Sprite;
+import flash.display.StageScaleMode;
+import flash.events.MouseEvent;
+import flash.Lib;
 import tweenxcore.color.HsvColor;
 using tweenxcore.Tools;
 
 class SamplePlayer extends Sprite {
     public static var THEME_COLOR:Int = 0x4EDAE1;
-    var child:Sprite;
+    private var child:Sprite;
 
     static function drawGrid(graphics:Graphics, size = 15, w = 30, h = 10) {
         //Draw background
-        graphics.lineStyle(1, 0xF1F1F1);
         var end = size * w;
         for (i in 0...h + 1) {
             var p = i * size;
-            graphics.moveTo(0, p);
-            graphics.lineTo(end, p);
+            graphics.beginFill(0xF1F1EF, 1);
+            graphics.drawRect(0, p, end, 1);
+            graphics.endFill();
         }
 
         var end = size * h;
         for (i in 0...w + 1) {
             var p = i * size;
-            graphics.moveTo(p, 0);
-            graphics.lineTo(p, end);
+            graphics.beginFill(0xF1F1EF, 1);
+            graphics.drawRect(p, 0, 1, end);
+            graphics.endFill();
         }
     }
 }
@@ -39,7 +40,7 @@ class Square extends Shape {
     public function new() {
         super();
         graphics.beginFill(SamplePlayer.THEME_COLOR);
-        graphics.drawRect(-SIZE / 2, -SIZE / 2, SIZE, SIZE);
+        graphics.drawRect( -SIZE / 2, -SIZE / 2, SIZE, SIZE);
     }
 }
 
