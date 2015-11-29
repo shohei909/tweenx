@@ -16,7 +16,7 @@ logo: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
 
 トゥイーンライブラリを使うよりも、実行速度を速く、開発速度を速く、バグを少なく、学習コストを少なく、そしてモーションを自由に面白くするために作られています。
 
-{% include movie.asciidoc file="390" %}
+**「ここにカッコいいデモ(予定)」**
 
 toc::[]
 
@@ -126,8 +126,8 @@ haxelib install tweenxcore
 
 [source,haxe,linenums]
 ---------
-import openfl.display.Sprite;
-import openfl.events.Event;
+import flash.display.Sprite;
+import flash.events.Event;
 import sample.SampleSuport.Square;
 import tweenxcore.structure.FloatChange;
 import tweenxcore.structure.FloatChangePart;
@@ -161,6 +161,8 @@ class Sample extends Sprite {
 }
 ---------
 
+サンプルはFlashプラットフォームのコードですが、他のプラットフォームであっても{{page.logo}}の使い方はほとんど変わりません。
+
 {{page.logo}}の説明として重要なのは以下のコードです。
 
 [source,haxe]
@@ -188,9 +190,9 @@ function updateSquare(part:FloatChangePart) {
 それでは1つづつ要素を見ていきます。
 
 
-==== tweenxcore.Tools
+==== using tweenxcore.Tools
 
-ここで読み込んでいるtweenxcore.Toolsモジュールは4種類のクラスを持っています。
+ここで読み込んでいる``tweenxcore.Tools``モジュールは4種類のクラスを持っています。
 
 Easingクラス::
   モーションの曲線として使われる、イージング関数を持ちます
@@ -199,17 +201,21 @@ FloatToolsクラス::
   Floatの機能を拡張します。
 
 PointToolsクラス::
-  XY座標上の点の拡張です。ベジェ曲線の機能を付け加えます。FlashのPointクラスに対してだけではなく、様々なライブラリのPoint型に対して使えます。
+  XY座標上の点の拡張です。ベジェ曲線の機能を付け加えます。Flashの``Point``クラスに対してだけではなく、様々なライブラリの``Point``型に対して使えます。
 
 MatrixToolsクラス::
-  XY座標のアフィン変換の行列の拡張です。2次元的な動きを相似変換するための機能を付け加えます。FlashのMatrixクラスに対してだけではなく、{sourceLink}tweenxcore/geom/Matrix.hx[似たインターフェース]を持つその他のライブラリのMatrix型に対して使えます。
+  XY座標のアフィン変換の行列の拡張です。2次元的な動きを相似変換するための機能を付け加えます。Flashの``Matrix``クラスに対してだけではなく、{sourceLink}tweenxcore/geom/Matrix.hx[似たインターフェース]を持つその他のライブラリの``Matrix``型に対して使えます。
 
-``using tweenxcore.Tools;``で、このすべてを拡張として読みこみます。
+``using tweenxcore.Tools;``でこのすべてを拡張として読みこみます。
+
+チュートリアルで紹介する関数の多くはこの``Tools``のモジュールにありますから、そのソースを参照しながら読み進めると理解がしやすいかと思います。
 
 {sourceLink}tweenxcore/Tools.hx[[ソースを見る(tweenxcore.Tools)\]]
 
 ==== FloatChange、FloatChangePart
-``FloatChange``と``FloatChangePart``は`tweenxcore.structure`が提供している型で、直前のFloat値と現在のFloat値をまとめて1つの型に持つことで、値の変化を簡単に扱えるようにします。
+``FloatChange``と``FloatChangePart``は``tweenxcore.structure``パッケージに含まれる型です。
+
+``FloatChange``は直前の``Float``値と現在の``Float``値をまとめて1つの型に持つことで、値の変化を簡単にあつかえるようにします。
 
 この``FloatChange``の``handlePart``関数は、値が指定した範囲にあった場合にすぐに関数呼び出しを行います。つまり例では、``frame``または``frame + 1``が``0 < 値 < 20``の範囲にあるとき、``updateSquare``関数を呼び出します。
 
@@ -371,7 +377,7 @@ var timeline:Timeline<FloatChangeTimelinePart->Void>;
 
 public function new() {
     // (中略)
-	
+
     // 重み付きのupdate関数の配列を作成。
     timeline = new Timeline().add(update1, 1).add(update2, 3).add(update3, 12);
 }
@@ -434,10 +440,10 @@ square2.x = part.current.cubicIn().bounceOut().lerp(15, 435);
 {% include sample.asciidoc num="308" title="Mix" %}
 
 ```haxe
-square.x = part.current.mixEasing(Easing.expoOutIn, Easing.linear, 0.15).lerp(15, 435);
+square.x = part.current.mixEasing(Easing.expoOutIn, Easing.linear, 0.12).lerp(15, 435);
 ```
 
-サンプルとしてゲームのカットイン演出にありそうなイージングを作りました。``expoOutIn``に``linear``関数を``0.15``ミックスすることで、``OutIn``のイージングの真ん中でピタッっと止まる感じを無くしています。
+サンプルとしてゲームのカットイン演出にありそうなイージングを作りました。``expoOutIn``に``linear``関数を``0.12``ミックスすることで、``OutIn``のイージングの真ん中でピタッっと止まる感じを無くしています。
 
 ==== クロスフェード
 
@@ -492,7 +498,7 @@ square3.x = part.current.oneTwoEasing(
 ).lerp(45, 405);
 ```
 
-サンプルの一番上は単純に別々のイージングを使って2回移動を行っています。ワンツーのイージングはこのような単純な使い方よりも、真ん中や下の例のように``yoyo``、``zigzag``、``revert``などの関数と合わせて往復をするようなイージングを作るのに適しています。
+サンプルの一番上は単純に``backIn``で1回目の``linear``で2回目の移動を行っています。ワンツーのイージングはこのような単純な使い方よりも、真ん中や下の例のように``yoyo``、``zigzag``、``revert``などの関数と合わせて往復をするようなイージングを作るのに適しています。
 
 === CustomEasingクラス
 
@@ -513,11 +519,11 @@ class CustomEasing {
 
 === 応用
 
-ここまでのまとめのサンプルです。
+ここまでの機能を合わせて使ったサンプルです。
 
 {% include sample.asciidoc num="312" title="CustomEasing" %}
 
-このようにカスタムイージングの機能を使えるようになれば、新しくて気持ちのよいモーションを簡単に作ることができるようになります。
+このようにカスタムイージングを使えるようになれば、新しくて気持ちのよいモーションを簡単に作ることができるようになります。
 
 === 2次元の動き
 
@@ -532,9 +538,9 @@ square.x = part.current.expoOutIn().lerp(15, 435);
 square.y = part.current.sinByRate().lerp(75, 95);
 ```
 
-四角をY方向に揺らしてみました。ここで使っている``sinByRate``はラジアンの代わりに円の一周を1.0としてあつかう``sin``関数です。
+四角をY方向に揺らしてみました。ここで使っている``sinByRate``は円の一周を1.0としてあつかう``sin``関数です。
 
-このサンプルはそれほど目新しくはありません。問題となるのは同じようなモーションを斜め方向に行う場合です。これまで0.0から1.0の値を実際の``x``座標に変換するのには``lerp``関数を使ってきましたが、回転が加わる場合``lerp``関数は使えません。
+このサンプルはそれほど目新しくはありません。問題は同じようなモーションを斜め方向に行う場合です。これまで0.0から1.0の値を実際の``x``座標に変換するのには``lerp``関数を使ってきましたが、回転が加わる場合``lerp``関数は使えません。
 
 そういった場合は、``MatrixTools.createSimilarityTransform``を使います。
 
@@ -564,8 +570,93 @@ function updateSquare(part:FloatChangePart) {
 ``createSimilarityTransform(fromX, fromY, toX, toY)``は、X方向の0.0から1.0までの移動を、X方向に``fromX``から``toX``Y方向に``fromY``から``toY``の移動に相似変換するような行列を作成します。
 
 ==== 極座標
+
+{{page.logo}}は極座標をサポートしています。
+
+{% include sample.asciidoc num="315" title="Polar" %}
+
+```haxe
+var matrix:Matrix;
+
+public function new() {
+	// (中略)
+
+	// 相似変換を作成
+	matrix = new Matrix();
+	matrix.createSimilarityTransform(225, 75, 15, 15);
+}
+
+function updateSquare(part:FloatChangePart) {
+	// 原点に近づいていく
+	var distance = part.current.expoOut().lerp(1, 0);
+	// 反時計回りに2周する。
+	var angle = part.current.lerp(0, -2);
+	var polarPoint = new PolarPoint(distance, angle);
+
+	// 実際の座標へ変換
+	var point = matrix.transformPoint(new Point(polarPoint.x, polarPoint.y));
+	square.x = point.x;
+	square.y = point.y;
+}
+```
+
+サンプルは、``(x, y)=(225, 75)``を極座標の中心として、そこに``(x, y)=(15, 15)``の位置から回転しながら近づいていくモーションです。
+
+{sourceLink}tweenxcore/geom/PolarPoint.hx[[ソースを見る(tweenxcore.geom.PolarPoint)\]]
+
 ==== ベジェ曲線
 
+{{page.logo}}はベジェ曲線もサポートしています。
+
+{% include sample.asciidoc num="316" title="Bezier" %}
+
+```haxe
+square.x = part.current.bezier3(15, 50, 400, 435);
+square.y = part.current.bezier3(15, 200, -50, 135);
+```
+
+サンプルは、始点が``(15, 15)``、制御点が``(50, 200)``と``(400, -50)``、終点が``(400, 135)``の3次ベジェ曲線です。
+
+ベジェ曲線は3次だけでなく任意の次数ののベジェ曲線が使えます。詳しくは``tweenxcore.Tools``モジュールを確認してください。
+
+{sourceLink}tweenxcore/Tools.hx[[ソースを見る(tweenxcore.Tools)\]]
+
+
 === いろんなものを動かす
+
 ==== RGBカラー、HSVカラー
+
+{{page.logo}}では、RGBカラーとHSVカラーが使えます。
+
+{% include sample.asciidoc num="317" title="Color" %}
+
+```haxe
+var prevX = part.previous.expoInOut().lerp(0, 450);
+var currentX = part.current.expoInOut().lerp(0, 450);
+
+// RGB
+var rgbCurve = part.current.expoInOut();
+var red = rgbCurve.lerp(0.8, 0.7);
+var green = rgbCurve.lerp(0.7, 1);
+var blue = rgbCurve.lerp(0.5, 1);
+graphics.beginFill(new RgbColor(red, green, blue).toInt());
+graphics.drawRect(prevX, 30, currentX - prevX, 30);
+
+// HSV
+var hsvCurve = part.current.expoInOut();
+var hue = hsvCurve.lerp(0.0, 1.0);
+var saturation = hsvCurve.lerp(0.0, 0.8);
+var value = 0.95;
+graphics.beginFill(new HsvColor(hue, saturation, value).toInt());
+graphics.drawRect(prevX, 90, currentX - prevX, 30);
+```
+
+サンプルはRGBと、HSVのそれぞれの値を動かしながら帯を描いています。
+
+{sourceLink}tweenxcore/color[[ソースを見る(tweenxcore.color)\]]
+
 ==== 画像
+
+連続したモーションをあつかうのに重み付き配列の``Timeline``を紹介しましたが、この``Timeline``は画像のパラパラアニメーションを作るのにも使えます。
+
+{% include sample.asciidoc num="318" title="Bitmap" width="151" %}

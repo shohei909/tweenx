@@ -1,3 +1,3 @@
 {% include movie.asciidoc file=include.num width=include.width height=include.height %}
 
-{sampleLink}tweenxcore/{{include.num}}_{{include.title}}/Sample.hx[[ソースを見る(サンプル-{{include.title}})\]]
+{sampleLink}tweenxcore/{{include.num}}_{{include.title}}/Sample.hx[[サンプルコードを見る({{include.title}})\]]

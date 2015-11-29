@@ -4,7 +4,7 @@ import haxe.ds.Option;
 class FloatChangeRepeatPart extends FloatChangePart
 {
     public var isMinerChange(default, null):Bool;
-    public var repeatIndex(default, null):Float;
+    public var repeatIndex(default, null):Int;
     public var repeatLimit(default, null):Int;
 
     public inline function new (previousValue:Float, currentValue:Float, repeatIndex:Int, repeatLimit:Int, isMinerChange:Bool)

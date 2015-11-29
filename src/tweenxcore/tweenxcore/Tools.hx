@@ -470,9 +470,10 @@ class FloatTools
     public static inline function connectEasing(
         time:Float,
         easing1:Float->Float,
-        switchTime:Float,
-        switchValue:Float,
-        easing2:Float->Float):Float
+        easing2:Float->Float,
+        switchTime:Float = 0.5,
+        switchValue:Float = 0.5
+        ):Float
     {
         return if (time < switchTime) {
             easing1(time.inverseLerp(0, switchTime)).lerp(0, switchValue);
@@ -484,8 +485,8 @@ class FloatTools
     public static inline function oneTwoEasing(
         time:Float,
         easingOne:Float->Float,
-        switchTime:Float,
-        easingTwo:Float->Float):Float
+        easingTwo:Float->Float,
+        switchTime:Float = 0.5):Float
     {
         return if (time < switchTime) {
             easingOne(time.inverseLerp(0, switchTime));
@@ -588,6 +589,14 @@ class FloatTools
     }
     public static inline function rateToRadian(rate:Float) {
         return rate * 2 * Math.PI;
+    }
+    public static inline function millisecondToBeat(millisecond:Float, bpm:Float):Float
+    {
+        return millisecond * bpm / 60000;
+    }
+    public static inline function beatToMillisecond(beat:Float, bpm:Float):Float
+    {
+        return beat * 60000 / bpm;
     }
 }
 

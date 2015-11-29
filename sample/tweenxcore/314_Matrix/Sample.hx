@@ -24,7 +24,7 @@ class Sample extends Sprite {
         square.y = 15;
 
         //Event
-        addEventListener(Event.ENTER_FRAME, onFrame);
+        addEventListener(Event.ENTER_FRAME, onFrame, false, 0, true);
 
         matrix = new Matrix();
         matrix.createSimilarityTransform(100, 15, 350, 135);

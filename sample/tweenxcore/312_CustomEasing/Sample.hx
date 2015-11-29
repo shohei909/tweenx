@@ -26,7 +26,7 @@ class Sample extends Sprite {
         }
 
         //Event
-        addEventListener(Event.ENTER_FRAME, onFrame);
+        addEventListener(Event.ENTER_FRAME, onFrame, false, 0, true);
     }
 
     function onFrame(e:Event) {

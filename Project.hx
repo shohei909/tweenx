@@ -20,21 +20,28 @@ class Project
         4 => {
             width : 750,
             height : 500,
-            grid: false,
-            endless: true,
+            kind: Repatable(true, false),
+        },
+        318 => {
+            width : 151,
+            height : 151,
+            kind: Repatable(true, false),
         },
         400 => {
             width : 750,
             height : 500,
-            grid: false,
-            endless: true,
+            kind: Repatable(true, false),
+        },
+        401 => {
+            width : 720,
+            height : 512,
+            kind: Direct,
         },
         900 => {
             width : 720,
             height : 512,
-            grid: false,
-            endless: true,
-        }
+            kind: Repatable(true, false),
+        },
     ];
 
     public static function sampleSetting(num:Int):Setting {
@@ -44,8 +51,7 @@ class Project
             {
                 width : 451,
                 height : 151,
-                grid: true,
-                endless: false,
+                kind: Repatable(false, true)
             }
         }
     }
@@ -106,21 +112,29 @@ class Project
         var file = File.write("hxml/" + samplePrefix + ".hxml", true);
 
         file.writeString('-swf-header ${setting.width}:${setting.height}:60:FFFFFF\n');
-        file.writeString('-main sample.main.RepeatableMain\n');
+
 
         file.writeString("-cp sample/" + dir + "/" + samplePrefix + "_" + sampleName + "\n");
         file.writeString("-cp src/tweenx\n");
         file.writeString("-cp src/tweenxcore\n");
         file.writeString("-cp sample/common\n");
 
-        if (setting.endless)
+        switch (setting.kind)
         {
-            file.writeString("-D endless\n");
-        }
+            case Repatable(endless, grid):
+                file.writeString('-main sample.main.RepeatableMain\n');
+                if (endless)
+                {
+                    file.writeString("-D endless\n");
+                }
+                if (grid)
+                {
+                    file.writeString("-D grid_background\n");
+                }
 
-        if (setting.grid)
-        {
-            file.writeString("-D grid_background\n");
+            case Direct:
+                file.writeString('-main sample.main.DirectMain\n');
+
         }
     }
 }
@@ -128,6 +142,11 @@ class Project
 private typedef Setting = {
     width : Int,
     height : Int,
-    endless : Bool,
-    grid : Bool,
+    kind: MainKind,
+}
+
+private enum MainKind
+{
+    Repatable(endless : Bool, grid : Bool);
+    Direct;
 }

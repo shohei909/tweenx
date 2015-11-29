@@ -20,14 +20,14 @@ class Sample extends Sprite {
 
         //Initialize
         addChild(square = new Square());
-        square.x = 0;
+        square.x = 15;
         square.y = 15;
 
         timeline = new Timeline();
         timeline.add(update1, 1).add(update2, 3).add(update3, 12);
 
         //Event
-        addEventListener(Event.ENTER_FRAME, onFrame);
+        addEventListener(Event.ENTER_FRAME, onFrame, false, 0, true);
     }
 
     function onFrame(e:Event) {

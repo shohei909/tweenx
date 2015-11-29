@@ -3,7 +3,7 @@ using tweenxcore.Tools;
 
 class Timeline<T>
 {
-    var totalWeight:Float;
+    public var totalWeight(default, null):Float;
     var dataArray:Array<T>;
     var weightArray:Array<Float>;
 
@@ -36,7 +36,7 @@ class Timeline<T>
         return this;
     }
 
-    public inline function searchByRate(rate:Float, boundaryMode:BoundaryMode = BoundaryMode.Left):TimelineSearchResult<T>
+    public inline function search(rate:Float, boundaryMode:BoundaryMode = BoundaryMode.Left):TimelineSearchResult<T>
     {
         if (dataArray.length == 0) {
             throw "timeline is not initialized";

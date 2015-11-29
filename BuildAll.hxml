@@ -68,6 +68,31 @@ hxml/314.hxml
 --connect 6000
 --next
 
+hxml/315.hxml
+-swf website/sample/swf/315.swf
+--connect 6000
+--next
+
+hxml/316.hxml
+-swf website/sample/swf/316.swf
+--connect 6000
+--next
+
+hxml/317.hxml
+-swf website/sample/swf/317.swf
+--connect 6000
+--next
+
+hxml/318.hxml
+-swf website/sample/swf/318.swf
+--connect 6000
+--next
+
 hxml/400.hxml
 -swf website/sample/swf/400.swf
+--connect 6000
+--next
+
+hxml/401.hxml
+-swf website/sample/swf/401.swf
 --connect 6000

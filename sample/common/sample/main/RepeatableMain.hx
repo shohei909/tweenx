@@ -14,7 +14,6 @@ import tweenxcore.structure.FloatChange;
 import tweenxcore.structure.Timeline;
 using tweenxcore.Tools;
 
-@:meta(SWF(width="451",height="151"))
 class RepeatableMain extends SamplePlayer {
     static inline var WAIT_FRAME_END = 60;
     static inline var READY_FRAME_END = 3;
@@ -124,7 +123,7 @@ class RepeatableMain extends SamplePlayer {
 
     function updateBackLayer(change:FloatChange) {
         backLayer.alpha = change.current.lerp(1, 0.6);
-        backLayer.filters = [filterTimeline.searchByRate(change.current).data];
+        backLayer.filters = [filterTimeline.search(change.current).data];
     }
 
     function startToPlay():RepeatableMainState {

@@ -30,7 +30,7 @@ class Sample extends Sprite {
         square3.y = Square.SIZE * 4.0;
 
         //Event
-        addEventListener(Event.ENTER_FRAME, onFrame);
+        addEventListener(Event.ENTER_FRAME, onFrame, false, 0, true);
     }
 
     function onFrame(e:Event) {
@@ -39,18 +39,18 @@ class Sample extends Sprite {
     }
 
     function updateSquare(part:FloatChangePart) {
-        square1.x = part.current.oneTwoEasing(Easing.backIn, 0.8, Easing.linear).lerp(45, 405);
+        square1.x = part.current.oneTwoEasing(Easing.backIn, Easing.linear, 0.8).lerp(45, 405);
 
         square2.x = part.current.oneTwoEasing(
             function (r:Float) { return r.yoyo(Easing.cubicOut).lerp(0, 0.3); },
-            0.9,
-            Easing.linear
+            Easing.linear,
+            0.9
         ).lerp(45, 405);
 
         square3.x = part.current.oneTwoEasing(
             function (r:Float) { return r.backOut(); },
-            0.8,
-            function (r:Float) { return r.revert().sineIn(); }
+            function (r:Float) { return r.revert().sineIn(); },
+            0.8
         ).lerp(45, 405);
     }
 }

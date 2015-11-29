@@ -141,8 +141,8 @@ class FloatChange {
                 p = p.clamp(0, 1);
                 c = c.clamp(0, 1);
 
-                var pResult = updatePartTimeline.searchByRate(p);
-                var cResult = updatePartTimeline.searchByRate(c);
+                var pResult = updatePartTimeline.search(p);
+                var cResult = updatePartTimeline.search(c);
                 var pCount = pResult.index;
                 var cCount = cResult.index;
                 var pRate = pResult.innerRate(p);

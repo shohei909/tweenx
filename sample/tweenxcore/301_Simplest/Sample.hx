@@ -16,7 +16,7 @@ class Sample extends Sprite {
         square.x = 15;
         square.y = Square.SIZE * 2.5;
 
-        addEventListener(Event.ENTER_FRAME, onFrame);
+        addEventListener(Event.ENTER_FRAME, onFrame, false, 0, true);
     }
 
     function onFrame(e:Event) {
