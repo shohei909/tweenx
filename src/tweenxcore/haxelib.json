@@ -2,10 +2,10 @@
   "name": "tweenxcore",
   "url" : "https://github.com/shohei909/tweenx",
   "license": "MIT",
-  "tags": ["flash", "cpp", "js", "neko", "tween"],
-  "description": "crossplatform tween utility",
-  "version": "1.0.0",
-  "releasenote": "major version release",
+  "tags": ["flash", "cpp", "js", "neko", "cross", "tween", "motion"],
+  "description": "lightweight motion library for haxe",
+  "version": "1.0.0-alpha2",
+  "releasenote": "bug fix",
   "contributors": ["shohei909"],
   "dependencies": {}
 }

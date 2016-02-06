@@ -31,11 +31,6 @@ class FloatChange {
         }
     }
 
-    public function map(func:Float->Float)
-    {
-        return new FloatChange(func(previous), func(current));
-    }
-
     public function isCrossOver(threshold:Float, boundaryMode:BoundaryMode = BoundaryMode.Right):Bool
     {
         return switch (boundaryMode) {
