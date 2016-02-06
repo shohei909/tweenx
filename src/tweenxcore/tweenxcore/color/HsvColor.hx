@@ -68,6 +68,15 @@ class HsvColor {
 
         if (h < 0) h += 1;
         var s = diff / max;
+
+        if (Math.isNaN(h))
+        {
+            h = 0;
+        }
+        if (Math.isNaN(s))
+        {
+            s = 0;
+        }
         return new HsvColor(h + hueIndex, s, max);
     }
 
