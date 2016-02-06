@@ -124,7 +124,7 @@ class Sample extends Sprite {
     }
 
     function update(change:FloatChange) {
-        var curvedChange = change.map(Easing.cubicInOut);
+        var curvedChange = change.mapFloatChange(Easing.cubicInOut);
         var body = 0.3;
         var margin = 1 - body;
         var length = charts.length;
@@ -183,7 +183,7 @@ private class Chart extends Sprite {
 
     function draw(change:FloatChangeRepeatPart) {
         if (change.isExit()) {
-            var c = (change.current + change.repeatIndex) / change.repeatLimit;
+            var c = (change.current + change.repeatIndex) / change.repeatLength;
             graphics.lineTo(W * c, H * (1 - easing(c)));
         }
     }

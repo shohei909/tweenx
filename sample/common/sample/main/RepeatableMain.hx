@@ -102,7 +102,7 @@ class RepeatableMain extends SamplePlayer {
     }
 
     function onWaitToClick(change:FloatChange) {
-        updateState(change.map(Easing.quartOut));
+        updateState(change.mapFloatChange(Easing.quartOut));
     }
 
     function updateState(change:FloatChange) {
