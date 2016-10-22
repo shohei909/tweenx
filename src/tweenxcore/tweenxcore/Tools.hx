@@ -435,7 +435,7 @@ class FloatTools
 
 
     // =================================================
-    // Custom Easing
+    // Complex Easing
     // =================================================
 
     public static inline function mixEasing(
