@@ -500,11 +500,11 @@ class FloatTools
     // Float Array
     // =================================================
 
-    public static inline function binarySearch(sortedValues:Array<Float>, value:Float, boundaryMode:BoundaryMode = BoundaryMode.Left):Int
+    public static inline function binarySearch(sortedValues:Array<Float>, value:Float, boundaryMode:BoundaryMode = BoundaryMode.Low):Int
     {
         var min = 0;
         var max = sortedValues.length;
-        if (boundaryMode == BoundaryMode.Left) {
+        if (boundaryMode == BoundaryMode.Low) {
             while (true) {
                 var next = Std.int((max - min) / 2) + min;
                 var dv = sortedValues[next];

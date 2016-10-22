@@ -6,23 +6,26 @@
     <movie input="" />
     <movie path="build.hxml" />
     <movie fps="60" />
-    <movie width="200" />
-    <movie height="300" />
+    <movie width="720" />
+    <movie height="512" />
     <movie version="0" />
     <movie minorVersion="0" />
     <movie platform="hxml" />
-    <movie background="#FFFFFF" />
+    <movie background="FFFFFF" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="." />
+    <class path="sample\tweenxcore\401_Demo" />
+    <class path="src\tweenx" />
+    <class path="src\tweenxcore" />
+    <class path="sample\common" />
   </classpaths>
   <!-- Build options -->
   <build>
     <option directives="" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="sample.main.RepeatableMain" />
+    <option mainClass="sample.main.DirectMain" />
     <option enabledebug="False" />
     <option additional="" />
   </build>

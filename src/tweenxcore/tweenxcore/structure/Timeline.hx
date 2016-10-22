@@ -36,7 +36,7 @@ class Timeline<T>
         return this;
     }
 
-    public inline function search(rate:Float, boundaryMode:BoundaryMode = BoundaryMode.Left):TimelineSearchResult<T>
+    public inline function search(rate:Float, boundaryMode:BoundaryMode = BoundaryMode.High):TimelineSearchResult<T>
     {
         if (dataArray.length == 0) {
             throw "timeline is not initialized";

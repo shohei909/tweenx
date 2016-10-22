@@ -21,7 +21,8 @@ class FloatChange {
     // Methods
     // ===============
 
-    public inline function direction():Direction {
+    public inline function direction():Direction 
+	{
         return if (previous < current) {
             Direction.Forward;
         } else if (current < previous) {
@@ -36,17 +37,19 @@ class FloatChange {
         return new FloatChange(func(previous), func(current));
     }
 
-    public function isCrossOver(threshold:Float, boundaryMode:BoundaryMode = BoundaryMode.Right):Bool
+    public function isCrossOver(threshold:Float, boundaryMode:BoundaryMode = BoundaryMode.High):Bool
     {
         return switch (boundaryMode) {
-            case BoundaryMode.Left:
+            case BoundaryMode.Low:
                 (previous < threshold && threshold <= current) || (current < threshold && threshold <= previous);
 
-            case BoundaryMode.Right:
+            case BoundaryMode.High:
                 (previous <= threshold && threshold < current) || (current <= threshold && threshold < previous);
         }
     }
 
+	
+	
     public inline function handlePart(from:Float, to:Float, updatePart:FloatChangePart->Void):Void
     {
         if (
