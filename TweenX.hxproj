@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="build.hxml" />
     <movie fps="60" />
-    <movie width="720" />
-    <movie height="512" />
+    <movie width="750" />
+    <movie height="500" />
     <movie version="0" />
     <movie minorVersion="0" />
     <movie platform="hxml" />
@@ -15,17 +15,17 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="sample\tweenxcore\401_Demo" />
+    <class path="sample\tweenxcore\400_EasingVisualizer" />
     <class path="src\tweenx" />
     <class path="src\tweenxcore" />
     <class path="sample\common" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="" />
+    <option directives="endless" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="sample.main.DirectMain" />
+    <option mainClass="sample.main.RepeatableMain" />
     <option enabledebug="False" />
     <option additional="" />
   </build>
