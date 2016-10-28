@@ -2,5 +2,5 @@ package tweenxcore.expr;
 
 enum TernaryOpKind 
 {
-	Crossfade;
+	Crossfade(start:Float, end:Float);
 }

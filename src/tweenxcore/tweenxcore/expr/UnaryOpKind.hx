@@ -2,7 +2,7 @@ package tweenxcore.expr;
 
 enum UnaryOpKind 
 {
-	Repeat(count:Int);
+	Repeat(repeat:Float);
 	Lerp(from:Float, to:Float);
 	Clamp(min:Float, max:Float);
 	RoundTrip(kind:RoundTripKind);

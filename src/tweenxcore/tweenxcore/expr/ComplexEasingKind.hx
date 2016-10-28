@@ -2,7 +2,7 @@ package tweenxcore.expr;
 
 enum ComplexEasingKind 
 {
-	Leaf(kind:SimpleEasingKind);
+	Simple(kind:SimpleEasingKind);
 	Op(easing:ComplexEasingKind, operation:UnaryOpKind);
 }
 

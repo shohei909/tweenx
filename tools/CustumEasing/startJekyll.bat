@@ -1,0 +1,2 @@
+cd ../../website
+jekyll s

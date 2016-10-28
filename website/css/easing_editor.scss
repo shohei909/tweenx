@@ -1,0 +1,44 @@
+---
+# this ensures Jekyll reads the file to be transformed into CSS later
+# only Main files contain this front matter, not partials.
+---
+
+.complex_easing
+{
+    margin-top: 20px;
+    padding-left: 30px;
+    margin-left: 10px;
+	border-left: dashed 2px #EEEEEE;
+	
+	.complex_easing_head
+	{
+		display: table;
+			
+		> .graph
+		{
+			display: table-cell;
+		}
+		
+		> .complex_easing_child
+		{
+			display: table-cell;
+			vertical-align: top;
+			padding: 15px;
+		}
+	}
+	
+	.preview
+	{
+		display: table;
+			
+		> div
+		{
+			display: table-cell;
+		}
+	}
+	
+	button 
+	{
+		margin: 2px;
+	}
+}

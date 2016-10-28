@@ -1,0 +1,6 @@
+-cp src
+-cp ../../src/tweenxcore
+-lib react
+-js ../../website/core/custom/main.js
+-main Application
+-D react_global

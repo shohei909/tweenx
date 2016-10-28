@@ -14,7 +14,7 @@ logo: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
 
 = {{page.logo}}
 
-{{page.logo}}は https://haxe.org/[Haxe] で気持ちの良いモーションをより簡単に作成するための、シンプルで新しい**トゥイーンライブラリ**です。
+{{page.logo}}は https://haxe.org/[Haxe] で気持ちの良いモーションをより簡単に作成するための、シンプルな**トゥイーンライブラリ**です。
 
 実行速度を速く、開発速度を速く、バグを少なく、学習コストを少なく、そしてモーションを自由に面白くするために作られています。
 
@@ -37,7 +37,7 @@ toc::[]
 
 == 速度
 
-Flashプラットフォーム上で動作するトゥイーンライブラリとして最速をうたうBetweenAS3よりも、さらに高速に動作しています。
+Flashプラットフォーム上で動作する高速なトゥイーンライブラリとして名高いBetweenAS3よりも、さらに高速に動作しています。
 
 {sampleLink}tweenx/800_BenchMark/src[[コードを見る(Github)\]]
 
