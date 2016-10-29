@@ -15,7 +15,7 @@ class DropdownButtonView extends ReactComponentOfProps<DropdownButtonProps>
 		return React.createElement(
 			"div",
 			{
-				className: "row",
+				className: "dropdown",
 			},
 			React.createElement(
 				"button",

@@ -26,6 +26,7 @@
 			padding: 15px;
 		}
 	}
+	
 	.preview
 	{
 		display: table;
@@ -49,6 +50,26 @@
 		.input-group-addon
 		{
 			width: 130px;
+		}
+	}
+	
+	.select-group
+	{
+		margin: 2px;
+	}
+	
+	.dropdown-content
+	{
+		margin: 10px;
+		margin-top: 2px;
+		.dropdown-content-row
+		{
+			margin-left: 2px;
+			
+			.select-group
+			{
+				margin: 1px;
+			}
 		}
 	}
 }

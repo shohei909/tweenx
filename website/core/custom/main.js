@@ -195,7 +195,7 @@ component_basic_DropdownButtonView.__name__ = true;
 component_basic_DropdownButtonView.__super__ = React.Component;
 component_basic_DropdownButtonView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "row"},React.createElement("button",{ onClick : this.props.onClick, className : "btn btn-primary dropdown-toggle"},this.props.name + " ",React.createElement("span",{ className : "caret"})));
+		return React.createElement("div",{ className : "dropdown"},React.createElement("button",{ onClick : this.props.onClick, className : "btn btn-primary dropdown-toggle"},this.props.name + " ",React.createElement("span",{ className : "caret"})));
 	}
 	,__class__: component_basic_DropdownButtonView
 });
@@ -1087,7 +1087,7 @@ component_basic_PreviewView.prototype = $extend(React.Component.prototype,{
 		component_basic_PreviewAnimation.init(this.refs.canvas);
 	}
 	,render: function() {
-		return React.createElement("div",{ className : "row preview"},React.createElement("div",{ },React.createElement("button",{ onClick : $bind(this,this.onClick), className : "btn btn-default"},React.createElement("span",{ className : "glyphicon glyphicon-play"}))),React.createElement("div",{ },react_ReactStringTools.createElement("canvas",{ id : "preview-canvas-" + component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(this.props.id), ref : "canvas", width : component_basic_PreviewAnimation.WIDTH, height : component_basic_PreviewAnimation.HEIGHT})));
+		return React.createElement("div",{ className : "preview"},React.createElement("div",{ },React.createElement("button",{ onClick : $bind(this,this.onClick), className : "btn btn-default"},React.createElement("span",{ className : "glyphicon glyphicon-play"}))),React.createElement("div",{ },react_ReactStringTools.createElement("canvas",{ id : "preview-canvas-" + component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(this.props.id), ref : "canvas", width : component_basic_PreviewAnimation.WIDTH, height : component_basic_PreviewAnimation.HEIGHT})));
 	}
 	,onClick: function() {
 		this.props.context.animation.startPreview(this.props.id,this.props.easing);
@@ -1137,7 +1137,7 @@ component_basic_SelectGroupView.prototype = $extend(React.Component.prototype,{
 				};
 			})([inOut],[this.props.onSelect])},[selected?React.createElement("span",{ className : "glyphicon glyphicon-ok"}):null," " + this.props.getName(inOut)]));
 		}
-		return react_ReactStringTools.createElement("div",{ className : "row btn-group"},_g);
+		return react_ReactStringTools.createElement("div",{ className : "select-group btn-group"},_g);
 	}
 	,__class__: component_basic_SelectGroupView
 });
@@ -1357,65 +1357,8 @@ component_complex_ComplexEasingSelectItemId.OneTwo = ["OneTwo",22];
 component_complex_ComplexEasingSelectItemId.OneTwo.__enum__ = component_complex_ComplexEasingSelectItemId;
 component_complex_ComplexEasingSelectItemId.Crossfade = ["Crossfade",23];
 component_complex_ComplexEasingSelectItemId.Crossfade.__enum__ = component_complex_ComplexEasingSelectItemId;
-var tweenxcore_expr_ComplexEasingKind = { __ename__ : true, __constructs__ : ["Simple","Op"] };
-tweenxcore_expr_ComplexEasingKind.Simple = function(kind) { var $x = ["Simple",0,kind]; $x.__enum__ = tweenxcore_expr_ComplexEasingKind; return $x; };
-tweenxcore_expr_ComplexEasingKind.Op = function(easing,operation) { var $x = ["Op",1,easing,operation]; $x.__enum__ = tweenxcore_expr_ComplexEasingKind; return $x; };
-var tweenxcore_expr_SimpleEasingKind = { __ename__ : true, __constructs__ : ["Linear","Standard","Polyline"] };
-tweenxcore_expr_SimpleEasingKind.Linear = ["Linear",0];
-tweenxcore_expr_SimpleEasingKind.Linear.__enum__ = tweenxcore_expr_SimpleEasingKind;
-tweenxcore_expr_SimpleEasingKind.Standard = function(easing,inOut) { var $x = ["Standard",1,easing,inOut]; $x.__enum__ = tweenxcore_expr_SimpleEasingKind; return $x; };
-tweenxcore_expr_SimpleEasingKind.Polyline = function(kind,controls) { var $x = ["Polyline",2,kind,controls]; $x.__enum__ = tweenxcore_expr_SimpleEasingKind; return $x; };
-var tweenxcore_expr_StandardEasingKind = { __ename__ : true, __constructs__ : ["Quad","Cubic","Quart","Quint","Sine","Circ","Expo","Back","Bounce","Elastic","Warp"] };
-tweenxcore_expr_StandardEasingKind.Quad = ["Quad",0];
-tweenxcore_expr_StandardEasingKind.Quad.__enum__ = tweenxcore_expr_StandardEasingKind;
-tweenxcore_expr_StandardEasingKind.Cubic = ["Cubic",1];
-tweenxcore_expr_StandardEasingKind.Cubic.__enum__ = tweenxcore_expr_StandardEasingKind;
-tweenxcore_expr_StandardEasingKind.Quart = ["Quart",2];
-tweenxcore_expr_StandardEasingKind.Quart.__enum__ = tweenxcore_expr_StandardEasingKind;
-tweenxcore_expr_StandardEasingKind.Quint = ["Quint",3];
-tweenxcore_expr_StandardEasingKind.Quint.__enum__ = tweenxcore_expr_StandardEasingKind;
-tweenxcore_expr_StandardEasingKind.Sine = ["Sine",4];
-tweenxcore_expr_StandardEasingKind.Sine.__enum__ = tweenxcore_expr_StandardEasingKind;
-tweenxcore_expr_StandardEasingKind.Circ = ["Circ",5];
-tweenxcore_expr_StandardEasingKind.Circ.__enum__ = tweenxcore_expr_StandardEasingKind;
-tweenxcore_expr_StandardEasingKind.Expo = ["Expo",6];
-tweenxcore_expr_StandardEasingKind.Expo.__enum__ = tweenxcore_expr_StandardEasingKind;
-tweenxcore_expr_StandardEasingKind.Back = ["Back",7];
-tweenxcore_expr_StandardEasingKind.Back.__enum__ = tweenxcore_expr_StandardEasingKind;
-tweenxcore_expr_StandardEasingKind.Bounce = ["Bounce",8];
-tweenxcore_expr_StandardEasingKind.Bounce.__enum__ = tweenxcore_expr_StandardEasingKind;
-tweenxcore_expr_StandardEasingKind.Elastic = ["Elastic",9];
-tweenxcore_expr_StandardEasingKind.Elastic.__enum__ = tweenxcore_expr_StandardEasingKind;
-tweenxcore_expr_StandardEasingKind.Warp = ["Warp",10];
-tweenxcore_expr_StandardEasingKind.Warp.__enum__ = tweenxcore_expr_StandardEasingKind;
-var tweenxcore_expr_PolylineKind = { __ename__ : true, __constructs__ : ["Bezier"] };
-tweenxcore_expr_PolylineKind.Bezier = ["Bezier",0];
-tweenxcore_expr_PolylineKind.Bezier.__enum__ = tweenxcore_expr_PolylineKind;
-var tweenxcore_expr_UnaryOpKind = { __ename__ : true, __constructs__ : ["Repeat","Lerp","Clamp","RoundTrip","Op"] };
-tweenxcore_expr_UnaryOpKind.Repeat = function(repeat) { var $x = ["Repeat",0,repeat]; $x.__enum__ = tweenxcore_expr_UnaryOpKind; return $x; };
-tweenxcore_expr_UnaryOpKind.Lerp = function(from,to) { var $x = ["Lerp",1,from,to]; $x.__enum__ = tweenxcore_expr_UnaryOpKind; return $x; };
-tweenxcore_expr_UnaryOpKind.Clamp = function(min,max) { var $x = ["Clamp",2,min,max]; $x.__enum__ = tweenxcore_expr_UnaryOpKind; return $x; };
-tweenxcore_expr_UnaryOpKind.RoundTrip = function(kind) { var $x = ["RoundTrip",3,kind]; $x.__enum__ = tweenxcore_expr_UnaryOpKind; return $x; };
-tweenxcore_expr_UnaryOpKind.Op = function(easing,operation) { var $x = ["Op",4,easing,operation]; $x.__enum__ = tweenxcore_expr_UnaryOpKind; return $x; };
-var tweenxcore_expr_RoundTripKind = { __ename__ : true, __constructs__ : ["Yoyo","Zigzag"] };
-tweenxcore_expr_RoundTripKind.Yoyo = ["Yoyo",0];
-tweenxcore_expr_RoundTripKind.Yoyo.__enum__ = tweenxcore_expr_RoundTripKind;
-tweenxcore_expr_RoundTripKind.Zigzag = ["Zigzag",1];
-tweenxcore_expr_RoundTripKind.Zigzag.__enum__ = tweenxcore_expr_RoundTripKind;
-var tweenxcore_expr_BinaryOpKind = { __ename__ : true, __constructs__ : ["Composite","Multiply","Mix","Connect","OneTwo","Op"] };
-tweenxcore_expr_BinaryOpKind.Composite = ["Composite",0];
-tweenxcore_expr_BinaryOpKind.Composite.__enum__ = tweenxcore_expr_BinaryOpKind;
-tweenxcore_expr_BinaryOpKind.Multiply = ["Multiply",1];
-tweenxcore_expr_BinaryOpKind.Multiply.__enum__ = tweenxcore_expr_BinaryOpKind;
-tweenxcore_expr_BinaryOpKind.Mix = function(strength) { var $x = ["Mix",2,strength]; $x.__enum__ = tweenxcore_expr_BinaryOpKind; return $x; };
-tweenxcore_expr_BinaryOpKind.Connect = function(switchTime,switchValue) { var $x = ["Connect",3,switchTime,switchValue]; $x.__enum__ = tweenxcore_expr_BinaryOpKind; return $x; };
-tweenxcore_expr_BinaryOpKind.OneTwo = function(switchTime) { var $x = ["OneTwo",4,switchTime]; $x.__enum__ = tweenxcore_expr_BinaryOpKind; return $x; };
-tweenxcore_expr_BinaryOpKind.Op = function(easing,operation) { var $x = ["Op",5,easing,operation]; $x.__enum__ = tweenxcore_expr_BinaryOpKind; return $x; };
-var tweenxcore_expr_TernaryOpKind = { __ename__ : true, __constructs__ : ["Crossfade"] };
-tweenxcore_expr_TernaryOpKind.Crossfade = function(start,end) { var $x = ["Crossfade",0,start,end]; $x.__enum__ = tweenxcore_expr_TernaryOpKind; return $x; };
-var component_complex_ComplexEasingSelectItem = function(id,name,createEasing) {
+var component_complex_ComplexEasingSelectItem = function(id,createEasing) {
 	this.id = id;
-	this.name = name;
 	this.createEasing = createEasing;
 };
 component_complex_ComplexEasingSelectItem.__name__ = true;
@@ -1493,113 +1436,109 @@ component_complex_ComplexEasingSelectItem.resolveItemId = function(easing) {
 		break;
 	}
 };
-component_complex_ComplexEasingSelectItem.getItem = function(id) {
-	return component_complex_ComplexEasingSelectItem.items[id[1]];
-};
 component_complex_ComplexEasingSelectItem.createItem = function(id) {
-	var name = id[0];
 	switch(id[1]) {
 	case 0:
-		return new component_complex_ComplexEasingSelectItem(id,name,component_complex_ComplexEasingSelectItem.createLinear);
+		return new component_complex_ComplexEasingSelectItem(id,component_complex_ComplexEasingSelectItem.createLinear);
 	case 1:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a2) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a2) {
 			return component_complex_ComplexEasingSelectItem.createStandard(tweenxcore_expr_StandardEasingKind.Quad,a2);
 		});
 	case 2:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a21) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a21) {
 			return component_complex_ComplexEasingSelectItem.createStandard(tweenxcore_expr_StandardEasingKind.Cubic,a21);
 		});
 	case 3:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a22) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a22) {
 			return component_complex_ComplexEasingSelectItem.createStandard(tweenxcore_expr_StandardEasingKind.Quart,a22);
 		});
 	case 4:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a23) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a23) {
 			return component_complex_ComplexEasingSelectItem.createStandard(tweenxcore_expr_StandardEasingKind.Quint,a23);
 		});
 	case 5:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a24) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a24) {
 			return component_complex_ComplexEasingSelectItem.createStandard(tweenxcore_expr_StandardEasingKind.Sine,a24);
 		});
 	case 6:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a25) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a25) {
 			return component_complex_ComplexEasingSelectItem.createStandard(tweenxcore_expr_StandardEasingKind.Circ,a25);
 		});
 	case 7:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a26) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a26) {
 			return component_complex_ComplexEasingSelectItem.createStandard(tweenxcore_expr_StandardEasingKind.Expo,a26);
 		});
 	case 8:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a27) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a27) {
 			return component_complex_ComplexEasingSelectItem.createStandard(tweenxcore_expr_StandardEasingKind.Back,a27);
 		});
 	case 9:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a28) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a28) {
 			return component_complex_ComplexEasingSelectItem.createStandard(tweenxcore_expr_StandardEasingKind.Bounce,a28);
 		});
 	case 10:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a29) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a29) {
 			return component_complex_ComplexEasingSelectItem.createStandard(tweenxcore_expr_StandardEasingKind.Elastic,a29);
 		});
 	case 11:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a210) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a210) {
 			return component_complex_ComplexEasingSelectItem.createStandard(tweenxcore_expr_StandardEasingKind.Warp,a210);
 		});
 	case 12:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a211) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a211) {
 			return component_complex_ComplexEasingSelectItem.createPolyline(tweenxcore_expr_PolylineKind.Bezier,a211);
 		});
 	case 13:
 		var op = tweenxcore_expr_UnaryOpKind.Repeat(2);
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a1) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a1) {
 			return component_complex_ComplexEasingSelectItem.createUnaryOp(op,a1);
 		});
 	case 14:
 		var op1 = tweenxcore_expr_UnaryOpKind.Lerp(0,1);
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a11) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a11) {
 			return component_complex_ComplexEasingSelectItem.createUnaryOp(op1,a11);
 		});
 	case 15:
 		var op2 = tweenxcore_expr_UnaryOpKind.Clamp(0,1);
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a12) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a12) {
 			return component_complex_ComplexEasingSelectItem.createUnaryOp(op2,a12);
 		});
 	case 16:
 		var op3 = tweenxcore_expr_UnaryOpKind.RoundTrip(tweenxcore_expr_RoundTripKind.Yoyo);
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a13) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a13) {
 			return component_complex_ComplexEasingSelectItem.createUnaryOp(op3,a13);
 		});
 	case 17:
 		var op4 = tweenxcore_expr_UnaryOpKind.RoundTrip(tweenxcore_expr_RoundTripKind.Zigzag);
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a14) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a14) {
 			return component_complex_ComplexEasingSelectItem.createUnaryOp(op4,a14);
 		});
 	case 18:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a15) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a15) {
 			return component_complex_ComplexEasingSelectItem.createBinaryOp(tweenxcore_expr_BinaryOpKind.Composite,a15);
 		});
 	case 19:
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a16) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a16) {
 			return component_complex_ComplexEasingSelectItem.createBinaryOp(tweenxcore_expr_BinaryOpKind.Multiply,a16);
 		});
 	case 20:
 		var op5 = tweenxcore_expr_BinaryOpKind.Mix(0.5);
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a17) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a17) {
 			return component_complex_ComplexEasingSelectItem.createBinaryOp(op5,a17);
 		});
 	case 21:
 		var op6 = tweenxcore_expr_BinaryOpKind.Connect(0.5,0.5);
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a18) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a18) {
 			return component_complex_ComplexEasingSelectItem.createBinaryOp(op6,a18);
 		});
 	case 22:
 		var op7 = tweenxcore_expr_BinaryOpKind.OneTwo(0.5);
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a19) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a19) {
 			return component_complex_ComplexEasingSelectItem.createBinaryOp(op7,a19);
 		});
 	case 23:
 		var op8 = tweenxcore_expr_TernaryOpKind.Crossfade(0,1);
-		return new component_complex_ComplexEasingSelectItem(id,name,function(a110) {
+		return new component_complex_ComplexEasingSelectItem(id,function(a110) {
 			return component_complex_ComplexEasingSelectItem.createTernaryOp(op8,a110);
 		});
 	}
@@ -1629,43 +1568,53 @@ var component_complex_ComplexEasingSelectView = function(props) {
 	React.Component.call(this,props);
 };
 component_complex_ComplexEasingSelectView.__name__ = true;
+component_complex_ComplexEasingSelectView.getName = function(itemId) {
+	return itemId[0];
+};
 component_complex_ComplexEasingSelectView.__super__ = React.Component;
 component_complex_ComplexEasingSelectView.prototype = $extend(React.Component.prototype,{
 	render: function() {
 		var currentItemId = component_complex_ComplexEasingSelectItem.resolveItemId(this.props.easing);
 		var focus = this.props.context.focus;
+		var optionCurrent = haxe_ds_Option.Some(currentItemId);
 		var _g = focus.state;
+		var tmp;
 		if(_g[1] == 0) {
 			var detail = _g[2];
 			if(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.equals(detail.id,this.props.id)) {
-				var tmp = react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : $bind(focus,focus.unfocus), name : component_complex_ComplexEasingSelectItem.getItem(currentItemId).name});
+				var f = $bind(this,this.onSelect);
+				var a1 = detail;
+				var select = function(a2) {
+					f(a1,a2);
+				};
+				var tmp1 = react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : $bind(focus,focus.unfocus), name : component_complex_ComplexEasingSelectView.getName(currentItemId)});
 				var _g1 = [];
 				var _g11 = 0;
-				var _g2 = component_complex_ComplexEasingSelectItem.items;
+				var _g2 = component_complex_ComplexEasingSelectItem.itemIds;
 				while(_g11 < _g2.length) {
-					var item = _g2[_g11];
+					var itemGroup = _g2[_g11];
 					++_g11;
-					_g1.push(React.createElement("button",{ className : "btn btn-default pull-left", href : "javascript:void(0)", onClick : (function(a1,f) {
-						return function() {
-							f[0](a1[0]);
-						};
-					})([item],[$bind(detail,detail.select)])},item.name));
+					_g1.push(react_ReactStringTools.createElement("div",{ className : "dropdown-content-row"},react_ReactTools.createElement(component_basic_SelectGroupView,{ current : optionCurrent, data : itemGroup, onSelect : select, getName : component_complex_ComplexEasingSelectView.getName})));
 				}
-				return React.createElement("div",{ className : "select"},tmp,React.createElement("div",{ className : "btn-group"},_g1));
+				tmp = [tmp1,react_ReactStringTools.createElement("div",{ className : "dropdown-content"},_g1)];
 			} else {
 				var f1 = $bind(focus,focus.focusComplexEasingSelect);
 				var id = this.props.id;
-				return React.createElement("div",{ className : "complex_easing_select"},react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : function() {
+				tmp = react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : function() {
 					f1(id);
-				}, name : component_complex_ComplexEasingSelectItem.getItem(currentItemId).name}));
+				}, name : component_complex_ComplexEasingSelectView.getName(currentItemId)});
 			}
 		} else {
 			var f2 = $bind(focus,focus.focusComplexEasingSelect);
 			var id1 = this.props.id;
-			return React.createElement("div",{ className : "complex_easing_select"},react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : function() {
+			tmp = react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : function() {
 				f2(id1);
-			}, name : component_complex_ComplexEasingSelectItem.getItem(currentItemId).name}));
+			}, name : component_complex_ComplexEasingSelectView.getName(currentItemId)});
 		}
+		return React.createElement("div",{ className : "complex-easing-select"},tmp);
+	}
+	,onSelect: function(detail,itemId) {
+		detail.select(component_complex_ComplexEasingSelectItem.createItem(itemId));
 	}
 	,__class__: component_complex_ComplexEasingSelectView
 });
@@ -3275,6 +3224,15 @@ var tweenxcore_PointTools = function() { };
 tweenxcore_PointTools.__name__ = true;
 var tweenxcore_MatrixTools = function() { };
 tweenxcore_MatrixTools.__name__ = true;
+var tweenxcore_expr_BinaryOpKind = { __ename__ : true, __constructs__ : ["Composite","Multiply","Mix","Connect","OneTwo","Op"] };
+tweenxcore_expr_BinaryOpKind.Composite = ["Composite",0];
+tweenxcore_expr_BinaryOpKind.Composite.__enum__ = tweenxcore_expr_BinaryOpKind;
+tweenxcore_expr_BinaryOpKind.Multiply = ["Multiply",1];
+tweenxcore_expr_BinaryOpKind.Multiply.__enum__ = tweenxcore_expr_BinaryOpKind;
+tweenxcore_expr_BinaryOpKind.Mix = function(strength) { var $x = ["Mix",2,strength]; $x.__enum__ = tweenxcore_expr_BinaryOpKind; return $x; };
+tweenxcore_expr_BinaryOpKind.Connect = function(switchTime,switchValue) { var $x = ["Connect",3,switchTime,switchValue]; $x.__enum__ = tweenxcore_expr_BinaryOpKind; return $x; };
+tweenxcore_expr_BinaryOpKind.OneTwo = function(switchTime) { var $x = ["OneTwo",4,switchTime]; $x.__enum__ = tweenxcore_expr_BinaryOpKind; return $x; };
+tweenxcore_expr_BinaryOpKind.Op = function(easing,operation) { var $x = ["Op",5,easing,operation]; $x.__enum__ = tweenxcore_expr_BinaryOpKind; return $x; };
 var tweenxcore_expr_BinaryOpKindTools = function() { };
 tweenxcore_expr_BinaryOpKindTools.__name__ = true;
 tweenxcore_expr_BinaryOpKindTools.toFunction = function(kind,easing1,easing2) {
@@ -3392,6 +3350,9 @@ tweenxcore_expr_BinaryOpKindTools.fromJsonable = function(data) {
 		}
 	}
 };
+var tweenxcore_expr_ComplexEasingKind = { __ename__ : true, __constructs__ : ["Simple","Op"] };
+tweenxcore_expr_ComplexEasingKind.Simple = function(kind) { var $x = ["Simple",0,kind]; $x.__enum__ = tweenxcore_expr_ComplexEasingKind; return $x; };
+tweenxcore_expr_ComplexEasingKind.Op = function(easing,operation) { var $x = ["Op",1,easing,operation]; $x.__enum__ = tweenxcore_expr_ComplexEasingKind; return $x; };
 var tweenxcore_expr_ComplexEasingKindTools = function() { };
 tweenxcore_expr_ComplexEasingKindTools.__name__ = true;
 tweenxcore_expr_ComplexEasingKindTools.toFunction = function(easing) {
@@ -3701,6 +3662,14 @@ tweenxcore_expr_InOutKind.InOut = ["InOut",2];
 tweenxcore_expr_InOutKind.InOut.__enum__ = tweenxcore_expr_InOutKind;
 tweenxcore_expr_InOutKind.OutIn = ["OutIn",3];
 tweenxcore_expr_InOutKind.OutIn.__enum__ = tweenxcore_expr_InOutKind;
+var tweenxcore_expr_PolylineKind = { __ename__ : true, __constructs__ : ["Bezier"] };
+tweenxcore_expr_PolylineKind.Bezier = ["Bezier",0];
+tweenxcore_expr_PolylineKind.Bezier.__enum__ = tweenxcore_expr_PolylineKind;
+var tweenxcore_expr_RoundTripKind = { __ename__ : true, __constructs__ : ["Yoyo","Zigzag"] };
+tweenxcore_expr_RoundTripKind.Yoyo = ["Yoyo",0];
+tweenxcore_expr_RoundTripKind.Yoyo.__enum__ = tweenxcore_expr_RoundTripKind;
+tweenxcore_expr_RoundTripKind.Zigzag = ["Zigzag",1];
+tweenxcore_expr_RoundTripKind.Zigzag.__enum__ = tweenxcore_expr_RoundTripKind;
 var tweenxcore_expr_RoundTripKindTools = function() { };
 tweenxcore_expr_RoundTripKindTools.__name__ = true;
 tweenxcore_expr_RoundTripKindTools.toFunction = function(kind,easing) {
@@ -3721,6 +3690,11 @@ tweenxcore_expr_RoundTripKindTools.toFunction = function(kind,easing) {
 		};
 	}
 };
+var tweenxcore_expr_SimpleEasingKind = { __ename__ : true, __constructs__ : ["Linear","Standard","Polyline"] };
+tweenxcore_expr_SimpleEasingKind.Linear = ["Linear",0];
+tweenxcore_expr_SimpleEasingKind.Linear.__enum__ = tweenxcore_expr_SimpleEasingKind;
+tweenxcore_expr_SimpleEasingKind.Standard = function(easing,inOut) { var $x = ["Standard",1,easing,inOut]; $x.__enum__ = tweenxcore_expr_SimpleEasingKind; return $x; };
+tweenxcore_expr_SimpleEasingKind.Polyline = function(kind,controls) { var $x = ["Polyline",2,kind,controls]; $x.__enum__ = tweenxcore_expr_SimpleEasingKind; return $x; };
 var tweenxcore_expr_SimpleEasingKindTools = function() { };
 tweenxcore_expr_SimpleEasingKindTools.__name__ = true;
 tweenxcore_expr_SimpleEasingKindTools.toFunction = function(easing) {
@@ -3912,6 +3886,29 @@ tweenxcore_expr_SimpleEasingKindTools.fromJsonable = function(data) {
 		throw new js__$Boot_HaxeError("unsupported SimpleEasingKind data: " + Std.string(data));
 	}
 };
+var tweenxcore_expr_StandardEasingKind = { __ename__ : true, __constructs__ : ["Quad","Cubic","Quart","Quint","Sine","Circ","Expo","Back","Bounce","Elastic","Warp"] };
+tweenxcore_expr_StandardEasingKind.Quad = ["Quad",0];
+tweenxcore_expr_StandardEasingKind.Quad.__enum__ = tweenxcore_expr_StandardEasingKind;
+tweenxcore_expr_StandardEasingKind.Cubic = ["Cubic",1];
+tweenxcore_expr_StandardEasingKind.Cubic.__enum__ = tweenxcore_expr_StandardEasingKind;
+tweenxcore_expr_StandardEasingKind.Quart = ["Quart",2];
+tweenxcore_expr_StandardEasingKind.Quart.__enum__ = tweenxcore_expr_StandardEasingKind;
+tweenxcore_expr_StandardEasingKind.Quint = ["Quint",3];
+tweenxcore_expr_StandardEasingKind.Quint.__enum__ = tweenxcore_expr_StandardEasingKind;
+tweenxcore_expr_StandardEasingKind.Sine = ["Sine",4];
+tweenxcore_expr_StandardEasingKind.Sine.__enum__ = tweenxcore_expr_StandardEasingKind;
+tweenxcore_expr_StandardEasingKind.Circ = ["Circ",5];
+tweenxcore_expr_StandardEasingKind.Circ.__enum__ = tweenxcore_expr_StandardEasingKind;
+tweenxcore_expr_StandardEasingKind.Expo = ["Expo",6];
+tweenxcore_expr_StandardEasingKind.Expo.__enum__ = tweenxcore_expr_StandardEasingKind;
+tweenxcore_expr_StandardEasingKind.Back = ["Back",7];
+tweenxcore_expr_StandardEasingKind.Back.__enum__ = tweenxcore_expr_StandardEasingKind;
+tweenxcore_expr_StandardEasingKind.Bounce = ["Bounce",8];
+tweenxcore_expr_StandardEasingKind.Bounce.__enum__ = tweenxcore_expr_StandardEasingKind;
+tweenxcore_expr_StandardEasingKind.Elastic = ["Elastic",9];
+tweenxcore_expr_StandardEasingKind.Elastic.__enum__ = tweenxcore_expr_StandardEasingKind;
+tweenxcore_expr_StandardEasingKind.Warp = ["Warp",10];
+tweenxcore_expr_StandardEasingKind.Warp.__enum__ = tweenxcore_expr_StandardEasingKind;
 var tweenxcore_expr_StandardEasingKindTools = function() { };
 tweenxcore_expr_StandardEasingKindTools.__name__ = true;
 tweenxcore_expr_StandardEasingKindTools.toFunction = function(easing,inOut) {
@@ -4050,6 +4047,8 @@ tweenxcore_expr_StandardEasingKindTools.toFunction = function(easing,inOut) {
 		break;
 	}
 };
+var tweenxcore_expr_TernaryOpKind = { __ename__ : true, __constructs__ : ["Crossfade"] };
+tweenxcore_expr_TernaryOpKind.Crossfade = function(start,end) { var $x = ["Crossfade",0,start,end]; $x.__enum__ = tweenxcore_expr_TernaryOpKind; return $x; };
 var tweenxcore_expr_TernaryOpKindTools = function() { };
 tweenxcore_expr_TernaryOpKindTools.__name__ = true;
 tweenxcore_expr_TernaryOpKindTools.toFunction = function(kind,easing1,easing2,easing3) {
@@ -4078,6 +4077,12 @@ tweenxcore_expr_TernaryOpKindTools.fromJsonable = function(data) {
 		throw new js__$Boot_HaxeError("unsupported TernaryOpKind data: " + Std.string(data));
 	}
 };
+var tweenxcore_expr_UnaryOpKind = { __ename__ : true, __constructs__ : ["Repeat","Lerp","Clamp","RoundTrip","Op"] };
+tweenxcore_expr_UnaryOpKind.Repeat = function(repeat) { var $x = ["Repeat",0,repeat]; $x.__enum__ = tweenxcore_expr_UnaryOpKind; return $x; };
+tweenxcore_expr_UnaryOpKind.Lerp = function(from,to) { var $x = ["Lerp",1,from,to]; $x.__enum__ = tweenxcore_expr_UnaryOpKind; return $x; };
+tweenxcore_expr_UnaryOpKind.Clamp = function(min,max) { var $x = ["Clamp",2,min,max]; $x.__enum__ = tweenxcore_expr_UnaryOpKind; return $x; };
+tweenxcore_expr_UnaryOpKind.RoundTrip = function(kind) { var $x = ["RoundTrip",3,kind]; $x.__enum__ = tweenxcore_expr_UnaryOpKind; return $x; };
+tweenxcore_expr_UnaryOpKind.Op = function(easing,operation) { var $x = ["Op",4,easing,operation]; $x.__enum__ = tweenxcore_expr_UnaryOpKind; return $x; };
 var tweenxcore_expr_UnaryOpKindTools = function() { };
 tweenxcore_expr_UnaryOpKindTools.__name__ = true;
 tweenxcore_expr_UnaryOpKindTools.toFunction = function(kind,easing) {
@@ -4272,21 +4277,7 @@ component_binary_ConnectView.displayName = "ConnectView";
 component_binary_MixView.displayName = "MixView";
 component_binary_MultiplyView.displayName = "MultiplyView";
 component_binary_OneTwoView.displayName = "OneTwoView";
-component_complex_ComplexEasingSelectItem.items = (function($this) {
-	var $r;
-	var _g = [];
-	{
-		var _g1 = 0;
-		var _g2 = component_complex_ComplexEasingSelectItemId.__constructs__.slice();
-		while(_g1 < _g2.length) {
-			var constructor = _g2[_g1];
-			++_g1;
-			_g.push(component_complex_ComplexEasingSelectItem.createItem(Type.createEnum(component_complex_ComplexEasingSelectItemId,constructor,null)));
-		}
-	}
-	$r = _g;
-	return $r;
-}(this));
+component_complex_ComplexEasingSelectItem.itemIds = [[component_complex_ComplexEasingSelectItemId.Linear,component_complex_ComplexEasingSelectItemId.Quad,component_complex_ComplexEasingSelectItemId.Cubic,component_complex_ComplexEasingSelectItemId.Quart,component_complex_ComplexEasingSelectItemId.Quint,component_complex_ComplexEasingSelectItemId.Sine,component_complex_ComplexEasingSelectItemId.Circ,component_complex_ComplexEasingSelectItemId.Expo,component_complex_ComplexEasingSelectItemId.Back,component_complex_ComplexEasingSelectItemId.Bounce,component_complex_ComplexEasingSelectItemId.Elastic,component_complex_ComplexEasingSelectItemId.Warp],[component_complex_ComplexEasingSelectItemId.Bezier],[component_complex_ComplexEasingSelectItemId.Repeat,component_complex_ComplexEasingSelectItemId.Lerp,component_complex_ComplexEasingSelectItemId.Clamp,component_complex_ComplexEasingSelectItemId.Yoyo,component_complex_ComplexEasingSelectItemId.Zigzag],[component_complex_ComplexEasingSelectItemId.Composite,component_complex_ComplexEasingSelectItemId.Multiply,component_complex_ComplexEasingSelectItemId.Mix,component_complex_ComplexEasingSelectItemId.Connect,component_complex_ComplexEasingSelectItemId.OneTwo,component_complex_ComplexEasingSelectItemId.Crossfade]];
 component_complex_ComplexEasingSelectView.displayName = "ComplexEasingSelectView";
 component_complex_ComplexEasingView.displayName = "ComplexEasingView";
 component_menu_HistoryView.displayName = "HistoryView";

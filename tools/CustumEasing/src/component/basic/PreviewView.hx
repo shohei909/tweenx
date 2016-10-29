@@ -24,7 +24,7 @@ class PreviewView extends ReactComponentOfProps<PreviewProps>
 		return React.createElement(
 			"div",
 			{ 
-				className: "row preview" 
+				className: "preview" 
 			},
 			React.createElement(
 				"div",

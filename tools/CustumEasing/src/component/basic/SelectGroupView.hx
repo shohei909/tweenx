@@ -17,7 +17,7 @@ class SelectGroupView<DataKind:EnumValue> extends ReactComponentOfProps<SelectBa
 	{
 		return "div".createElement(
 			{ 
-				className: "row btn-group" 
+				className: "select-group btn-group" 
 			},
 			[
 				for (inOut in props.data)

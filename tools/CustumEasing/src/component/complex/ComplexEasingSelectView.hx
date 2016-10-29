@@ -3,6 +3,9 @@ import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.DropdownButtonView;
+import component.basic.SelectGroupView;
+import core.GlobalCommand;
+import haxe.EnumTools.EnumValueTools;
 import haxe.ds.Option;
 import js.html.CanvasElement;
 import core.GlobalContext;
@@ -27,48 +30,57 @@ class ComplexEasingSelectView extends ReactComponentOfProps<DropdownProps>
 			return DropdownButtonView.createElement(
 				{
 					onClick: onClick,
-					name: ComplexEasingSelectItem.getItem(currentItemId).name,
+					name: getName(currentItemId),
 				}
 			);
 		}
 		
 		var focus = props.context.focus;
-		return switch (focus.state)
-		{
-			case FocusState.ComplexEasingSelect(detail) if (detail.id == props.id):
-				React.createElement(
-					"div", 
-					{ className: "select" },
-					button(focus.unfocus),
-					React.createElement(
-						"div",
-						{ className: "btn-group" },
-						[
-							for (item in ComplexEasingSelectItem.items)
-							{
-								React.createElement(
-									"button",
-									{ 
-										className: "btn btn-default pull-left",
-										href: "javascript:void(0)",
-										onClick: detail.select.bind(item),
-									},
-									item.name
-								);
-							}
-						]
-					)
-				);
+		var optionCurrent = Option.Some(currentItemId);
+		return React.createElement(
+			"div", 
+			{ className: "complex-easing-select" },
+			switch (focus.state)
+			{
+				case FocusState.ComplexEasingSelect(detail) if (detail.id == props.id):
+					var select = onSelect.bind(detail);
+					[
+						button(focus.unfocus),
+						"div".createElement(
+							{ className: "dropdown-content" },
+							[
+								for (itemGroup in ComplexEasingSelectItem.itemIds)
+								{
+									"div".createElement(
+										{ className: "dropdown-content-row" },
+										ItemListView.createElement(
+											{
+												current: optionCurrent,
+												data: itemGroup,
+												onSelect: select,
+												getName: getName,
+											}
+										)
+									);
+								}
+							]
+						)
+					];
 
-			case _:
-				React.createElement(
-					"div", 
-					{ 
-						className: "complex_easing_select"
-					},
-					button(focus.focusComplexEasingSelect.bind(props.id))
-				);
-		}
+				case _:
+					button(focus.focusComplexEasingSelect.bind(props.id));
+			}
+		);
+	}
+	
+	private static function getName(itemId:ComplexEasingSelectItemId):String
+	{
+		return EnumValueTools.getName(itemId);
+	}
+	
+	private function onSelect(detail:ComplexEasingSelectFocus, itemId:ComplexEasingSelectItemId):Void
+	{
+		detail.select(ComplexEasingSelectItem.createItem(itemId));
 	}
 }
 
@@ -78,3 +90,5 @@ typedef DropdownProps =
 	id: ComplexEasingId,
 	context: GlobalContext
 }
+
+private typedef ItemListView = SelectGroupView<ComplexEasingSelectItemId>;
