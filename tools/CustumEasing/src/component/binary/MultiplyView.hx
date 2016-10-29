@@ -2,11 +2,13 @@ package component.binary;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
+import component.complex.ComplexEasingId;
+import core.GlobalContext;
 import tweenxcore.expr.ComplexEasingKind;
 
-class CompositeComponent extends ReactComponentOfProps<CompositeProps>
+class MultiplyView extends ReactComponentOfProps<MultiplyProps>
 {
-	public function new(props:CompositeProps) 
+	public function new(props:MultiplyProps) 
 	{
 		super(props);
 	}
@@ -17,8 +19,8 @@ class CompositeComponent extends ReactComponentOfProps<CompositeProps>
 	}
 }
 
-typedef CompositeProps =
+typedef MultiplyProps =
 {
 	easing1: ComplexEasingKind,
-	easing2: ComplexEasingKind,
+	easing2: ComplexEasingKind
 }

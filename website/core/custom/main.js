@@ -12,12 +12,12 @@ var Application = function(props) {
 };
 Application.__name__ = true;
 Application.main = function() {
-	ReactDOM.render(react_ReactTools.createElement(Application,{ easing : tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Linear), id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$._new([]), context : new core_GlobalContext()}),window.document.getElementById("application"));
+	ReactDOM.render(react_ReactTools.createElement(Application,{ context : new core_GlobalContext()}),window.document.getElementById("application"));
 };
 Application.__super__ = React.Component;
 Application.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return react_ReactTools.createElement(component_complex_ComplexEasingView,this.props);
+		return react_ReactStringTools.createElement("div",{ },[react_ReactTools.createElement(component_menu_HistoryView,{ history : this.props.context.history}),react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.context.easing.current, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(), context : this.props.context}),react_ReactTools.createElement(component_output_OutputView,{ context : this.props.context})]);
 	}
 });
 var HxOverrides = function() { };
@@ -28,6 +28,62 @@ HxOverrides.iter = function(a) {
 	}, next : function() {
 		return this.arr[this.cur++];
 	}};
+};
+var List = function() {
+	this.length = 0;
+};
+List.__name__ = true;
+List.prototype = {
+	push: function(item) {
+		var x = new _$List_ListNode(item,this.h);
+		this.h = x;
+		if(this.q == null) {
+			this.q = x;
+		}
+		this.length++;
+	}
+	,pop: function() {
+		if(this.h == null) {
+			return null;
+		}
+		var x = this.h.item;
+		this.h = this.h.next;
+		if(this.h == null) {
+			this.q = null;
+		}
+		this.length--;
+		return x;
+	}
+	,isEmpty: function() {
+		return this.h == null;
+	}
+	,clear: function() {
+		this.h = null;
+		this.q = null;
+		this.length = 0;
+	}
+	,iterator: function() {
+		return new _$List_ListIterator(this.h);
+	}
+};
+var _$List_ListNode = function(item,next) {
+	this.item = item;
+	this.next = next;
+};
+_$List_ListNode.__name__ = true;
+var _$List_ListIterator = function(head) {
+	this.head = head;
+};
+_$List_ListIterator.__name__ = true;
+_$List_ListIterator.prototype = {
+	hasNext: function() {
+		return this.head != null;
+	}
+	,next: function() {
+		var val = this.head.item;
+		this.head = this.head.next;
+		return val;
+	}
 };
 Math.__name__ = true;
 var Reflect = function() { };
@@ -69,6 +125,31 @@ Type.createEnum = function(e,constr,params) {
 	}
 	return f;
 };
+Type.enumEq = function(a,b) {
+	if(a == b) {
+		return true;
+	}
+	try {
+		if(a[0] != b[0]) {
+			return false;
+		}
+		var _g1 = 2;
+		var _g = a.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(!Type.enumEq(a[i],b[i])) {
+				return false;
+			}
+		}
+		var e = a.__enum__;
+		if(e != b.__enum__ || e == null) {
+			return false;
+		}
+	} catch( e1 ) {
+		return false;
+	}
+	return true;
+};
 var component_basic_DropdownButtonView = function(props) {
 	React.Component.call(this,props);
 };
@@ -76,7 +157,7 @@ component_basic_DropdownButtonView.__name__ = true;
 component_basic_DropdownButtonView.__super__ = React.Component;
 component_basic_DropdownButtonView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ },React.createElement("button",{ onClick : this.props.onClick, className : "btn btn-primary dropdown-toggle"},this.props.name + " ",React.createElement("span",{ className : "caret"})));
+		return React.createElement("div",{ className : "row"},React.createElement("button",{ onClick : this.props.onClick, className : "btn btn-primary dropdown-toggle"},this.props.name + " ",React.createElement("span",{ className : "caret"})));
 	}
 });
 var component_basic_GraphView = function(props) {
@@ -506,6 +587,75 @@ component_basic_GraphColor.Theme = ["Theme",0];
 component_basic_GraphColor.Theme.__enum__ = component_basic_GraphColor;
 component_basic_GraphColor.Sub = ["Sub",1];
 component_basic_GraphColor.Sub.__enum__ = component_basic_GraphColor;
+var component_basic_NumberInputFocus = function(focus,id,text) {
+	this.text = text;
+	this.focus = focus;
+	this.id = id;
+};
+component_basic_NumberInputFocus.__name__ = true;
+component_basic_NumberInputFocus.prototype = {
+	change: function(event) {
+		var input = event.target;
+		this.text = input.value;
+		var value = parseFloat(this.text);
+		if(!isNaN(value)) {
+			var command = core_GlobalCommand.ChangeRate(this.id,value);
+			this.focus.context.apply(command);
+		} else {
+			this.focus.context.update();
+		}
+	}
+	,submit: function(event) {
+		event.target.blur();
+		this.focus.unfocus();
+	}
+};
+var component_basic_NumberInputView = function(props) {
+	React.Component.call(this,props);
+};
+component_basic_NumberInputView.__name__ = true;
+component_basic_NumberInputView.__super__ = React.Component;
+component_basic_NumberInputView.prototype = $extend(React.Component.prototype,{
+	componentDidUpdate: function(prevProps,prevState) {
+		var _g = this.props.context.focus.state;
+		if(_g[1] == 1) {
+			if(!component_basic__$RateId_RateId_$Impl_$.equals(_g[2].id,this.props.id)) {
+				this.refs.textField.blur();
+			}
+		} else {
+			this.refs.textField.blur();
+		}
+	}
+	,render: function() {
+		var focus = this.props.context.focus;
+		var tmp = react_ReactStringTools.createElement("span",{ className : "input-group-addon"},this.props.name + ":");
+		var _g = focus.state;
+		var tmp1;
+		if(_g[1] == 1) {
+			var detail = _g[2];
+			if(component_basic__$RateId_RateId_$Impl_$.equals(detail.id,this.props.id)) {
+				tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : detail.text, onChange : $bind(detail,detail.change), onSubmit : $bind(detail,detail.submit)});
+			} else {
+				var tmp2 = Std.string(this.props.value);
+				var f = $bind(focus,focus.focusRateInput);
+				var id = this.props.id;
+				var a1 = Std.string(this.props.value);
+				tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp2, onFocus : function() {
+					f(id,a1);
+				}});
+			}
+		} else {
+			var tmp3 = Std.string(this.props.value);
+			var f1 = $bind(focus,focus.focusRateInput);
+			var id1 = this.props.id;
+			var a11 = Std.string(this.props.value);
+			tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp3, onFocus : function() {
+				f1(id1,a11);
+			}});
+		}
+		return react_ReactStringTools.createElement("div",{ className : "form-group form-group-sm"},react_ReactStringTools.createElement("div",{ className : "input-group"},[tmp,tmp1]));
+	}
+});
 var core_animation_Animation = function() { };
 core_animation_Animation.__name__ = true;
 var component_basic_PreviewAnimation = function(canvas,easing) {
@@ -876,7 +1026,7 @@ component_basic_PreviewView.prototype = $extend(React.Component.prototype,{
 		component_basic_PreviewAnimation.init(this.refs.canvas);
 	}
 	,render: function() {
-		return React.createElement("div",{ className : "preview"},React.createElement("div",{ },React.createElement("button",{ onClick : $bind(this,this.onClick), className : "btn btn-default"},React.createElement("span",{ className : "glyphicon glyphicon-play"}))),React.createElement("div",{ },React.createElement("canvas",{ ref : "canvas", width : component_basic_PreviewAnimation.WIDTH, height : component_basic_PreviewAnimation.HEIGHT})));
+		return React.createElement("div",{ className : "row preview"},React.createElement("div",{ },React.createElement("button",{ onClick : $bind(this,this.onClick), className : "btn btn-default"},React.createElement("span",{ className : "glyphicon glyphicon-play"}))),React.createElement("div",{ },React.createElement("canvas",{ ref : "canvas", width : component_basic_PreviewAnimation.WIDTH, height : component_basic_PreviewAnimation.HEIGHT})));
 	}
 	,onClick: function() {
 		this.props.context.animation.add(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(this.props.id),new component_basic_PreviewAnimation(this.refs.canvas,this.props.easing));
@@ -902,145 +1052,110 @@ component_basic__$RateId_RateId_$Impl_$.equals = function(a,b) {
 component_basic__$RateId_RateId_$Impl_$.toString = function(this1) {
 	return this1.join(".");
 };
-var component_basic_RateInputFocus = function(focus,id,text) {
-	this.text = text;
-	this.focus = focus;
-	this.id = id;
-};
-component_basic_RateInputFocus.__name__ = true;
-component_basic_RateInputFocus.prototype = {
-	change: function(event) {
-		var input = event.target;
-		this.text = input.value;
-		var value = parseFloat(this.text);
-		if(!isNaN(value)) {
-			this.focus.context.updateRate(this.id,value);
-		} else {
-			this.focus.context.update();
-		}
-	}
-	,submit: function(event) {
-		event.target.blur();
-		this.focus.unfocus();
-	}
-};
-var component_basic_RateInputView = function(props) {
+var component_basic_SelectGroupView = function(props) {
 	React.Component.call(this,props);
 };
-component_basic_RateInputView.__name__ = true;
-component_basic_RateInputView.__super__ = React.Component;
-component_basic_RateInputView.prototype = $extend(React.Component.prototype,{
+component_basic_SelectGroupView.__name__ = true;
+component_basic_SelectGroupView.__super__ = React.Component;
+component_basic_SelectGroupView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		var focus = this.props.context.focus;
-		var tmp = this.props.name + ": ";
-		var _g = focus.state;
-		var tmp1;
-		if(_g[1] == 2) {
-			var detail = _g[2];
-			if(component_basic__$RateId_RateId_$Impl_$.equals(detail.id,this.props.id)) {
-				tmp1 = React.createElement("input",{ type : "text", value : detail.text, onChange : $bind(detail,detail.change), onSubmit : $bind(detail,detail.submit)});
-			} else {
-				var tmp2 = Std.string(this.props.value);
-				var f = $bind(focus,focus.focusRateInput);
-				var id = this.props.id;
-				var a1 = Std.string(this.props.value);
-				tmp1 = React.createElement("input",{ type : "text", value : tmp2, onFocus : function() {
-					f(id,a1);
-				}});
-			}
-		} else {
-			var tmp3 = Std.string(this.props.value);
-			var f1 = $bind(focus,focus.focusRateInput);
-			var id1 = this.props.id;
-			var a11 = Std.string(this.props.value);
-			tmp1 = React.createElement("input",{ type : "text", value : tmp3, onFocus : function() {
-				f1(id1,a11);
-			}});
+		var _g = [];
+		var _g1 = 0;
+		var _g2 = this.props.data;
+		while(_g1 < _g2.length) {
+			var inOut = _g2[_g1];
+			++_g1;
+			var selected = Type.enumEq(this.props.current,haxe_ds_Option.Some(inOut));
+			_g.push(react_ReactStringTools.createElement("button",{ className : "btn btn-sm btn-" + (selected?"primary":"default"), href : "javascript:void(0)", onClick : selected?null:(function(a1,f) {
+				return function() {
+					f[0](a1[0]);
+				};
+			})([inOut],[this.props.onSelect])},[selected?React.createElement("span",{ className : "glyphicon glyphicon-ok"}):null," " + this.props.getName(inOut)]));
 		}
-		return React.createElement("div",{ },tmp,tmp1);
+		return react_ReactStringTools.createElement("div",{ className : "row btn-group"},_g);
 	}
 });
-var component_binary_BinaryOpComponent = function(props) {
+var component_binary_BinaryOpView = function(props) {
 	React.Component.call(this,props);
 };
-component_binary_BinaryOpComponent.__name__ = true;
-component_binary_BinaryOpComponent.__super__ = React.Component;
-component_binary_BinaryOpComponent.prototype = $extend(React.Component.prototype,{
+component_binary_BinaryOpView.__name__ = true;
+component_binary_BinaryOpView.__super__ = React.Component;
+component_binary_BinaryOpView.prototype = $extend(React.Component.prototype,{
 	render: function() {
 		var tmp = react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.easing2, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.concat(this.props.id,1), context : this.props.context});
 		var _g = this.props.op;
 		var tmp1;
 		switch(_g[1]) {
 		case 0:
-			tmp1 = react_ReactTools.createElement(component_binary_CompositeComponent,{ easing1 : this.props.easing1, easing2 : this.props.easing2});
+			tmp1 = react_ReactTools.createElement(component_binary_CompositeView,{ easing1 : this.props.easing1, easing2 : this.props.easing2});
 			break;
 		case 1:
-			tmp1 = react_ReactTools.createElement(component_binary_MultiplyComponent,{ easing1 : this.props.easing1, easing2 : this.props.easing2});
+			tmp1 = react_ReactTools.createElement(component_binary_MultiplyView,{ easing1 : this.props.easing1, easing2 : this.props.easing2});
 			break;
 		case 2:
-			tmp1 = react_ReactTools.createElement(component_binary_MixComponent,{ easing1 : this.props.easing1, easing2 : this.props.easing2, strength : _g[2], id : this.props.id, context : this.props.context});
+			tmp1 = react_ReactTools.createElement(component_binary_MixView,{ easing1 : this.props.easing1, easing2 : this.props.easing2, strength : _g[2], id : this.props.id, context : this.props.context});
 			break;
 		case 3:
-			tmp1 = react_ReactTools.createElement(component_binary_ConnectComponent,{ easing1 : this.props.easing1, easing2 : this.props.easing2, switchTime : _g[2], switchValue : _g[3], id : this.props.id, context : this.props.context});
+			tmp1 = react_ReactTools.createElement(component_binary_ConnectView,{ easing1 : this.props.easing1, easing2 : this.props.easing2, switchTime : _g[2], switchValue : _g[3], id : this.props.id, context : this.props.context});
 			break;
 		case 4:
-			tmp1 = react_ReactTools.createElement(component_binary_OneTwoComponent,{ easing1 : this.props.easing1, easing2 : this.props.easing2, switchTime : _g[2], id : this.props.id, context : this.props.context});
+			tmp1 = react_ReactTools.createElement(component_binary_OneTwoView,{ easing1 : this.props.easing1, easing2 : this.props.easing2, switchTime : _g[2], id : this.props.id, context : this.props.context});
 			break;
 		case 5:
-			tmp1 = react_ReactTools.createElement(component_ternaryOp_TernaryOpComponent,{ easing1 : this.props.easing1, easing2 : this.props.easing2, easing3 : _g[2], op : _g[3], id : this.props.id, context : this.props.context});
+			tmp1 = react_ReactTools.createElement(component_ternaryOp_TernaryOpView,{ easing1 : this.props.easing1, easing2 : this.props.easing2, easing3 : _g[2], op : _g[3], id : this.props.id, context : this.props.context});
 			break;
 		}
 		return React.createElement("div",{ },tmp,tmp1);
 	}
 });
-var component_binary_CompositeComponent = function(props) {
+var component_binary_CompositeView = function(props) {
 	React.Component.call(this,props);
 };
-component_binary_CompositeComponent.__name__ = true;
-component_binary_CompositeComponent.__super__ = React.Component;
-component_binary_CompositeComponent.prototype = $extend(React.Component.prototype,{
+component_binary_CompositeView.__name__ = true;
+component_binary_CompositeView.__super__ = React.Component;
+component_binary_CompositeView.prototype = $extend(React.Component.prototype,{
 	render: function() {
 		return null;
 	}
 });
-var component_binary_ConnectComponent = function(props) {
+var component_binary_ConnectView = function(props) {
 	React.Component.call(this,props);
 };
-component_binary_ConnectComponent.__name__ = true;
-component_binary_ConnectComponent.__super__ = React.Component;
-component_binary_ConnectComponent.prototype = $extend(React.Component.prototype,{
+component_binary_ConnectView.__name__ = true;
+component_binary_ConnectView.__super__ = React.Component;
+component_binary_ConnectView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ },react_ReactTools.createElement(component_basic_RateInputView,{ name : "Switch time", value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_RateInputView,{ name : "Switch value", value : this.props.switchValue, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context}));
+		return React.createElement({ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch time", value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch value", value : this.props.switchValue, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context}));
 	}
 });
-var component_binary_MixComponent = function(props) {
+var component_binary_MixView = function(props) {
 	React.Component.call(this,props);
 };
-component_binary_MixComponent.__name__ = true;
-component_binary_MixComponent.__super__ = React.Component;
-component_binary_MixComponent.prototype = $extend(React.Component.prototype,{
+component_binary_MixView.__name__ = true;
+component_binary_MixView.__super__ = React.Component;
+component_binary_MixView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ },react_ReactTools.createElement(component_basic_RateInputView,{ name : "strength", value : this.props.strength, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Strength", value : this.props.strength, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}));
 	}
 });
-var component_binary_MultiplyComponent = function(props) {
+var component_binary_MultiplyView = function(props) {
 	React.Component.call(this,props);
 };
-component_binary_MultiplyComponent.__name__ = true;
-component_binary_MultiplyComponent.__super__ = React.Component;
-component_binary_MultiplyComponent.prototype = $extend(React.Component.prototype,{
+component_binary_MultiplyView.__name__ = true;
+component_binary_MultiplyView.__super__ = React.Component;
+component_binary_MultiplyView.prototype = $extend(React.Component.prototype,{
 	render: function() {
 		return null;
 	}
 });
-var component_binary_OneTwoComponent = function(props) {
+var component_binary_OneTwoView = function(props) {
 	React.Component.call(this,props);
 };
-component_binary_OneTwoComponent.__name__ = true;
-component_binary_OneTwoComponent.__super__ = React.Component;
-component_binary_OneTwoComponent.prototype = $extend(React.Component.prototype,{
+component_binary_OneTwoView.__name__ = true;
+component_binary_OneTwoView.__super__ = React.Component;
+component_binary_OneTwoView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ },react_ReactTools.createElement(component_basic_RateInputView,{ name : "Switch time", value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch time", value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}));
 	}
 });
 var component_complex_ComplexEasingCreateContext = function(prevEasing) {
@@ -1073,6 +1188,9 @@ component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.__name__ = true;
 component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$._new = function(array) {
 	return array;
 };
+component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root = function() {
+	return component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$._new([]);
+};
 component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.isEmpty = function(this1) {
 	return this1.length == 0;
 };
@@ -1101,12 +1219,11 @@ var component_complex_ComplexEasingSelectFocus = function(focus,id) {
 component_complex_ComplexEasingSelectFocus.__name__ = true;
 component_complex_ComplexEasingSelectFocus.prototype = {
 	select: function(item) {
-		var _g = this.focus.context.resolveEasing(this.id);
+		var _g = this.focus.context.easing.resolveEasing(this.id);
 		switch(_g[1]) {
 		case 0:
-			var newEasing = item.createEasing(new component_complex_ComplexEasingCreateContext(_g[2]));
+			this.focus.context.apply(core_GlobalCommand.ChangeEasing(this.id,item.createEasing(new component_complex_ComplexEasingCreateContext(_g[2]))));
 			this.focus.unfocus();
-			this.focus.context.updateEasing(this.id,newEasing);
 			break;
 		case 1:
 			this.focus.unfocus();
@@ -1480,210 +1597,307 @@ component_complex_ComplexEasingView.prototype = $extend(React.Component.prototyp
 		var tmp3;
 		switch(_g[1]) {
 		case 0:
-			tmp3 = react_ReactTools.createElement(component_simple_SimpleEasingComponent,{ kind : _g[2], id : this.props.id, context : this.props.context});
+			tmp3 = react_ReactTools.createElement(component_simple_SimpleEasingView,{ kind : _g[2], id : this.props.id, context : this.props.context});
 			break;
 		case 1:
-			tmp3 = react_ReactTools.createElement(component_unary_UnaryOpComponent,{ easing : _g[2], op : _g[3], id : this.props.id, context : this.props.context});
+			tmp3 = react_ReactTools.createElement(component_unary_UnaryOpView,{ easing : _g[2], op : _g[3], id : this.props.id, context : this.props.context});
 			break;
 		}
-		return React.createElement("div",{ className : "complex_easing"},React.createElement("div",{ className : "complex_easing_head"},tmp,React.createElement("div",{ className : "complex_easing_child"},tmp1,tmp2,tmp3)));
+		return React.createElement("div",{ className : "complex-easing"},React.createElement("div",{ className : "complex-easing-head"},tmp,React.createElement("div",{ className : "complex-easing-child"},tmp1,tmp2,tmp3)));
 	}
 });
-var component_simple_BezierComponent = function(props) {
+var component_menu_HistoryView = function(props) {
 	React.Component.call(this,props);
 };
-component_simple_BezierComponent.__name__ = true;
-component_simple_BezierComponent.__super__ = React.Component;
-component_simple_BezierComponent.prototype = $extend(React.Component.prototype,{
+component_menu_HistoryView.__name__ = true;
+component_menu_HistoryView.__super__ = React.Component;
+component_menu_HistoryView.prototype = $extend(React.Component.prototype,{
+	render: function() {
+		var history = this.props.history;
+		return React.createElement("div",{ className : "history btn-group"},this.button(history.canUndo(),$bind(history,history.undo),"chevron-left","Undo","Ctrl-Z"),this.button(history.canRedo(),$bind(history,history.redo),"chevron-right","Redo","Ctrl-Y"));
+	}
+	,button: function(enabled,onClick,icon,label,key) {
+		return react_ReactStringTools.createElement("button",{ onClick : onClick, className : "btn btn-" + (enabled?"primary":"default"), disabled : !enabled},[react_ReactStringTools.createElement("span",{ className : "glyphicon glyphicon-" + icon})," " + label + " (" + key + ")"]);
+	}
+});
+var component_output_OutputModeSelectView = function(props) {
+	React.Component.call(this,props);
+};
+component_output_OutputModeSelectView.__name__ = true;
+component_output_OutputModeSelectView.getName = function(mode) {
+	return mode[0];
+};
+component_output_OutputModeSelectView.__super__ = React.Component;
+component_output_OutputModeSelectView.prototype = $extend(React.Component.prototype,{
+	render: function() {
+		var tmp = haxe_ds_Option.Some(this.props.mode);
+		var _g = [];
+		var _g1 = 0;
+		var _g2 = core_output_OutputMode.__constructs__.slice();
+		while(_g1 < _g2.length) {
+			var c = _g2[_g1];
+			++_g1;
+			_g.push(Type.createEnum(core_output_OutputMode,c,null));
+		}
+		return react_ReactStringTools.createElement("div",{ className : "output-mode-select"},react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : component_output_OutputModeSelectView.getName}));
+	}
+	,onSelect: function(mode) {
+		this.props.context.apply(core_GlobalCommand.ChangeOutputMode(mode));
+	}
+});
+var component_output_OutputView = function(props) {
+	React.Component.call(this,props);
+};
+component_output_OutputView.__name__ = true;
+component_output_OutputView.__super__ = React.Component;
+component_output_OutputView.prototype = $extend(React.Component.prototype,{
+	render: function() {
+		var output = this.props.context.output;
+		return react_ReactStringTools.createElement("div",{ className : "output"},[react_ReactTools.createElement(component_output_OutputModeSelectView,{ context : this.props.context, mode : output.mode}),react_ReactStringTools.createElement("pre",{ },output.getString())]);
+	}
+});
+var component_simple_BezierView = function(props) {
+	React.Component.call(this,props);
+};
+component_simple_BezierView.__name__ = true;
+component_simple_BezierView.__super__ = React.Component;
+component_simple_BezierView.prototype = $extend(React.Component.prototype,{
 	render: function() {
 		var _g = [];
 		var _g2 = 0;
 		var _g1 = this.props.controls.length;
 		while(_g2 < _g1) {
 			var i = _g2++;
-			_g.push(react_ReactTools.createElement(component_basic_RateInputView,{ name : i == null?"null":"" + i, value : this.props.controls[i], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,i), context : this.props.context}));
+			_g.push(react_ReactTools.createElement(component_basic_NumberInputView,{ name : i == null?"null":"" + i, value : this.props.controls[i], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,i), context : this.props.context}));
 		}
-		return React.createElement("div",{ },_g);
+		return React.createElement("div",{ className : "param-group"},_g);
 	}
 });
-var component_simple_InOutSelectFocus = function(focus,id) {
-	this.focus = focus;
-	this.id = id;
-};
-component_simple_InOutSelectFocus.__name__ = true;
-component_simple_InOutSelectFocus.prototype = {
-	select: function(inOut) {
-		var _g = this.focus.context.resolveEasing(this.id);
-		if(_g[1] == 0) {
-			if(_g[2][1] == 0) {
-				if(_g[2][2][1] == 1) {
-					this.focus.context.updateEasing(this.id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Standard(_g[2][2][2],inOut)));
-					this.focus.unfocus();
-				} else {
-					this.focus.unfocus();
-				}
-			} else {
-				this.focus.unfocus();
-			}
-		} else {
-			this.focus.unfocus();
-		}
-	}
-};
-var component_simple_SimpleEasingComponent = function(props) {
+var component_simple_SimpleEasingView = function(props) {
 	React.Component.call(this,props);
 };
-component_simple_SimpleEasingComponent.__name__ = true;
-component_simple_SimpleEasingComponent.__super__ = React.Component;
-component_simple_SimpleEasingComponent.prototype = $extend(React.Component.prototype,{
+component_simple_SimpleEasingView.__name__ = true;
+component_simple_SimpleEasingView.__super__ = React.Component;
+component_simple_SimpleEasingView.prototype = $extend(React.Component.prototype,{
 	render: function() {
 		var _g = this.props.kind;
 		switch(_g[1]) {
 		case 0:
 			return React.createElement("div",{ },[]);
 		case 1:
-			return react_ReactTools.createElement(component_simple_StandardEasingComponent,{ easing : _g[2], inOut : _g[3], id : this.props.id, context : this.props.context});
+			return react_ReactTools.createElement(component_simple_StandardEasingView,{ easing : _g[2], inOut : _g[3], id : this.props.id, context : this.props.context});
 		case 2:
-			return react_ReactTools.createElement(component_simple_BezierComponent,{ controls : _g[2], id : this.props.id, context : this.props.context});
+			return react_ReactTools.createElement(component_simple_BezierView,{ controls : _g[2], id : this.props.id, context : this.props.context});
 		}
 	}
 });
-var component_simple_StandardEasingComponent = function(props) {
+var component_simple_StandardEasingView = function(props) {
 	React.Component.call(this,props);
 };
-component_simple_StandardEasingComponent.__name__ = true;
-component_simple_StandardEasingComponent.getName = function(inOut) {
+component_simple_StandardEasingView.__name__ = true;
+component_simple_StandardEasingView.getName = function(inOut) {
 	return inOut[0];
 };
-component_simple_StandardEasingComponent.__super__ = React.Component;
-component_simple_StandardEasingComponent.prototype = $extend(React.Component.prototype,{
+component_simple_StandardEasingView.__super__ = React.Component;
+component_simple_StandardEasingView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		var _gthis = this;
-		var focus = this.props.context.focus;
-		var _g = focus.state;
-		if(_g[1] == 1) {
-			var detail = _g[2];
-			if(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.equals(detail.id,this.props.id)) {
-				var tmp = react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : $bind(focus,focus.unfocus), name : component_simple_StandardEasingComponent.getName(_gthis.props.inOut)});
-				var _g1 = [];
-				var _g11 = 0;
-				var _g2 = tweenxcore_expr_InOutKind.__constructs__.slice();
-				while(_g11 < _g2.length) {
-					var constructor = _g2[_g11];
-					++_g11;
-					var inOut = Type.createEnum(tweenxcore_expr_InOutKind,constructor,null);
-					_g1.push(React.createElement("button",{ className : "btn btn-default pull-left", href : "javascript:void(0)", onClick : (function(a1,f) {
-						return function() {
-							f[0](a1[0]);
-						};
-					})([inOut],[$bind(detail,detail.select)])},component_simple_StandardEasingComponent.getName(inOut)));
-				}
-				return React.createElement("div",{ className : "select"},tmp,React.createElement("div",{ className : "btn-group"},_g1));
-			} else {
-				var f1 = $bind(focus,focus.focusInOutSelect);
-				var id = this.props.id;
-				return React.createElement("div",{ className : "select"},react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : function() {
-					f1(id);
-				}, name : component_simple_StandardEasingComponent.getName(_gthis.props.inOut)}));
-			}
-		} else {
-			var f2 = $bind(focus,focus.focusInOutSelect);
-			var id1 = this.props.id;
-			return React.createElement("div",{ className : "select"},react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : function() {
-				f2(id1);
-			}, name : component_simple_StandardEasingComponent.getName(_gthis.props.inOut)}));
+		var tmp = haxe_ds_Option.Some(this.props.inOut);
+		var _g = [];
+		var _g1 = 0;
+		var _g2 = tweenxcore_expr_InOutKind.__constructs__.slice();
+		while(_g1 < _g2.length) {
+			var c = _g2[_g1];
+			++_g1;
+			_g.push(Type.createEnum(tweenxcore_expr_InOutKind,c,null));
 		}
+		return react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : component_simple_StandardEasingView.getName});
+	}
+	,onSelect: function(inOut) {
+		this.props.context.apply(core_GlobalCommand.ChangeInOut(this.props.id,inOut));
 	}
 });
-var component_ternaryOp_TernaryOpComponent = function(props) {
+var component_ternaryOp_TernaryOpView = function(props) {
 	React.Component.call(this,props);
 };
-component_ternaryOp_TernaryOpComponent.__name__ = true;
-component_ternaryOp_TernaryOpComponent.__super__ = React.Component;
-component_ternaryOp_TernaryOpComponent.prototype = $extend(React.Component.prototype,{
+component_ternaryOp_TernaryOpView.__name__ = true;
+component_ternaryOp_TernaryOpView.__super__ = React.Component;
+component_ternaryOp_TernaryOpView.prototype = $extend(React.Component.prototype,{
 	render: function() {
 		var tmp = react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.easing3, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.concat(this.props.id,2), context : this.props.context});
 		var _g = this.props.op;
-		return React.createElement("div",{ },tmp,React.createElement("div",{ },react_ReactTools.createElement(component_basic_RateInputView,{ name : "Min", value : _g[2], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_RateInputView,{ name : "Max", value : _g[3], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context})));
+		return React.createElement("div",{ },tmp,React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Min", value : _g[2], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Max", value : _g[3], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context})));
 	}
 });
-var component_unary_ClampComponent = function(props) {
+var component_unary_ClampView = function(props) {
 	React.Component.call(this,props);
 };
-component_unary_ClampComponent.__name__ = true;
-component_unary_ClampComponent.__super__ = React.Component;
-component_unary_ClampComponent.prototype = $extend(React.Component.prototype,{
+component_unary_ClampView.__name__ = true;
+component_unary_ClampView.__super__ = React.Component;
+component_unary_ClampView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ },react_ReactTools.createElement(component_basic_RateInputView,{ name : "min", value : this.props.min, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_RateInputView,{ name : "max", value : this.props.max, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "min", value : this.props.min, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "max", value : this.props.max, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context}));
 	}
 });
-var component_unary_LerpComponent = function(props) {
+var component_unary_LerpView = function(props) {
 	React.Component.call(this,props);
 };
-component_unary_LerpComponent.__name__ = true;
-component_unary_LerpComponent.__super__ = React.Component;
-component_unary_LerpComponent.prototype = $extend(React.Component.prototype,{
+component_unary_LerpView.__name__ = true;
+component_unary_LerpView.__super__ = React.Component;
+component_unary_LerpView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ },react_ReactTools.createElement(component_basic_RateInputView,{ name : "from", value : this.props.from, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_RateInputView,{ name : "to", value : this.props.to, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "from", value : this.props.from, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "to", value : this.props.to, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context}));
 	}
 });
-var component_unary_RepeatComponent = function(props) {
+var component_unary_RepeatView = function(props) {
 	React.Component.call(this,props);
 };
-component_unary_RepeatComponent.__name__ = true;
-component_unary_RepeatComponent.__super__ = React.Component;
-component_unary_RepeatComponent.prototype = $extend(React.Component.prototype,{
+component_unary_RepeatView.__name__ = true;
+component_unary_RepeatView.__super__ = React.Component;
+component_unary_RepeatView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ },react_ReactTools.createElement(component_basic_RateInputView,{ name : "Repeat", value : this.props.repeat, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Repeat", value : this.props.repeat, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}));
 	}
 });
-var component_unary_RoundTripComponent = function(props) {
+var component_unary_RoundTripView = function(props) {
 	React.Component.call(this,props);
 };
-component_unary_RoundTripComponent.__name__ = true;
-component_unary_RoundTripComponent.__super__ = React.Component;
-component_unary_RoundTripComponent.prototype = $extend(React.Component.prototype,{
+component_unary_RoundTripView.__name__ = true;
+component_unary_RoundTripView.__super__ = React.Component;
+component_unary_RoundTripView.prototype = $extend(React.Component.prototype,{
 	render: function() {
 		return null;
 	}
 });
-var component_unary_UnaryOpComponent = function(props) {
+var component_unary_UnaryOpView = function(props) {
 	React.Component.call(this,props);
 };
-component_unary_UnaryOpComponent.__name__ = true;
-component_unary_UnaryOpComponent.__super__ = React.Component;
-component_unary_UnaryOpComponent.prototype = $extend(React.Component.prototype,{
+component_unary_UnaryOpView.__name__ = true;
+component_unary_UnaryOpView.__super__ = React.Component;
+component_unary_UnaryOpView.prototype = $extend(React.Component.prototype,{
 	render: function() {
 		var tmp = react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.easing, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.concat(this.props.id,0), context : this.props.context});
 		var _g = this.props.op;
 		var tmp1;
 		switch(_g[1]) {
 		case 0:
-			tmp1 = react_ReactTools.createElement(component_unary_RepeatComponent,{ easing : this.props.easing, repeat : _g[2], id : this.props.id, context : this.props.context});
+			tmp1 = react_ReactTools.createElement(component_unary_RepeatView,{ easing : this.props.easing, repeat : _g[2], id : this.props.id, context : this.props.context});
 			break;
 		case 1:
-			tmp1 = react_ReactTools.createElement(component_unary_LerpComponent,{ easing : this.props.easing, from : _g[2], to : _g[3], id : this.props.id, context : this.props.context});
+			tmp1 = react_ReactTools.createElement(component_unary_LerpView,{ easing : this.props.easing, from : _g[2], to : _g[3], id : this.props.id, context : this.props.context});
 			break;
 		case 2:
-			tmp1 = react_ReactTools.createElement(component_unary_ClampComponent,{ easing : this.props.easing, min : _g[2], max : _g[3], id : this.props.id, context : this.props.context});
+			tmp1 = react_ReactTools.createElement(component_unary_ClampView,{ easing : this.props.easing, min : _g[2], max : _g[3], id : this.props.id, context : this.props.context});
 			break;
 		case 3:
-			tmp1 = react_ReactTools.createElement(component_unary_RoundTripComponent,{ easing : this.props.easing, roundTrip : _g[2]});
+			tmp1 = react_ReactTools.createElement(component_unary_RoundTripView,{ easing : this.props.easing, roundTrip : _g[2]});
 			break;
 		case 4:
-			tmp1 = react_ReactTools.createElement(component_binary_BinaryOpComponent,{ easing1 : this.props.easing, easing2 : _g[2], op : _g[3], id : this.props.id, context : this.props.context});
+			tmp1 = react_ReactTools.createElement(component_binary_BinaryOpView,{ easing1 : this.props.easing, easing2 : _g[2], op : _g[3], id : this.props.id, context : this.props.context});
 			break;
 		}
 		return React.createElement("div",{ },tmp,tmp1);
 	}
 });
+var core_ApplyResult = function() {
+	this.undoCommands = new List();
+};
+core_ApplyResult.__name__ = true;
+core_ApplyResult.prototype = {
+	addUndoCommand: function(command) {
+		this.undoCommands.push(command);
+	}
+};
+var core_GlobalCommand = { __ename__ : true, __constructs__ : ["ChangeEasing","ChangeInOut","ChangeRate","ChangeOutputMode"] };
+core_GlobalCommand.ChangeEasing = function(id,easing) { var $x = ["ChangeEasing",0,id,easing]; $x.__enum__ = core_GlobalCommand; return $x; };
+core_GlobalCommand.ChangeInOut = function(id,inOut) { var $x = ["ChangeInOut",1,id,inOut]; $x.__enum__ = core_GlobalCommand; return $x; };
+core_GlobalCommand.ChangeRate = function(id,rate) { var $x = ["ChangeRate",2,id,rate]; $x.__enum__ = core_GlobalCommand; return $x; };
+core_GlobalCommand.ChangeOutputMode = function(mode) { var $x = ["ChangeOutputMode",3,mode]; $x.__enum__ = core_GlobalCommand; return $x; };
 var core_GlobalContext = function() {
 	this.focus = new core_focus_FocusManager(this);
 	this.animation = new core_animation_AnimationManager();
+	this.history = new core_history_HistoryManager(this);
+	this.key = new core_key_KeyboardManager(this);
+	this.output = new core_output_OutputManager(this);
+	this.easing = new core_easing_EasingManager(this);
 	window.setTimeout($bind(this,this.onFrame),16);
 };
 core_GlobalContext.__name__ = true;
-core_GlobalContext._resolveEasing = function(easing,id) {
+core_GlobalContext.prototype = {
+	onFrame: function() {
+		this.animation.onFrame();
+		window.setTimeout($bind(this,this.onFrame),16);
+	}
+	,setup: function(application) {
+		this.application = application;
+	}
+	,update: function() {
+		this.application.forceUpdate();
+	}
+	,apply: function(command) {
+		this.applyAll([command]);
+	}
+	,applyAll: function(commands) {
+		var result = this.applyWithoutRecord(commands);
+		if(!result.undoCommands.isEmpty()) {
+			this.history.record(result.undoCommands);
+		}
+		this.update();
+	}
+	,applyWithoutRecord: function(commands) {
+		var result = new core_ApplyResult();
+		var tmp = $iterator(commands)();
+		while(tmp.hasNext()) {
+			var command = tmp.next();
+			switch(command[1]) {
+			case 0:
+				this.easing.changeEasing(command[2],command[3],result);
+				break;
+			case 1:
+				this.easing.changeInOut(command[2],command[3],result);
+				break;
+			case 2:
+				this.easing.changeRate(command[2],command[3],result);
+				break;
+			case 3:
+				this.output.changeMode(command[2],result);
+				break;
+			}
+		}
+		return result;
+	}
+};
+var core_animation_AnimationManager = function() {
+	this.animations = new haxe_ds_StringMap();
+};
+core_animation_AnimationManager.__name__ = true;
+core_animation_AnimationManager.prototype = {
+	onFrame: function() {
+		var tmp = this.animations.keys();
+		while(tmp.hasNext()) {
+			var key = tmp.next();
+			var _this = this.animations;
+			var animation = __map_reserved[key] != null?_this.getReserved(key):_this.h[key];
+			animation.onFrame();
+			if(animation.isDead()) {
+				this.animations.remove(key);
+			}
+		}
+	}
+	,add: function(id,animation) {
+		var _this = this.animations;
+		if(__map_reserved[id] != null) {
+			_this.setReserved(id,animation);
+		} else {
+			_this.h[id] = animation;
+		}
+	}
+};
+var core_easing_EasingManager = function(context) {
+	this.context = context;
+	this.current = tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Linear);
+};
+core_easing_EasingManager.__name__ = true;
+core_easing_EasingManager._resolveEasing = function(easing,id) {
 	if(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.isEmpty(id)) {
 		return haxe_ds_Option.Some(easing);
 	}
@@ -1691,10 +1905,10 @@ core_GlobalContext._resolveEasing = function(easing,id) {
 	if(easing[1] == 1) {
 		switch(_g) {
 		case 0:
-			return core_GlobalContext._resolveEasing(easing[2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id));
+			return core_easing_EasingManager._resolveEasing(easing[2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id));
 		case 1:
 			if(easing[3][1] == 4) {
-				return core_GlobalContext._resolveEasing(easing[3][2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id));
+				return core_easing_EasingManager._resolveEasing(easing[3][2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id));
 			} else {
 				return haxe_ds_Option.None;
 			}
@@ -1702,7 +1916,7 @@ core_GlobalContext._resolveEasing = function(easing,id) {
 		case 2:
 			if(easing[3][1] == 4) {
 				if(easing[3][3][1] == 5) {
-					return core_GlobalContext._resolveEasing(easing[3][3][2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id));
+					return core_easing_EasingManager._resolveEasing(easing[3][3][2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id));
 				} else {
 					return haxe_ds_Option.None;
 				}
@@ -1717,7 +1931,7 @@ core_GlobalContext._resolveEasing = function(easing,id) {
 		return haxe_ds_Option.None;
 	}
 };
-core_GlobalContext._updateEasing = function(baseEasing,id,easing) {
+core_easing_EasingManager._changeEasing = function(baseEasing,id,easing) {
 	if(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.isEmpty(id)) {
 		return easing;
 	}
@@ -1725,10 +1939,10 @@ core_GlobalContext._updateEasing = function(baseEasing,id,easing) {
 	if(baseEasing[1] == 1) {
 		switch(_g) {
 		case 0:
-			return tweenxcore_expr_ComplexEasingKind.Op(core_GlobalContext._updateEasing(baseEasing[2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id),easing),baseEasing[3]);
+			return tweenxcore_expr_ComplexEasingKind.Op(core_easing_EasingManager._changeEasing(baseEasing[2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id),easing),baseEasing[3]);
 		case 1:
 			if(baseEasing[3][1] == 4) {
-				return tweenxcore_expr_ComplexEasingKind.Op(baseEasing[2],tweenxcore_expr_UnaryOpKind.Op(core_GlobalContext._updateEasing(baseEasing[3][2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id),easing),baseEasing[3][3]));
+				return tweenxcore_expr_ComplexEasingKind.Op(baseEasing[2],tweenxcore_expr_UnaryOpKind.Op(core_easing_EasingManager._changeEasing(baseEasing[3][2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id),easing),baseEasing[3][3]));
 			} else {
 				return baseEasing;
 			}
@@ -1736,7 +1950,7 @@ core_GlobalContext._updateEasing = function(baseEasing,id,easing) {
 		case 2:
 			if(baseEasing[3][1] == 4) {
 				if(baseEasing[3][3][1] == 5) {
-					return tweenxcore_expr_ComplexEasingKind.Op(baseEasing[2],tweenxcore_expr_UnaryOpKind.Op(baseEasing[3][2],tweenxcore_expr_BinaryOpKind.Op(core_GlobalContext._updateEasing(baseEasing[3][3][2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id),easing),baseEasing[3][3][3])));
+					return tweenxcore_expr_ComplexEasingKind.Op(baseEasing[2],tweenxcore_expr_UnaryOpKind.Op(baseEasing[3][2],tweenxcore_expr_BinaryOpKind.Op(core_easing_EasingManager._changeEasing(baseEasing[3][3][2],component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(id),easing),baseEasing[3][3][3])));
 				} else {
 					return baseEasing;
 				}
@@ -1751,25 +1965,29 @@ core_GlobalContext._updateEasing = function(baseEasing,id,easing) {
 		return baseEasing;
 	}
 };
-core_GlobalContext.prototype = {
-	onFrame: function() {
-		this.animation.onFrame();
-		window.setTimeout($bind(this,this.onFrame),16);
+core_easing_EasingManager.prototype = {
+	resolveEasing: function(id) {
+		return core_easing_EasingManager._resolveEasing(this.current,id);
 	}
-	,setup: function(application) {
-		this.application = application;
+	,changeEasing: function(id,easing,result) {
+		var prev = this.current;
+		var next = core_easing_EasingManager._changeEasing(prev,id,easing);
+		if(!Type.enumEq(prev,next)) {
+			result.addUndoCommand(core_GlobalCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),prev));
+			this.current = next;
+		}
 	}
-	,update: function() {
-		this.application.forceUpdate();
+	,changeInOut: function(id,inOut,result) {
+		var _g = this.resolveEasing(id);
+		if(_g[1] == 0) {
+			if(_g[2][1] == 0) {
+				if(_g[2][2][1] == 1) {
+					this.changeEasing(id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Standard(_g[2][2][2],inOut)),result);
+				}
+			}
+		}
 	}
-	,resolveEasing: function(id) {
-		return core_GlobalContext._resolveEasing(this.application.props.easing,id);
-	}
-	,updateEasing: function(id,easing) {
-		this.application.props.easing = core_GlobalContext._updateEasing(this.application.props.easing,id,easing);
-		this.update();
-	}
-	,updateRate: function(id,value) {
+	,changeRate: function(id,value,result) {
 		var _g = this.resolveEasing(component_basic__$RateId_RateId_$Impl_$.parent(id));
 		switch(_g[1]) {
 		case 0:
@@ -1780,8 +1998,13 @@ core_GlobalContext.prototype = {
 			case 0:
 				if(oldEasing[2][1] == 2) {
 					var controls = oldEasing[2][2];
-					controls[component_basic__$RateId_RateId_$Impl_$.rateIndex(id)] = value;
-					newEasing = tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Bezier(controls));
+					if(controls[component_basic__$RateId_RateId_$Impl_$.rateIndex(id)] != value) {
+						var newControls = controls.slice(0);
+						newControls[component_basic__$RateId_RateId_$Impl_$.rateIndex(id)] = value;
+						newEasing = tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Bezier(newControls));
+					} else {
+						newEasing = oldEasing;
+					}
 				} else {
 					newEasing = oldEasing;
 				}
@@ -1868,36 +2091,10 @@ core_GlobalContext.prototype = {
 				}
 				break;
 			}
-			this.updateEasing(component_basic__$RateId_RateId_$Impl_$.parent(id),newEasing);
+			this.changeEasing(component_basic__$RateId_RateId_$Impl_$.parent(id),newEasing,result);
 			break;
 		case 1:
 			break;
-		}
-	}
-};
-var core_animation_AnimationManager = function() {
-	this.animations = new haxe_ds_StringMap();
-};
-core_animation_AnimationManager.__name__ = true;
-core_animation_AnimationManager.prototype = {
-	onFrame: function() {
-		var tmp = this.animations.keys();
-		while(tmp.hasNext()) {
-			var key = tmp.next();
-			var _this = this.animations;
-			var animation = __map_reserved[key] != null?_this.getReserved(key):_this.h[key];
-			animation.onFrame();
-			if(animation.isDead()) {
-				this.animations.remove(key);
-			}
-		}
-	}
-	,add: function(id,animation) {
-		var _this = this.animations;
-		if(__map_reserved[id] != null) {
-			_this.setReserved(id,animation);
-		} else {
-			_this.h[id] = animation;
 		}
 	}
 };
@@ -1915,21 +2112,97 @@ core_focus_FocusManager.prototype = {
 		this.state = core_focus_FocusState.ComplexEasingSelect(new component_complex_ComplexEasingSelectFocus(this,id));
 		this.context.update();
 	}
-	,focusInOutSelect: function(id) {
-		this.state = core_focus_FocusState.InOutSelect(new component_simple_InOutSelectFocus(this,id));
-		this.context.update();
-	}
 	,focusRateInput: function(id,text) {
-		this.state = core_focus_FocusState.RateInput(new component_basic_RateInputFocus(this,id,text));
+		this.state = core_focus_FocusState.RateInput(new component_basic_NumberInputFocus(this,id,text));
 		this.context.update();
 	}
 };
-var core_focus_FocusState = { __ename__ : true, __constructs__ : ["ComplexEasingSelect","InOutSelect","RateInput","None"] };
+var core_focus_FocusState = { __ename__ : true, __constructs__ : ["ComplexEasingSelect","RateInput","None"] };
 core_focus_FocusState.ComplexEasingSelect = function(detail) { var $x = ["ComplexEasingSelect",0,detail]; $x.__enum__ = core_focus_FocusState; return $x; };
-core_focus_FocusState.InOutSelect = function(detail) { var $x = ["InOutSelect",1,detail]; $x.__enum__ = core_focus_FocusState; return $x; };
-core_focus_FocusState.RateInput = function(detail) { var $x = ["RateInput",2,detail]; $x.__enum__ = core_focus_FocusState; return $x; };
-core_focus_FocusState.None = ["None",3];
+core_focus_FocusState.RateInput = function(detail) { var $x = ["RateInput",1,detail]; $x.__enum__ = core_focus_FocusState; return $x; };
+core_focus_FocusState.None = ["None",2];
 core_focus_FocusState.None.__enum__ = core_focus_FocusState;
+var core_history_HistoryManager = function(context) {
+	this.context = context;
+	this.undoStack = new List();
+	this.redoStack = new List();
+};
+core_history_HistoryManager.__name__ = true;
+core_history_HistoryManager.prototype = {
+	canUndo: function() {
+		return !this.undoStack.isEmpty();
+	}
+	,undo: function() {
+		this.context.focus.unfocus();
+		if(!this.canUndo()) {
+			return;
+		}
+		this.redoStack.push(this.context.applyWithoutRecord(this.undoStack.pop()).undoCommands);
+		this.context.update();
+	}
+	,canRedo: function() {
+		return !this.redoStack.isEmpty();
+	}
+	,redo: function() {
+		this.context.focus.unfocus();
+		if(!this.canRedo()) {
+			return;
+		}
+		this.undoStack.push(this.context.applyWithoutRecord(this.redoStack.pop()).undoCommands);
+		this.context.update();
+	}
+	,record: function(commands) {
+		this.undoStack.push(commands);
+		this.redoStack.clear();
+	}
+};
+var core_key_KeyboardManager = function(context) {
+	this.context = context;
+	window.addEventListener("keydown",$bind(this,this.onKeyDown));
+};
+core_key_KeyboardManager.__name__ = true;
+core_key_KeyboardManager.prototype = {
+	onKeyDown: function(e) {
+		var _g = e.keyCode;
+		var _g1 = e.shiftKey;
+		var _g2 = e.ctrlKey;
+		if(e.altKey == false) {
+			if(_g2 == true) {
+				if(_g1 == false) {
+					switch(_g) {
+					case 89:
+						this.context.history.redo();
+						e.preventDefault();
+						break;
+					case 90:
+						this.context.history.undo();
+						e.preventDefault();
+						break;
+					default:
+					}
+				}
+			}
+		}
+	}
+};
+var core_output_OutputManager = function(context) {
+	this.context = context;
+	this.mode = core_output_OutputMode.Json;
+};
+core_output_OutputManager.__name__ = true;
+core_output_OutputManager.prototype = {
+	getString: function() {
+		return "test";
+	}
+	,changeMode: function(newMode,result) {
+		this.mode = newMode;
+	}
+};
+var core_output_OutputMode = { __ename__ : true, __constructs__ : ["Json","Haxe"] };
+core_output_OutputMode.Json = ["Json",0];
+core_output_OutputMode.Json.__enum__ = core_output_OutputMode;
+core_output_OutputMode.Haxe = ["Haxe",1];
+core_output_OutputMode.Haxe.__enum__ = core_output_OutputMode;
 var haxe_IMap = function() { };
 haxe_IMap.__name__ = true;
 var haxe_ds_Option = { __ename__ : true, __constructs__ : ["Some","None"] };
@@ -2100,6 +2373,11 @@ var react_ReactTools = function() { };
 react_ReactTools.__name__ = true;
 react_ReactTools.createElement = function(type,attrs) {
 	return React.createElement(type,attrs);
+};
+var react_ReactStringTools = function() { };
+react_ReactStringTools.__name__ = true;
+react_ReactStringTools.createElement = function(type,attrs,children0) {
+	return React.createElement(type,attrs,children0);
 };
 var tweenxcore_Easing = function() { };
 tweenxcore_Easing.__name__ = true;
@@ -3483,6 +3761,7 @@ tweenxcore_expr_UnaryOpKindTools.toFunction = function(kind,easing) {
 		break;
 	}
 };
+function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; }
 var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; }
 String.__name__ = true;
@@ -3494,19 +3773,20 @@ component_basic_GraphView.MARGIN = 30;
 component_basic_GraphView.WIDTH = 120;
 component_basic_GraphView.HEIGHT = 140;
 component_basic_GraphView.displayName = "GraphView";
+component_basic_NumberInputView.displayName = "NumberInputView";
 component_basic_PreviewAnimation.WIDTH = 600;
 component_basic_PreviewAnimation.HEIGHT = 5;
 component_basic_PreviewAnimation.MARKER_WIDTH = 40;
 component_basic_PreviewAnimation.MARGIN = 100;
 component_basic_PreviewAnimation.TOTAL_FRAME = 60;
 component_basic_PreviewView.displayName = "PreviewView";
-component_basic_RateInputView.displayName = "RateInputView";
-component_binary_BinaryOpComponent.displayName = "BinaryOpComponent";
-component_binary_CompositeComponent.displayName = "CompositeComponent";
-component_binary_ConnectComponent.displayName = "ConnectComponent";
-component_binary_MixComponent.displayName = "MixComponent";
-component_binary_MultiplyComponent.displayName = "MultiplyComponent";
-component_binary_OneTwoComponent.displayName = "OneTwoComponent";
+component_basic_SelectGroupView.displayName = "SelectGroupView";
+component_binary_BinaryOpView.displayName = "BinaryOpView";
+component_binary_CompositeView.displayName = "CompositeView";
+component_binary_ConnectView.displayName = "ConnectView";
+component_binary_MixView.displayName = "MixView";
+component_binary_MultiplyView.displayName = "MultiplyView";
+component_binary_OneTwoView.displayName = "OneTwoView";
 component_complex_ComplexEasingSelectItem.items = (function($this) {
 	var $r;
 	var _g = [];
@@ -3524,15 +3804,18 @@ component_complex_ComplexEasingSelectItem.items = (function($this) {
 }(this));
 component_complex_ComplexEasingSelectView.displayName = "ComplexEasingSelectView";
 component_complex_ComplexEasingView.displayName = "ComplexEasingView";
-component_simple_BezierComponent.displayName = "BezierComponent";
-component_simple_SimpleEasingComponent.displayName = "SimpleEasingComponent";
-component_simple_StandardEasingComponent.displayName = "StandardEasingComponent";
-component_ternaryOp_TernaryOpComponent.displayName = "TernaryOpComponent";
-component_unary_ClampComponent.displayName = "ClampComponent";
-component_unary_LerpComponent.displayName = "LerpComponent";
-component_unary_RepeatComponent.displayName = "RepeatComponent";
-component_unary_RoundTripComponent.displayName = "RoundTripComponent";
-component_unary_UnaryOpComponent.displayName = "UnaryOpComponent";
+component_menu_HistoryView.displayName = "HistoryView";
+component_output_OutputModeSelectView.displayName = "OutputModeSelectView";
+component_output_OutputView.displayName = "OutputView";
+component_simple_BezierView.displayName = "BezierView";
+component_simple_SimpleEasingView.displayName = "SimpleEasingView";
+component_simple_StandardEasingView.displayName = "StandardEasingView";
+component_ternaryOp_TernaryOpView.displayName = "TernaryOpView";
+component_unary_ClampView.displayName = "ClampView";
+component_unary_LerpView.displayName = "LerpView";
+component_unary_RepeatView.displayName = "RepeatView";
+component_unary_RoundTripView.displayName = "RoundTripView";
+component_unary_UnaryOpView.displayName = "UnaryOpView";
 tweenxcore_Easing.PI = 3.1415926535897932384626433832795;
 tweenxcore_Easing.PI_H = 1.5707963267948966;
 tweenxcore_Easing.overshoot = 1.70158;

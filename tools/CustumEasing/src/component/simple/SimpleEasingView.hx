@@ -6,7 +6,7 @@ import component.complex.ComplexEasingId;
 import core.GlobalContext;
 import tweenxcore.expr.SimpleEasingKind;
 
-class SimpleEasingComponent extends ReactComponentOfProps<SimpleEasingProps>
+class SimpleEasingView extends ReactComponentOfProps<SimpleEasingProps>
 {
 	public function new(props:SimpleEasingProps) 
 	{
@@ -21,7 +21,7 @@ class SimpleEasingComponent extends ReactComponentOfProps<SimpleEasingProps>
 				React.createElement("div", {}, []);
 				
 			case SimpleEasingKind.Standard(easing, inOut):
-				StandardEasingComponent.createElement(
+				StandardEasingView.createElement(
 					{
 						easing: easing,
 						inOut: inOut,
@@ -31,7 +31,7 @@ class SimpleEasingComponent extends ReactComponentOfProps<SimpleEasingProps>
 				);
 				
 			case SimpleEasingKind.Bezier(controls):
-				BezierComponent.createElement(
+				BezierView.createElement(
 					{
 						controls: controls,
 						id: props.id,

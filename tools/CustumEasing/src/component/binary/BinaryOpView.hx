@@ -2,15 +2,15 @@ package component.binary;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
-import component.binary.MultiplyComponent;
+import component.binary.MultiplyView;
 import component.complex.ComplexEasingView;
-import component.ternaryOp.TernaryOpComponent;
+import component.ternaryOp.TernaryOpView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
 import tweenxcore.expr.BinaryOpKind;
 import tweenxcore.expr.ComplexEasingKind;
 
-class BinaryOpComponent extends ReactComponentOfProps<BinaryOpProps>
+class BinaryOpView extends ReactComponentOfProps<BinaryOpProps>
 {
 	public function new(props:BinaryOpProps) 
 	{
@@ -34,7 +34,7 @@ class BinaryOpComponent extends ReactComponentOfProps<BinaryOpProps>
 			switch (props.op)
 			{
 				case BinaryOpKind.Composite:
-					CompositeComponent.createElement(
+					CompositeView.createElement(
 						{
 							easing1: props.easing1,
 							easing2: props.easing2,
@@ -42,7 +42,7 @@ class BinaryOpComponent extends ReactComponentOfProps<BinaryOpProps>
 					);
 					
 				case BinaryOpKind.Multiply:
-					MultiplyComponent.createElement(
+					MultiplyView.createElement(
 						{
 							easing1: props.easing1,
 							easing2: props.easing2,
@@ -50,7 +50,7 @@ class BinaryOpComponent extends ReactComponentOfProps<BinaryOpProps>
 					);
 					
 				case BinaryOpKind.Mix(strength):
-					MixComponent.createElement(
+					MixView.createElement(
 						{
 							easing1: props.easing1,
 							easing2: props.easing2,
@@ -61,7 +61,7 @@ class BinaryOpComponent extends ReactComponentOfProps<BinaryOpProps>
 					);
 					
 				case BinaryOpKind.Connect(switchTime, switchValue):
-					ConnectComponent.createElement(
+					ConnectView.createElement(
 						{
 							easing1: props.easing1,
 							easing2: props.easing2,
@@ -73,7 +73,7 @@ class BinaryOpComponent extends ReactComponentOfProps<BinaryOpProps>
 					);
 					
 				case BinaryOpKind.OneTwo(switchTime):
-					OneTwoComponent.createElement(
+					OneTwoView.createElement(
 						{
 							easing1: props.easing1,
 							easing2: props.easing2,
@@ -85,7 +85,7 @@ class BinaryOpComponent extends ReactComponentOfProps<BinaryOpProps>
 					
 					
 				case BinaryOpKind.Op(easing3, op):
-					TernaryOpComponent.createElement(
+					TernaryOpView.createElement(
 						{
 							easing1: props.easing1,
 							easing2: props.easing2,

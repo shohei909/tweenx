@@ -3,14 +3,14 @@
 # only Main files contain this front matter, not partials.
 ---
 
-.complex_easing
+.complex-easing
 {
     margin-top: 20px;
     padding-left: 30px;
     margin-left: 10px;
 	border-left: dashed 2px #EEEEEE;
 	
-	.complex_easing_head
+	.complex-easing-head
 	{
 		display: table;
 			
@@ -19,26 +19,51 @@
 			display: table-cell;
 		}
 		
-		> .complex_easing_child
+		> .complex-easing-child
 		{
 			display: table-cell;
 			vertical-align: top;
 			padding: 15px;
 		}
 	}
-	
 	.preview
 	{
 		display: table;
 			
 		> div
 		{
+			padding: 2px;
 			display: table-cell;
 		}
 	}
 	
-	button 
+	.param-group
 	{
-		margin: 2px;
+		margin: 4px;
+		
+		> div
+		{
+			margin: 2px;
+		}
+		
+		.input-group-addon
+		{
+			width: 130px;
+		}
 	}
+}
+
+.row 
+{
+	margin-left: 1px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+	
+.output
+{
+	border-top: dashed 2px #EEEEEE;
+	margin-top: 50px;
+	padding: 10px;
+	padding-top: 50px;
 }

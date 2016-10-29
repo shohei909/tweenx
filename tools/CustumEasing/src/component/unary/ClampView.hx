@@ -2,15 +2,15 @@ package component.unary;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
-import component.basic.RateInputView;
+import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
 import tweenxcore.expr.ComplexEasingKind;
 
 
-class LerpComponent extends ReactComponentOfProps<LerpProps>
+class ClampView extends ReactComponentOfProps<ClampProps>
 {
-	public function new(props:LerpProps) 
+	public function new(props:ClampProps) 
 	{
 		super(props);
 	}
@@ -19,19 +19,21 @@ class LerpComponent extends ReactComponentOfProps<LerpProps>
 	{
 		return React.createElement(
 			"div",
-			{}, 
-			RateInputView.createElement(
+			{
+				className: "param-group"
+			}, 
+			NumberInputView.createElement(
 				{
-					name: "from",
-					value: props.from,
+					name: "min",
+					value: props.min,
 					id: props.id.rateId(0),
 					context: props.context
 				}
 			),
-			RateInputView.createElement(
+			NumberInputView.createElement(
 				{
-					name: "to",
-					value: props.to,
+					name: "max",
+					value: props.max,
 					id: props.id.rateId(1),
 					context: props.context
 				}
@@ -40,11 +42,11 @@ class LerpComponent extends ReactComponentOfProps<LerpProps>
 	}
 }
 
-typedef LerpProps =
+typedef ClampProps =
 {
 	easing: ComplexEasingKind,
-	from: Float,
-	to: Float,
+	min: Float,
+	max: Float,
 	id: ComplexEasingId,
 	context: GlobalContext
 }

@@ -1,13 +1,12 @@
-package component.unary;
+package component.binary;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import tweenxcore.expr.ComplexEasingKind;
-import tweenxcore.expr.RoundTripKind;
 
-class RoundTripComponent extends ReactComponentOfProps<RoundTripProps>
+class CompositeView extends ReactComponentOfProps<CompositeProps>
 {
-	public function new(props:RoundTripProps) 
+	public function new(props:CompositeProps) 
 	{
 		super(props);
 	}
@@ -18,8 +17,8 @@ class RoundTripComponent extends ReactComponentOfProps<RoundTripProps>
 	}
 }
 
-typedef RoundTripProps =
+typedef CompositeProps =
 {
-	easing: ComplexEasingKind,
-	roundTrip: RoundTripKind,
+	easing1: ComplexEasingKind,
+	easing2: ComplexEasingKind,
 }

@@ -1,21 +1,21 @@
 package core;
-import component.basic.RateId;
+import core.GlobalCommand;
 import core.animation.AnimationManager;
-import haxe.ds.Option;
-import component.complex.ComplexEasingId;
+import core.easing.EasingManager;
 import core.focus.FocusManager;
+import core.history.HistoryManager;
+import core.key.KeyboardManager;
+import core.output.OutputManager;
 import js.Browser;
-import js.Lib;
-import tweenxcore.expr.BinaryOpKind;
-import tweenxcore.expr.ComplexEasingKind;
-import tweenxcore.expr.SimpleEasingKind;
-import tweenxcore.expr.TernaryOpKind;
-import tweenxcore.expr.UnaryOpKind;
 
 class GlobalContext 
 {
+	public var key(default, null):KeyboardManager;
+	public var history(default, null):HistoryManager;
 	public var focus(default, null):FocusManager;
 	public var animation(default, null):AnimationManager;
+	public var output(default, null):OutputManager;
+	public var easing(default, null):EasingManager;
 	
 	private var application:Application;
 	
@@ -23,6 +23,11 @@ class GlobalContext
 	{
 		focus = new FocusManager(this);
 		animation = new AnimationManager();
+		history = new HistoryManager(this);
+		key = new KeyboardManager(this);
+		output = new OutputManager(this);
+		easing = new EasingManager(this);
+		
 		Browser.window.setTimeout(onFrame, 16);
 	}
 	
@@ -42,115 +47,47 @@ class GlobalContext
 		application.forceUpdate();	
 	}
 	
-	public function resolveEasing(id:ComplexEasingId):Option<ComplexEasingKind>
+	// ------------------------------------------
+	// Apply Command
+	// ------------------------------------------
+	public function apply(command:GlobalCommand):Void
 	{
-		return _resolveEasing(application.props.easing, id);
+		applyAll([command]);
 	}
 	
-	private static function _resolveEasing(easing:ComplexEasingKind, id:ComplexEasingId):Option<ComplexEasingKind>
+	public function applyAll(commands:Iterable<GlobalCommand>):Void
 	{
-		if (id.isEmpty())
+		var result = applyWithoutRecord(commands);
+		
+		if (!result.undoCommands.isEmpty())
 		{
-			return Option.Some(easing);
+			history.record(result.undoCommands);
 		}
 		
-		return switch [easing, id.current()]
-		{
-			case [ComplexEasingKind.Op(easing, _), 0]:
-				_resolveEasing(easing, id.child());
-				
-			case [ComplexEasingKind.Op(_, Op(easing, _)), 1]:
-				_resolveEasing(easing, id.child());
-				
-			case [ComplexEasingKind.Op(_, Op(_, Op(easing, _))), 2]:
-				_resolveEasing(easing, id.child());
-				
-			case [_, _]:
-				Option.None;
-		}
-	}
-	
-	public function updateEasing(id:ComplexEasingId, easing:ComplexEasingKind):Void
-	{
-		application.props.easing = _updateEasing(application.props.easing, id, easing);
 		update();
 	}
 	
-	public function updateRate(id:RateId, value:Float) 
+	public function applyWithoutRecord(commands:Iterable<GlobalCommand>):ApplyResult
 	{
-		switch (resolveEasing(id.parent()))
+		var result = new ApplyResult();
+		for (command in commands)
 		{
-			case Option.Some(oldEasing):
-				var newEasing:ComplexEasingKind = switch [oldEasing, id.rateIndex()] 
-				{
-					case [Simple(SimpleEasingKind.Bezier(controls)), _]:
-						controls[id.rateIndex()] = value;
-						Simple(SimpleEasingKind.Bezier(controls));
-						
-					case [Op(easing1, UnaryOpKind.Lerp(_, max)), 0]:
-						Op(easing1, UnaryOpKind.Lerp(value, max));
-						
-					case [Op(easing1, UnaryOpKind.Lerp(min, _)), 1]:
-						Op(easing1, UnaryOpKind.Lerp(min, value));
-						
-					case [Op(easing1, UnaryOpKind.Clamp(_, max)), 0]:
-						Op(easing1, UnaryOpKind.Clamp(value, max));
-						
-					case [Op(easing1, UnaryOpKind.Clamp(min, _)), 1]:
-						Op(easing1, UnaryOpKind.Clamp(min, value));
-						
-					case [Op(easing1, UnaryOpKind.Repeat(_)), 0]:
-						Op(easing1, UnaryOpKind.Repeat(value));
-						
-					case [Op(easing1, Op(easing2, BinaryOpKind.Mix(_))), 0]:
-						Op(easing1, Op(easing2, BinaryOpKind.Mix(value)));
-						
-					case [Op(easing1, Op(easing2, BinaryOpKind.Connect(_, _value))), 0]:
-						Op(easing1, Op(easing2, BinaryOpKind.Connect(value, _value)));
-						
-					case [Op(easing1, Op(easing2, BinaryOpKind.Connect(time, _))), 1]:
-						Op(easing1, Op(easing2, BinaryOpKind.Connect(time, value)));
-						
-					case [Op(easing1, Op(easing2, BinaryOpKind.OneTwo(_))), 0]:
-						Op(easing1, Op(easing2, BinaryOpKind.OneTwo(value)));
-						
-					case [Op(easing1, Op(easing2, Op(easing3, TernaryOpKind.Crossfade(_, max)))), 0]:
-						Op(easing1, Op(easing2, Op(easing3, TernaryOpKind.Crossfade(value, max))));
-						
-					case [Op(easing1, Op(easing2, Op(easing3, TernaryOpKind.Crossfade(min, _)))), 1]:
-						Op(easing1, Op(easing2, Op(easing3, TernaryOpKind.Crossfade(min, value))));
-						
-					case [_, _]:
-						oldEasing;
-				}
-				
-				updateEasing(id.parent(), newEasing);
-				
-			case Option.None:
-		}
-	}
-	
-	
-	private static function _updateEasing(baseEasing:ComplexEasingKind, id:ComplexEasingId, easing:ComplexEasingKind):ComplexEasingKind
-	{
-		if (id.isEmpty())
-		{
-			return easing;
+			switch (command)
+			{
+				case GlobalCommand.ChangeEasing(id, easingKind):
+					easing.changeEasing(id, easingKind, result);
+					
+				case GlobalCommand.ChangeRate(id, rate):
+					easing.changeRate(id, rate, result);
+					
+				case GlobalCommand.ChangeInOut(id, inOut):
+					easing.changeInOut(id, inOut, result);
+					
+				case GlobalCommand.ChangeOutputMode(mode):
+					output.changeMode(mode, result);
+			}
 		}
 		
-		return switch [baseEasing, id.current()]
-		{
-			case [Op(easing1, op), 0]:
-				Op(_updateEasing(easing1, id.child(), easing), op);
-				
-			case [Op(easing1, Op(easing2, op)), 1]:
-				Op(easing1, Op(_updateEasing(easing2, id.child(), easing), op));
-				
-			case [Op(easing1, Op(easing2,  Op(easing3, op))), 2]:
-				Op(easing1, Op(easing2, Op(_updateEasing(easing3, id.child(), easing), op)));
-				
-			case [_, _]:
-				baseEasing;
-		}
+		return result;
 	}
 }

@@ -5,8 +5,8 @@ import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.PreviewView;
 import component.complex.ComplexEasingSelectView;
 import component.basic.GraphView;
-import component.simple.SimpleEasingComponent;
-import component.unary.UnaryOpComponent;
+import component.simple.SimpleEasingView;
+import component.unary.UnaryOpView;
 import core.GlobalContext;
 import component.complex.ComplexEasingId;
 import tweenxcore.expr.ComplexEasingKind;
@@ -22,10 +22,10 @@ class ComplexEasingView extends ReactComponentOfProps<ComplexEasingProps>
 	{
 		return React.createElement(
 			"div",
-			{ className: "complex_easing" },
+			{ className: "complex-easing" },
 			React.createElement(
 				"div",
-				{ className: "complex_easing_head" },
+				{ className: "complex-easing-head" },
 				GraphView.createElement(
 					{
 						lines: [
@@ -35,13 +35,13 @@ class ComplexEasingView extends ReactComponentOfProps<ComplexEasingProps>
 				),
 				React.createElement(
 					"div",
-					{ className: "complex_easing_child" },
+					{ className: "complex-easing-child" },
 					PreviewView.createElement(props),
 					ComplexEasingSelectView.createElement(props),
 					switch (props.easing)
 					{
 						case ComplexEasingKind.Simple(kind):
-							SimpleEasingComponent.createElement(
+							SimpleEasingView.createElement(
 								{ 
 									kind: kind,
 									id: props.id,
@@ -50,7 +50,7 @@ class ComplexEasingView extends ReactComponentOfProps<ComplexEasingProps>
 							);
 							
 						case ComplexEasingKind.Op(easing, op):
-							UnaryOpComponent.createElement(
+							UnaryOpView.createElement(
 								{ 
 									easing: easing,
 									op: op,

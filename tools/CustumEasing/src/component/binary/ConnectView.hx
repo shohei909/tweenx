@@ -2,12 +2,12 @@ package component.binary;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
-import component.basic.RateInputView;
+import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
 import tweenxcore.expr.ComplexEasingKind;
 
-class ConnectComponent extends ReactComponentOfProps<ConnectProps>
+class ConnectView extends ReactComponentOfProps<ConnectProps>
 {
 	public function new(props:ConnectProps) 
 	{
@@ -17,9 +17,10 @@ class ConnectComponent extends ReactComponentOfProps<ConnectProps>
 	override public function render():ReactComponent 
 	{
 		return React.createElement(
-			"div",
-			{}, 
-			RateInputView.createElement(
+			{
+				className: "param-group"
+			}, 
+			NumberInputView.createElement(
 				{
 					name: "Switch time",
 					value: props.switchTime,
@@ -27,7 +28,7 @@ class ConnectComponent extends ReactComponentOfProps<ConnectProps>
 					context: props.context
 				}
 			),
-			RateInputView.createElement(
+			NumberInputView.createElement(
 				{
 					name: "Switch value",
 					value: props.switchValue,

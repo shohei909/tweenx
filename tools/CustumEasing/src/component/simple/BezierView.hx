@@ -2,12 +2,12 @@ package component.simple;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
-import component.basic.RateInputView;
+import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
 import tweenxcore.geom.Point;
 
-class BezierComponent extends ReactComponentOfProps<BezierProps>
+class BezierView extends ReactComponentOfProps<BezierProps>
 {
 	public function new(props:BezierProps) 
 	{
@@ -18,11 +18,13 @@ class BezierComponent extends ReactComponentOfProps<BezierProps>
 	{
 		return React.createElement(
 			"div",
-			{}, 
+			{
+				className: "param-group"
+			}, 
 			[
 				for (i in 0...props.controls.length)
 				{
-					RateInputView.createElement(
+					NumberInputView.createElement(
 						{
 							name: Std.string(i),
 							value: props.controls[i],

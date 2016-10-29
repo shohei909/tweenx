@@ -1,4 +1,5 @@
 package component.complex;
+import core.GlobalCommand;
 import haxe.ds.Option;
 import component.complex.ComplexEasingId;
 import core.focus.FocusManager;
@@ -16,12 +17,14 @@ class ComplexEasingSelectFocus
 	
 	public function select(item:ComplexEasingSelectItem):Void
 	{
-		switch (focus.context.resolveEasing(id))
+		switch (focus.context.easing.resolveEasing(id))
 		{
 			case Option.Some(oldEasing):
 				var newEasing = item.createEasing(new ComplexEasingCreateContext(oldEasing));
+				var command = GlobalCommand.ChangeEasing(id, newEasing);
+				focus.context.apply(command);
+				
 				focus.unfocus();
-				focus.context.updateEasing(id, newEasing);
 				
 			case Option.None:
 				focus.unfocus();

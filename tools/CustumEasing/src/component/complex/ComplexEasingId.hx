@@ -8,6 +8,11 @@ abstract ComplexEasingId(Array<Int>)
 		this = array;
 	}
 	
+	public static function root() :ComplexEasingId
+	{
+		return new ComplexEasingId([]);
+	}
+	
 	public function isEmpty():Bool
 	{
 		return this.length == 0;

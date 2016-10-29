@@ -2,15 +2,15 @@ package component.unary;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
-import component.binary.BinaryOpComponent;
+import component.binary.BinaryOpView;
 import component.complex.ComplexEasingId;
 import component.complex.ComplexEasingView;
-import component.unary.ClampComponent;
+import component.unary.ClampView;
 import core.GlobalContext;
 import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.UnaryOpKind;
 
-class UnaryOpComponent extends ReactComponentOfProps<UnaryOpProps>
+class UnaryOpView extends ReactComponentOfProps<UnaryOpProps>
 {
 	public function new(props:UnaryOpProps) 
 	{
@@ -32,7 +32,7 @@ class UnaryOpComponent extends ReactComponentOfProps<UnaryOpProps>
 			switch (props.op)
 			{
 				case UnaryOpKind.Lerp(from, to):
-					LerpComponent.createElement(
+					LerpView.createElement(
 						{
 							easing: props.easing,
 							from: from,
@@ -43,7 +43,7 @@ class UnaryOpComponent extends ReactComponentOfProps<UnaryOpProps>
 					);
 					
 				case UnaryOpKind.Clamp(min, max):
-					ClampComponent.createElement(
+					ClampView.createElement(
 						{
 							easing: props.easing,
 							min: min,
@@ -54,7 +54,7 @@ class UnaryOpComponent extends ReactComponentOfProps<UnaryOpProps>
 					);
 					
 				case UnaryOpKind.Repeat(repeat):
-					RepeatComponent.createElement(
+					RepeatView.createElement(
 						{
 							easing: props.easing,
 							repeat: repeat,
@@ -64,7 +64,7 @@ class UnaryOpComponent extends ReactComponentOfProps<UnaryOpProps>
 					);
 					
 				case UnaryOpKind.RoundTrip(roundTrip):
-					RoundTripComponent.createElement(
+					RoundTripView.createElement(
 						{
 							easing: props.easing,
 							roundTrip: roundTrip,
@@ -72,7 +72,7 @@ class UnaryOpComponent extends ReactComponentOfProps<UnaryOpProps>
 					);
 					
 				case UnaryOpKind.Op(easing2, op):
-					BinaryOpComponent.createElement(
+					BinaryOpView.createElement(
 						{
 							easing1: props.easing,
 							easing2: easing2,

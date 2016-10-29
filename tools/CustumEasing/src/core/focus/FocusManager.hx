@@ -1,8 +1,7 @@
 package core.focus;
 import component.basic.RateId;
-import component.basic.RateInputFocus;
+import component.basic.NumberInputFocus;
 import component.complex.ComplexEasingSelectFocus;
-import component.simple.InOutSelectFocus;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
 import haxe.ds.Option;
@@ -34,15 +33,9 @@ class FocusManager
 		context.update();
 	}
 	
-	public function focusInOutSelect(id:ComplexEasingId):Void
-	{
-		state = FocusState.InOutSelect(new InOutSelectFocus(this, id));
-		context.update();
-	}
-	
 	public function focusRateInput(id:RateId, text:String):Void
 	{
-		state = FocusState.RateInput(new RateInputFocus(this, id, text));
+		state = FocusState.RateInput(new NumberInputFocus(this, id, text));
 		context.update();
 	}
 }

@@ -1,15 +1,16 @@
-package component.binary;
+package component.unary;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
-import component.basic.RateInputView;
+import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
 import tweenxcore.expr.ComplexEasingKind;
 
-class OneTwoComponent extends ReactComponentOfProps<OneTwoProps>
+
+class RepeatView extends ReactComponentOfProps<RepeatProps>
 {
-	public function new(props:OneTwoProps) 
+	public function new(props:RepeatProps) 
 	{
 		super(props);
 	}
@@ -18,11 +19,13 @@ class OneTwoComponent extends ReactComponentOfProps<OneTwoProps>
 	{
 		return React.createElement(
 			"div",
-			{}, 
-			RateInputView.createElement(
+			{
+				className: "param-group"
+			}, 
+			NumberInputView.createElement(
 				{
-					name: "Switch time",
-					value: props.switchTime,
+					name: "Repeat",
+					value: props.repeat,
 					id: props.id.rateId(0),
 					context: props.context
 				}
@@ -31,11 +34,10 @@ class OneTwoComponent extends ReactComponentOfProps<OneTwoProps>
 	}
 }
 
-typedef OneTwoProps =
+typedef RepeatProps =
 {
-	easing1: ComplexEasingKind,
-	easing2: ComplexEasingKind,
-	switchTime: Float,
+	easing: ComplexEasingKind,
+	repeat: Float,
 	id: ComplexEasingId,
 	context: GlobalContext
 }

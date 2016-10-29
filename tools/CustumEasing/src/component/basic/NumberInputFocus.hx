@@ -1,13 +1,16 @@
 package component.basic;
 import api.react.ReactEvent;
+import core.GlobalCommand;
 import core.focus.FocusManager;
 import haxe.ds.Option;
 import js.html.Element;
 import js.html.Event;
 import js.html.Text;
+import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.InOutKind;
+import tweenxcore.expr.SimpleEasingKind;
 
-class RateInputFocus 
+class NumberInputFocus 
 {
 	private var focus:FocusManager;
 	public var text(default, null):String;
@@ -28,7 +31,8 @@ class RateInputFocus
 		
 		if (!Math.isNaN(value))
 		{
-			focus.context.updateRate(id, value);
+			var command = GlobalCommand.ChangeRate(id, value);
+			focus.context.apply(command);
 		}
 		else
 		{

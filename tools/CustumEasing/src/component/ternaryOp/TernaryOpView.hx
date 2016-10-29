@@ -2,14 +2,14 @@ package component.ternaryOp;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
-import component.basic.RateInputView;
+import component.basic.NumberInputView;
 import component.complex.ComplexEasingView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
 import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.TernaryOpKind;
 
-class TernaryOpComponent extends ReactComponentOfProps<TernaryOpProps>
+class TernaryOpView extends ReactComponentOfProps<TernaryOpProps>
 {
 	public function new(props:TernaryOpProps) 
 	{
@@ -35,8 +35,10 @@ class TernaryOpComponent extends ReactComponentOfProps<TernaryOpProps>
 				case TernaryOpKind.Crossfade(min, max):
 					React.createElement(
 						"div",
-						{}, 
-						RateInputView.createElement(
+						{
+							className: "param-group"
+						}, 
+						NumberInputView.createElement(
 							{
 								name: "Min",
 								value: min,
@@ -44,7 +46,7 @@ class TernaryOpComponent extends ReactComponentOfProps<TernaryOpProps>
 								context: props.context
 							}
 						),
-						RateInputView.createElement(
+						NumberInputView.createElement(
 							{
 								name: "Max",
 								value: max,

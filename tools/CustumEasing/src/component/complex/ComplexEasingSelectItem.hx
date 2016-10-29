@@ -1,8 +1,6 @@
 package component.complex;
 import component.complex.ComplexEasingCreateContext;
-import component.unary.UnaryOpComponent;
 import haxe.EnumTools;
-import haxe.ds.Option;
 import tweenxcore.expr.BinaryOpKind;
 import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.SimpleEasingKind;
