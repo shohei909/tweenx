@@ -1,4 +1,5 @@
 package core.focus;
+import component.basic.NumberInput.NumberInputId;
 import component.basic.RateId;
 import component.basic.NumberInputFocus;
 import component.complex.ComplexEasingSelectFocus;
@@ -33,9 +34,9 @@ class FocusManager
 		context.update();
 	}
 	
-	public function focusRateInput(id:RateId, text:String):Void
+	public function focusNumberInput(id:NumberInputId, text:String):Void
 	{
-		state = FocusState.RateInput(new NumberInputFocus(this, id, text));
+		state = FocusState.NumberInput(new NumberInputFocus(this, id, text));
 		context.update();
 	}
 }

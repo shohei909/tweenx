@@ -70,6 +70,8 @@ class EasingManager
 			result.addUndoCommand(GlobalCommand.ChangeEasing(ComplexEasingId.root(), prev));
 			current = next;
 			context.updateHash();
+			
+			context.animation.startPreview(id, easing);
 		}
 	}
 	

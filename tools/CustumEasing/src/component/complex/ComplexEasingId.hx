@@ -1,4 +1,5 @@
 package component.complex;
+import component.basic.NumberInput.NumberInputId;
 import component.basic.RateId;
 
 abstract ComplexEasingId(Array<Int>) 
@@ -36,6 +37,11 @@ abstract ComplexEasingId(Array<Int>)
 	public function rateId(id:Int):RateId
 	{
 		return new RateId(this.concat([id]));
+	}
+	
+	public function numberInputId(id:Int):NumberInputId
+	{
+		return NumberInputId.EasingRate(new RateId(this.concat([id])));
 	}
 	
 	@:op(A == B)

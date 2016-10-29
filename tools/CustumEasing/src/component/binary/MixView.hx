@@ -25,7 +25,7 @@ class MixView extends ReactComponentOfProps<MixProps>
 				{
 					name: "Strength",
 					value: props.strength,
-					id: props.id.rateId(0),
+					id: props.id.numberInputId(0),
 					context: props.context
 				}
 			)

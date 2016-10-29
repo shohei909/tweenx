@@ -3,8 +3,12 @@ package;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactDOM;
+import component.basic.NumberInput.NumberInputId;
+import component.basic.NumberInputView;
+import component.basic.RateId;
 import component.complex.ComplexEasingView;
 import component.menu.HistoryView;
+import component.menu.MenuView;
 import component.output.OutputView;
 import js.Browser;
 import js.Lib;
@@ -32,17 +36,18 @@ class Application extends ReactComponentOfProps<ApplicationProps>
         super(props);
 		props.context.setup(this);
     }
+	
+	public override function componentDidMount():Void 
+	{
+		props.context.init();
+	}
 
     override function render():ReactComponent
 	{
         return "div".createElement(
 			{},
 			[
-				HistoryView.createElement(
-					{
-						history: props.context.history
-					}
-				),
+				MenuView.createElement(props),
 				ComplexEasingView.createElement(
 				{
 					easing: props.context.easing.current,
@@ -50,11 +55,7 @@ class Application extends ReactComponentOfProps<ApplicationProps>
 					context: props.context
 				}
 				),
-				OutputView.createElement(
-					{
-						context: props.context,
-					}
-				)
+				OutputView.createElement(props)
 			]
 		);
     }

@@ -44,14 +44,21 @@ class PreviewView extends ReactComponentOfProps<PreviewProps>
 			React.createElement(
 				"div",
 				{ },
-				React.createElement("canvas", { ref: "canvas", width: PreviewAnimation.WIDTH, height: PreviewAnimation.HEIGHT })
+				"canvas".createElement(
+					{ 
+						id: "preview-canvas-" + props.id.toString(), 
+						ref: "canvas", 
+						width: PreviewAnimation.WIDTH, 
+						height: PreviewAnimation.HEIGHT 
+					}
+				)
 			)
 		);
 	}
 	
 	private function onClick():Void
 	{
-		props.context.animation.add(props.id.toString(), new PreviewAnimation(this.refs.canvas, this.props.easing));
+		props.context.animation.startPreview(props.id, this.props.easing);
 	}
 }
 

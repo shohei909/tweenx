@@ -30,15 +30,19 @@ class GlobalContext
 	public function new() 
 	{
 		focus = new FocusManager(this);
-		animation = new AnimationManager();
+		animation = new AnimationManager(this);
 		history = new HistoryManager(this);
 		key = new KeyboardManager(this);
 		output = new OutputManager(this);
 		easing = new EasingManager(this);
 		
+		currentHash = "";
 		Browser.window.setTimeout(onFrame, 1 / 60);
 		Browser.window.addEventListener("hashchange", onHashChange);
-		
+	}
+	
+	public function init():Void
+	{
 		applyHashChange();
 		history.clear();
 	}
@@ -105,6 +109,9 @@ class GlobalContext
 					
 				case GlobalCommand.ChangeOutputMode(mode):
 					output.changeMode(mode, result);
+					
+				case GlobalCommand.ChangeAnimationTime(value):
+					animation.changeTime(value, result);
 			}
 		}
 		
@@ -117,25 +124,33 @@ class GlobalContext
 		
 		try 
 		{
-			trace(currentHash);
 			var data = Json.parse(StringTools.urlDecode(currentHash.substr(1)));
 			
 			try 
 			{
 				var easing = ComplexEasingKindTools.fromJsonable(data.easing);
 				apply(GlobalCommand.ChangeEasing(ComplexEasingId.root(), easing));
+				
+				animation.startPreview(ComplexEasingId.root(), easing);
+			}
+			catch (e:Dynamic) {}
+			
+			try 
+			{
+				animation.time = cast(data.time, Float);
 			}
 			catch (e:Dynamic) {}
 		}
 		catch (e:Dynamic) {}
 	}
 	
-	public function updateHash() 
+	public function updateHash():Void
 	{
 		currentHash = "#" + StringTools.urlEncode(
 			Json.stringify(
 				{
-					easing:ComplexEasingKindTools.toJsonable(easing.current),
+					time: animation.time,
+					easing: ComplexEasingKindTools.toJsonable(easing.current),
 				}
 			)
 		);

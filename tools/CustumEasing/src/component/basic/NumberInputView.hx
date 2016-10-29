@@ -2,6 +2,7 @@ package component.basic;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
+import component.basic.NumberInput.NumberInputId;
 import core.GlobalContext;
 import core.focus.FocusState;
 import haxe.ds.Option;
@@ -17,7 +18,7 @@ class NumberInputView extends ReactComponentOfProps<RateInputProps>
 	{
 		switch (props.context.focus.state)
 		{
-			case FocusState.RateInput(detail) if (detail.id == props.id):
+			case FocusState.NumberInput(detail) if (detail.id.equals(props.id)):
 				
 			case _:
 				refs.textField.blur();
@@ -44,7 +45,7 @@ class NumberInputView extends ReactComponentOfProps<RateInputProps>
 					),
 					switch (focus.state)
 					{
-						case FocusState.RateInput(detail) if (detail.id == props.id):
+						case FocusState.NumberInput(detail) if (detail.id.equals(props.id)):
 							"input".createElement(
 								{
 									ref: "textField",
@@ -63,7 +64,7 @@ class NumberInputView extends ReactComponentOfProps<RateInputProps>
 									className: "form-control",
 									type: "text",
 									value: Std.string(props.value),
-									onFocus: focus.focusRateInput.bind(props.id, Std.string(props.value)),
+									onFocus: focus.focusNumberInput.bind(props.id, Std.string(props.value)),
 								}
 							);
 					}
@@ -76,6 +77,6 @@ typedef RateInputProps =
 {
 	name: String,
 	value: Float,
-	id: RateId,
+	id: NumberInputId,
 	context: GlobalContext,
 }

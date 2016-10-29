@@ -53,6 +53,25 @@
 	}
 }
 
+.menu
+{
+	display: table;
+		
+	> .menu-item
+	{
+		display: table-cell;
+		vertical-align: middle;
+		padding-left: 2px;
+		padding-right: 5px;
+		
+		> div
+		{
+			margin: 0px;
+			padding: 0px;
+		}
+	}
+}
+
 .row 
 {
 	margin-left: 1px;

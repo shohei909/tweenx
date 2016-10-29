@@ -1,5 +1,6 @@
 package component.basic;
 import api.react.ReactEvent;
+import component.basic.NumberInput.NumberInputId;
 import core.GlobalCommand;
 import core.focus.FocusManager;
 import haxe.ds.Option;
@@ -14,9 +15,9 @@ class NumberInputFocus
 {
 	private var focus:FocusManager;
 	public var text(default, null):String;
-	public var id(default, null):RateId;
+	public var id(default, null):NumberInputId;
 	
-	public function new (focus:FocusManager, id:RateId, text:String)
+	public function new (focus:FocusManager, id:NumberInputId, text:String)
 	{
 		this.text = text;
 		this.focus = focus;
@@ -31,7 +32,14 @@ class NumberInputFocus
 		
 		if (!Math.isNaN(value))
 		{
-			var command = GlobalCommand.ChangeRate(id, value);
+			var command = switch (id)
+			{
+				case NumberInputId.EasingRate(_id):
+					GlobalCommand.ChangeRate(_id, value);
+					
+				case NumberInputId.AnimationTime:
+					GlobalCommand.ChangeAnimationTime(value);
+			}
 			focus.context.apply(command);
 		}
 		else

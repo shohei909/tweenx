@@ -29,7 +29,7 @@ class PolylineView extends ReactComponentOfProps<PolylineProps>
 						{
 							name: Std.string(i),
 							value: props.controls[i],
-							id: props.id.rateId(i),
+							id: props.id.numberInputId(i),
 							context: props.context
 						}
 					);

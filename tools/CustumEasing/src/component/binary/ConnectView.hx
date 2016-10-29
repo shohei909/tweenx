@@ -24,7 +24,7 @@ class ConnectView extends ReactComponentOfProps<ConnectProps>
 					{
 						name: "Switch time",
 						value: props.switchTime,
-						id: props.id.rateId(0),
+						id: props.id.numberInputId(0),
 						context: props.context
 					}
 				),
@@ -32,7 +32,7 @@ class ConnectView extends ReactComponentOfProps<ConnectProps>
 					{
 						name: "Switch value",
 						value: props.switchValue,
-						id: props.id.rateId(1),
+						id: props.id.numberInputId(1),
 						context: props.context
 					}
 				)

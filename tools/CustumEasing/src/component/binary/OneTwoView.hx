@@ -25,7 +25,7 @@ class OneTwoView extends ReactComponentOfProps<OneTwoProps>
 				{
 					name: "Switch time",
 					value: props.switchTime,
-					id: props.id.rateId(0),
+					id: props.id.numberInputId(0),
 					context: props.context
 				}
 			)

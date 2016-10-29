@@ -42,7 +42,7 @@ class TernaryOpView extends ReactComponentOfProps<TernaryOpProps>
 							{
 								name: "Min",
 								value: min,
-								id: props.id.rateId(0),
+								id: props.id.numberInputId(0),
 								context: props.context
 							}
 						),
@@ -50,7 +50,7 @@ class TernaryOpView extends ReactComponentOfProps<TernaryOpProps>
 							{
 								name: "Max",
 								value: max,
-								id: props.id.rateId(1),
+								id: props.id.numberInputId(1),
 								context: props.context
 							}
 						)

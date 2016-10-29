@@ -16,13 +16,23 @@ Application.main = function() {
 };
 Application.__super__ = React.Component;
 Application.prototype = $extend(React.Component.prototype,{
-	render: function() {
-		return react_ReactStringTools.createElement("div",{ },[react_ReactTools.createElement(component_menu_HistoryView,{ history : this.props.context.history}),react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.context.easing.current, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(), context : this.props.context}),react_ReactTools.createElement(component_output_OutputView,{ context : this.props.context})]);
+	componentDidMount: function() {
+		this.props.context.init();
+	}
+	,render: function() {
+		return react_ReactStringTools.createElement("div",{ },[react_ReactTools.createElement(component_menu_MenuView,this.props),react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.context.easing.current, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(), context : this.props.context}),react_ReactTools.createElement(component_output_OutputView,this.props)]);
 	}
 	,__class__: Application
 });
 var HxOverrides = function() { };
 HxOverrides.__name__ = true;
+HxOverrides.cca = function(s,index) {
+	var x = s.charCodeAt(index);
+	if(x != x) {
+		return undefined;
+	}
+	return x;
+};
 HxOverrides.substr = function(s,pos,len) {
 	if(len == null) {
 		len = s.length;
@@ -124,6 +134,16 @@ var Std = function() { };
 Std.__name__ = true;
 Std.string = function(s) {
 	return js_Boot.__string_rec(s,"");
+};
+Std.parseInt = function(x) {
+	var v = parseInt(x,10);
+	if(v == 0 && (HxOverrides.cca(x,1) == 120 || HxOverrides.cca(x,1) == 88)) {
+		v = parseInt(x);
+	}
+	if(isNaN(v)) {
+		return null;
+	}
+	return v;
 };
 var Type = function() { };
 Type.__name__ = true;
@@ -562,7 +582,20 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 						})(func29,func19,switchTime2);
 						break;
 					case 5:
-						func = tweenxcore_expr_TernaryOpKindTools.toFunction(op1[3],easing1,easing2,op1[2]);
+						var op2 = op1[3];
+						var easing3 = op1[2];
+						var end = [op2[3]];
+						var start = [op2[2]];
+						var func111 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1)];
+						var func211 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2)];
+						var func31 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3)];
+						func = (function(func32,func212,func112,start1,end1) {
+							return function(value11) {
+								var rate3 = func32[0](value11);
+								var rate4 = start1[0] * (1 - rate3) + end1[0] * rate3;
+								return func112[0](value11) * (1 - rate4) + func212[0](value11) * rate4;
+							};
+						})(func31,func211,func111,start,end);
 						break;
 					}
 					break;
@@ -570,16 +603,16 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 				break;
 			}
 			ctx.beginPath();
-			var rate3 = func(0);
-			ctx.moveTo(0,bottom * (1 - rate3) + top * rate3);
+			var rate5 = func(0);
+			ctx.moveTo(0,bottom * (1 - rate5) + top * rate5);
 			var len = Math.floor(component_basic_GraphView.WIDTH - component_basic_GraphView.MARGIN * 2);
 			var _g4 = 1;
 			var _g3 = len + 1;
 			while(_g4 < _g3) {
-				var rate4 = _g4++ / len;
-				var tmp2 = 0 * (1 - rate4) + right * rate4;
-				var rate5 = func(rate4);
-				ctx.lineTo(tmp2,bottom * (1 - rate5) + top * rate5);
+				var rate6 = _g4++ / len;
+				var tmp2 = 0 * (1 - rate6) + right * rate6;
+				var rate7 = func(rate6);
+				ctx.lineTo(tmp2,bottom * (1 - rate7) + top * rate7);
 			}
 			ctx.stroke();
 		}
@@ -594,6 +627,10 @@ component_basic_GraphColor.Theme = ["Theme",0];
 component_basic_GraphColor.Theme.__enum__ = component_basic_GraphColor;
 component_basic_GraphColor.Sub = ["Sub",1];
 component_basic_GraphColor.Sub.__enum__ = component_basic_GraphColor;
+var component_basic_NumberInputId = { __ename__ : true, __constructs__ : ["EasingRate","AnimationTime"] };
+component_basic_NumberInputId.EasingRate = function(id) { var $x = ["EasingRate",0,id]; $x.__enum__ = component_basic_NumberInputId; return $x; };
+component_basic_NumberInputId.AnimationTime = ["AnimationTime",1];
+component_basic_NumberInputId.AnimationTime.__enum__ = component_basic_NumberInputId;
 var component_basic_NumberInputFocus = function(focus,id,text) {
 	this.text = text;
 	this.focus = focus;
@@ -606,7 +643,17 @@ component_basic_NumberInputFocus.prototype = {
 		this.text = input.value;
 		var value = parseFloat(this.text);
 		if(!isNaN(value)) {
-			var command = core_GlobalCommand.ChangeRate(this.id,value);
+			var command;
+			var _g = this.id;
+			switch(_g[1]) {
+			case 0:
+				var _id = _g[2];
+				command = core_GlobalCommand.ChangeRate(_id,value);
+				break;
+			case 1:
+				command = core_GlobalCommand.ChangeAnimationTime(value);
+				break;
+			}
 			this.focus.context.apply(command);
 		} else {
 			this.focus.context.update();
@@ -627,7 +674,7 @@ component_basic_NumberInputView.prototype = $extend(React.Component.prototype,{
 	componentDidUpdate: function(prevProps,prevState) {
 		var _g = this.props.context.focus.state;
 		if(_g[1] == 1) {
-			if(!component_basic__$RateId_RateId_$Impl_$.equals(_g[2].id,this.props.id)) {
+			if(!Type.enumEq(_g[2].id,this.props.id)) {
 				this.refs.textField.blur();
 			}
 		} else {
@@ -641,11 +688,11 @@ component_basic_NumberInputView.prototype = $extend(React.Component.prototype,{
 		var tmp1;
 		if(_g[1] == 1) {
 			var detail = _g[2];
-			if(component_basic__$RateId_RateId_$Impl_$.equals(detail.id,this.props.id)) {
+			if(Type.enumEq(detail.id,this.props.id)) {
 				tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : detail.text, onChange : $bind(detail,detail.change), onSubmit : $bind(detail,detail.submit)});
 			} else {
 				var tmp2 = Std.string(this.props.value);
-				var f = $bind(focus,focus.focusRateInput);
+				var f = $bind(focus,focus.focusNumberInput);
 				var id = this.props.id;
 				var a1 = Std.string(this.props.value);
 				tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp2, onFocus : function() {
@@ -654,7 +701,7 @@ component_basic_NumberInputView.prototype = $extend(React.Component.prototype,{
 			}
 		} else {
 			var tmp3 = Std.string(this.props.value);
-			var f1 = $bind(focus,focus.focusRateInput);
+			var f1 = $bind(focus,focus.focusNumberInput);
 			var id1 = this.props.id;
 			var a11 = Std.string(this.props.value);
 			tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp3, onFocus : function() {
@@ -670,8 +717,8 @@ core_animation_Animation.__name__ = true;
 core_animation_Animation.prototype = {
 	__class__: core_animation_Animation
 };
-var component_basic_PreviewAnimation = function(canvas,easing) {
-	this.currentFrame = 0;
+var component_basic_PreviewAnimation = function(manager,canvas,easing) {
+	this.manager = manager;
 	var tmp;
 	switch(easing[1]) {
 	case 0:
@@ -979,7 +1026,18 @@ var component_basic_PreviewAnimation = function(canvas,easing) {
 				};
 				break;
 			case 5:
-				tmp = tweenxcore_expr_TernaryOpKindTools.toFunction(op1[3],easing1,easing2,op1[2]);
+				var op2 = op1[3];
+				var easing3 = op1[2];
+				var end = op2[3];
+				var start = op2[2];
+				var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+				var func26 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+				var func31 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
+				tmp = function(value11) {
+					var rate3 = func31(value11);
+					var rate4 = start * (1 - rate3) + end * rate3;
+					return func16(value11) * (1 - rate4) + func26(value11) * rate4;
+				};
 				break;
 			}
 			break;
@@ -988,6 +1046,7 @@ var component_basic_PreviewAnimation = function(canvas,easing) {
 	}
 	this.func = tmp;
 	this.canvas = canvas;
+	this.totalFrame = component_basic_PreviewAnimation.TOTAL_FRAME * manager.time;
 	this.currentFrame = 0;
 };
 component_basic_PreviewAnimation.__name__ = true;
@@ -1010,11 +1069,11 @@ component_basic_PreviewAnimation.prototype = {
 		var left = component_basic_PreviewAnimation.MARGIN;
 		var right = component_basic_PreviewAnimation.WIDTH - component_basic_PreviewAnimation.MARGIN - component_basic_PreviewAnimation.MARKER_WIDTH;
 		ctx.fillStyle = "#ff64b1";
-		var rate = this.func(this.currentFrame / component_basic_PreviewAnimation.TOTAL_FRAME);
+		var rate = this.func(this.currentFrame / this.totalFrame);
 		ctx.fillRect(left * (1 - rate) + right * rate,0,component_basic_PreviewAnimation.MARKER_WIDTH,component_basic_PreviewAnimation.HEIGHT);
 	}
 	,isDead: function() {
-		return this.currentFrame >= component_basic_PreviewAnimation.TOTAL_FRAME;
+		return this.currentFrame >= this.totalFrame;
 	}
 	,__class__: component_basic_PreviewAnimation
 };
@@ -1028,32 +1087,35 @@ component_basic_PreviewView.prototype = $extend(React.Component.prototype,{
 		component_basic_PreviewAnimation.init(this.refs.canvas);
 	}
 	,render: function() {
-		return React.createElement("div",{ className : "row preview"},React.createElement("div",{ },React.createElement("button",{ onClick : $bind(this,this.onClick), className : "btn btn-default"},React.createElement("span",{ className : "glyphicon glyphicon-play"}))),React.createElement("div",{ },React.createElement("canvas",{ ref : "canvas", width : component_basic_PreviewAnimation.WIDTH, height : component_basic_PreviewAnimation.HEIGHT})));
+		return React.createElement("div",{ className : "row preview"},React.createElement("div",{ },React.createElement("button",{ onClick : $bind(this,this.onClick), className : "btn btn-default"},React.createElement("span",{ className : "glyphicon glyphicon-play"}))),React.createElement("div",{ },react_ReactStringTools.createElement("canvas",{ id : "preview-canvas-" + component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(this.props.id), ref : "canvas", width : component_basic_PreviewAnimation.WIDTH, height : component_basic_PreviewAnimation.HEIGHT})));
 	}
 	,onClick: function() {
-		this.props.context.animation.add(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(this.props.id),new component_basic_PreviewAnimation(this.refs.canvas,this.props.easing));
+		this.props.context.animation.startPreview(this.props.id,this.props.easing);
 	}
 	,__class__: component_basic_PreviewView
 });
 var component_basic__$RateId_RateId_$Impl_$ = {};
 component_basic__$RateId_RateId_$Impl_$.__name__ = true;
 component_basic__$RateId_RateId_$Impl_$._new = function(array) {
-	return array;
-};
-component_basic__$RateId_RateId_$Impl_$.isEmpty = function(this1) {
-	return this1.length == 0;
+	return array.join(".");
 };
 component_basic__$RateId_RateId_$Impl_$.rateIndex = function(this1) {
-	return this1[this1.length - 1];
+	return Std.parseInt(this1.split(".").pop());
 };
 component_basic__$RateId_RateId_$Impl_$.parent = function(this1) {
-	return component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$._new(this1.slice(0,this1.length - 1));
-};
-component_basic__$RateId_RateId_$Impl_$.equals = function(a,b) {
-	return component_basic__$RateId_RateId_$Impl_$.toString(a) == component_basic__$RateId_RateId_$Impl_$.toString(b);
+	var arr = this1.split(".");
+	arr.pop();
+	var _g = [];
+	var _g1 = 0;
+	while(_g1 < arr.length) {
+		var str = arr[_g1];
+		++_g1;
+		_g.push(Std.parseInt(str));
+	}
+	return component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$._new(_g);
 };
 component_basic__$RateId_RateId_$Impl_$.toString = function(this1) {
-	return this1.join(".");
+	return this1;
 };
 var component_basic_SelectGroupView = function(props) {
 	React.Component.call(this,props);
@@ -1131,7 +1193,7 @@ component_binary_ConnectView.__name__ = true;
 component_binary_ConnectView.__super__ = React.Component;
 component_binary_ConnectView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return react_ReactStringTools.createElement("div",{ className : "param-group"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch time", value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch value", value : this.props.switchValue, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context})]);
+		return react_ReactStringTools.createElement("div",{ className : "param-group"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch time", value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch value", value : this.props.switchValue, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context})]);
 	}
 	,__class__: component_binary_ConnectView
 });
@@ -1142,7 +1204,7 @@ component_binary_MixView.__name__ = true;
 component_binary_MixView.__super__ = React.Component;
 component_binary_MixView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Strength", value : this.props.strength, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Strength", value : this.props.strength, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
 	}
 	,__class__: component_binary_MixView
 });
@@ -1164,7 +1226,7 @@ component_binary_OneTwoView.__name__ = true;
 component_binary_OneTwoView.__super__ = React.Component;
 component_binary_OneTwoView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch time", value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch time", value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
 	}
 	,__class__: component_binary_OneTwoView
 });
@@ -1216,6 +1278,9 @@ component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.concat = function(th
 };
 component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId = function(this1,id) {
 	return component_basic__$RateId_RateId_$Impl_$._new(this1.concat([id]));
+};
+component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId = function(this1,id) {
+	return component_basic_NumberInputId.EasingRate(component_basic__$RateId_RateId_$Impl_$._new(this1.concat([id])));
 };
 component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.equals = function(a,b) {
 	return component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(a) == component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(b);
@@ -1643,6 +1708,17 @@ component_menu_HistoryView.prototype = $extend(React.Component.prototype,{
 	}
 	,__class__: component_menu_HistoryView
 });
+var component_menu_MenuView = function(props) {
+	React.Component.call(this,props);
+};
+component_menu_MenuView.__name__ = true;
+component_menu_MenuView.__super__ = React.Component;
+component_menu_MenuView.prototype = $extend(React.Component.prototype,{
+	render: function() {
+		return react_ReactStringTools.createElement("div",{ className : "menu"},[react_ReactStringTools.createElement("div",{ className : "menu-item"},react_ReactTools.createElement(component_menu_HistoryView,{ history : this.props.context.history})),react_ReactStringTools.createElement("div",{ className : "menu-item"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Animation Time", value : this.props.context.animation.time, id : component_basic_NumberInputId.AnimationTime, context : this.props.context}))]);
+	}
+	,__class__: component_menu_MenuView
+});
 var component_output_OutputModeSelectView = function(props) {
 	React.Component.call(this,props);
 };
@@ -1693,7 +1769,7 @@ component_simple_PolylineView.prototype = $extend(React.Component.prototype,{
 		var _g1 = this.props.controls.length;
 		while(_g2 < _g1) {
 			var i = _g2++;
-			_g.push(react_ReactTools.createElement(component_basic_NumberInputView,{ name : i == null?"null":"" + i, value : this.props.controls[i], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,i), context : this.props.context}));
+			_g.push(react_ReactTools.createElement(component_basic_NumberInputView,{ name : i == null?"null":"" + i, value : this.props.controls[i], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,i), context : this.props.context}));
 		}
 		return React.createElement("div",{ className : "param-group"},_g);
 	}
@@ -1753,7 +1829,7 @@ component_ternaryOp_TernaryOpView.prototype = $extend(React.Component.prototype,
 	render: function() {
 		var tmp = react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.easing3, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.concat(this.props.id,2), context : this.props.context});
 		var _g = this.props.op;
-		return React.createElement("div",{ },tmp,React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Min", value : _g[2], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Max", value : _g[3], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context})));
+		return React.createElement("div",{ },tmp,React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Min", value : _g[2], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Max", value : _g[3], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context})));
 	}
 	,__class__: component_ternaryOp_TernaryOpView
 });
@@ -1764,7 +1840,7 @@ component_unary_ClampView.__name__ = true;
 component_unary_ClampView.__super__ = React.Component;
 component_unary_ClampView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "min", value : this.props.min, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "max", value : this.props.max, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "min", value : this.props.min, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "max", value : this.props.max, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context}));
 	}
 	,__class__: component_unary_ClampView
 });
@@ -1775,7 +1851,7 @@ component_unary_LerpView.__name__ = true;
 component_unary_LerpView.__super__ = React.Component;
 component_unary_LerpView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "from", value : this.props.from, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "to", value : this.props.to, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,1), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "from", value : this.props.from, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "to", value : this.props.to, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context}));
 	}
 	,__class__: component_unary_LerpView
 });
@@ -1786,7 +1862,7 @@ component_unary_RepeatView.__name__ = true;
 component_unary_RepeatView.__super__ = React.Component;
 component_unary_RepeatView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Repeat", value : this.props.repeat, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.rateId(this.props.id,0), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Repeat", value : this.props.repeat, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
 	}
 	,__class__: component_unary_RepeatView
 });
@@ -1842,26 +1918,30 @@ core_ApplyResult.prototype = {
 	}
 	,__class__: core_ApplyResult
 };
-var core_GlobalCommand = { __ename__ : true, __constructs__ : ["ChangeEasing","ChangeInOut","ChangeRate","ChangeOutputMode"] };
+var core_GlobalCommand = { __ename__ : true, __constructs__ : ["ChangeEasing","ChangeInOut","ChangeRate","ChangeAnimationTime","ChangeOutputMode"] };
 core_GlobalCommand.ChangeEasing = function(id,easing) { var $x = ["ChangeEasing",0,id,easing]; $x.__enum__ = core_GlobalCommand; return $x; };
 core_GlobalCommand.ChangeInOut = function(id,inOut) { var $x = ["ChangeInOut",1,id,inOut]; $x.__enum__ = core_GlobalCommand; return $x; };
 core_GlobalCommand.ChangeRate = function(id,rate) { var $x = ["ChangeRate",2,id,rate]; $x.__enum__ = core_GlobalCommand; return $x; };
-core_GlobalCommand.ChangeOutputMode = function(mode) { var $x = ["ChangeOutputMode",3,mode]; $x.__enum__ = core_GlobalCommand; return $x; };
+core_GlobalCommand.ChangeAnimationTime = function(rate) { var $x = ["ChangeAnimationTime",3,rate]; $x.__enum__ = core_GlobalCommand; return $x; };
+core_GlobalCommand.ChangeOutputMode = function(mode) { var $x = ["ChangeOutputMode",4,mode]; $x.__enum__ = core_GlobalCommand; return $x; };
 var core_GlobalContext = function() {
 	this.focus = new core_focus_FocusManager(this);
-	this.animation = new core_animation_AnimationManager();
+	this.animation = new core_animation_AnimationManager(this);
 	this.history = new core_history_HistoryManager(this);
 	this.key = new core_key_KeyboardManager(this);
 	this.output = new core_output_OutputManager(this);
 	this.easing = new core_easing_EasingManager(this);
+	this.currentHash = "";
 	window.setTimeout($bind(this,this.onFrame),null,0.016666666666666666);
 	window.addEventListener("hashchange",$bind(this,this.onHashChange));
-	this.applyHashChange();
-	this.history.clear();
 };
 core_GlobalContext.__name__ = true;
 core_GlobalContext.prototype = {
-	onHashChange: function(event) {
+	init: function() {
+		this.applyHashChange();
+		this.history.clear();
+	}
+	,onHashChange: function(event) {
 		if(window.location.hash != this.currentHash) {
 			this.applyHashChange();
 		}
@@ -1902,6 +1982,9 @@ core_GlobalContext.prototype = {
 				this.easing.changeRate(command[2],command[3],result);
 				break;
 			case 3:
+				this.animation.changeTime(command[2],result);
+				break;
+			case 4:
 				this.output.changeMode(command[2],result);
 				break;
 			}
@@ -1911,25 +1994,32 @@ core_GlobalContext.prototype = {
 	,applyHashChange: function() {
 		this.currentHash = window.location.hash;
 		try {
-			console.log(this.currentHash);
 			var s = HxOverrides.substr(this.currentHash,1,null);
 			var data = JSON.parse(decodeURIComponent(s.split("+").join(" ")));
 			try {
-				this.apply(core_GlobalCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),tweenxcore_expr_ComplexEasingKindTools.fromJsonable(data.easing)));
+				var easing = tweenxcore_expr_ComplexEasingKindTools.fromJsonable(data.easing);
+				this.apply(core_GlobalCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),easing));
+				this.animation.startPreview(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),easing);
 			} catch( e ) {
 			}
-		} catch( e1 ) {
+			try {
+				this.animation.time = js_Boot.__cast(data.time , Float);
+			} catch( e1 ) {
+			}
+		} catch( e2 ) {
 		}
 	}
 	,updateHash: function() {
-		var s = JSON.stringify({ easing : tweenxcore_expr_ComplexEasingKindTools.toJsonable(this.easing.current)});
+		var s = JSON.stringify({ time : this.animation.time, easing : tweenxcore_expr_ComplexEasingKindTools.toJsonable(this.easing.current)});
 		this.currentHash = "#" + encodeURIComponent(s);
 		window.location.hash = this.currentHash;
 	}
 	,__class__: core_GlobalContext
 };
-var core_animation_AnimationManager = function() {
+var core_animation_AnimationManager = function(context) {
+	this.context = context;
 	this.animations = new haxe_ds_StringMap();
+	this.time = 1;
 };
 core_animation_AnimationManager.__name__ = true;
 core_animation_AnimationManager.prototype = {
@@ -1952,6 +2042,20 @@ core_animation_AnimationManager.prototype = {
 		} else {
 			_this.h[id] = animation;
 		}
+	}
+	,startPreview: function(id,easing) {
+		var canvas = window.document.getElementById("preview-canvas-" + component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(id));
+		if(canvas != null) {
+			this.add(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(id),new component_basic_PreviewAnimation(this,canvas,easing));
+		}
+	}
+	,changeTime: function(newTime,result) {
+		if(this.time == newTime) {
+			return;
+		}
+		result.addUndoCommand(core_GlobalCommand.ChangeAnimationTime(this.time));
+		this.time = newTime;
+		this.startPreview(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),this.context.easing.current);
 	}
 	,__class__: core_animation_AnimationManager
 };
@@ -2039,6 +2143,7 @@ core_easing_EasingManager.prototype = {
 			result.addUndoCommand(core_GlobalCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),prev));
 			this.current = next;
 			this.context.updateHash();
+			this.context.animation.startPreview(id,easing);
 		}
 	}
 	,changeInOut: function(id,inOut,result) {
@@ -2178,15 +2283,15 @@ core_focus_FocusManager.prototype = {
 		this.state = core_focus_FocusState.ComplexEasingSelect(new component_complex_ComplexEasingSelectFocus(this,id));
 		this.context.update();
 	}
-	,focusRateInput: function(id,text) {
-		this.state = core_focus_FocusState.RateInput(new component_basic_NumberInputFocus(this,id,text));
+	,focusNumberInput: function(id,text) {
+		this.state = core_focus_FocusState.NumberInput(new component_basic_NumberInputFocus(this,id,text));
 		this.context.update();
 	}
 	,__class__: core_focus_FocusManager
 };
-var core_focus_FocusState = { __ename__ : true, __constructs__ : ["ComplexEasingSelect","RateInput","None"] };
+var core_focus_FocusState = { __ename__ : true, __constructs__ : ["ComplexEasingSelect","NumberInput","None"] };
 core_focus_FocusState.ComplexEasingSelect = function(detail) { var $x = ["ComplexEasingSelect",0,detail]; $x.__enum__ = core_focus_FocusState; return $x; };
-core_focus_FocusState.RateInput = function(detail) { var $x = ["RateInput",1,detail]; $x.__enum__ = core_focus_FocusState; return $x; };
+core_focus_FocusState.NumberInput = function(detail) { var $x = ["NumberInput",1,detail]; $x.__enum__ = core_focus_FocusState; return $x; };
 core_focus_FocusState.None = ["None",2];
 core_focus_FocusState.None.__enum__ = core_focus_FocusState;
 var core_history_HistoryManager = function(context) {
@@ -3219,7 +3324,18 @@ tweenxcore_expr_BinaryOpKindTools.toFunction = function(kind,easing1,easing2) {
 			}
 		};
 	case 5:
-		return tweenxcore_expr_TernaryOpKindTools.toFunction(kind[3],easing1,easing2,kind[2]);
+		var op = kind[3];
+		var easing3 = kind[2];
+		var end = op[3];
+		var start = op[2];
+		var func15 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+		var func25 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+		var func3 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
+		return function(value5) {
+			var rate2 = func3(value5);
+			var rate3 = start * (1 - rate2) + end * rate2;
+			return func15(value5) * (1 - rate3) + func25(value5) * rate3;
+		};
 	}
 };
 tweenxcore_expr_BinaryOpKindTools.toJsonable = function(kind) {
@@ -3529,7 +3645,18 @@ tweenxcore_expr_ComplexEasingKindTools.toFunction = function(easing) {
 					}
 				};
 			case 5:
-				return tweenxcore_expr_TernaryOpKindTools.toFunction(op1[3],easing1,easing2,op1[2]);
+				var op2 = op1[3];
+				var easing3 = op1[2];
+				var end = op2[3];
+				var start = op2[2];
+				var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+				var func26 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+				var func31 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
+				return function(value11) {
+					var rate3 = func31(value11);
+					var rate4 = start * (1 - rate3) + end * rate3;
+					return func16(value11) * (1 - rate4) + func26(value11) * rate4;
+				};
 			}
 			break;
 		}
@@ -3928,952 +4055,13 @@ tweenxcore_expr_TernaryOpKindTools.__name__ = true;
 tweenxcore_expr_TernaryOpKindTools.toFunction = function(kind,easing1,easing2,easing3) {
 	var end = kind[3];
 	var start = kind[2];
-	var func1;
-	switch(easing1[1]) {
-	case 0:
-		var kind1 = easing1[2];
-		switch(kind1[1]) {
-		case 0:
-			func1 = tweenxcore_Easing.linear;
-			break;
-		case 1:
-			var inOut = kind1[3];
-			switch(kind1[2][1]) {
-			case 0:
-				switch(inOut[1]) {
-				case 0:
-					func1 = tweenxcore_Easing.quadIn;
-					break;
-				case 1:
-					func1 = tweenxcore_Easing.quadOut;
-					break;
-				case 2:
-					func1 = tweenxcore_Easing.quadInOut;
-					break;
-				case 3:
-					func1 = tweenxcore_Easing.quadOutIn;
-					break;
-				}
-				break;
-			case 1:
-				switch(inOut[1]) {
-				case 0:
-					func1 = tweenxcore_Easing.cubicIn;
-					break;
-				case 1:
-					func1 = tweenxcore_Easing.cubicOut;
-					break;
-				case 2:
-					func1 = tweenxcore_Easing.cubicInOut;
-					break;
-				case 3:
-					func1 = tweenxcore_Easing.cubicOutIn;
-					break;
-				}
-				break;
-			case 2:
-				switch(inOut[1]) {
-				case 0:
-					func1 = tweenxcore_Easing.quartIn;
-					break;
-				case 1:
-					func1 = tweenxcore_Easing.quartOut;
-					break;
-				case 2:
-					func1 = tweenxcore_Easing.quartInOut;
-					break;
-				case 3:
-					func1 = tweenxcore_Easing.quartOutIn;
-					break;
-				}
-				break;
-			case 3:
-				switch(inOut[1]) {
-				case 0:
-					func1 = tweenxcore_Easing.quintIn;
-					break;
-				case 1:
-					func1 = tweenxcore_Easing.quintOut;
-					break;
-				case 2:
-					func1 = tweenxcore_Easing.quintInOut;
-					break;
-				case 3:
-					func1 = tweenxcore_Easing.quintOutIn;
-					break;
-				}
-				break;
-			case 4:
-				switch(inOut[1]) {
-				case 0:
-					func1 = tweenxcore_Easing.sineIn;
-					break;
-				case 1:
-					func1 = tweenxcore_Easing.sineOut;
-					break;
-				case 2:
-					func1 = tweenxcore_Easing.sineInOut;
-					break;
-				case 3:
-					func1 = tweenxcore_Easing.sineOutIn;
-					break;
-				}
-				break;
-			case 5:
-				switch(inOut[1]) {
-				case 0:
-					func1 = tweenxcore_Easing.circIn;
-					break;
-				case 1:
-					func1 = tweenxcore_Easing.circOut;
-					break;
-				case 2:
-					func1 = tweenxcore_Easing.circInOut;
-					break;
-				case 3:
-					func1 = tweenxcore_Easing.circOutIn;
-					break;
-				}
-				break;
-			case 6:
-				switch(inOut[1]) {
-				case 0:
-					func1 = tweenxcore_Easing.expoIn;
-					break;
-				case 1:
-					func1 = tweenxcore_Easing.expoOut;
-					break;
-				case 2:
-					func1 = tweenxcore_Easing.expoInOut;
-					break;
-				case 3:
-					func1 = tweenxcore_Easing.expoOutIn;
-					break;
-				}
-				break;
-			case 7:
-				switch(inOut[1]) {
-				case 0:
-					func1 = tweenxcore_Easing.backIn;
-					break;
-				case 1:
-					func1 = tweenxcore_Easing.backOut;
-					break;
-				case 2:
-					func1 = tweenxcore_Easing.backInOut;
-					break;
-				case 3:
-					func1 = tweenxcore_Easing.backOutIn;
-					break;
-				}
-				break;
-			case 8:
-				switch(inOut[1]) {
-				case 0:
-					func1 = tweenxcore_Easing.bounceIn;
-					break;
-				case 1:
-					func1 = tweenxcore_Easing.bounceOut;
-					break;
-				case 2:
-					func1 = tweenxcore_Easing.bounceInOut;
-					break;
-				case 3:
-					func1 = tweenxcore_Easing.bounceOutIn;
-					break;
-				}
-				break;
-			case 9:
-				switch(inOut[1]) {
-				case 0:
-					func1 = tweenxcore_Easing.elasticIn;
-					break;
-				case 1:
-					func1 = tweenxcore_Easing.elasticOut;
-					break;
-				case 2:
-					func1 = tweenxcore_Easing.elasticInOut;
-					break;
-				case 3:
-					func1 = tweenxcore_Easing.elasticOutIn;
-					break;
-				}
-				break;
-			case 10:
-				switch(inOut[1]) {
-				case 0:
-					func1 = tweenxcore_Easing.warpIn;
-					break;
-				case 1:
-					func1 = tweenxcore_Easing.warpOut;
-					break;
-				case 2:
-					func1 = tweenxcore_Easing.warpInOut;
-					break;
-				case 3:
-					func1 = tweenxcore_Easing.warpOutIn;
-					break;
-				}
-				break;
-			}
-			break;
-		case 2:
-			var a2 = kind1[3];
-			func1 = function(a1) {
-				return tweenxcore_FloatTools.bezier(a1,a2);
-			};
-			break;
-		}
-		break;
-	case 1:
-		var op = easing1[3];
-		var easing = easing1[2];
-		switch(op[1]) {
-		case 0:
-			var repeat = op[2];
-			var func = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
-			func1 = function(value) {
-				var p = (0 * (1 - value) + repeat * value) / 1.0;
-				return func(p - Math.floor(p));
-			};
-			break;
-		case 1:
-			var to = op[3];
-			var from = op[2];
-			var func2 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
-			func1 = function(value1) {
-				var rate = func2(value1);
-				return from * (1 - rate) + to * rate;
-			};
-			break;
-		case 2:
-			var max = op[3];
-			var min = op[2];
-			var func3 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
-			func1 = function(value2) {
-				var value3 = func3(value2);
-				if(value3 <= min) {
-					return min;
-				} else if(max <= value3) {
-					return max;
-				} else {
-					return value3;
-				}
-			};
-			break;
-		case 3:
-			switch(op[2][1]) {
-			case 0:
-				var func4 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
-				func1 = function(value4) {
-					return func4((value4 < 0.5?value4:1 - value4) * 2);
-				};
-				break;
-			case 1:
-				var func5 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
-				func1 = function(value5) {
-					if(value5 < 0.5) {
-						return func5(value5 * 2);
-					} else {
-						return 1 - func5((value5 - 0.5) * 2);
-					}
-				};
-				break;
-			}
-			break;
-		case 4:
-			var op1 = op[3];
-			var easing21 = op[2];
-			switch(op1[1]) {
-			case 0:
-				var func11 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
-				var func21 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
-				func1 = function(value6) {
-					return func11(func21(value6));
-				};
-				break;
-			case 1:
-				var func12 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
-				var func22 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
-				func1 = function(value7) {
-					return func12(value7) * func22(value7);
-				};
-				break;
-			case 2:
-				var strength = op1[2];
-				var func13 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
-				var func23 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
-				func1 = function(value8) {
-					return func13(value8) * (1 - strength) + func23(value8) * strength;
-				};
-				break;
-			case 3:
-				var switchValue = op1[3];
-				var switchTime = op1[2];
-				var func14 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
-				var func24 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
-				func1 = function(value9) {
-					if(value9 < switchTime) {
-						var rate1 = func14(value9 / switchTime);
-						return 0 * (1 - rate1) + switchValue * rate1;
-					} else {
-						var rate2 = func24((value9 - switchTime) / (1 - switchTime));
-						return switchValue * (1 - rate2) + rate2;
-					}
-				};
-				break;
-			case 4:
-				var switchTime1 = op1[2];
-				var func15 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
-				var func25 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
-				func1 = function(value10) {
-					if(value10 < switchTime1) {
-						return func15(value10 / switchTime1);
-					} else {
-						return func25((value10 - switchTime1) / (1 - switchTime1));
-					}
-				};
-				break;
-			case 5:
-				func1 = tweenxcore_expr_TernaryOpKindTools.toFunction(op1[3],easing,easing21,op1[2]);
-				break;
-			}
-			break;
-		}
-		break;
-	}
-	var func26;
-	switch(easing2[1]) {
-	case 0:
-		var kind2 = easing2[2];
-		switch(kind2[1]) {
-		case 0:
-			func26 = tweenxcore_Easing.linear;
-			break;
-		case 1:
-			var inOut1 = kind2[3];
-			switch(kind2[2][1]) {
-			case 0:
-				switch(inOut1[1]) {
-				case 0:
-					func26 = tweenxcore_Easing.quadIn;
-					break;
-				case 1:
-					func26 = tweenxcore_Easing.quadOut;
-					break;
-				case 2:
-					func26 = tweenxcore_Easing.quadInOut;
-					break;
-				case 3:
-					func26 = tweenxcore_Easing.quadOutIn;
-					break;
-				}
-				break;
-			case 1:
-				switch(inOut1[1]) {
-				case 0:
-					func26 = tweenxcore_Easing.cubicIn;
-					break;
-				case 1:
-					func26 = tweenxcore_Easing.cubicOut;
-					break;
-				case 2:
-					func26 = tweenxcore_Easing.cubicInOut;
-					break;
-				case 3:
-					func26 = tweenxcore_Easing.cubicOutIn;
-					break;
-				}
-				break;
-			case 2:
-				switch(inOut1[1]) {
-				case 0:
-					func26 = tweenxcore_Easing.quartIn;
-					break;
-				case 1:
-					func26 = tweenxcore_Easing.quartOut;
-					break;
-				case 2:
-					func26 = tweenxcore_Easing.quartInOut;
-					break;
-				case 3:
-					func26 = tweenxcore_Easing.quartOutIn;
-					break;
-				}
-				break;
-			case 3:
-				switch(inOut1[1]) {
-				case 0:
-					func26 = tweenxcore_Easing.quintIn;
-					break;
-				case 1:
-					func26 = tweenxcore_Easing.quintOut;
-					break;
-				case 2:
-					func26 = tweenxcore_Easing.quintInOut;
-					break;
-				case 3:
-					func26 = tweenxcore_Easing.quintOutIn;
-					break;
-				}
-				break;
-			case 4:
-				switch(inOut1[1]) {
-				case 0:
-					func26 = tweenxcore_Easing.sineIn;
-					break;
-				case 1:
-					func26 = tweenxcore_Easing.sineOut;
-					break;
-				case 2:
-					func26 = tweenxcore_Easing.sineInOut;
-					break;
-				case 3:
-					func26 = tweenxcore_Easing.sineOutIn;
-					break;
-				}
-				break;
-			case 5:
-				switch(inOut1[1]) {
-				case 0:
-					func26 = tweenxcore_Easing.circIn;
-					break;
-				case 1:
-					func26 = tweenxcore_Easing.circOut;
-					break;
-				case 2:
-					func26 = tweenxcore_Easing.circInOut;
-					break;
-				case 3:
-					func26 = tweenxcore_Easing.circOutIn;
-					break;
-				}
-				break;
-			case 6:
-				switch(inOut1[1]) {
-				case 0:
-					func26 = tweenxcore_Easing.expoIn;
-					break;
-				case 1:
-					func26 = tweenxcore_Easing.expoOut;
-					break;
-				case 2:
-					func26 = tweenxcore_Easing.expoInOut;
-					break;
-				case 3:
-					func26 = tweenxcore_Easing.expoOutIn;
-					break;
-				}
-				break;
-			case 7:
-				switch(inOut1[1]) {
-				case 0:
-					func26 = tweenxcore_Easing.backIn;
-					break;
-				case 1:
-					func26 = tweenxcore_Easing.backOut;
-					break;
-				case 2:
-					func26 = tweenxcore_Easing.backInOut;
-					break;
-				case 3:
-					func26 = tweenxcore_Easing.backOutIn;
-					break;
-				}
-				break;
-			case 8:
-				switch(inOut1[1]) {
-				case 0:
-					func26 = tweenxcore_Easing.bounceIn;
-					break;
-				case 1:
-					func26 = tweenxcore_Easing.bounceOut;
-					break;
-				case 2:
-					func26 = tweenxcore_Easing.bounceInOut;
-					break;
-				case 3:
-					func26 = tweenxcore_Easing.bounceOutIn;
-					break;
-				}
-				break;
-			case 9:
-				switch(inOut1[1]) {
-				case 0:
-					func26 = tweenxcore_Easing.elasticIn;
-					break;
-				case 1:
-					func26 = tweenxcore_Easing.elasticOut;
-					break;
-				case 2:
-					func26 = tweenxcore_Easing.elasticInOut;
-					break;
-				case 3:
-					func26 = tweenxcore_Easing.elasticOutIn;
-					break;
-				}
-				break;
-			case 10:
-				switch(inOut1[1]) {
-				case 0:
-					func26 = tweenxcore_Easing.warpIn;
-					break;
-				case 1:
-					func26 = tweenxcore_Easing.warpOut;
-					break;
-				case 2:
-					func26 = tweenxcore_Easing.warpInOut;
-					break;
-				case 3:
-					func26 = tweenxcore_Easing.warpOutIn;
-					break;
-				}
-				break;
-			}
-			break;
-		case 2:
-			var a21 = kind2[3];
-			func26 = function(a11) {
-				return tweenxcore_FloatTools.bezier(a11,a21);
-			};
-			break;
-		}
-		break;
-	case 1:
-		var op2 = easing2[3];
-		var easing4 = easing2[2];
-		switch(op2[1]) {
-		case 0:
-			var repeat1 = op2[2];
-			var func6 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing4);
-			func26 = function(value11) {
-				var p1 = (0 * (1 - value11) + repeat1 * value11) / 1.0;
-				return func6(p1 - Math.floor(p1));
-			};
-			break;
-		case 1:
-			var to1 = op2[3];
-			var from1 = op2[2];
-			var func7 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing4);
-			func26 = function(value12) {
-				var rate3 = func7(value12);
-				return from1 * (1 - rate3) + to1 * rate3;
-			};
-			break;
-		case 2:
-			var max1 = op2[3];
-			var min1 = op2[2];
-			var func8 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing4);
-			func26 = function(value13) {
-				var value14 = func8(value13);
-				if(value14 <= min1) {
-					return min1;
-				} else if(max1 <= value14) {
-					return max1;
-				} else {
-					return value14;
-				}
-			};
-			break;
-		case 3:
-			switch(op2[2][1]) {
-			case 0:
-				var func9 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing4);
-				func26 = function(value15) {
-					return func9((value15 < 0.5?value15:1 - value15) * 2);
-				};
-				break;
-			case 1:
-				var func10 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing4);
-				func26 = function(value16) {
-					if(value16 < 0.5) {
-						return func10(value16 * 2);
-					} else {
-						return 1 - func10((value16 - 0.5) * 2);
-					}
-				};
-				break;
-			}
-			break;
-		case 4:
-			var op3 = op2[3];
-			var easing22 = op2[2];
-			switch(op3[1]) {
-			case 0:
-				var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing4);
-				var func27 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing22);
-				func26 = function(value17) {
-					return func16(func27(value17));
-				};
-				break;
-			case 1:
-				var func17 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing4);
-				var func28 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing22);
-				func26 = function(value18) {
-					return func17(value18) * func28(value18);
-				};
-				break;
-			case 2:
-				var strength1 = op3[2];
-				var func18 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing4);
-				var func29 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing22);
-				func26 = function(value19) {
-					return func18(value19) * (1 - strength1) + func29(value19) * strength1;
-				};
-				break;
-			case 3:
-				var switchValue1 = op3[3];
-				var switchTime2 = op3[2];
-				var func19 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing4);
-				var func210 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing22);
-				func26 = function(value20) {
-					if(value20 < switchTime2) {
-						var rate4 = func19(value20 / switchTime2);
-						return 0 * (1 - rate4) + switchValue1 * rate4;
-					} else {
-						var rate5 = func210((value20 - switchTime2) / (1 - switchTime2));
-						return switchValue1 * (1 - rate5) + rate5;
-					}
-				};
-				break;
-			case 4:
-				var switchTime3 = op3[2];
-				var func110 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing4);
-				var func211 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing22);
-				func26 = function(value21) {
-					if(value21 < switchTime3) {
-						return func110(value21 / switchTime3);
-					} else {
-						return func211((value21 - switchTime3) / (1 - switchTime3));
-					}
-				};
-				break;
-			case 5:
-				func26 = tweenxcore_expr_TernaryOpKindTools.toFunction(op3[3],easing4,easing22,op3[2]);
-				break;
-			}
-			break;
-		}
-		break;
-	}
-	var func31;
-	switch(easing3[1]) {
-	case 0:
-		var kind3 = easing3[2];
-		switch(kind3[1]) {
-		case 0:
-			func31 = tweenxcore_Easing.linear;
-			break;
-		case 1:
-			var inOut2 = kind3[3];
-			switch(kind3[2][1]) {
-			case 0:
-				switch(inOut2[1]) {
-				case 0:
-					func31 = tweenxcore_Easing.quadIn;
-					break;
-				case 1:
-					func31 = tweenxcore_Easing.quadOut;
-					break;
-				case 2:
-					func31 = tweenxcore_Easing.quadInOut;
-					break;
-				case 3:
-					func31 = tweenxcore_Easing.quadOutIn;
-					break;
-				}
-				break;
-			case 1:
-				switch(inOut2[1]) {
-				case 0:
-					func31 = tweenxcore_Easing.cubicIn;
-					break;
-				case 1:
-					func31 = tweenxcore_Easing.cubicOut;
-					break;
-				case 2:
-					func31 = tweenxcore_Easing.cubicInOut;
-					break;
-				case 3:
-					func31 = tweenxcore_Easing.cubicOutIn;
-					break;
-				}
-				break;
-			case 2:
-				switch(inOut2[1]) {
-				case 0:
-					func31 = tweenxcore_Easing.quartIn;
-					break;
-				case 1:
-					func31 = tweenxcore_Easing.quartOut;
-					break;
-				case 2:
-					func31 = tweenxcore_Easing.quartInOut;
-					break;
-				case 3:
-					func31 = tweenxcore_Easing.quartOutIn;
-					break;
-				}
-				break;
-			case 3:
-				switch(inOut2[1]) {
-				case 0:
-					func31 = tweenxcore_Easing.quintIn;
-					break;
-				case 1:
-					func31 = tweenxcore_Easing.quintOut;
-					break;
-				case 2:
-					func31 = tweenxcore_Easing.quintInOut;
-					break;
-				case 3:
-					func31 = tweenxcore_Easing.quintOutIn;
-					break;
-				}
-				break;
-			case 4:
-				switch(inOut2[1]) {
-				case 0:
-					func31 = tweenxcore_Easing.sineIn;
-					break;
-				case 1:
-					func31 = tweenxcore_Easing.sineOut;
-					break;
-				case 2:
-					func31 = tweenxcore_Easing.sineInOut;
-					break;
-				case 3:
-					func31 = tweenxcore_Easing.sineOutIn;
-					break;
-				}
-				break;
-			case 5:
-				switch(inOut2[1]) {
-				case 0:
-					func31 = tweenxcore_Easing.circIn;
-					break;
-				case 1:
-					func31 = tweenxcore_Easing.circOut;
-					break;
-				case 2:
-					func31 = tweenxcore_Easing.circInOut;
-					break;
-				case 3:
-					func31 = tweenxcore_Easing.circOutIn;
-					break;
-				}
-				break;
-			case 6:
-				switch(inOut2[1]) {
-				case 0:
-					func31 = tweenxcore_Easing.expoIn;
-					break;
-				case 1:
-					func31 = tweenxcore_Easing.expoOut;
-					break;
-				case 2:
-					func31 = tweenxcore_Easing.expoInOut;
-					break;
-				case 3:
-					func31 = tweenxcore_Easing.expoOutIn;
-					break;
-				}
-				break;
-			case 7:
-				switch(inOut2[1]) {
-				case 0:
-					func31 = tweenxcore_Easing.backIn;
-					break;
-				case 1:
-					func31 = tweenxcore_Easing.backOut;
-					break;
-				case 2:
-					func31 = tweenxcore_Easing.backInOut;
-					break;
-				case 3:
-					func31 = tweenxcore_Easing.backOutIn;
-					break;
-				}
-				break;
-			case 8:
-				switch(inOut2[1]) {
-				case 0:
-					func31 = tweenxcore_Easing.bounceIn;
-					break;
-				case 1:
-					func31 = tweenxcore_Easing.bounceOut;
-					break;
-				case 2:
-					func31 = tweenxcore_Easing.bounceInOut;
-					break;
-				case 3:
-					func31 = tweenxcore_Easing.bounceOutIn;
-					break;
-				}
-				break;
-			case 9:
-				switch(inOut2[1]) {
-				case 0:
-					func31 = tweenxcore_Easing.elasticIn;
-					break;
-				case 1:
-					func31 = tweenxcore_Easing.elasticOut;
-					break;
-				case 2:
-					func31 = tweenxcore_Easing.elasticInOut;
-					break;
-				case 3:
-					func31 = tweenxcore_Easing.elasticOutIn;
-					break;
-				}
-				break;
-			case 10:
-				switch(inOut2[1]) {
-				case 0:
-					func31 = tweenxcore_Easing.warpIn;
-					break;
-				case 1:
-					func31 = tweenxcore_Easing.warpOut;
-					break;
-				case 2:
-					func31 = tweenxcore_Easing.warpInOut;
-					break;
-				case 3:
-					func31 = tweenxcore_Easing.warpOutIn;
-					break;
-				}
-				break;
-			}
-			break;
-		case 2:
-			var a22 = kind3[3];
-			func31 = function(a12) {
-				return tweenxcore_FloatTools.bezier(a12,a22);
-			};
-			break;
-		}
-		break;
-	case 1:
-		var op4 = easing3[3];
-		var easing5 = easing3[2];
-		switch(op4[1]) {
-		case 0:
-			var repeat2 = op4[2];
-			var func20 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
-			func31 = function(value22) {
-				var p2 = (0 * (1 - value22) + repeat2 * value22) / 1.0;
-				return func20(p2 - Math.floor(p2));
-			};
-			break;
-		case 1:
-			var to2 = op4[3];
-			var from2 = op4[2];
-			var func30 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
-			func31 = function(value23) {
-				var rate6 = func30(value23);
-				return from2 * (1 - rate6) + to2 * rate6;
-			};
-			break;
-		case 2:
-			var max2 = op4[3];
-			var min2 = op4[2];
-			var func32 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
-			func31 = function(value24) {
-				var value25 = func32(value24);
-				if(value25 <= min2) {
-					return min2;
-				} else if(max2 <= value25) {
-					return max2;
-				} else {
-					return value25;
-				}
-			};
-			break;
-		case 3:
-			switch(op4[2][1]) {
-			case 0:
-				var func33 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
-				func31 = function(value26) {
-					return func33((value26 < 0.5?value26:1 - value26) * 2);
-				};
-				break;
-			case 1:
-				var func34 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
-				func31 = function(value27) {
-					if(value27 < 0.5) {
-						return func34(value27 * 2);
-					} else {
-						return 1 - func34((value27 - 0.5) * 2);
-					}
-				};
-				break;
-			}
-			break;
-		case 4:
-			var op5 = op4[3];
-			var easing23 = op4[2];
-			switch(op5[1]) {
-			case 0:
-				var func111 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
-				var func212 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing23);
-				func31 = function(value28) {
-					return func111(func212(value28));
-				};
-				break;
-			case 1:
-				var func112 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
-				var func213 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing23);
-				func31 = function(value29) {
-					return func112(value29) * func213(value29);
-				};
-				break;
-			case 2:
-				var strength2 = op5[2];
-				var func113 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
-				var func214 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing23);
-				func31 = function(value30) {
-					return func113(value30) * (1 - strength2) + func214(value30) * strength2;
-				};
-				break;
-			case 3:
-				var switchValue2 = op5[3];
-				var switchTime4 = op5[2];
-				var func114 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
-				var func215 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing23);
-				func31 = function(value31) {
-					if(value31 < switchTime4) {
-						var rate7 = func114(value31 / switchTime4);
-						return 0 * (1 - rate7) + switchValue2 * rate7;
-					} else {
-						var rate8 = func215((value31 - switchTime4) / (1 - switchTime4));
-						return switchValue2 * (1 - rate8) + rate8;
-					}
-				};
-				break;
-			case 4:
-				var switchTime5 = op5[2];
-				var func115 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
-				var func216 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing23);
-				func31 = function(value32) {
-					if(value32 < switchTime5) {
-						return func115(value32 / switchTime5);
-					} else {
-						return func216((value32 - switchTime5) / (1 - switchTime5));
-					}
-				};
-				break;
-			case 5:
-				func31 = tweenxcore_expr_TernaryOpKindTools.toFunction(op5[3],easing5,easing23,op5[2]);
-				break;
-			}
-			break;
-		}
-		break;
-	}
-	return function(value33) {
-		var rate9 = func31(value33);
-		var rate10 = start * (1 - rate9) + end * rate9;
-		return func1(value33) * (1 - rate10) + func26(value33) * rate10;
+	var func1 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+	var func2 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+	var func3 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
+	return function(value) {
+		var rate = func3(value);
+		var rate1 = start * (1 - rate) + end * rate;
+		return func1(value) * (1 - rate1) + func2(value) * rate1;
 	};
 };
 tweenxcore_expr_TernaryOpKindTools.toJsonable = function(kind) {
@@ -4990,7 +4178,18 @@ tweenxcore_expr_UnaryOpKindTools.toFunction = function(kind,easing) {
 				}
 			};
 		case 5:
-			return tweenxcore_expr_TernaryOpKindTools.toFunction(op[3],easing,easing2,op[2]);
+			var op1 = op[3];
+			var easing3 = op[2];
+			var end = op1[3];
+			var start = op1[2];
+			var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
+			var func26 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+			var func31 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
+			return function(value11) {
+				var rate3 = func31(value11);
+				var rate4 = start * (1 - rate3) + end * rate3;
+				return func16(value11) * (1 - rate4) + func26(value11) * rate4;
+			};
 		}
 		break;
 	}
@@ -5091,6 +4290,7 @@ component_complex_ComplexEasingSelectItem.items = (function($this) {
 component_complex_ComplexEasingSelectView.displayName = "ComplexEasingSelectView";
 component_complex_ComplexEasingView.displayName = "ComplexEasingView";
 component_menu_HistoryView.displayName = "HistoryView";
+component_menu_MenuView.displayName = "MenuView";
 component_output_OutputModeSelectView.displayName = "OutputModeSelectView";
 component_output_OutputView.displayName = "OutputView";
 component_simple_PolylineView.displayName = "PolylineView";

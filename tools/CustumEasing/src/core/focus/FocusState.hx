@@ -6,6 +6,6 @@ import component.complex.ComplexEasingId;
 enum FocusState 
 {
 	ComplexEasingSelect(detail:ComplexEasingSelectFocus);
-	RateInput(detail:NumberInputFocus); 
+	NumberInput(detail:NumberInputFocus); 
 	None;
 }

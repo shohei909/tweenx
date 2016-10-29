@@ -26,7 +26,7 @@ class ClampView extends ReactComponentOfProps<ClampProps>
 				{
 					name: "min",
 					value: props.min,
-					id: props.id.rateId(0),
+					id: props.id.numberInputId(0),
 					context: props.context
 				}
 			),
@@ -34,7 +34,7 @@ class ClampView extends ReactComponentOfProps<ClampProps>
 				{
 					name: "max",
 					value: props.max,
-					id: props.id.rateId(1),
+					id: props.id.numberInputId(1),
 					context: props.context
 				}
 			)

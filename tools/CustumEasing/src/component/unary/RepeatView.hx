@@ -26,7 +26,7 @@ class RepeatView extends ReactComponentOfProps<RepeatProps>
 				{
 					name: "Repeat",
 					value: props.repeat,
-					id: props.id.rateId(0),
+					id: props.id.numberInputId(0),
 					context: props.context
 				}
 			)

@@ -1,5 +1,6 @@
 package component.basic;
 import core.animation.Animation;
+import core.animation.AnimationManager;
 import core.focus.FocusManager;
 import js.html.CanvasElement;
 import tweenxcore.expr.ComplexEasingKind;
@@ -14,13 +15,17 @@ class PreviewAnimation implements Animation
 	public static var TOTAL_FRAME = 60;
 	
 	private var canvas:CanvasElement;
-	private var currentFrame:Int = 0;
+	private var currentFrame:Int;
+	private var totalFrame:Float;
 	private var func:Float->Float;
+	private var manager:AnimationManager;
 	
-	public function new(canvas:CanvasElement, easing:ComplexEasingKind) 
+	public function new(manager:AnimationManager, canvas:CanvasElement, easing:ComplexEasingKind) 
 	{
+		this.manager = manager;
 		this.func = ComplexEasingKindTools.toFunction(easing);
 		this.canvas = canvas;
+		totalFrame = TOTAL_FRAME * manager.time;
 		currentFrame = 0;
 	}
 	
@@ -36,13 +41,13 @@ class PreviewAnimation implements Animation
 		
 		ctx.fillStyle = "#ff64b1";
 		
-		var x = func(currentFrame / TOTAL_FRAME).lerp(left, right);
+		var x = func(currentFrame / totalFrame).lerp(left, right);
 		ctx.fillRect(x, 0, MARKER_WIDTH, HEIGHT);
 	}
 	
 	public function isDead():Bool
 	{
-		return currentFrame >= TOTAL_FRAME;
+		return currentFrame >= totalFrame;
 	}
 	
 	public static function init(canvas:CanvasElement):Void 

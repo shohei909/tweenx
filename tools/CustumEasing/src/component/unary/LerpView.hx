@@ -26,7 +26,7 @@ class LerpView extends ReactComponentOfProps<LerpProps>
 				{
 					name: "from",
 					value: props.from,
-					id: props.id.rateId(0),
+					id: props.id.numberInputId(0),
 					context: props.context
 				}
 			),
@@ -34,7 +34,7 @@ class LerpView extends ReactComponentOfProps<LerpProps>
 				{
 					name: "to",
 					value: props.to,
-					id: props.id.rateId(1),
+					id: props.id.numberInputId(1),
 					context: props.context
 				}
 			)
