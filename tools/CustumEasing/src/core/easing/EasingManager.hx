@@ -2,10 +2,14 @@ package core.easing;
 import component.basic.RateId;
 import component.complex.ComplexEasingId;
 import core.GlobalCommand;
+import core.GlobalContext;
 import core.easing.EasingManager;
+import haxe.Json;
 import haxe.ds.Option;
+import js.Browser;
 import tweenxcore.expr.BinaryOpKind;
 import tweenxcore.expr.ComplexEasingKind;
+import tweenxcore.expr.ComplexEasingKindTools;
 import tweenxcore.expr.InOutKind;
 import tweenxcore.expr.SimpleEasingKind;
 import tweenxcore.expr.TernaryOpKind;
@@ -65,6 +69,7 @@ class EasingManager
 		{
 			result.addUndoCommand(GlobalCommand.ChangeEasing(ComplexEasingId.root(), prev));
 			current = next;
+			context.updateHash();
 		}
 	}
 	
@@ -86,12 +91,12 @@ class EasingManager
 			case Option.Some(oldEasing):
 				var newEasing:ComplexEasingKind = switch [oldEasing, id.rateIndex()] 
 				{
-					case [Simple(SimpleEasingKind.Bezier(controls)), _]:
+					case [Simple(SimpleEasingKind.Polyline(kind, controls)), _]:
 						if (controls[id.rateIndex()] != value)
 						{
 							var newControls = controls.slice(0);
 							newControls[id.rateIndex()] = value;
-							Simple(SimpleEasingKind.Bezier(newControls));
+							Simple(SimpleEasingKind.Polyline(kind, newControls));
 						}
 						else
 						{

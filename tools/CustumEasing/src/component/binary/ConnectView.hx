@@ -1,5 +1,4 @@
 package component.binary;
-import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
@@ -16,26 +15,28 @@ class ConnectView extends ReactComponentOfProps<ConnectProps>
 	
 	override public function render():ReactComponent 
 	{
-		return React.createElement(
+		return "div".createElement(
 			{
 				className: "param-group"
 			}, 
-			NumberInputView.createElement(
-				{
-					name: "Switch time",
-					value: props.switchTime,
-					id: props.id.rateId(0),
-					context: props.context
-				}
-			),
-			NumberInputView.createElement(
-				{
-					name: "Switch value",
-					value: props.switchValue,
-					id: props.id.rateId(1),
-					context: props.context
-				}
-			)
+			[
+				NumberInputView.createElement(
+					{
+						name: "Switch time",
+						value: props.switchTime,
+						id: props.id.rateId(0),
+						context: props.context
+					}
+				),
+				NumberInputView.createElement(
+					{
+						name: "Switch value",
+						value: props.switchValue,
+						id: props.id.rateId(1),
+						context: props.context
+					}
+				)
+			]
 		);
 	}
 }

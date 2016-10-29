@@ -2,6 +2,7 @@ package core.animation;
 
 class AnimationManager 
 {
+	public var time:Float;
 	private var animations:Map<String, Animation>;
 	
 	public function new() 

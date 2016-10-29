@@ -5,11 +5,12 @@ import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
+import tweenxcore.expr.PolylineKind;
 import tweenxcore.geom.Point;
 
-class BezierView extends ReactComponentOfProps<BezierProps>
+class PolylineView extends ReactComponentOfProps<PolylineProps>
 {
-	public function new(props:BezierProps) 
+	public function new(props:PolylineProps) 
 	{
 		super(props);
 	}
@@ -38,8 +39,9 @@ class BezierView extends ReactComponentOfProps<BezierProps>
 	}
 }
 
-typedef BezierProps = 
+typedef PolylineProps = 
 {
+	polyline: PolylineKind,
 	controls: Array<Float>,
 	id: ComplexEasingId,
 	context: GlobalContext

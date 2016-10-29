@@ -1,4 +1,5 @@
 package core;
+import component.complex.ComplexEasingId;
 import core.GlobalCommand;
 import core.animation.AnimationManager;
 import core.easing.EasingManager;
@@ -6,7 +7,13 @@ import core.focus.FocusManager;
 import core.history.HistoryManager;
 import core.key.KeyboardManager;
 import core.output.OutputManager;
+import haxe.Json;
 import js.Browser;
+import js.html.Event;
+import js.html.HashChangeEvent;
+import tweenxcore.expr.ComplexEasingKind;
+import tweenxcore.expr.ComplexEasingKindTools;
+import tweenxcore.expr.SimpleEasingKind;
 
 class GlobalContext 
 {
@@ -18,6 +25,7 @@ class GlobalContext
 	public var easing(default, null):EasingManager;
 	
 	private var application:Application;
+	private var currentHash:String;
 	
 	public function new() 
 	{
@@ -28,13 +36,25 @@ class GlobalContext
 		output = new OutputManager(this);
 		easing = new EasingManager(this);
 		
-		Browser.window.setTimeout(onFrame, 16);
+		Browser.window.setTimeout(onFrame, 1 / 60);
+		Browser.window.addEventListener("hashchange", onHashChange);
+		
+		applyHashChange();
+		history.clear();
+	}
+	
+	private function onHashChange(event:HashChangeEvent):Void 
+	{
+		if (Browser.location.hash != currentHash)
+		{
+			applyHashChange();
+		}
 	}
 	
 	private function onFrame():Void
 	{
 		animation.onFrame();
-		Browser.window.setTimeout(onFrame, 16);
+		Browser.window.setTimeout(onFrame, 1 / 60);
 	}
 	
 	public function setup(application:Application):Void
@@ -89,5 +109,36 @@ class GlobalContext
 		}
 		
 		return result;
+	}
+	
+	public function applyHashChange():Void
+	{
+		currentHash = Browser.location.hash;
+		
+		try 
+		{
+			trace(currentHash);
+			var data = Json.parse(StringTools.urlDecode(currentHash.substr(1)));
+			
+			try 
+			{
+				var easing = ComplexEasingKindTools.fromJsonable(data.easing);
+				apply(GlobalCommand.ChangeEasing(ComplexEasingId.root(), easing));
+			}
+			catch (e:Dynamic) {}
+		}
+		catch (e:Dynamic) {}
+	}
+	
+	public function updateHash() 
+	{
+		currentHash = "#" + StringTools.urlEncode(
+			Json.stringify(
+				{
+					easing:ComplexEasingKindTools.toJsonable(easing.current),
+				}
+			)
+		);
+		Browser.location.hash = currentHash;
 	}
 }

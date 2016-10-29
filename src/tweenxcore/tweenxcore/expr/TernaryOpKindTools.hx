@@ -19,4 +19,25 @@ class TernaryOpKindTools
 				}
 		}
 	}
+	
+	public static function toJsonable(kind:TernaryOpKind):Dynamic
+	{
+		return switch (kind)
+		{
+			case TernaryOpKind.Crossfade(start, end):
+				["Crossfade", start, end];
+		}
+	}
+	
+	public static function fromJsonable(data:Dynamic):TernaryOpKind
+	{
+		return switch (data)
+		{
+			case ["Crossfade", start, end]:
+				TernaryOpKind.Crossfade(cast(start, Float), cast(end, Float));
+				
+			case _:
+				throw "unsupported TernaryOpKind data: " + data;
+		}
+	}
 }

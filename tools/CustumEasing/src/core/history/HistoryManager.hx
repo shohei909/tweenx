@@ -47,4 +47,10 @@ class HistoryManager
 		undoStack.push(commands);
 		redoStack.clear();
 	}
+	
+	public function clear():Void
+	{
+		undoStack.clear();
+		redoStack.clear();		
+	}
 }

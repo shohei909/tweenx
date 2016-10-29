@@ -1,10 +1,11 @@
 package core.output;
 import core.ApplyResult;
+import haxe.Json;
 import tweenxcore.expr.ComplexEasingKind;
+import tweenxcore.expr.ComplexEasingKindTools;
 
 class OutputManager 
 {
-	public var easing(default, null):ComplexEasingKind;
 	public var mode(default, null):OutputMode;
 	private var context:GlobalContext;
 	
@@ -16,12 +17,22 @@ class OutputManager
 	
 	public function getString():String
 	{
-		return "todo";
+		var easing = context.easing.current;
+		return switch (mode)
+		{
+			case OutputMode.Json:
+				Json.stringify(
+					ComplexEasingKindTools.toJsonable(easing),
+					null
+				);
+				
+			case OutputMode.Haxe:
+				Std.string(easing);
+		}
 	}
 	
 	public function changeMode(newMode:OutputMode, result:ApplyResult):Void
 	{
-		// result.addUndoCommand(GlobalCommand.ChangeOutputMode(mode));
 		mode = newMode;
 	}
 }

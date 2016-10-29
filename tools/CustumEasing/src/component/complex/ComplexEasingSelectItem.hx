@@ -3,6 +3,7 @@ import component.complex.ComplexEasingCreateContext;
 import haxe.EnumTools;
 import tweenxcore.expr.BinaryOpKind;
 import tweenxcore.expr.ComplexEasingKind;
+import tweenxcore.expr.PolylineKind;
 import tweenxcore.expr.SimpleEasingKind;
 import tweenxcore.expr.StandardEasingKind;
 import tweenxcore.expr.TernaryOpKind;
@@ -54,7 +55,7 @@ class ComplexEasingSelectItem
 							case Warp:    ComplexEasingSelectItemId.Warp;
 						}
 						
-					case SimpleEasingKind.Bezier(_):
+					case SimpleEasingKind.Polyline(Bezier, _):
 						ComplexEasingSelectItemId.Bezier;
 				}
 			
@@ -93,19 +94,19 @@ class ComplexEasingSelectItem
 		var name = EnumValueTools.getName(id);
 		return switch (id)
 		{
-			case ComplexEasingSelectItemId.Linear:    new ComplexEasingSelectItem(id, name, createLinearEasing);
-			case ComplexEasingSelectItemId.Quad:      new ComplexEasingSelectItem(id, name, createStandardEasing.bind(StandardEasingKind.Quad));
-			case ComplexEasingSelectItemId.Cubic:     new ComplexEasingSelectItem(id, name, createStandardEasing.bind(StandardEasingKind.Cubic));
-			case ComplexEasingSelectItemId.Quart:     new ComplexEasingSelectItem(id, name, createStandardEasing.bind(StandardEasingKind.Quart));
-			case ComplexEasingSelectItemId.Quint:     new ComplexEasingSelectItem(id, name, createStandardEasing.bind(StandardEasingKind.Quint));
-			case ComplexEasingSelectItemId.Sine:      new ComplexEasingSelectItem(id, name, createStandardEasing.bind(StandardEasingKind.Sine));
-			case ComplexEasingSelectItemId.Circ:      new ComplexEasingSelectItem(id, name, createStandardEasing.bind(StandardEasingKind.Circ));
-			case ComplexEasingSelectItemId.Expo:      new ComplexEasingSelectItem(id, name, createStandardEasing.bind(StandardEasingKind.Expo));
-			case ComplexEasingSelectItemId.Back:      new ComplexEasingSelectItem(id, name, createStandardEasing.bind(StandardEasingKind.Back));
-			case ComplexEasingSelectItemId.Bounce:    new ComplexEasingSelectItem(id, name, createStandardEasing.bind(StandardEasingKind.Bounce));
-			case ComplexEasingSelectItemId.Elastic:   new ComplexEasingSelectItem(id, name, createStandardEasing.bind(StandardEasingKind.Elastic));
-			case ComplexEasingSelectItemId.Warp:      new ComplexEasingSelectItem(id, name, createStandardEasing.bind(StandardEasingKind.Warp));
-			case ComplexEasingSelectItemId.Bezier:    new ComplexEasingSelectItem(id, name, createBezierEasing);
+			case ComplexEasingSelectItemId.Linear:    new ComplexEasingSelectItem(id, name, createLinear);
+			case ComplexEasingSelectItemId.Quad:      new ComplexEasingSelectItem(id, name, createStandard.bind(StandardEasingKind.Quad));
+			case ComplexEasingSelectItemId.Cubic:     new ComplexEasingSelectItem(id, name, createStandard.bind(StandardEasingKind.Cubic));
+			case ComplexEasingSelectItemId.Quart:     new ComplexEasingSelectItem(id, name, createStandard.bind(StandardEasingKind.Quart));
+			case ComplexEasingSelectItemId.Quint:     new ComplexEasingSelectItem(id, name, createStandard.bind(StandardEasingKind.Quint));
+			case ComplexEasingSelectItemId.Sine:      new ComplexEasingSelectItem(id, name, createStandard.bind(StandardEasingKind.Sine));
+			case ComplexEasingSelectItemId.Circ:      new ComplexEasingSelectItem(id, name, createStandard.bind(StandardEasingKind.Circ));
+			case ComplexEasingSelectItemId.Expo:      new ComplexEasingSelectItem(id, name, createStandard.bind(StandardEasingKind.Expo));
+			case ComplexEasingSelectItemId.Back:      new ComplexEasingSelectItem(id, name, createStandard.bind(StandardEasingKind.Back));
+			case ComplexEasingSelectItemId.Bounce:    new ComplexEasingSelectItem(id, name, createStandard.bind(StandardEasingKind.Bounce));
+			case ComplexEasingSelectItemId.Elastic:   new ComplexEasingSelectItem(id, name, createStandard.bind(StandardEasingKind.Elastic));
+			case ComplexEasingSelectItemId.Warp:      new ComplexEasingSelectItem(id, name, createStandard.bind(StandardEasingKind.Warp));
+			case ComplexEasingSelectItemId.Bezier:    new ComplexEasingSelectItem(id, name, createPolyline.bind(PolylineKind.Bezier));
 			case ComplexEasingSelectItemId.Repeat:    new ComplexEasingSelectItem(id, name, createUnaryOp.bind(UnaryOpKind.Repeat(2)));
 			case ComplexEasingSelectItemId.Lerp:      new ComplexEasingSelectItem(id, name, createUnaryOp.bind(UnaryOpKind.Lerp(0, 1)));
 			case ComplexEasingSelectItemId.Clamp:     new ComplexEasingSelectItem(id, name, createUnaryOp.bind(UnaryOpKind.Clamp(0, 1)));
@@ -122,32 +123,32 @@ class ComplexEasingSelectItem
 	
 	
 	
-	public static function createLinearEasing(context:ComplexEasingCreateContext):ComplexEasingKind
+	private static function createLinear(context:ComplexEasingCreateContext):ComplexEasingKind
 	{
 		return ComplexEasingKind.Simple(Linear);
 	}
 	
-	public static function createStandardEasing(easing:StandardEasingKind, context:ComplexEasingCreateContext):ComplexEasingKind
+	private static function createStandard(easing:StandardEasingKind, context:ComplexEasingCreateContext):ComplexEasingKind
 	{
 		return ComplexEasingKind.Simple(SimpleEasingKind.Standard(easing, context.getInOut()));
 	}
 	
-	public static function createBezierEasing(context:ComplexEasingCreateContext):ComplexEasingKind
+	private static function createPolyline(polyline:PolylineKind, context:ComplexEasingCreateContext):ComplexEasingKind
 	{
-		return ComplexEasingKind.Simple(SimpleEasingKind.Bezier([0, 0, 1]));
+		return ComplexEasingKind.Simple(SimpleEasingKind.Polyline(polyline, [0, 0, 1, 1]));
 	}
 	
-	public static function createUnaryOp(op:UnaryOpKind, context:ComplexEasingCreateContext):ComplexEasingKind
+	private static function createUnaryOp(op:UnaryOpKind, context:ComplexEasingCreateContext):ComplexEasingKind
 	{
 		return ComplexEasingKind.Op(context.getEasing(), op);
 	}
 	
-	public static function createBinaryOp(op:BinaryOpKind, context:ComplexEasingCreateContext):ComplexEasingKind
+	private static function createBinaryOp(op:BinaryOpKind, context:ComplexEasingCreateContext):ComplexEasingKind
 	{
 		return ComplexEasingKind.Op(context.getEasing(), UnaryOpKind.Op(context.getEasing(), op));
 	}
 	
-	public static function createTernaryOp(op:TernaryOpKind, context:ComplexEasingCreateContext):ComplexEasingKind
+	private static function createTernaryOp(op:TernaryOpKind, context:ComplexEasingCreateContext):ComplexEasingKind
 	{
 		return ComplexEasingKind.Op(context.getEasing(), UnaryOpKind.Op(context.getEasing(), BinaryOpKind.Op(context.getEasing(), op)));
 	}

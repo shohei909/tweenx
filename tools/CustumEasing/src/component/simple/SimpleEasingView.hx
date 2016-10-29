@@ -30,9 +30,10 @@ class SimpleEasingView extends ReactComponentOfProps<SimpleEasingProps>
 					}
 				);
 				
-			case SimpleEasingKind.Bezier(controls):
-				BezierView.createElement(
+			case SimpleEasingKind.Polyline(polyline, controls):
+				PolylineView.createElement(
 					{
+						polyline: polyline,
 						controls: controls,
 						id: props.id,
 						context: props.context,
