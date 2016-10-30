@@ -1,7 +1,11 @@
 package tweenxcore.expr;
 import haxe.EnumTools;
 import haxe.EnumTools.EnumValueTools;
+import haxe.macro.Context;
+import haxe.macro.Expr;
 import tweenxcore.Tools.Easing;
+import tweenxcore.expr.ComplexEasingKind;
+import tweenxcore.expr.ExprMaker.ExprMakeTools;
 import tweenxcore.expr.RoundTripKindTools;
 using tweenxcore.Tools.FloatTools;
 using tweenxcore.expr.ComplexEasingKindTools;
@@ -96,6 +100,69 @@ class UnaryOpKindTools
 				
 			case _:
 				throw "unsupported UnaryOpKind data: " + data;
+		}
+	}
+	
+	public static function toExpr(kind:UnaryOpKind, easing:ComplexEasingKind, valueExpr:ExprOf<Float>):ExprOf<Float>
+	{
+		return switch (kind)
+		{
+			case UnaryOpKind.Clamp(min, max):
+				var expr = easing.toExpr(valueExpr);
+				macro tweenxcore.Tools.FloatTools.clamp($expr, ${ExprMakeTools.floatToExpr(min)}, ${ExprMakeTools.floatToExpr(max)});
+				
+			case UnaryOpKind.Lerp(from, to):
+				var expr = easing.toExpr(valueExpr);
+				macro tweenxcore.Tools.FloatTools.lerp($expr, ${ExprMakeTools.floatToExpr(from)}, ${ExprMakeTools.floatToExpr(to)});
+				
+			case UnaryOpKind.Repeat(repeat):
+				var expr = macro tweenxcore.Tools.FloatTools.repeat(
+					FloatTools.lerp($valueExpr, 0), ${ExprMakeTools.floatToExpr(repeat)}
+				);
+				easing.toExpr(valueExpr);
+				
+			case UnaryOpKind.RoundTrip(roundTrip):
+				RoundTripKindTools.toExpr(roundTrip, easing, valueExpr);
+				
+			case UnaryOpKind.Op(easing2, op):
+				BinaryOpKindTools.toExpr(op, easing, easing2, valueExpr);
+		}
+	}
+	
+	public static function toFunctionExpr(kind:UnaryOpKind, easing:ComplexEasingKind):ExprOf<Float->Float>
+	{
+		return switch (kind)
+		{
+			case UnaryOpKind.Clamp(min, max):
+				var func = easing.toFunctionExpr();
+				macro function (value:Float):Float
+				{
+					return tweenxcore.Tools.FloatTools.clamp(value, ${ExprMakeTools.floatToExpr(min)}, ${ExprMakeTools.floatToExpr(max)});
+				}
+				
+			case UnaryOpKind.Lerp(from, to):
+				var func = easing.toFunctionExpr();
+				macro function (value:Float):Float
+				{
+					return tweenxcore.Tools.FloatTools.lerp(value, ${ExprMakeTools.floatToExpr(from)}, ${ExprMakeTools.floatToExpr(to)});
+				}
+				
+			case UnaryOpKind.Repeat(repeat):
+				var func = easing.toFunctionExpr();
+				macro function (value:Float):Float
+				{
+					return $func(
+						tweenxcore.Tools.FloatTools.repeat(
+							tweenxcore.Tools.FloatTools.lerp(value, 0), ${ExprMakeTools.floatToExpr(repeat)}
+						)
+					);
+				}
+				
+			case UnaryOpKind.RoundTrip(roundTrip):
+				RoundTripKindTools.toFunctionExpr(roundTrip, easing);
+				
+			case UnaryOpKind.Op(easing2, op):
+				BinaryOpKindTools.toFunctionExpr(op, easing, easing2);
 		}
 	}
 }

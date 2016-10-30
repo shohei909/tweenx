@@ -27,7 +27,7 @@ class SelectGroupView<DataKind:EnumValue> extends ReactComponentOfProps<SelectBa
 						{ 
 							className: "btn btn-sm btn-" + if (selected) "primary" else "default",
 							href: "javascript:void(0)",
-							onClick: if (selected) null else props.onSelect.bind(inOut),
+							onClick: props.onSelect.bind(inOut),
 						},
 						[
 							if (selected) 

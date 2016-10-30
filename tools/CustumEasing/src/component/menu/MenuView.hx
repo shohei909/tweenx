@@ -34,7 +34,7 @@ class MenuView extends ReactComponentOfProps<MenuProps>
 					},
 					NumberInputView.createElement(
 						{
-							name: "Animation Time",
+							name: "Animation Time (sec)",
 							value: props.context.animation.time,
 							id: NumberInputId.AnimationTime,
 							context: props.context,

@@ -1,5 +1,9 @@
 package tweenxcore.expr;
+import haxe.macro.Expr;
+import haxe.macro.Expr.ExprOf;
 import tweenxcore.Tools.FloatTools;
+import tweenxcore.expr.ComplexEasingKind;
+import tweenxcore.expr.ExprMaker.ExprMakeTools;
 using tweenxcore.expr.ComplexEasingKindTools;
 
 class BinaryOpKindTools 
@@ -27,26 +31,17 @@ class BinaryOpKindTools
 			case BinaryOpKind.Mix(strength):
 				var func1 = easing1.toFunction();
 				var func2 = easing2.toFunction();
-				function (value:Float):Float
-				{
-					return FloatTools.mixEasing(value, func1, func2, strength);
-				}
+				FloatTools.mixEasing.bind(_, func1, func2, strength);
 				
 			case BinaryOpKind.Connect(switchTime, switchValue):
 				var func1 = easing1.toFunction();
 				var func2 = easing2.toFunction();
-				function (value:Float):Float
-				{
-					return FloatTools.connectEasing(value, func1, func2, switchTime, switchValue);
-				}
+				FloatTools.connectEasing.bind(_, func1, func2, switchTime, switchValue);
 				
 			case BinaryOpKind.OneTwo(switchTime):
 				var func1 = easing1.toFunction();
 				var func2 = easing2.toFunction();
-				function (value:Float):Float
-				{
-					return FloatTools.oneTwoEasing(value, func1, func2, switchTime);
-				}
+				FloatTools.oneTwoEasing.bind(_, func1, func2, switchTime);
 				
 			case BinaryOpKind.Op(easing3, op):
 				TernaryOpKindTools.toFunction(op, easing1, easing2, easing3);
@@ -118,6 +113,79 @@ class BinaryOpKindTools
 				case _:
 					throw "unsupported BinaryOpKind data: " + data;
 			}
+		}
+	}
+	
+	public static function toExpr(kind:BinaryOpKind, easing1:ComplexEasingKind, easing2:ComplexEasingKind, valueExpr:ExprOf<Float>):ExprOf<Float>
+	{
+		return switch (kind)
+		{
+			case BinaryOpKind.Composite:
+				var expr2 = easing2.toExpr(valueExpr);
+				easing1.toExpr(expr2);
+				
+			case BinaryOpKind.Multiply:
+				var expr1 = easing1.toExpr(valueExpr);
+				var expr2 = easing2.toExpr(valueExpr);
+				macro $expr1 * $expr2;
+				
+			case BinaryOpKind.Mix(strength):
+				var func1 = easing1.toFunctionExpr();
+				var func2 = easing2.toFunctionExpr();
+				macro tweenxcore.Tools.FloatTools.mixEasing($valueExpr, $func1, $func2, ${ExprMakeTools.floatToExpr(strength)});
+				
+			case BinaryOpKind.Connect(switchTime, switchValue):
+				var func1 = easing1.toFunctionExpr();
+				var func2 = easing2.toFunctionExpr();
+				macro tweenxcore.Tools.FloatTools.connectEasing($valueExpr, $func1, $func2, ${ExprMakeTools.floatToExpr(switchTime)}, ${ExprMakeTools.floatToExpr(switchValue)});
+				
+			case BinaryOpKind.OneTwo(switchTime):
+				var func1 = easing1.toFunctionExpr();
+				var func2 = easing2.toFunctionExpr();
+				macro tweenxcore.Tools.FloatTools.oneTwoEasing($valueExpr, $func1, $func2, ${ExprMakeTools.floatToExpr(switchTime)});
+				
+			case BinaryOpKind.Op(easing3, op):
+				TernaryOpKindTools.toExpr(op, easing1, easing2, easing3, valueExpr);
+		}
+	}
+	
+	public static function toFunctionExpr(kind:BinaryOpKind, easing1:ComplexEasingKind, easing2:ComplexEasingKind):ExprOf<Float->Float>
+	{
+		return switch (kind)
+		{
+			case BinaryOpKind.Composite:
+				var func1 = easing1.toFunctionExpr();
+				var func2 = easing2.toFunctionExpr();
+				macro function (value:Float):Float
+				{
+					return $func1($func2(value));
+				}
+				
+			case BinaryOpKind.Multiply:
+				var func1 = easing1.toFunctionExpr();
+				var func2 = easing2.toFunctionExpr();
+				macro function (value:Float):Float
+				{
+					return $func1(value) * $func2(value);
+				}
+				
+			case BinaryOpKind.Mix(strength):
+				var func1 = easing1.toFunctionExpr();
+				var func2 = easing2.toFunctionExpr();
+				macro tweenxcore.Tools.FloatTools.mixEasing.bind(_, $func1, $func2, ${ExprMakeTools.floatToExpr(strength)});
+				
+			case BinaryOpKind.Connect(switchTime, switchValue):
+				var func1 = easing1.toFunctionExpr();
+				var func2 = easing2.toFunctionExpr();
+				macro tweenxcore.Tools.FloatTools.connectEasing.bind(_, $func1, $func2, ${ExprMakeTools.floatToExpr(switchTime)}, ${ExprMakeTools.floatToExpr(switchValue)});
+				
+			case BinaryOpKind.OneTwo(switchTime):
+				var func1 = easing1.toFunctionExpr();
+				var func2 = easing2.toFunctionExpr();
+				macro tweenxcore.Tools.FloatTools.oneTwoEasing.bind(_, $func1, $func2, ${ExprMakeTools.floatToExpr(switchTime)});
+				
+			case BinaryOpKind.Op(easing3, op):
+				TernaryOpKindTools.toFunctionExpr(op, easing1, easing2, easing3);
 		}
 	}
 }

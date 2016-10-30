@@ -1,6 +1,7 @@
 package core.output;
 import core.ApplyResult;
 import haxe.Json;
+import haxe.macro.Printer;
 import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.ComplexEasingKindTools;
 
@@ -27,7 +28,14 @@ class OutputManager
 				);
 				
 			case OutputMode.Haxe:
-				Std.string(easing);
+				var print = new Printer();
+				var bodyExpr = ComplexEasingKindTools.toExpr(easing, macro value);
+				print.printExpr(
+					macro function customEase():Void
+					{
+						$bodyExpr;
+					}
+				);
 		}
 	}
 	

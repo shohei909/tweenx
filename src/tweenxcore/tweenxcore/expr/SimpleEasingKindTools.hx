@@ -1,8 +1,10 @@
 package tweenxcore.expr;
 import haxe.EnumTools;
 import haxe.EnumTools.EnumValueTools;
+import haxe.macro.Expr;
 import tweenxcore.Tools.Easing;
 import tweenxcore.Tools.FloatTools;
+import tweenxcore.expr.PolylineKindTools;
 
 class SimpleEasingKindTools 
 {
@@ -16,8 +18,8 @@ class SimpleEasingKindTools
 			case SimpleEasingKind.Standard(easing, inOut):
 				StandardEasingKindTools.toFunction(easing, inOut);
 				
-			case SimpleEasingKind.Polyline(Bezier, controls):
-				FloatTools.bezier.bind(_, controls);
+			case SimpleEasingKind.Polyline(polyline, controls):
+				PolylineKindTools.toFunction(polyline, controls);
 		}
 	}	
 	
@@ -76,6 +78,36 @@ class SimpleEasingKindTools
 				case _:
 					throw "unsupported SimpleEasingKind data: " + data;
 			}
+		}
+	}
+	
+	public static function toExpr(easing:SimpleEasingKind, valueExpr:ExprOf<Float>):ExprOf<Float>
+	{
+		return switch (easing)
+		{
+			case SimpleEasingKind.Linear:
+				macro tweenxcore.Tools.Easing.linear($valueExpr);
+				
+			case SimpleEasingKind.Standard(easing, inOut):
+				StandardEasingKindTools.toExpr(easing, inOut, valueExpr);
+				
+			case SimpleEasingKind.Polyline(polyline, controls):
+				PolylineKindTools.toExpr(polyline, controls, valueExpr);
+		}
+	}
+	
+	public static function toFunctionExpr(easing:SimpleEasingKind):ExprOf<Float->Float>
+	{
+		return switch (easing)
+		{
+			case SimpleEasingKind.Linear:
+				macro tweenxcore.Tools.Easing.linear;
+				
+			case SimpleEasingKind.Standard(easing, inOut):
+				StandardEasingKindTools.toFunctionExpr(easing, inOut);
+				
+			case SimpleEasingKind.Polyline(polyline, controls):
+				PolylineKindTools.toFunctionExpr(polyline, controls);
 		}
 	}
 }

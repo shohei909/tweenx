@@ -1,4 +1,5 @@
 package tweenxcore.expr;
+import haxe.macro.Expr;
 import tweenxcore.Tools.Easing;
 
 class ComplexEasingKindTools 
@@ -51,6 +52,30 @@ class ComplexEasingKindTools
 				
 			case _:
 				throw "unsupported ComplexEasingKind data: " + data;
+		}
+	}
+	
+	public static function toExpr(easing:ComplexEasingKind, valueExpr:ExprOf<Float>):ExprOf<Float> 
+	{
+		return switch (easing)
+		{
+			case ComplexEasingKind.Simple(kind):
+				SimpleEasingKindTools.toExpr(kind, valueExpr);
+			
+			case ComplexEasingKind.Op(easing, op):
+				UnaryOpKindTools.toExpr(op, easing, valueExpr);
+		}
+	}
+	
+	public static function toFunctionExpr(easing:ComplexEasingKind):ExprOf<Float->Float> 
+	{
+		return switch (easing)
+		{
+			case ComplexEasingKind.Simple(kind):
+				SimpleEasingKindTools.toFunctionExpr(kind);
+			
+			case ComplexEasingKind.Op(easing, op):
+				UnaryOpKindTools.toFunctionExpr(op, easing);
 		}
 	}
 }

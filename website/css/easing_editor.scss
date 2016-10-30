@@ -53,15 +53,11 @@
 		}
 	}
 	
-	.select-group
-	{
-		margin: 2px;
-	}
-	
 	.dropdown-content
 	{
 		margin: 10px;
 		margin-top: 2px;
+		
 		.dropdown-content-row
 		{
 			margin-left: 2px;
@@ -72,6 +68,13 @@
 			}
 		}
 	}
+}
+
+.select-group
+{
+	margin-left: 1px;
+	margin-top: 2px;
+	margin-bottom: 2px;
 }
 
 .menu
@@ -91,13 +94,6 @@
 			padding: 0px;
 		}
 	}
-}
-
-.row 
-{
-	margin-left: 1px;
-	margin-top: 2px;
-	margin-bottom: 2px;
 }
 	
 .output
