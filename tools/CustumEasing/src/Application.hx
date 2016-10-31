@@ -47,6 +47,7 @@ class Application extends ReactComponentOfProps<ApplicationProps>
         return "div".createElement(
 			{},
 			[
+				"h2".createElement({}, "a".createElement({ href: "./" }, "Easing Editor")),
 				MenuView.createElement(props),
 				ComplexEasingView.createElement(
 				{

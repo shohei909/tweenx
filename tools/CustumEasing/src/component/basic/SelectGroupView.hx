@@ -20,14 +20,14 @@ class SelectGroupView<DataKind:EnumValue> extends ReactComponentOfProps<SelectBa
 				className: "select-group btn-group" 
 			},
 			[
-				for (inOut in props.data)
+				for (kind in props.data)
 				{
-					var selected = props.current.equals(Option.Some(inOut));
+					var selected = props.current.equals(Option.Some(kind));
 					"button".createElement(
 						{ 
 							className: "btn btn-sm btn-" + if (selected) "primary" else "default",
 							href: "javascript:void(0)",
-							onClick: props.onSelect.bind(inOut),
+							onClick: props.onSelect.bind(kind),
 						},
 						[
 							if (selected) 
@@ -36,8 +36,20 @@ class SelectGroupView<DataKind:EnumValue> extends ReactComponentOfProps<SelectBa
 									"span",
 									{ className: "glyphicon glyphicon-ok" }
 								);
-							} else null,
-							" " + props.getName(inOut)
+							} 
+							else switch (props.getIcon(kind))
+							{
+								case Option.Some(path):
+									React.createElement(
+										"img",
+										{ src: "../../icon/" + path }
+									);
+									
+								case Option.None:
+									null;
+							},
+							" " + props.getName(kind) + " ",
+							
 						]
 					);
 				}
@@ -52,4 +64,5 @@ typedef SelectBarProps<DataKind:EnumValue> =
 	data: Array<DataKind>,
 	onSelect: DataKind->Void,
 	getName: DataKind->String,
+	getIcon: DataKind->Option<String>,
 }

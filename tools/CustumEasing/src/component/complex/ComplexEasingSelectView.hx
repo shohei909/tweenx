@@ -59,6 +59,7 @@ class ComplexEasingSelectView extends ReactComponentOfProps<DropdownProps>
 												data: itemGroup,
 												onSelect: select,
 												getName: getName,
+												getIcon: getIcon,
 											}
 										)
 									);
@@ -76,6 +77,11 @@ class ComplexEasingSelectView extends ReactComponentOfProps<DropdownProps>
 	private static function getName(itemId:ComplexEasingSelectItemId):String
 	{
 		return EnumValueTools.getName(itemId);
+	}
+	
+	private static function getIcon(itemId:ComplexEasingSelectItemId):Option<String>
+	{
+		return Option.Some(EnumValueTools.getName(itemId) + ".png");
 	}
 	
 	private function onSelect(detail:ComplexEasingSelectFocus, itemId:ComplexEasingSelectItemId):Void

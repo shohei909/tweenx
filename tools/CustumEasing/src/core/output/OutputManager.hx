@@ -31,7 +31,7 @@ class OutputManager
 				var print = new Printer();
 				var bodyExpr = ComplexEasingKindTools.toExpr(easing, macro value);
 				print.printExpr(
-					macro function customEase():Void
+					macro function customEase(value:Float):Void
 					{
 						$bodyExpr;
 					}

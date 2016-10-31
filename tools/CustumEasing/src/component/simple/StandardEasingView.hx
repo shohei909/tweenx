@@ -28,6 +28,7 @@ class StandardEasingView extends ReactComponentOfProps<StandardEasingProps>
 				data: [for(c in EnumTools.getConstructors(InOutKind)) EnumTools.createByName(InOutKind, c)],
 				onSelect: onSelect,
 				getName: getName,
+				getIcon: getIcon,
 			}
 		);
 	}
@@ -40,6 +41,11 @@ class StandardEasingView extends ReactComponentOfProps<StandardEasingProps>
 	private static function getName(inOut:InOutKind):String
 	{
 		return EnumValueTools.getName(inOut);
+	}
+	
+	private static function getIcon(inOut:InOutKind):Option<String>
+	{
+		return Option.Some(EnumValueTools.getName(inOut) + ".png");
 	}
 }
 

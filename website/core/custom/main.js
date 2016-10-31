@@ -21,7 +21,7 @@ Application.prototype = $extend(React.Component.prototype,{
 		this.props.context.init();
 	}
 	,render: function() {
-		return react_ReactStringTools.createElement("div",{ },[react_ReactTools.createElement(component_menu_MenuView,this.props),react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.context.easing.current, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(), context : this.props.context}),react_ReactTools.createElement(component_output_OutputView,this.props)]);
+		return react_ReactStringTools.createElement("div",{ },[react_ReactStringTools.createElement("h2",{ },react_ReactStringTools.createElement("a",{ href : "./"},"Easing Editor")),react_ReactTools.createElement(component_menu_MenuView,this.props),react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.context.easing.current, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(), context : this.props.context}),react_ReactTools.createElement(component_output_OutputView,this.props)]);
 	}
 	,__class__: Application
 });
@@ -223,23 +223,8 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 		var right = component_basic_GraphView.WIDTH;
 		var bottom = component_basic_GraphView.HEIGHT - component_basic_GraphView.MARGIN;
 		ctx.clearRect(0,0,component_basic_GraphView.WIDTH,component_basic_GraphView.HEIGHT);
-		ctx.strokeStyle = "#BBB";
-		ctx.beginPath();
-		ctx.moveTo(0,0);
-		ctx.lineTo(0,component_basic_GraphView.HEIGHT);
-		ctx.stroke();
-		ctx.beginPath();
-		ctx.moveTo(right,0);
-		ctx.lineTo(right,component_basic_GraphView.HEIGHT);
-		ctx.stroke();
-		ctx.beginPath();
-		ctx.moveTo(0,top);
-		ctx.lineTo(component_basic_GraphView.WIDTH,top);
-		ctx.stroke();
-		ctx.beginPath();
-		ctx.moveTo(0,bottom);
-		ctx.lineTo(component_basic_GraphView.WIDTH,bottom);
-		ctx.stroke();
+		ctx.strokeStyle = "#EEE";
+		ctx.lineWidth = 1;
 		var _g = 0;
 		var _g1 = this.props.lines;
 		while(_g < _g1.length) {
@@ -249,7 +234,7 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 			var tmp;
 			switch(_g2[1]) {
 			case 0:
-				tmp = "#11B";
+				tmp = "#AAA";
 				break;
 			case 1:
 				tmp = "#B11";
@@ -1126,14 +1111,29 @@ component_basic_SelectGroupView.prototype = $extend(React.Component.prototype,{
 		var _g1 = 0;
 		var _g2 = this.props.data;
 		while(_g1 < _g2.length) {
-			var inOut = _g2[_g1];
+			var kind = _g2[_g1];
 			++_g1;
-			var selected = Type.enumEq(this.props.current,haxe_ds_Option.Some(inOut));
-			_g.push(react_ReactStringTools.createElement("button",{ className : "btn btn-sm btn-" + (selected?"primary":"default"), href : "javascript:void(0)", onClick : (function(a1,f) {
+			var selected = Type.enumEq(this.props.current,haxe_ds_Option.Some(kind));
+			var tmp = { className : "btn btn-sm btn-" + (selected?"primary":"default"), href : "javascript:void(0)", onClick : (function(a1,f) {
 				return function() {
 					f[0](a1[0]);
 				};
-			})([inOut],[this.props.onSelect])},[selected?React.createElement("span",{ className : "glyphicon glyphicon-ok"}):null," " + this.props.getName(inOut)]));
+			})([kind],[this.props.onSelect])};
+			var tmp1;
+			if(selected) {
+				tmp1 = React.createElement("span",{ className : "glyphicon glyphicon-ok"});
+			} else {
+				var _g3 = this.props.getIcon(kind);
+				switch(_g3[1]) {
+				case 0:
+					tmp1 = React.createElement("img",{ src : "../../icon/" + _g3[2]});
+					break;
+				case 1:
+					tmp1 = null;
+					break;
+				}
+			}
+			_g.push(react_ReactStringTools.createElement("button",tmp,[tmp1," " + this.props.getName(kind) + " "]));
 		}
 		return react_ReactStringTools.createElement("div",{ className : "select-group btn-group"},_g);
 	}
@@ -1593,6 +1593,9 @@ component_complex_ComplexEasingSelectView.__name__ = true;
 component_complex_ComplexEasingSelectView.getName = function(itemId) {
 	return itemId[0];
 };
+component_complex_ComplexEasingSelectView.getIcon = function(itemId) {
+	return haxe_ds_Option.Some(itemId[0] + ".png");
+};
 component_complex_ComplexEasingSelectView.__super__ = React.Component;
 component_complex_ComplexEasingSelectView.prototype = $extend(React.Component.prototype,{
 	render: function() {
@@ -1616,7 +1619,7 @@ component_complex_ComplexEasingSelectView.prototype = $extend(React.Component.pr
 				while(_g11 < _g2.length) {
 					var itemGroup = _g2[_g11];
 					++_g11;
-					_g1.push(react_ReactStringTools.createElement("div",{ className : "dropdown-content-row"},react_ReactTools.createElement(component_basic_SelectGroupView,{ current : optionCurrent, data : itemGroup, onSelect : select, getName : component_complex_ComplexEasingSelectView.getName})));
+					_g1.push(react_ReactStringTools.createElement("div",{ className : "dropdown-content-row"},react_ReactTools.createElement(component_basic_SelectGroupView,{ current : optionCurrent, data : itemGroup, onSelect : select, getName : component_complex_ComplexEasingSelectView.getName, getIcon : component_complex_ComplexEasingSelectView.getIcon})));
 				}
 				tmp = [tmp1,react_ReactStringTools.createElement("div",{ className : "dropdown-content"},_g1)];
 			} else {
@@ -1694,6 +1697,9 @@ var component_output_OutputModeSelectView = function(props) {
 	React.Component.call(this,props);
 };
 component_output_OutputModeSelectView.__name__ = true;
+component_output_OutputModeSelectView.getIcon = function(mode) {
+	return haxe_ds_Option.None;
+};
 component_output_OutputModeSelectView.getName = function(mode) {
 	return mode[0];
 };
@@ -1709,7 +1715,7 @@ component_output_OutputModeSelectView.prototype = $extend(React.Component.protot
 			++_g1;
 			_g.push(Type.createEnum(core_output_OutputMode,c,null));
 		}
-		return react_ReactStringTools.createElement("div",{ className : "output-mode-select"},react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : component_output_OutputModeSelectView.getName}));
+		return react_ReactStringTools.createElement("div",{ className : "output-mode-select"},react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : component_output_OutputModeSelectView.getName, getIcon : component_output_OutputModeSelectView.getIcon}));
 	}
 	,onSelect: function(mode) {
 		this.props.context.apply(core_GlobalCommand.ChangeOutputMode(mode));
@@ -1772,6 +1778,9 @@ component_simple_StandardEasingView.__name__ = true;
 component_simple_StandardEasingView.getName = function(inOut) {
 	return inOut[0];
 };
+component_simple_StandardEasingView.getIcon = function(inOut) {
+	return haxe_ds_Option.Some(inOut[0] + ".png");
+};
 component_simple_StandardEasingView.__super__ = React.Component;
 component_simple_StandardEasingView.prototype = $extend(React.Component.prototype,{
 	render: function() {
@@ -1784,7 +1793,7 @@ component_simple_StandardEasingView.prototype = $extend(React.Component.prototyp
 			++_g1;
 			_g.push(Type.createEnum(tweenxcore_expr_InOutKind,c,null));
 		}
-		return react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : component_simple_StandardEasingView.getName});
+		return react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : component_simple_StandardEasingView.getName, getIcon : component_simple_StandardEasingView.getIcon});
 	}
 	,onSelect: function(inOut) {
 		this.props.context.apply(core_GlobalCommand.ChangeInOut(this.props.id,inOut));
@@ -2349,7 +2358,7 @@ core_output_OutputManager.prototype = {
 		case 1:
 			var print = new haxe_macro_Printer();
 			var bodyExpr = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("value")), pos : { file : "src/core/output/OutputManager.hx", min : 766, max : 771}});
-			return print.printExpr({ expr : haxe_macro_ExprDef.EFunction("customEase",{ args : [], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Void", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([bodyExpr]), pos : { file : "src/core/output/OutputManager.hx", min : 841, max : 868}}, params : []}), pos : { file : "src/core/output/OutputManager.hx", min : 808, max : 868}});
+			return print.printExpr({ expr : haxe_macro_ExprDef.EFunction("customEase",{ args : [{ name : "value", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Void", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([bodyExpr]), pos : { file : "src/core/output/OutputManager.hx", min : 852, max : 879}}, params : []}), pos : { file : "src/core/output/OutputManager.hx", min : 808, max : 879}});
 		}
 	}
 	,changeMode: function(newMode,result) {
@@ -5278,9 +5287,9 @@ var Enum = { };
 var __map_reserved = {}
 Application.displayName = "Application";
 component_basic_DropdownButtonView.displayName = "DropdownButtonView";
-component_basic_GraphView.MARGIN = 30;
-component_basic_GraphView.WIDTH = 120;
-component_basic_GraphView.HEIGHT = 140;
+component_basic_GraphView.MARGIN = 0;
+component_basic_GraphView.WIDTH = 16;
+component_basic_GraphView.HEIGHT = 16;
 component_basic_GraphView.displayName = "GraphView";
 component_basic_NumberInputView.displayName = "NumberInputView";
 component_basic_PreviewAnimation.WIDTH = 600;
@@ -5296,7 +5305,7 @@ component_binary_ConnectView.displayName = "ConnectView";
 component_binary_MixView.displayName = "MixView";
 component_binary_MultiplyView.displayName = "MultiplyView";
 component_binary_OneTwoView.displayName = "OneTwoView";
-component_complex_ComplexEasingSelectItem.itemIds = [[component_complex_ComplexEasingSelectItemId.Linear,component_complex_ComplexEasingSelectItemId.Quad,component_complex_ComplexEasingSelectItemId.Cubic,component_complex_ComplexEasingSelectItemId.Quart,component_complex_ComplexEasingSelectItemId.Quint,component_complex_ComplexEasingSelectItemId.Sine,component_complex_ComplexEasingSelectItemId.Circ,component_complex_ComplexEasingSelectItemId.Expo,component_complex_ComplexEasingSelectItemId.Back,component_complex_ComplexEasingSelectItemId.Bounce,component_complex_ComplexEasingSelectItemId.Elastic,component_complex_ComplexEasingSelectItemId.Warp],[component_complex_ComplexEasingSelectItemId.Bezier],[component_complex_ComplexEasingSelectItemId.Repeat,component_complex_ComplexEasingSelectItemId.Lerp,component_complex_ComplexEasingSelectItemId.Clamp,component_complex_ComplexEasingSelectItemId.Yoyo,component_complex_ComplexEasingSelectItemId.Zigzag],[component_complex_ComplexEasingSelectItemId.Composite,component_complex_ComplexEasingSelectItemId.Multiply,component_complex_ComplexEasingSelectItemId.Mix,component_complex_ComplexEasingSelectItemId.Connect,component_complex_ComplexEasingSelectItemId.OneTwo,component_complex_ComplexEasingSelectItemId.Crossfade]];
+component_complex_ComplexEasingSelectItem.itemIds = [[component_complex_ComplexEasingSelectItemId.Linear,component_complex_ComplexEasingSelectItemId.Quad,component_complex_ComplexEasingSelectItemId.Cubic,component_complex_ComplexEasingSelectItemId.Quart,component_complex_ComplexEasingSelectItemId.Quint,component_complex_ComplexEasingSelectItemId.Sine,component_complex_ComplexEasingSelectItemId.Circ,component_complex_ComplexEasingSelectItemId.Expo,component_complex_ComplexEasingSelectItemId.Back,component_complex_ComplexEasingSelectItemId.Bounce,component_complex_ComplexEasingSelectItemId.Elastic,component_complex_ComplexEasingSelectItemId.Warp],[component_complex_ComplexEasingSelectItemId.Bezier],[component_complex_ComplexEasingSelectItemId.Lerp,component_complex_ComplexEasingSelectItemId.Clamp,component_complex_ComplexEasingSelectItemId.Repeat,component_complex_ComplexEasingSelectItemId.Yoyo,component_complex_ComplexEasingSelectItemId.Zigzag],[component_complex_ComplexEasingSelectItemId.Composite,component_complex_ComplexEasingSelectItemId.Multiply,component_complex_ComplexEasingSelectItemId.Connect,component_complex_ComplexEasingSelectItemId.OneTwo,component_complex_ComplexEasingSelectItemId.Mix,component_complex_ComplexEasingSelectItemId.Crossfade]];
 component_complex_ComplexEasingSelectView.displayName = "ComplexEasingSelectView";
 component_complex_ComplexEasingView.displayName = "ComplexEasingView";
 component_menu_HistoryView.displayName = "HistoryView";

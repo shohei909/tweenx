@@ -34,9 +34,9 @@ class ComplexEasingSelectItem
 		],
 		[
 			// Unary Op
-			Repeat,
 			Lerp,
 			Clamp,
+			Repeat,
 			Yoyo,
 			Zigzag,
 		],
@@ -44,9 +44,9 @@ class ComplexEasingSelectItem
 			// Binary Op
 			Composite,
 			Multiply,
-			Mix,
 			Connect,
 			OneTwo,
+			Mix,
 			
 			// Ternary Op
 			Crossfade,
