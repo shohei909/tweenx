@@ -2,6 +2,7 @@ package core;
 import component.complex.ComplexEasingId;
 import core.GlobalCommand;
 import core.animation.AnimationManager;
+import core.easing.EasingCommand;
 import core.easing.EasingManager;
 import core.focus.FocusManager;
 import core.history.HistoryManager;
@@ -98,14 +99,8 @@ class GlobalContext
 		{
 			switch (command)
 			{
-				case GlobalCommand.ChangeEasing(id, easingKind):
-					easing.changeEasing(id, easingKind, result);
-					
-				case GlobalCommand.ChangeRate(id, rate):
-					easing.changeRate(id, rate, result);
-					
-				case GlobalCommand.ChangeInOut(id, inOut):
-					easing.changeInOut(id, inOut, result);
+				case GlobalCommand.ChangeEasing(id, command):
+					easing.change(id, command, result);
 					
 				case GlobalCommand.ChangeOutputMode(mode):
 					output.changeMode(mode, result);
@@ -129,7 +124,7 @@ class GlobalContext
 			try 
 			{
 				var easing = ComplexEasingKindTools.fromJsonable(data.easing);
-				apply(GlobalCommand.ChangeEasing(ComplexEasingId.root(), easing));
+				apply(GlobalCommand.ChangeEasing(ComplexEasingId.root(), EasingCommand.Replace(easing)));
 				
 				animation.startPreview(ComplexEasingId.root(), easing);
 			}

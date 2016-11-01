@@ -60,44 +60,93 @@ class EasingManager
 	// ------------------------------------------
 	// Change
 	// ------------------------------------------
-	public function changeEasing(id:ComplexEasingId, easing:ComplexEasingKind, result:ApplyResult):Void
+	public function change(id:ComplexEasingId, command:EasingCommand, result:ApplyResult):Void
+	{
+		context.focus.unfocus();
+		
+		switch (command)
+		{
+			case EasingCommand.Replace(easing):
+				replace(id, easing, result);
+				
+			case EasingCommand.InOut(inOut):
+				changeInOut(id, inOut, result);
+				
+			case EasingCommand.Rate(index, rate):
+				changeRate(id, index, rate, result);
+			
+			case EasingCommand.AddRate(index):
+				addRate(id, index, result);
+			
+			case EasingCommand.RemoveRate(index):
+				removeRate(id, index, result);
+		}
+	}
+	
+	private function replace(id:ComplexEasingId, easing:ComplexEasingKind, result:ApplyResult):Void
 	{
 		var prev = current;
 		var next = _changeEasing(prev, id, easing);
 		
 		if (!prev.equals(next))
 		{
-			result.addUndoCommand(GlobalCommand.ChangeEasing(ComplexEasingId.root(), prev));
+			result.addUndoCommand(GlobalCommand.ChangeEasing(ComplexEasingId.root(), EasingCommand.Replace(prev)));
 			current = next;
 			context.updateHash();
-			
 			context.animation.startPreview(id, easing);
 		}
 	}
 	
-	public function changeInOut(id:ComplexEasingId, inOut:InOutKind, result:ApplyResult):Void
+	private function changeInOut(id:ComplexEasingId, inOut:InOutKind, result:ApplyResult):Void
 	{
 		switch (resolveEasing(id))
 		{
 			case Option.Some(ComplexEasingKind.Simple(SimpleEasingKind.Standard(easing, _))):
-				changeEasing(id, ComplexEasingKind.Simple(SimpleEasingKind.Standard(easing, inOut)), result);
+				replace(id, ComplexEasingKind.Simple(SimpleEasingKind.Standard(easing, inOut)), result);
 				
 			case _:
 		}
 	}
 	
-	public function changeRate(id:RateId, value:Float, result:ApplyResult):Void
+	private function addRate(id:ComplexEasingId, index:Int, result:ApplyResult):Void
 	{
-		switch (resolveEasing(id.parent()))
+		switch (resolveEasing(id))
+		{
+			case Option.Some(ComplexEasingKind.Simple(SimpleEasingKind.Polyline(kind, controls))):
+				var newControls = controls.slice(0);
+				newControls.insert(index + 1, newControls[index]);
+				replace(id, ComplexEasingKind.Simple(SimpleEasingKind.Polyline(kind, newControls)), result);
+				
+			case _:
+		}
+	}
+	
+	
+	private function removeRate(id:ComplexEasingId, index:Int, result:ApplyResult):Void
+	{
+		switch (resolveEasing(id))
+		{
+			case Option.Some(ComplexEasingKind.Simple(SimpleEasingKind.Polyline(kind, controls))):
+				var newControls = controls.slice(0);
+				newControls.splice(index, 1);
+				replace(id, ComplexEasingKind.Simple(SimpleEasingKind.Polyline(kind, newControls)), result);
+				
+			case _:
+		}
+	}
+	
+	private function changeRate(id:ComplexEasingId, index:Int, value:Float, result:ApplyResult):Void
+	{
+		switch (resolveEasing(id))
 		{
 			case Option.Some(oldEasing):
-				var newEasing:ComplexEasingKind = switch [oldEasing, id.rateIndex()] 
+				var newEasing:ComplexEasingKind = switch [oldEasing, index] 
 				{
 					case [Simple(SimpleEasingKind.Polyline(kind, controls)), _]:
-						if (controls[id.rateIndex()] != value)
+						if (controls[index] != value)
 						{
 							var newControls = controls.slice(0);
-							newControls[id.rateIndex()] = value;
+							newControls[index] = value;
 							Simple(SimpleEasingKind.Polyline(kind, newControls));
 						}
 						else
@@ -142,7 +191,7 @@ class EasingManager
 						oldEasing;
 				}
 				
-				changeEasing(id.parent(), newEasing, result);
+				replace(id, newEasing, result);
 				
 			case Option.None:
 		}

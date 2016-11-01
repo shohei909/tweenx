@@ -35,7 +35,7 @@ class NumberInputFocus
 			var command = switch (id)
 			{
 				case NumberInputId.EasingRate(_id):
-					GlobalCommand.ChangeRate(_id, value);
+					GlobalCommand.ChangeEasing(_id.parent(), Rate(_id.rateIndex(), value));
 					
 				case NumberInputId.AnimationTime:
 					GlobalCommand.ChangeAnimationTime(value);

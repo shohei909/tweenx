@@ -68,6 +68,18 @@
 			}
 		}
 	}
+	
+	.control-point
+	{
+		display: table;
+		
+		>div, >button
+		{
+			display: table-cell;
+			margin-left: 2px;
+			vertical-align: top;
+		}
+	}
 }
 
 .select-group

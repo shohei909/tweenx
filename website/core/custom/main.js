@@ -223,8 +223,23 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 		var right = component_basic_GraphView.WIDTH;
 		var bottom = component_basic_GraphView.HEIGHT - component_basic_GraphView.MARGIN;
 		ctx.clearRect(0,0,component_basic_GraphView.WIDTH,component_basic_GraphView.HEIGHT);
-		ctx.strokeStyle = "#EEE";
-		ctx.lineWidth = 1;
+		ctx.strokeStyle = "#BBB";
+		ctx.beginPath();
+		ctx.moveTo(0,0);
+		ctx.lineTo(0,component_basic_GraphView.HEIGHT);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(right,0);
+		ctx.lineTo(right,component_basic_GraphView.HEIGHT);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(0,top);
+		ctx.lineTo(component_basic_GraphView.WIDTH,top);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(0,bottom);
+		ctx.lineTo(component_basic_GraphView.WIDTH,bottom);
+		ctx.stroke();
 		var _g = 0;
 		var _g1 = this.props.lines;
 		while(_g < _g1.length) {
@@ -234,7 +249,7 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 			var tmp;
 			switch(_g2[1]) {
 			case 0:
-				tmp = "#AAA";
+				tmp = "#11B";
 				break;
 			case 1:
 				tmp = "#B11";
@@ -628,7 +643,7 @@ component_basic_NumberInputFocus.prototype = {
 			switch(_g[1]) {
 			case 0:
 				var _id = _g[2];
-				command = core_GlobalCommand.ChangeRate(_id,value);
+				command = core_GlobalCommand.ChangeEasing(component_basic__$RateId_RateId_$Impl_$.parent(_id),core_easing_EasingCommand.Rate(component_basic__$RateId_RateId_$Impl_$.rateIndex(_id),value));
 				break;
 			case 1:
 				command = core_GlobalCommand.ChangeAnimationTime(value);
@@ -1296,7 +1311,7 @@ component_complex_ComplexEasingSelectFocus.prototype = {
 		var _g = this.focus.context.easing.resolveEasing(this.id);
 		switch(_g[1]) {
 		case 0:
-			this.focus.context.apply(core_GlobalCommand.ChangeEasing(this.id,item.createEasing(new component_complex_ComplexEasingCreateContext(_g[2]))));
+			this.focus.context.apply(core_GlobalCommand.ChangeEasing(this.id,core_easing_EasingCommand.Replace(item.createEasing(new component_complex_ComplexEasingCreateContext(_g[2])))));
 			this.focus.unfocus();
 			break;
 		case 1:
@@ -1746,9 +1761,26 @@ component_simple_PolylineView.prototype = $extend(React.Component.prototype,{
 		var _g1 = this.props.controls.length;
 		while(_g2 < _g1) {
 			var i = _g2++;
-			_g.push(react_ReactTools.createElement(component_basic_NumberInputView,{ name : i == null?"null":"" + i, value : this.props.controls[i], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,i), context : this.props.context}));
+			_g.push(react_ReactStringTools.createElement("div",{ className : "control-point"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : i == null?"null":"" + i, value : this.props.controls[i], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,i), context : this.props.context}),react_ReactStringTools.createElement("button",{ className : "btn btn-primary btn-sm", onClick : (function(a1,f) {
+				return function() {
+					f[0](a1[0]);
+				};
+			})([i],[$bind(this,this.add)])},react_ReactStringTools.createElement("span",{ className : "glyphicon glyphicon-plus"})),0 < i && i < this.props.controls.length - 1?react_ReactStringTools.createElement("button",{ className : "btn btn-primary btn-sm", onClick : (function(a11,f1) {
+				return function() {
+					f1[0](a11[0]);
+				};
+			})([i],[$bind(this,this.remove)])},react_ReactStringTools.createElement("span",{ className : "glyphicon glyphicon-minus"})):null]));
 		}
-		return React.createElement("div",{ className : "param-group"},_g);
+		return react_ReactStringTools.createElement("div",{ className : "param-group"},_g);
+	}
+	,add: function(index) {
+		this.apply(core_easing_EasingCommand.AddRate(index));
+	}
+	,remove: function(index) {
+		this.apply(core_easing_EasingCommand.RemoveRate(index));
+	}
+	,apply: function(command) {
+		this.props.context.apply(core_GlobalCommand.ChangeEasing(this.props.id,command));
 	}
 	,__class__: component_simple_PolylineView
 });
@@ -1796,7 +1828,7 @@ component_simple_StandardEasingView.prototype = $extend(React.Component.prototyp
 		return react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : component_simple_StandardEasingView.getName, getIcon : component_simple_StandardEasingView.getIcon});
 	}
 	,onSelect: function(inOut) {
-		this.props.context.apply(core_GlobalCommand.ChangeInOut(this.props.id,inOut));
+		this.props.context.apply(core_GlobalCommand.ChangeEasing(this.props.id,core_easing_EasingCommand.InOut(inOut)));
 	}
 	,__class__: component_simple_StandardEasingView
 });
@@ -1898,12 +1930,10 @@ core_ApplyResult.prototype = {
 	}
 	,__class__: core_ApplyResult
 };
-var core_GlobalCommand = { __ename__ : true, __constructs__ : ["ChangeEasing","ChangeInOut","ChangeRate","ChangeAnimationTime","ChangeOutputMode"] };
-core_GlobalCommand.ChangeEasing = function(id,easing) { var $x = ["ChangeEasing",0,id,easing]; $x.__enum__ = core_GlobalCommand; $x.toString = $estr; return $x; };
-core_GlobalCommand.ChangeInOut = function(id,inOut) { var $x = ["ChangeInOut",1,id,inOut]; $x.__enum__ = core_GlobalCommand; $x.toString = $estr; return $x; };
-core_GlobalCommand.ChangeRate = function(id,rate) { var $x = ["ChangeRate",2,id,rate]; $x.__enum__ = core_GlobalCommand; $x.toString = $estr; return $x; };
-core_GlobalCommand.ChangeAnimationTime = function(rate) { var $x = ["ChangeAnimationTime",3,rate]; $x.__enum__ = core_GlobalCommand; $x.toString = $estr; return $x; };
-core_GlobalCommand.ChangeOutputMode = function(mode) { var $x = ["ChangeOutputMode",4,mode]; $x.__enum__ = core_GlobalCommand; $x.toString = $estr; return $x; };
+var core_GlobalCommand = { __ename__ : true, __constructs__ : ["ChangeEasing","ChangeAnimationTime","ChangeOutputMode"] };
+core_GlobalCommand.ChangeEasing = function(id,command) { var $x = ["ChangeEasing",0,id,command]; $x.__enum__ = core_GlobalCommand; $x.toString = $estr; return $x; };
+core_GlobalCommand.ChangeAnimationTime = function(rate) { var $x = ["ChangeAnimationTime",1,rate]; $x.__enum__ = core_GlobalCommand; $x.toString = $estr; return $x; };
+core_GlobalCommand.ChangeOutputMode = function(mode) { var $x = ["ChangeOutputMode",2,mode]; $x.__enum__ = core_GlobalCommand; $x.toString = $estr; return $x; };
 var core_GlobalContext = function() {
 	this.focus = new core_focus_FocusManager(this);
 	this.animation = new core_animation_AnimationManager(this);
@@ -1953,18 +1983,12 @@ core_GlobalContext.prototype = {
 			var command = tmp.next();
 			switch(command[1]) {
 			case 0:
-				this.easing.changeEasing(command[2],command[3],result);
+				this.easing.change(command[2],command[3],result);
 				break;
 			case 1:
-				this.easing.changeInOut(command[2],command[3],result);
-				break;
-			case 2:
-				this.easing.changeRate(command[2],command[3],result);
-				break;
-			case 3:
 				this.animation.changeTime(command[2],result);
 				break;
-			case 4:
+			case 2:
 				this.output.changeMode(command[2],result);
 				break;
 			}
@@ -1978,7 +2002,7 @@ core_GlobalContext.prototype = {
 			var data = JSON.parse(decodeURIComponent(s.split("+").join(" ")));
 			try {
 				var easing = tweenxcore_expr_ComplexEasingKindTools.fromJsonable(data.easing);
-				this.apply(core_GlobalCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),easing));
+				this.apply(core_GlobalCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),core_easing_EasingCommand.Replace(easing)));
 				this.animation.startPreview(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),easing);
 			} catch( e ) {
 			}
@@ -2039,6 +2063,12 @@ core_animation_AnimationManager.prototype = {
 	}
 	,__class__: core_animation_AnimationManager
 };
+var core_easing_EasingCommand = { __ename__ : true, __constructs__ : ["Replace","InOut","Rate","AddRate","RemoveRate"] };
+core_easing_EasingCommand.Replace = function(easing) { var $x = ["Replace",0,easing]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
+core_easing_EasingCommand.InOut = function(inOut) { var $x = ["InOut",1,inOut]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
+core_easing_EasingCommand.Rate = function(index,rate) { var $x = ["Rate",2,index,rate]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
+core_easing_EasingCommand.AddRate = function(index) { var $x = ["AddRate",3,index]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
+core_easing_EasingCommand.RemoveRate = function(index) { var $x = ["RemoveRate",4,index]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
 var core_easing_EasingManager = function(context) {
 	this.context = context;
 	this.current = tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Linear);
@@ -2116,11 +2146,31 @@ core_easing_EasingManager.prototype = {
 	resolveEasing: function(id) {
 		return core_easing_EasingManager._resolveEasing(this.current,id);
 	}
-	,changeEasing: function(id,easing,result) {
+	,change: function(id,command,result) {
+		this.context.focus.unfocus();
+		switch(command[1]) {
+		case 0:
+			this.replace(id,command[2],result);
+			break;
+		case 1:
+			this.changeInOut(id,command[2],result);
+			break;
+		case 2:
+			this.changeRate(id,command[2],command[3],result);
+			break;
+		case 3:
+			this.addRate(id,command[2],result);
+			break;
+		case 4:
+			this.removeRate(id,command[2],result);
+			break;
+		}
+	}
+	,replace: function(id,easing,result) {
 		var prev = this.current;
 		var next = core_easing_EasingManager._changeEasing(prev,id,easing);
 		if(!Type.enumEq(prev,next)) {
-			result.addUndoCommand(core_GlobalCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),prev));
+			result.addUndoCommand(core_GlobalCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),core_easing_EasingCommand.Replace(prev)));
 			this.current = next;
 			this.context.updateHash();
 			this.context.animation.startPreview(id,easing);
@@ -2131,26 +2181,49 @@ core_easing_EasingManager.prototype = {
 		if(_g[1] == 0) {
 			if(_g[2][1] == 0) {
 				if(_g[2][2][1] == 1) {
-					this.changeEasing(id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Standard(_g[2][2][2],inOut)),result);
+					this.replace(id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Standard(_g[2][2][2],inOut)),result);
 				}
 			}
 		}
 	}
-	,changeRate: function(id,value,result) {
-		var _g = this.resolveEasing(component_basic__$RateId_RateId_$Impl_$.parent(id));
+	,addRate: function(id,index,result) {
+		var _g = this.resolveEasing(id);
+		if(_g[1] == 0) {
+			if(_g[2][1] == 0) {
+				if(_g[2][2][1] == 2) {
+					var newControls = _g[2][2][3].slice(0);
+					newControls.splice(index + 1,0,newControls[index]);
+					this.replace(id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Polyline(_g[2][2][2],newControls)),result);
+				}
+			}
+		}
+	}
+	,removeRate: function(id,index,result) {
+		var _g = this.resolveEasing(id);
+		if(_g[1] == 0) {
+			if(_g[2][1] == 0) {
+				if(_g[2][2][1] == 2) {
+					var newControls = _g[2][2][3].slice(0);
+					newControls.splice(index,1);
+					this.replace(id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Polyline(_g[2][2][2],newControls)),result);
+				}
+			}
+		}
+	}
+	,changeRate: function(id,index,value,result) {
+		var _g = this.resolveEasing(id);
 		switch(_g[1]) {
 		case 0:
 			var oldEasing = _g[2];
 			var newEasing;
-			var _g1 = component_basic__$RateId_RateId_$Impl_$.rateIndex(id);
 			switch(oldEasing[1]) {
 			case 0:
 				if(oldEasing[2][1] == 2) {
 					var controls = oldEasing[2][3];
 					var kind = oldEasing[2][2];
-					if(controls[component_basic__$RateId_RateId_$Impl_$.rateIndex(id)] != value) {
+					if(controls[index] != value) {
 						var newControls = controls.slice(0);
-						newControls[component_basic__$RateId_RateId_$Impl_$.rateIndex(id)] = value;
+						newControls[index] = value;
 						newEasing = tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Polyline(kind,newControls));
 					} else {
 						newEasing = oldEasing;
@@ -2162,14 +2235,14 @@ core_easing_EasingManager.prototype = {
 			case 1:
 				switch(oldEasing[3][1]) {
 				case 0:
-					if(_g1 == 0) {
+					if(index == 0) {
 						newEasing = tweenxcore_expr_ComplexEasingKind.Op(oldEasing[2],tweenxcore_expr_UnaryOpKind.Repeat(value));
 					} else {
 						newEasing = oldEasing;
 					}
 					break;
 				case 1:
-					switch(_g1) {
+					switch(index) {
 					case 0:
 						newEasing = tweenxcore_expr_ComplexEasingKind.Op(oldEasing[2],tweenxcore_expr_UnaryOpKind.Lerp(value,oldEasing[3][3]));
 						break;
@@ -2181,7 +2254,7 @@ core_easing_EasingManager.prototype = {
 					}
 					break;
 				case 2:
-					switch(_g1) {
+					switch(index) {
 					case 0:
 						newEasing = tweenxcore_expr_ComplexEasingKind.Op(oldEasing[2],tweenxcore_expr_UnaryOpKind.Clamp(value,oldEasing[3][3]));
 						break;
@@ -2195,14 +2268,14 @@ core_easing_EasingManager.prototype = {
 				case 4:
 					switch(oldEasing[3][3][1]) {
 					case 2:
-						if(_g1 == 0) {
+						if(index == 0) {
 							newEasing = tweenxcore_expr_ComplexEasingKind.Op(oldEasing[2],tweenxcore_expr_UnaryOpKind.Op(oldEasing[3][2],tweenxcore_expr_BinaryOpKind.Mix(value)));
 						} else {
 							newEasing = oldEasing;
 						}
 						break;
 					case 3:
-						switch(_g1) {
+						switch(index) {
 						case 0:
 							newEasing = tweenxcore_expr_ComplexEasingKind.Op(oldEasing[2],tweenxcore_expr_UnaryOpKind.Op(oldEasing[3][2],tweenxcore_expr_BinaryOpKind.Connect(value,oldEasing[3][3][3])));
 							break;
@@ -2214,14 +2287,14 @@ core_easing_EasingManager.prototype = {
 						}
 						break;
 					case 4:
-						if(_g1 == 0) {
+						if(index == 0) {
 							newEasing = tweenxcore_expr_ComplexEasingKind.Op(oldEasing[2],tweenxcore_expr_UnaryOpKind.Op(oldEasing[3][2],tweenxcore_expr_BinaryOpKind.OneTwo(value)));
 						} else {
 							newEasing = oldEasing;
 						}
 						break;
 					case 5:
-						switch(_g1) {
+						switch(index) {
 						case 0:
 							newEasing = tweenxcore_expr_ComplexEasingKind.Op(oldEasing[2],tweenxcore_expr_UnaryOpKind.Op(oldEasing[3][2],tweenxcore_expr_BinaryOpKind.Op(oldEasing[3][3][2],tweenxcore_expr_TernaryOpKind.Crossfade(value,oldEasing[3][3][3][3]))));
 							break;
@@ -2241,7 +2314,7 @@ core_easing_EasingManager.prototype = {
 				}
 				break;
 			}
-			this.changeEasing(component_basic__$RateId_RateId_$Impl_$.parent(id),newEasing,result);
+			this.replace(id,newEasing,result);
 			break;
 		case 1:
 			break;
@@ -5287,9 +5360,9 @@ var Enum = { };
 var __map_reserved = {}
 Application.displayName = "Application";
 component_basic_DropdownButtonView.displayName = "DropdownButtonView";
-component_basic_GraphView.MARGIN = 0;
-component_basic_GraphView.WIDTH = 16;
-component_basic_GraphView.HEIGHT = 16;
+component_basic_GraphView.MARGIN = 30;
+component_basic_GraphView.WIDTH = 120;
+component_basic_GraphView.HEIGHT = 140;
 component_basic_GraphView.displayName = "GraphView";
 component_basic_NumberInputView.displayName = "NumberInputView";
 component_basic_PreviewAnimation.WIDTH = 600;

@@ -1,5 +1,6 @@
 package component.complex;
 import core.GlobalCommand;
+import core.easing.EasingCommand;
 import haxe.ds.Option;
 import component.complex.ComplexEasingId;
 import core.focus.FocusManager;
@@ -21,7 +22,7 @@ class ComplexEasingSelectFocus
 		{
 			case Option.Some(oldEasing):
 				var newEasing = item.createEasing(new ComplexEasingCreateContext(oldEasing));
-				var command = GlobalCommand.ChangeEasing(id, newEasing);
+				var command = GlobalCommand.ChangeEasing(id, EasingCommand.Replace(newEasing));
 				focus.context.apply(command);
 				
 				focus.unfocus();

@@ -6,6 +6,7 @@ import component.basic.DropdownButtonView;
 import component.basic.SelectGroupView;
 import component.complex.ComplexEasingSelectItem;
 import core.GlobalCommand;
+import core.easing.EasingCommand;
 import haxe.EnumTools;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
@@ -35,7 +36,7 @@ class StandardEasingView extends ReactComponentOfProps<StandardEasingProps>
 
 	private function onSelect(inOut:InOutKind):Void
 	{
-		props.context.apply(GlobalCommand.ChangeInOut(props.id, inOut));
+		props.context.apply(GlobalCommand.ChangeEasing(props.id, EasingCommand.InOut(inOut)));
 	}
 	
 	private static function getName(inOut:InOutKind):String
