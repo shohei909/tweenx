@@ -62,8 +62,6 @@ class EasingManager
 	// ------------------------------------------
 	public function change(id:ComplexEasingId, command:EasingCommand, result:ApplyResult):Void
 	{
-		context.focus.unfocus();
-		
 		switch (command)
 		{
 			case EasingCommand.Replace(easing):
@@ -110,6 +108,8 @@ class EasingManager
 	
 	private function addRate(id:ComplexEasingId, index:Int, result:ApplyResult):Void
 	{
+		context.focus.unfocus();
+		
 		switch (resolveEasing(id))
 		{
 			case Option.Some(ComplexEasingKind.Simple(SimpleEasingKind.Polyline(kind, controls))):
@@ -124,6 +124,8 @@ class EasingManager
 	
 	private function removeRate(id:ComplexEasingId, index:Int, result:ApplyResult):Void
 	{
+		context.focus.unfocus();
+		
 		switch (resolveEasing(id))
 		{
 			case Option.Some(ComplexEasingKind.Simple(SimpleEasingKind.Polyline(kind, controls))):
