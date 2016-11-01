@@ -28,7 +28,7 @@ class OutputModeSelectView extends ReactComponentOfProps<OutputModeSelectProps>
 						current: Option.Some(props.mode),
 						data: [for(c in EnumTools.getConstructors(OutputMode)) EnumTools.createByName(OutputMode, c)],
 						onSelect: onSelect,
-						getName: getName,
+						getName: props.context.localize.resource.outputMode,
 						getIcon: getIcon,
 					}
 				}
@@ -46,10 +46,6 @@ class OutputModeSelectView extends ReactComponentOfProps<OutputModeSelectProps>
 		return Option.None;
 	}
 	
-	private static function getName(mode:OutputMode):String
-	{
-		return EnumValueTools.getName(mode);
-	}
 }
 
 typedef OutputModeSelectProps =

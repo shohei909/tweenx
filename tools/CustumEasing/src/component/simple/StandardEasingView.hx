@@ -28,7 +28,7 @@ class StandardEasingView extends ReactComponentOfProps<StandardEasingProps>
 				current: Option.Some(props.inOut),
 				data: [for(c in EnumTools.getConstructors(InOutKind)) EnumTools.createByName(InOutKind, c)],
 				onSelect: onSelect,
-				getName: getName,
+				getName: props.context.localize.resource.inOut,
 				getIcon: getIcon,
 			}
 		);
@@ -37,11 +37,6 @@ class StandardEasingView extends ReactComponentOfProps<StandardEasingProps>
 	private function onSelect(inOut:InOutKind):Void
 	{
 		props.context.apply(GlobalCommand.ChangeEasing(props.id, EasingCommand.InOut(inOut)));
-	}
-	
-	private static function getName(inOut:InOutKind):String
-	{
-		return EnumValueTools.getName(inOut);
 	}
 	
 	private static function getIcon(inOut:InOutKind):Option<String>

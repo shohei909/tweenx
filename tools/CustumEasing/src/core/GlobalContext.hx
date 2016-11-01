@@ -7,6 +7,7 @@ import core.easing.EasingManager;
 import core.focus.FocusManager;
 import core.history.HistoryManager;
 import core.key.KeyboardManager;
+import core.localize.LocalizeManager;
 import core.output.OutputManager;
 import haxe.Json;
 import js.Browser;
@@ -24,6 +25,7 @@ class GlobalContext
 	public var animation(default, null):AnimationManager;
 	public var output(default, null):OutputManager;
 	public var easing(default, null):EasingManager;
+	public var localize(default, null):LocalizeManager;
 	
 	private var application:Application;
 	private var currentHash:String;
@@ -36,6 +38,7 @@ class GlobalContext
 		key = new KeyboardManager(this);
 		output = new OutputManager(this);
 		easing = new EasingManager(this);
+		localize = new LocalizeManager();
 		
 		currentHash = "";
 		Browser.window.setTimeout(onFrame, 1 / 60);

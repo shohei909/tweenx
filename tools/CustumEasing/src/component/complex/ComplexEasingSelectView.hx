@@ -30,7 +30,7 @@ class ComplexEasingSelectView extends ReactComponentOfProps<DropdownProps>
 			return DropdownButtonView.createElement(
 				{
 					onClick: onClick,
-					name: getName(currentItemId),
+					name: props.context.localize.resource.easingItem(currentItemId),
 				}
 			);
 		}
@@ -58,7 +58,7 @@ class ComplexEasingSelectView extends ReactComponentOfProps<DropdownProps>
 												current: optionCurrent,
 												data: itemGroup,
 												onSelect: select,
-												getName: getName,
+												getName: props.context.localize.resource.easingItem,
 												getIcon: getIcon,
 											}
 										)
@@ -72,11 +72,6 @@ class ComplexEasingSelectView extends ReactComponentOfProps<DropdownProps>
 					button(focus.focusComplexEasingSelect.bind(props.id));
 			}
 		);
-	}
-	
-	private static function getName(itemId:ComplexEasingSelectItemId):String
-	{
-		return EnumValueTools.getName(itemId);
 	}
 	
 	private static function getIcon(itemId:ComplexEasingSelectItemId):Option<String>

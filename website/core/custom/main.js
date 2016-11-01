@@ -1605,15 +1605,13 @@ var component_complex_ComplexEasingSelectView = function(props) {
 	React.Component.call(this,props);
 };
 component_complex_ComplexEasingSelectView.__name__ = true;
-component_complex_ComplexEasingSelectView.getName = function(itemId) {
-	return itemId[0];
-};
 component_complex_ComplexEasingSelectView.getIcon = function(itemId) {
 	return haxe_ds_Option.Some(itemId[0] + ".png");
 };
 component_complex_ComplexEasingSelectView.__super__ = React.Component;
 component_complex_ComplexEasingSelectView.prototype = $extend(React.Component.prototype,{
 	render: function() {
+		var _gthis = this;
 		var currentItemId = component_complex_ComplexEasingSelectItem.resolveItemId(this.props.easing);
 		var focus = this.props.context.focus;
 		var optionCurrent = haxe_ds_Option.Some(currentItemId);
@@ -1627,14 +1625,14 @@ component_complex_ComplexEasingSelectView.prototype = $extend(React.Component.pr
 				var select = function(a2) {
 					f(a1,a2);
 				};
-				var tmp1 = react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : $bind(focus,focus.unfocus), name : component_complex_ComplexEasingSelectView.getName(currentItemId)});
+				var tmp1 = react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : $bind(focus,focus.unfocus), name : _gthis.props.context.localize.resource.easingItem(currentItemId)});
 				var _g1 = [];
 				var _g11 = 0;
 				var _g2 = component_complex_ComplexEasingSelectItem.itemIds;
 				while(_g11 < _g2.length) {
 					var itemGroup = _g2[_g11];
 					++_g11;
-					_g1.push(react_ReactStringTools.createElement("div",{ className : "dropdown-content-row"},react_ReactTools.createElement(component_basic_SelectGroupView,{ current : optionCurrent, data : itemGroup, onSelect : select, getName : component_complex_ComplexEasingSelectView.getName, getIcon : component_complex_ComplexEasingSelectView.getIcon})));
+					_g1.push(react_ReactStringTools.createElement("div",{ className : "dropdown-content-row"},react_ReactTools.createElement(component_basic_SelectGroupView,{ current : optionCurrent, data : itemGroup, onSelect : select, getName : ($_=this.props.context.localize.resource,$bind($_,$_.easingItem)), getIcon : component_complex_ComplexEasingSelectView.getIcon})));
 				}
 				tmp = [tmp1,react_ReactStringTools.createElement("div",{ className : "dropdown-content"},_g1)];
 			} else {
@@ -1642,14 +1640,14 @@ component_complex_ComplexEasingSelectView.prototype = $extend(React.Component.pr
 				var id = this.props.id;
 				tmp = react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : function() {
 					f1(id);
-				}, name : component_complex_ComplexEasingSelectView.getName(currentItemId)});
+				}, name : _gthis.props.context.localize.resource.easingItem(currentItemId)});
 			}
 		} else {
 			var f2 = $bind(focus,focus.focusComplexEasingSelect);
 			var id1 = this.props.id;
 			tmp = react_ReactTools.createElement(component_basic_DropdownButtonView,{ onClick : function() {
 				f2(id1);
-			}, name : component_complex_ComplexEasingSelectView.getName(currentItemId)});
+			}, name : _gthis.props.context.localize.resource.easingItem(currentItemId)});
 		}
 		return React.createElement("div",{ className : "complex-easing-select"},tmp);
 	}
@@ -1715,9 +1713,6 @@ component_output_OutputModeSelectView.__name__ = true;
 component_output_OutputModeSelectView.getIcon = function(mode) {
 	return haxe_ds_Option.None;
 };
-component_output_OutputModeSelectView.getName = function(mode) {
-	return mode[0];
-};
 component_output_OutputModeSelectView.__super__ = React.Component;
 component_output_OutputModeSelectView.prototype = $extend(React.Component.prototype,{
 	render: function() {
@@ -1730,7 +1725,7 @@ component_output_OutputModeSelectView.prototype = $extend(React.Component.protot
 			++_g1;
 			_g.push(Type.createEnum(core_output_OutputMode,c,null));
 		}
-		return react_ReactStringTools.createElement("div",{ className : "output-mode-select"},react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : component_output_OutputModeSelectView.getName, getIcon : component_output_OutputModeSelectView.getIcon}));
+		return react_ReactStringTools.createElement("div",{ className : "output-mode-select"},react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : ($_=this.props.context.localize.resource,$bind($_,$_.outputMode)), getIcon : component_output_OutputModeSelectView.getIcon}));
 	}
 	,onSelect: function(mode) {
 		this.props.context.apply(core_GlobalCommand.ChangeOutputMode(mode));
@@ -1807,9 +1802,6 @@ var component_simple_StandardEasingView = function(props) {
 	React.Component.call(this,props);
 };
 component_simple_StandardEasingView.__name__ = true;
-component_simple_StandardEasingView.getName = function(inOut) {
-	return inOut[0];
-};
 component_simple_StandardEasingView.getIcon = function(inOut) {
 	return haxe_ds_Option.Some(inOut[0] + ".png");
 };
@@ -1825,7 +1817,7 @@ component_simple_StandardEasingView.prototype = $extend(React.Component.prototyp
 			++_g1;
 			_g.push(Type.createEnum(tweenxcore_expr_InOutKind,c,null));
 		}
-		return react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : component_simple_StandardEasingView.getName, getIcon : component_simple_StandardEasingView.getIcon});
+		return react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : ($_=this.props.context.localize.resource,$bind($_,$_.inOut)), getIcon : component_simple_StandardEasingView.getIcon});
 	}
 	,onSelect: function(inOut) {
 		this.props.context.apply(core_GlobalCommand.ChangeEasing(this.props.id,core_easing_EasingCommand.InOut(inOut)));
@@ -1941,6 +1933,7 @@ var core_GlobalContext = function() {
 	this.key = new core_key_KeyboardManager(this);
 	this.output = new core_output_OutputManager(this);
 	this.easing = new core_easing_EasingManager(this);
+	this.localize = new core_localize_LocalizeManager();
 	this.currentHash = "";
 	window.setTimeout($bind(this,this.onFrame),null,0.016666666666666666);
 	window.addEventListener("hashchange",$bind(this,this.onHashChange));
@@ -2416,6 +2409,141 @@ core_key_KeyboardManager.prototype = {
 		}
 	}
 	,__class__: core_key_KeyboardManager
+};
+var core_localize_LocalizeManager = function() {
+	this.resource = new core_localize_resource_JapaneseResource();
+};
+core_localize_LocalizeManager.__name__ = true;
+core_localize_LocalizeManager.prototype = {
+	__class__: core_localize_LocalizeManager
+};
+var core_localize_LocalizeResource = function() { };
+core_localize_LocalizeResource.__name__ = true;
+core_localize_LocalizeResource.prototype = {
+	__class__: core_localize_LocalizeResource
+};
+var core_localize_resource_EnglishResource = function() {
+};
+core_localize_resource_EnglishResource.__name__ = true;
+core_localize_resource_EnglishResource.__interfaces__ = [core_localize_LocalizeResource];
+core_localize_resource_EnglishResource.prototype = {
+	easingItem: function(itemId) {
+		return itemId[0];
+	}
+	,outputMode: function(mode) {
+		return mode[0];
+	}
+	,inOut: function(kind) {
+		return kind[0];
+	}
+	,__class__: core_localize_resource_EnglishResource
+};
+var core_localize_resource_JapaneseResource = function() {
+	this.english = new core_localize_resource_EnglishResource();
+};
+core_localize_resource_JapaneseResource.__name__ = true;
+core_localize_resource_JapaneseResource.__interfaces__ = [core_localize_LocalizeResource];
+core_localize_resource_JapaneseResource.prototype = {
+	easingItem: function(item) {
+		var text;
+		switch(item[1]) {
+		case 0:
+			text = "1次";
+			break;
+		case 1:
+			text = "2次";
+			break;
+		case 2:
+			text = "3次";
+			break;
+		case 3:
+			text = "4次";
+			break;
+		case 4:
+			text = "5次";
+			break;
+		case 5:
+			text = "サイン";
+			break;
+		case 6:
+			text = "円弧";
+			break;
+		case 7:
+			text = "指数";
+			break;
+		case 8:
+			text = "バック";
+			break;
+		case 9:
+			text = "バウンド";
+			break;
+		case 10:
+			text = "バネ";
+			break;
+		case 11:
+			text = "ワープ";
+			break;
+		case 12:
+			text = "ベジェ曲線";
+			break;
+		case 13:
+			text = "繰り返し";
+			break;
+		case 14:
+			text = "線形補完";
+			break;
+		case 15:
+			text = "上限下限";
+			break;
+		case 16:
+			text = "ヨーヨー";
+			break;
+		case 17:
+			text = "ジグザグ";
+			break;
+		case 18:
+			text = "関数合成";
+			break;
+		case 19:
+			text = "かけ算";
+			break;
+		case 20:
+			text = "ミックス";
+			break;
+		case 21:
+			text = "コネクト";
+			break;
+		case 22:
+			text = "ワンツー";
+			break;
+		case 23:
+			text = "クロスフェード";
+			break;
+		}
+		return text + "(" + this.english.easingItem(item) + ")";
+	}
+	,outputMode: function(mode) {
+		return mode[0];
+	}
+	,inOut: function(kind) {
+		var text;
+		switch(kind[1]) {
+		case 0:
+			text = "先詰め";
+			break;
+		case 1:
+			text = "後詰め";
+			break;
+		case 2:
+			text = "両詰め";
+			break;
+		case 3:
+			text = "中詰め";
+			break;
+		}
+		return text + "(" + this.english.inOut(kind) + ")";
+	}
+	,__class__: core_localize_resource_JapaneseResource
 };
 var core_output_OutputManager = function(context) {
 	this.context = context;
