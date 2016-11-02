@@ -77,10 +77,10 @@ class JapaneseResource implements LocalizeResource
 		return switch(key)
 		{
 			case Title:         "イージングエディタ";
-			case Min:           "下限" + en();
-			case Max:           "上限" + en();
-			case From:          "開始値" + en();
-			case To:            "終了値" + en();
+			case Min:           "下限";
+			case Max:           "上限";
+			case From:          "開始値";
+			case To:            "終了値";
 			case AnimationTime: "アニメーション時間[秒]";
 			case SwitchTime:    "切り替え時刻";
 			case SwitchValue:   "切り替え値";

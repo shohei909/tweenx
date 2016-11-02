@@ -2605,18 +2605,17 @@ core_localize_resource_JapaneseResource.prototype = {
 		return text + "(" + this.english.inOut(kind) + ")";
 	}
 	,common: function(key) {
-		var _gthis = this;
 		switch(key[1]) {
 		case 0:
 			return "イージングエディタ";
 		case 1:
-			return "下限" + ("(" + _gthis.english.common(key) + ")");
+			return "下限";
 		case 2:
-			return "上限" + ("(" + _gthis.english.common(key) + ")");
+			return "上限";
 		case 3:
-			return "開始値" + ("(" + _gthis.english.common(key) + ")");
+			return "開始値";
 		case 4:
-			return "終了値" + ("(" + _gthis.english.common(key) + ")");
+			return "終了値";
 		case 5:
 			return "アニメーション時間[秒]";
 		case 6:
