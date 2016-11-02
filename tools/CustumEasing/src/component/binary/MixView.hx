@@ -5,6 +5,7 @@ import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
+import core.localize.ResourceKey;
 import tweenxcore.expr.ComplexEasingKind;
 
 class MixView extends ReactComponentOfProps<MixProps>
@@ -23,7 +24,7 @@ class MixView extends ReactComponentOfProps<MixProps>
 			}, 
 			NumberInputView.createElement(
 				{
-					name: "Strength",
+					name: props.context.localize.resource.common(ResourceKey.Weight),
 					value: props.strength,
 					id: props.id.numberInputId(0),
 					context: props.context

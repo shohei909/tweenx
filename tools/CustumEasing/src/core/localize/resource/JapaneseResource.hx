@@ -1,6 +1,7 @@
 package core.localize.resource;
 import component.complex.ComplexEasingSelectItemId;
 import core.localize.LocalizeResource;
+import core.localize.ResourceKey;
 import core.localize.resource.EnglishResource;
 import core.output.OutputMode;
 import haxe.EnumTools.EnumValueTools;
@@ -64,5 +65,28 @@ class JapaneseResource implements LocalizeResource
 		}
 		
 		return text + "(" + english.inOut(kind) + ")";
+	}
+	
+	public function common(key:ResourceKey):String
+	{
+		inline function en():String
+		{
+			return "(" + english.common(key) + ")";
+		}
+		
+		return switch(key)
+		{
+			case Title:         "イージングエディタ";
+			case Min:           "下限" + en();
+			case Max:           "上限" + en();
+			case From:          "開始値" + en();
+			case To:            "終了値" + en();
+			case AnimationTime: "アニメーション時間[秒]";
+			case SwitchTime:    "切り替え時刻";
+			case SwitchValue:   "切り替え値";
+			case Undo:          "元にもどす";
+			case Redo:          "やりなおし";
+			case Weight:        "重み";
+		}
 	}
 }

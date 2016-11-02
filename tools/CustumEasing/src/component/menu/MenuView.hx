@@ -3,6 +3,7 @@ import api.react.ReactComponent;
 import component.basic.NumberInput.NumberInputId;
 import component.basic.NumberInputView;
 import core.GlobalContext;
+import core.localize.ResourceKey;
 
 class MenuView extends ReactComponentOfProps<MenuProps>
 {
@@ -24,7 +25,7 @@ class MenuView extends ReactComponentOfProps<MenuProps>
 					},
 					HistoryView.createElement(
 						{
-							history: props.context.history
+							context: props.context
 						}
 					)
 				),
@@ -34,7 +35,7 @@ class MenuView extends ReactComponentOfProps<MenuProps>
 					},
 					NumberInputView.createElement(
 						{
-							name: "Animation Time (sec)",
+							name: props.context.localize.resource.common(ResourceKey.AnimationTime),
 							value: props.context.animation.time,
 							id: NumberInputId.AnimationTime,
 							context: props.context,

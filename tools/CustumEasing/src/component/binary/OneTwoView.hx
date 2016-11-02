@@ -5,6 +5,7 @@ import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
+import core.localize.ResourceKey;
 import tweenxcore.expr.ComplexEasingKind;
 
 class OneTwoView extends ReactComponentOfProps<OneTwoProps>
@@ -23,7 +24,7 @@ class OneTwoView extends ReactComponentOfProps<OneTwoProps>
 			}, 
 			NumberInputView.createElement(
 				{
-					name: "Switch time",
+					name: props.context.localize.resource.common(ResourceKey.SwitchTime),
 					value: props.switchTime,
 					id: props.id.numberInputId(0),
 					context: props.context

@@ -6,6 +6,7 @@ import component.basic.NumberInputView;
 import component.complex.ComplexEasingView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
+import core.localize.ResourceKey;
 import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.TernaryOpKind;
 
@@ -33,27 +34,28 @@ class TernaryOpView extends ReactComponentOfProps<TernaryOpProps>
 			switch (props.op)
 			{
 				case TernaryOpKind.Crossfade(min, max):
-					React.createElement(
-						"div",
+					"div".createElement(
 						{
 							className: "param-group"
 						}, 
-						NumberInputView.createElement(
-							{
-								name: "Min",
-								value: min,
-								id: props.id.numberInputId(0),
-								context: props.context
-							}
-						),
-						NumberInputView.createElement(
-							{
-								name: "Max",
-								value: max,
-								id: props.id.numberInputId(1),
-								context: props.context
-							}
-						)
+						[
+							NumberInputView.createElement(
+								{
+									name: props.context.localize.resource.common(ResourceKey.Min),
+									value: min,
+									id: props.id.numberInputId(0),
+									context: props.context
+								}
+							),
+							NumberInputView.createElement(
+								{
+									name: props.context.localize.resource.common(ResourceKey.Max),
+									value: max,
+									id: props.id.numberInputId(1),
+									context: props.context
+								}
+							)
+						]
 					);
 			}
 		);

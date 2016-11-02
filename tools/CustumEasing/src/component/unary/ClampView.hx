@@ -5,6 +5,7 @@ import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
+import core.localize.ResourceKey;
 import tweenxcore.expr.ComplexEasingKind;
 
 
@@ -24,7 +25,7 @@ class ClampView extends ReactComponentOfProps<ClampProps>
 			}, 
 			NumberInputView.createElement(
 				{
-					name: "min",
+					name: props.context.localize.resource.common(ResourceKey.Min),
 					value: props.min,
 					id: props.id.numberInputId(0),
 					context: props.context
@@ -32,7 +33,7 @@ class ClampView extends ReactComponentOfProps<ClampProps>
 			),
 			NumberInputView.createElement(
 				{
-					name: "max",
+					name: props.context.localize.resource.common(ResourceKey.Max),
 					value: props.max,
 					id: props.id.numberInputId(1),
 					context: props.context

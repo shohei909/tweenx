@@ -4,6 +4,7 @@ import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
+import core.localize.ResourceKey;
 import tweenxcore.expr.ComplexEasingKind;
 
 class ConnectView extends ReactComponentOfProps<ConnectProps>
@@ -22,7 +23,7 @@ class ConnectView extends ReactComponentOfProps<ConnectProps>
 			[
 				NumberInputView.createElement(
 					{
-						name: "Switch time",
+						name: props.context.localize.resource.common(ResourceKey.SwitchTime),
 						value: props.switchTime,
 						id: props.id.numberInputId(0),
 						context: props.context
@@ -30,7 +31,7 @@ class ConnectView extends ReactComponentOfProps<ConnectProps>
 				),
 				NumberInputView.createElement(
 					{
-						name: "Switch value",
+						name: props.context.localize.resource.common(ResourceKey.SwitchValue),
 						value: props.switchValue,
 						id: props.id.numberInputId(1),
 						context: props.context

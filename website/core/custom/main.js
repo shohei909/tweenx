@@ -21,7 +21,7 @@ Application.prototype = $extend(React.Component.prototype,{
 		this.props.context.init();
 	}
 	,render: function() {
-		return react_ReactStringTools.createElement("div",{ },[react_ReactStringTools.createElement("h2",{ },react_ReactStringTools.createElement("a",{ href : "./"},"Easing Editor")),react_ReactTools.createElement(component_menu_MenuView,this.props),react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.context.easing.current, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(), context : this.props.context}),react_ReactTools.createElement(component_output_OutputView,this.props)]);
+		return react_ReactStringTools.createElement("div",{ },[react_ReactStringTools.createElement("h2",{ },react_ReactStringTools.createElement("a",{ href : "./"},this.props.context.localize.resource.common(core_localize_ResourceKey.Title))),react_ReactTools.createElement(component_menu_MenuView,this.props),react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.context.easing.current, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(), context : this.props.context}),react_ReactTools.createElement(component_output_OutputView,this.props)]);
 	}
 	,__class__: Application
 });
@@ -1206,7 +1206,7 @@ component_binary_ConnectView.__name__ = true;
 component_binary_ConnectView.__super__ = React.Component;
 component_binary_ConnectView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return react_ReactStringTools.createElement("div",{ className : "param-group"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch time", value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch value", value : this.props.switchValue, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context})]);
+		return react_ReactStringTools.createElement("div",{ className : "param-group"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.SwitchTime), value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.SwitchValue), value : this.props.switchValue, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context})]);
 	}
 	,__class__: component_binary_ConnectView
 });
@@ -1217,7 +1217,7 @@ component_binary_MixView.__name__ = true;
 component_binary_MixView.__super__ = React.Component;
 component_binary_MixView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Strength", value : this.props.strength, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Weight), value : this.props.strength, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
 	}
 	,__class__: component_binary_MixView
 });
@@ -1239,7 +1239,7 @@ component_binary_OneTwoView.__name__ = true;
 component_binary_OneTwoView.__super__ = React.Component;
 component_binary_OneTwoView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Switch time", value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.SwitchTime), value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
 	}
 	,__class__: component_binary_OneTwoView
 });
@@ -1687,8 +1687,8 @@ component_menu_HistoryView.__name__ = true;
 component_menu_HistoryView.__super__ = React.Component;
 component_menu_HistoryView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		var history = this.props.history;
-		return React.createElement("div",{ className : "history btn-group"},this.button(history.canUndo(),$bind(history,history.undo),"chevron-left","Undo","Ctrl-Z"),this.button(history.canRedo(),$bind(history,history.redo),"chevron-right","Redo","Ctrl-Y"));
+		var history = this.props.context.history;
+		return React.createElement("div",{ className : "history btn-group"},this.button(history.canUndo(),$bind(history,history.undo),"chevron-left",this.props.context.localize.resource.common(core_localize_ResourceKey.Undo),"Ctrl-Z"),this.button(history.canRedo(),$bind(history,history.redo),"chevron-right",this.props.context.localize.resource.common(core_localize_ResourceKey.Redo),"Ctrl-Y"));
 	}
 	,button: function(enabled,onClick,icon,label,key) {
 		return react_ReactStringTools.createElement("button",{ onClick : onClick, className : "btn btn-" + (enabled?"primary":"default"), disabled : !enabled},[react_ReactStringTools.createElement("span",{ className : "glyphicon glyphicon-" + icon})," " + label + " (" + key + ")"]);
@@ -1702,7 +1702,7 @@ component_menu_MenuView.__name__ = true;
 component_menu_MenuView.__super__ = React.Component;
 component_menu_MenuView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return react_ReactStringTools.createElement("div",{ className : "menu"},[react_ReactStringTools.createElement("div",{ className : "menu-item"},react_ReactTools.createElement(component_menu_HistoryView,{ history : this.props.context.history})),react_ReactStringTools.createElement("div",{ className : "menu-item"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Animation Time (sec)", value : this.props.context.animation.time, id : component_basic_NumberInputId.AnimationTime, context : this.props.context}))]);
+		return react_ReactStringTools.createElement("div",{ className : "menu"},[react_ReactStringTools.createElement("div",{ className : "menu-item"},react_ReactTools.createElement(component_menu_HistoryView,{ context : this.props.context})),react_ReactStringTools.createElement("div",{ className : "menu-item"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.AnimationTime), value : this.props.context.animation.time, id : component_basic_NumberInputId.AnimationTime, context : this.props.context}))]);
 	}
 	,__class__: component_menu_MenuView
 });
@@ -1833,7 +1833,7 @@ component_ternaryOp_TernaryOpView.prototype = $extend(React.Component.prototype,
 	render: function() {
 		var tmp = react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.easing3, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.concat(this.props.id,2), context : this.props.context});
 		var _g = this.props.op;
-		return React.createElement("div",{ },tmp,React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Min", value : _g[2], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Max", value : _g[3], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context})));
+		return React.createElement("div",{ },tmp,react_ReactStringTools.createElement("div",{ className : "param-group"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Min), value : _g[2], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Max), value : _g[3], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context})]));
 	}
 	,__class__: component_ternaryOp_TernaryOpView
 });
@@ -1844,7 +1844,7 @@ component_unary_ClampView.__name__ = true;
 component_unary_ClampView.__super__ = React.Component;
 component_unary_ClampView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "min", value : this.props.min, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "max", value : this.props.max, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Min), value : this.props.min, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Max), value : this.props.max, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context}));
 	}
 	,__class__: component_unary_ClampView
 });
@@ -1855,7 +1855,7 @@ component_unary_LerpView.__name__ = true;
 component_unary_LerpView.__super__ = React.Component;
 component_unary_LerpView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "from", value : this.props.from, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : "to", value : this.props.to, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.From), value : this.props.from, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.To), value : this.props.to, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context}));
 	}
 	,__class__: component_unary_LerpView
 });
@@ -2140,7 +2140,6 @@ core_easing_EasingManager.prototype = {
 		return core_easing_EasingManager._resolveEasing(this.current,id);
 	}
 	,change: function(id,command,result) {
-		this.context.focus.unfocus();
 		switch(command[1]) {
 		case 0:
 			this.replace(id,command[2],result);
@@ -2180,6 +2179,7 @@ core_easing_EasingManager.prototype = {
 		}
 	}
 	,addRate: function(id,index,result) {
+		this.context.focus.unfocus();
 		var _g = this.resolveEasing(id);
 		if(_g[1] == 0) {
 			if(_g[2][1] == 0) {
@@ -2192,6 +2192,7 @@ core_easing_EasingManager.prototype = {
 		}
 	}
 	,removeRate: function(id,index,result) {
+		this.context.focus.unfocus();
 		var _g = this.resolveEasing(id);
 		if(_g[1] == 0) {
 			if(_g[2][1] == 0) {
@@ -2422,6 +2423,40 @@ core_localize_LocalizeResource.__name__ = true;
 core_localize_LocalizeResource.prototype = {
 	__class__: core_localize_LocalizeResource
 };
+var core_localize_ResourceKey = { __ename__ : true, __constructs__ : ["Title","Min","Max","From","To","AnimationTime","SwitchTime","SwitchValue","Undo","Redo","Weight"] };
+core_localize_ResourceKey.Title = ["Title",0];
+core_localize_ResourceKey.Title.toString = $estr;
+core_localize_ResourceKey.Title.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.Min = ["Min",1];
+core_localize_ResourceKey.Min.toString = $estr;
+core_localize_ResourceKey.Min.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.Max = ["Max",2];
+core_localize_ResourceKey.Max.toString = $estr;
+core_localize_ResourceKey.Max.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.From = ["From",3];
+core_localize_ResourceKey.From.toString = $estr;
+core_localize_ResourceKey.From.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.To = ["To",4];
+core_localize_ResourceKey.To.toString = $estr;
+core_localize_ResourceKey.To.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.AnimationTime = ["AnimationTime",5];
+core_localize_ResourceKey.AnimationTime.toString = $estr;
+core_localize_ResourceKey.AnimationTime.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.SwitchTime = ["SwitchTime",6];
+core_localize_ResourceKey.SwitchTime.toString = $estr;
+core_localize_ResourceKey.SwitchTime.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.SwitchValue = ["SwitchValue",7];
+core_localize_ResourceKey.SwitchValue.toString = $estr;
+core_localize_ResourceKey.SwitchValue.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.Undo = ["Undo",8];
+core_localize_ResourceKey.Undo.toString = $estr;
+core_localize_ResourceKey.Undo.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.Redo = ["Redo",9];
+core_localize_ResourceKey.Redo.toString = $estr;
+core_localize_ResourceKey.Redo.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.Weight = ["Weight",10];
+core_localize_ResourceKey.Weight.toString = $estr;
+core_localize_ResourceKey.Weight.__enum__ = core_localize_ResourceKey;
 var core_localize_resource_EnglishResource = function() {
 };
 core_localize_resource_EnglishResource.__name__ = true;
@@ -2435,6 +2470,32 @@ core_localize_resource_EnglishResource.prototype = {
 	}
 	,inOut: function(kind) {
 		return kind[0];
+	}
+	,common: function(key) {
+		switch(key[1]) {
+		case 0:
+			return "Easing Editor";
+		case 1:
+			return "Min";
+		case 2:
+			return "Max";
+		case 3:
+			return "From";
+		case 4:
+			return "To";
+		case 5:
+			return "Animation Time[sec]";
+		case 6:
+			return "Switch Time";
+		case 7:
+			return "Switch Value";
+		case 8:
+			return "Undo";
+		case 9:
+			return "Redo";
+		case 10:
+			return "Weight";
+		}
 	}
 	,__class__: core_localize_resource_EnglishResource
 };
@@ -2542,6 +2603,33 @@ core_localize_resource_JapaneseResource.prototype = {
 			break;
 		}
 		return text + "(" + this.english.inOut(kind) + ")";
+	}
+	,common: function(key) {
+		var _gthis = this;
+		switch(key[1]) {
+		case 0:
+			return "イージングエディタ";
+		case 1:
+			return "下限" + ("(" + _gthis.english.common(key) + ")");
+		case 2:
+			return "上限" + ("(" + _gthis.english.common(key) + ")");
+		case 3:
+			return "開始値" + ("(" + _gthis.english.common(key) + ")");
+		case 4:
+			return "終了値" + ("(" + _gthis.english.common(key) + ")");
+		case 5:
+			return "アニメーション時間[秒]";
+		case 6:
+			return "切り替え時刻";
+		case 7:
+			return "切り替え値";
+		case 8:
+			return "元にもどす";
+		case 9:
+			return "やりなおし";
+		case 10:
+			return "重み";
+		}
 	}
 	,__class__: core_localize_resource_JapaneseResource
 };

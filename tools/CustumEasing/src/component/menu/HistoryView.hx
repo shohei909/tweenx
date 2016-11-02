@@ -3,7 +3,9 @@ import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
+import core.GlobalContext;
 import core.history.HistoryManager;
+import core.localize.ResourceKey;
 
 class HistoryView extends ReactComponentOfProps<HistoryProps>
 {
@@ -14,7 +16,7 @@ class HistoryView extends ReactComponentOfProps<HistoryProps>
 	
 	override public function render():ReactComponent
 	{
-		var history:HistoryManager = props.history;
+		var history:HistoryManager = props.context.history;
 		
 		return React.createElement(
 			"div",
@@ -25,14 +27,14 @@ class HistoryView extends ReactComponentOfProps<HistoryProps>
 				history.canUndo(),
 				history.undo,
 				"chevron-left",
-				"Undo",
+				props.context.localize.resource.common(ResourceKey.Undo),
 				"Ctrl-Z"
 			),
 			button(
 				history.canRedo(),
 				history.redo,
 				"chevron-right",
-				"Redo",
+				props.context.localize.resource.common(ResourceKey.Redo),
 				"Ctrl-Y"
 			)
 		);
@@ -58,5 +60,5 @@ class HistoryView extends ReactComponentOfProps<HistoryProps>
 
 typedef HistoryProps = 
 {
-	history: HistoryManager
+	context: GlobalContext,
 }

@@ -10,6 +10,7 @@ import component.complex.ComplexEasingView;
 import component.menu.HistoryView;
 import component.menu.MenuView;
 import component.output.OutputView;
+import core.localize.ResourceKey;
 import js.Browser;
 import js.Lib;
 import core.GlobalContext;
@@ -47,7 +48,13 @@ class Application extends ReactComponentOfProps<ApplicationProps>
         return "div".createElement(
 			{},
 			[
-				"h2".createElement({}, "a".createElement({ href: "./" }, "Easing Editor")),
+				"h2".createElement(
+					{}, 
+					"a".createElement(
+						{ href: "./" }, 
+						props.context.localize.resource.common(ResourceKey.Title)
+					)
+				),
 				MenuView.createElement(props),
 				ComplexEasingView.createElement(
 				{

@@ -5,6 +5,7 @@ import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.GlobalContext;
+import core.localize.ResourceKey;
 import tweenxcore.expr.ComplexEasingKind;
 
 
@@ -24,7 +25,7 @@ class LerpView extends ReactComponentOfProps<LerpProps>
 			}, 
 			NumberInputView.createElement(
 				{
-					name: "from",
+					name: props.context.localize.resource.common(ResourceKey.From),
 					value: props.from,
 					id: props.id.numberInputId(0),
 					context: props.context
@@ -32,7 +33,7 @@ class LerpView extends ReactComponentOfProps<LerpProps>
 			),
 			NumberInputView.createElement(
 				{
-					name: "to",
+					name: props.context.localize.resource.common(ResourceKey.To),
 					value: props.to,
 					id: props.id.numberInputId(1),
 					context: props.context
