@@ -119,7 +119,7 @@ class UnaryOpKindTools
 				var expr = macro tweenxcore.Tools.FloatTools.repeat(
 					FloatTools.lerp($valueExpr, 0), ${ExprMakeTools.floatToExpr(repeat)}
 				);
-				easing.toExpr(valueExpr);
+				easing.toExpr(expr);
 				
 			case UnaryOpKind.RoundTrip(roundTrip):
 				RoundTripKindTools.toExpr(roundTrip, easing, valueExpr);
@@ -134,28 +134,19 @@ class UnaryOpKindTools
 		return switch (kind)
 		{
 			case UnaryOpKind.Clamp(min, max):
-				var func = easing.toFunctionExpr();
-				macro function (value:Float):Float
-				{
-					return tweenxcore.Tools.FloatTools.clamp(value, ${ExprMakeTools.floatToExpr(min)}, ${ExprMakeTools.floatToExpr(max)});
-				}
+				macro tweenxcore.Tools.FloatTools.clamp.bind(_, ${ExprMakeTools.floatToExpr(min)}, ${ExprMakeTools.floatToExpr(max)});
 				
 			case UnaryOpKind.Lerp(from, to):
-				var func = easing.toFunctionExpr();
-				macro function (value:Float):Float
-				{
-					return tweenxcore.Tools.FloatTools.lerp(value, ${ExprMakeTools.floatToExpr(from)}, ${ExprMakeTools.floatToExpr(to)});
-				}
+				macro tweenxcore.Tools.FloatTools.lerp.bind(_, ${ExprMakeTools.floatToExpr(from)}, ${ExprMakeTools.floatToExpr(to)});
 				
 			case UnaryOpKind.Repeat(repeat):
-				var func = easing.toFunctionExpr();
+				var arg = macro tweenxcore.Tools.FloatTools.repeat(
+					tweenxcore.Tools.FloatTools.lerp(value, 0), ${ExprMakeTools.floatToExpr(repeat)}
+				);
+				var expr = easing.toExpr(arg);
 				macro function (value:Float):Float
 				{
-					return $func(
-						tweenxcore.Tools.FloatTools.repeat(
-							tweenxcore.Tools.FloatTools.lerp(value, 0), ${ExprMakeTools.floatToExpr(repeat)}
-						)
-					);
+					return $expr;
 				}
 				
 			case UnaryOpKind.RoundTrip(roundTrip):
