@@ -1,5 +1,5 @@
 package component.complex;
-import component.basic.NumberInput.NumberInputId;
+import component.basic.NumberInputId;
 import component.basic.RateId;
 
 abstract ComplexEasingId(Array<Int>) 
@@ -48,6 +48,11 @@ abstract ComplexEasingId(Array<Int>)
 	public static function equals(a:ComplexEasingId, b:ComplexEasingId):Bool
 	{
 		return a.toString() == b.toString();
+	}
+	
+	public static function fromString(string:String):ComplexEasingId 
+	{
+		return new ComplexEasingId([for (str in string.split(".")) Std.parseInt(str)]);
 	}
 	
 	public function toString():String

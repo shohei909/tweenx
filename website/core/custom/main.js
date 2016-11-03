@@ -102,6 +102,13 @@ List.prototype = {
 		}
 		this.length++;
 	}
+	,last: function() {
+		if(this.q == null) {
+			return null;
+		} else {
+			return this.q.item;
+		}
+	}
 	,pop: function() {
 		if(this.h == null) {
 			return null;
@@ -781,11 +788,6 @@ component_basic_GraphColor.Theme.__enum__ = component_basic_GraphColor;
 component_basic_GraphColor.Sub = ["Sub",1];
 component_basic_GraphColor.Sub.toString = $estr;
 component_basic_GraphColor.Sub.__enum__ = component_basic_GraphColor;
-var component_basic_NumberInputId = $hxClasses["component.basic.NumberInputId"] = { __ename__ : ["component","basic","NumberInputId"], __constructs__ : ["EasingRate","AnimationTime"] };
-component_basic_NumberInputId.EasingRate = function(id) { var $x = ["EasingRate",0,id]; $x.__enum__ = component_basic_NumberInputId; $x.toString = $estr; return $x; };
-component_basic_NumberInputId.AnimationTime = ["AnimationTime",1];
-component_basic_NumberInputId.AnimationTime.toString = $estr;
-component_basic_NumberInputId.AnimationTime.__enum__ = component_basic_NumberInputId;
 var component_basic_NumberInputFocus = function(focus,id,text) {
 	this.text = text;
 	this.focus = focus;
@@ -799,18 +801,7 @@ component_basic_NumberInputFocus.prototype = {
 		this.text = input.value;
 		var value = parseFloat(this.text);
 		if(!isNaN(value)) {
-			var command;
-			var _g = this.id;
-			switch(_g[1]) {
-			case 0:
-				var _id = _g[2];
-				command = core_RootCommand.ChangeEasing(component_basic__$RateId_RateId_$Impl_$.parent(_id),core_easing_EasingCommand.Rate(component_basic__$RateId_RateId_$Impl_$.rateIndex(_id),value));
-				break;
-			case 1:
-				command = core_RootCommand.ChangeAnimationTime(value);
-				break;
-			}
-			this.focus.context.apply(command);
+			this.focus.context.applyNumberChange(this.id,value,true);
 		} else {
 			this.focus.context.update();
 		}
@@ -821,6 +812,11 @@ component_basic_NumberInputFocus.prototype = {
 	}
 	,__class__: component_basic_NumberInputFocus
 };
+var component_basic_NumberInputId = $hxClasses["component.basic.NumberInputId"] = { __ename__ : ["component","basic","NumberInputId"], __constructs__ : ["EasingRate","AnimationTime"] };
+component_basic_NumberInputId.EasingRate = function(id) { var $x = ["EasingRate",0,id]; $x.__enum__ = component_basic_NumberInputId; $x.toString = $estr; return $x; };
+component_basic_NumberInputId.AnimationTime = ["AnimationTime",1];
+component_basic_NumberInputId.AnimationTime.toString = $estr;
+component_basic_NumberInputId.AnimationTime.__enum__ = component_basic_NumberInputId;
 var component_basic_NumberInputView = function(props) {
 	React.Component.call(this,props);
 };
@@ -842,32 +838,200 @@ component_basic_NumberInputView.prototype = $extend(React.Component.prototype,{
 		var focus = this.props.context.focus;
 		var tmp = react_ReactStringTools.createElement("span",{ className : "input-group-addon"},this.props.name + ":");
 		var _g = focus.state;
+		var _g1 = this.props.context.drag.get_stateKind();
 		var tmp1;
-		if(_g[1] == 1) {
-			var detail = _g[2];
-			if(Type.enumEq(detail.id,this.props.id)) {
-				tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : detail.text, onChange : $bind(detail,detail.change), onSubmit : $bind(detail,detail.submit)});
+		if(_g1[1] == 0) {
+			if(_g1[2][1] == 0) {
+				var detail = _g1[2][2];
+				if(Type.enumEq(detail.id,this.props.id)) {
+					var tmp2 = detail.getCurrentValue();
+					var f = $bind(focus,focus.focusNumberInput);
+					var id = this.props.id;
+					var a1 = Std.string(this.props.value);
+					tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp2, onFocus : function() {
+						f(id,a1);
+					}});
+				} else if(_g[1] == 1) {
+					var detail1 = _g[2];
+					if(Type.enumEq(detail1.id,this.props.id)) {
+						tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : detail1.text, onChange : $bind(detail1,detail1.change), onSubmit : $bind(detail1,detail1.submit)});
+					} else {
+						var tmp3 = Std.string(this.props.value);
+						var f1 = $bind(focus,focus.focusNumberInput);
+						var id1 = this.props.id;
+						var a11 = Std.string(this.props.value);
+						tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp3, onFocus : function() {
+							f1(id1,a11);
+						}});
+					}
+				} else {
+					var tmp4 = Std.string(this.props.value);
+					var f2 = $bind(focus,focus.focusNumberInput);
+					var id2 = this.props.id;
+					var a12 = Std.string(this.props.value);
+					tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp4, onFocus : function() {
+						f2(id2,a12);
+					}});
+				}
+			} else if(_g[1] == 1) {
+				var detail2 = _g[2];
+				if(Type.enumEq(detail2.id,this.props.id)) {
+					tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : detail2.text, onChange : $bind(detail2,detail2.change), onSubmit : $bind(detail2,detail2.submit)});
+				} else {
+					var tmp5 = Std.string(this.props.value);
+					var f3 = $bind(focus,focus.focusNumberInput);
+					var id3 = this.props.id;
+					var a13 = Std.string(this.props.value);
+					tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp5, onFocus : function() {
+						f3(id3,a13);
+					}});
+				}
 			} else {
-				var tmp2 = Std.string(this.props.value);
-				var f = $bind(focus,focus.focusNumberInput);
-				var id = this.props.id;
-				var a1 = Std.string(this.props.value);
-				tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp2, onFocus : function() {
-					f(id,a1);
+				var tmp6 = Std.string(this.props.value);
+				var f4 = $bind(focus,focus.focusNumberInput);
+				var id4 = this.props.id;
+				var a14 = Std.string(this.props.value);
+				tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp6, onFocus : function() {
+					f4(id4,a14);
+				}});
+			}
+		} else if(_g[1] == 1) {
+			var detail3 = _g[2];
+			if(Type.enumEq(detail3.id,this.props.id)) {
+				tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : detail3.text, onChange : $bind(detail3,detail3.change), onSubmit : $bind(detail3,detail3.submit)});
+			} else {
+				var tmp7 = Std.string(this.props.value);
+				var f5 = $bind(focus,focus.focusNumberInput);
+				var id5 = this.props.id;
+				var a15 = Std.string(this.props.value);
+				tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp7, onFocus : function() {
+					f5(id5,a15);
 				}});
 			}
 		} else {
-			var tmp3 = Std.string(this.props.value);
-			var f1 = $bind(focus,focus.focusNumberInput);
-			var id1 = this.props.id;
-			var a11 = Std.string(this.props.value);
-			tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp3, onFocus : function() {
-				f1(id1,a11);
+			var tmp8 = Std.string(this.props.value);
+			var f6 = $bind(focus,focus.focusNumberInput);
+			var id6 = this.props.id;
+			var a16 = Std.string(this.props.value);
+			tmp1 = react_ReactStringTools.createElement("input",{ ref : "textField", className : "form-control", type : "text", value : tmp8, onFocus : function() {
+				f6(id6,a16);
 			}});
 		}
-		return react_ReactStringTools.createElement("div",{ className : "form-group form-group-sm"},react_ReactStringTools.createElement("div",{ className : "input-group"},[tmp,tmp1]));
+		return react_ReactStringTools.createElement("div",{ className : "number-input"},[react_ReactStringTools.createElement("div",{ className : "form-group form-group-sm"},react_ReactStringTools.createElement("div",{ className : "input-group"},[tmp,tmp1])),react_ReactTools.createElement(component_basic_NumberSliderView,this.props)]);
 	}
 	,__class__: component_basic_NumberInputView
+});
+var core_drag_DragState = function() { };
+$hxClasses["core.drag.DragState"] = core_drag_DragState;
+core_drag_DragState.__name__ = ["core","drag","DragState"];
+core_drag_DragState.prototype = {
+	__class__: core_drag_DragState
+};
+var component_basic_NumberSliderDrag = function(drag,id,currentX,centerX,centerValue) {
+	this.drag = drag;
+	this.centerValue = centerValue;
+	this.currentX = currentX;
+	this.centerX = centerX;
+	this.id = id;
+	this.kind = core_drag_DragStateKind.NumberSlider(this);
+	this.apply(false);
+};
+$hxClasses["component.basic.NumberSliderDrag"] = component_basic_NumberSliderDrag;
+component_basic_NumberSliderDrag.__name__ = ["component","basic","NumberSliderDrag"];
+component_basic_NumberSliderDrag.__interfaces__ = [core_drag_DragState];
+component_basic_NumberSliderDrag.prototype = {
+	getCurrentValue: function() {
+		return Math.floor((this.centerValue + (this.currentX - this.centerX) / (component_basic_NumberSliderView.BAR_WIDTH / 2)) * 50) / 50;
+	}
+	,move: function(e) {
+		this.currentX = e.clientX;
+		this.apply(false);
+	}
+	,finish: function() {
+		this.drag.context.focus.unfocus();
+		this.apply(true);
+	}
+	,apply: function(major) {
+		this.drag.context.applyNumberChange(this.id,this.getCurrentValue(),major);
+	}
+	,__class__: component_basic_NumberSliderDrag
+};
+var component_basic_NumberSliderView = function(props) {
+	React.Component.call(this,props);
+};
+$hxClasses["component.basic.NumberSliderView"] = component_basic_NumberSliderView;
+component_basic_NumberSliderView.__name__ = ["component","basic","NumberSliderView"];
+component_basic_NumberSliderView.mod = function(a,b) {
+	return a - Math.floor(a / b) * b;
+};
+component_basic_NumberSliderView.__super__ = React.Component;
+component_basic_NumberSliderView.prototype = $extend(React.Component.prototype,{
+	componentDidMount: function() {
+		this.draw();
+	}
+	,componentDidUpdate: function(prevProps,prevState) {
+		this.draw();
+	}
+	,draw: function() {
+		var ctx = this.refs.canvas.getContext("2d",null);
+		ctx.clearRect(0,0,component_basic_NumberSliderView.WIDTH,component_basic_NumberSliderView.HEIGHT);
+		ctx.strokeStyle = "#BBB";
+		ctx.fillStyle = "#DEDEDE";
+		var centerValue;
+		var cursorValue;
+		var _g = this.props.context.drag.get_stateKind();
+		if(_g[1] == 0) {
+			if(_g[2][1] == 0) {
+				var detail = _g[2][2];
+				if(Type.enumEq(detail.id,this.props.id)) {
+					centerValue = detail.centerValue;
+					cursorValue = detail.getCurrentValue();
+					if(cursorValue < centerValue - 1) {
+						centerValue = cursorValue + 1;
+					} else if(centerValue + 1 < cursorValue) {
+						centerValue = cursorValue - 1;
+					}
+				} else {
+					centerValue = this.props.value;
+					cursorValue = this.props.value;
+				}
+			} else {
+				centerValue = this.props.value;
+				cursorValue = this.props.value;
+			}
+		} else {
+			centerValue = this.props.value;
+			cursorValue = this.props.value;
+		}
+		var top = (component_basic_NumberSliderView.HEIGHT - component_basic_NumberSliderView.BAR_HEIGHT) / 2;
+		var left = (component_basic_NumberSliderView.WIDTH - component_basic_NumberSliderView.BAR_WIDTH) / 2;
+		var right = (component_basic_NumberSliderView.WIDTH + component_basic_NumberSliderView.BAR_WIDTH) / 2;
+		var bottom = (component_basic_NumberSliderView.HEIGHT + component_basic_NumberSliderView.BAR_HEIGHT) / 2;
+		var low = component_basic_NumberSliderView.mod(1 - centerValue,2) / 2;
+		var high = component_basic_NumberSliderView.mod(-centerValue,2) / 2;
+		if(high < low) {
+			ctx.fillRect(left,top,left * (1 - high) + right * high - left,bottom - top);
+			var left1 = left * (1 - low) + right * low;
+			ctx.fillRect(left1,top,right - left1,bottom - top);
+		} else {
+			var left2 = left * (1 - low) + right * low;
+			ctx.fillRect(left2,top,left * (1 - high) + right * high - left2,bottom - top);
+		}
+		ctx.strokeRect(left,top,component_basic_NumberSliderView.BAR_WIDTH,component_basic_NumberSliderView.BAR_HEIGHT);
+		var cursor = (cursorValue - (centerValue - 1)) / 2;
+		ctx.beginPath();
+		ctx.arc(left * (1 - cursor) + right * cursor,(bottom + top) / 2,6,0,Math.PI * 2,false);
+		ctx.fill();
+		ctx.stroke();
+	}
+	,render: function() {
+		return React.createElement("canvas",{ ref : "canvas", width : component_basic_NumberSliderView.WIDTH, height : component_basic_NumberSliderView.HEIGHT, onMouseDown : $bind(this,this.onMouseDown)});
+	}
+	,onMouseDown: function(e) {
+		this.props.context.drag.dragNumberSlider(this.props.id,e.pageX,window.pageXOffset + this.refs.canvas.getBoundingClientRect().left + component_basic_NumberSliderView.WIDTH / 2,this.props.value);
+		e.preventDefault();
+	}
+	,__class__: component_basic_NumberSliderView
 });
 var core_animation_Animation = function() { };
 $hxClasses["core.animation.Animation"] = core_animation_Animation;
@@ -1473,6 +1637,17 @@ component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId = func
 component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.equals = function(a,b) {
 	return component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(a) == component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(b);
 };
+component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.fromString = function(string) {
+	var _g = [];
+	var _g1 = 0;
+	var _g2 = string.split(".");
+	while(_g1 < _g2.length) {
+		var str = _g2[_g1];
+		++_g1;
+		_g.push(Std.parseInt(str));
+	}
+	return component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$._new(_g);
+};
 component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString = function(this1) {
 	return this1.join(".");
 };
@@ -1487,7 +1662,7 @@ component_complex_ComplexEasingSelectFocus.prototype = {
 		var _g = this.focus.context.easing.resolveEasing(this.id);
 		switch(_g[1]) {
 		case 0:
-			this.focus.context.apply(core_RootCommand.ChangeEasing(this.id,core_easing_EasingCommand.Replace(item.createEasing(new component_complex_ComplexEasingCreateContext(_g[2])))));
+			this.focus.context.apply(core_RootCommand.ChangeEasing(this.id,core_easing_EasingCommand.Replace(item.createEasing(new component_complex_ComplexEasingCreateContext(_g[2])))),true);
 			this.focus.unfocus();
 			break;
 		case 1:
@@ -1899,7 +2074,7 @@ component_menu_LocaleView.prototype = $extend(React.Component.prototype,{
 		return react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : $bind(localize,localize.getLocaleName), getIcon : component_menu_LocaleView.getIcon});
 	}
 	,onSelect: function(locale) {
-		this.props.context.apply(core_RootCommand.ChangeLocale(locale));
+		this.props.context.apply(core_RootCommand.ChangeLocale(locale),true);
 	}
 	,__class__: component_menu_LocaleView
 });
@@ -1938,7 +2113,7 @@ component_output_OutputModeSelectView.prototype = $extend(React.Component.protot
 		return react_ReactStringTools.createElement("div",{ className : "output-mode-select"},react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : ($_=this.props.context.localize.resource,$bind($_,$_.outputMode)), getIcon : component_output_OutputModeSelectView.getIcon}));
 	}
 	,onSelect: function(mode) {
-		this.props.context.apply(core_RootCommand.ChangeOutputMode(mode));
+		this.props.context.apply(core_RootCommand.ChangeOutputMode(mode),true);
 	}
 	,__class__: component_output_OutputModeSelectView
 });
@@ -1968,7 +2143,7 @@ component_simple_PolylineView.prototype = $extend(React.Component.prototype,{
 		var _g1 = this.props.controls.length;
 		while(_g2 < _g1) {
 			var i = _g2++;
-			_g.push(react_ReactStringTools.createElement("div",{ className : "control-point"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : i == null?"null":"" + i, value : this.props.controls[i], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,i), context : this.props.context}),react_ReactStringTools.createElement("button",{ className : "btn btn-primary btn-sm", onClick : (function(a1,f) {
+			_g.push(react_ReactStringTools.createElement("div",{ className : "control-point"},[react_ReactStringTools.createElement("div",{ },react_ReactTools.createElement(component_basic_NumberInputView,{ name : i == null?"null":"" + i, value : this.props.controls[i], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,i), context : this.props.context})),react_ReactStringTools.createElement("button",{ className : "btn btn-primary btn-sm", onClick : (function(a1,f) {
 				return function() {
 					f[0](a1[0]);
 				};
@@ -1987,7 +2162,7 @@ component_simple_PolylineView.prototype = $extend(React.Component.prototype,{
 		this.apply(core_easing_EasingCommand.RemoveRate(index));
 	}
 	,apply: function(command) {
-		this.props.context.apply(core_RootCommand.ChangeEasing(this.props.id,command));
+		this.props.context.apply(core_RootCommand.ChangeEasing(this.props.id,command),true);
 	}
 	,__class__: component_simple_PolylineView
 });
@@ -2034,7 +2209,7 @@ component_simple_StandardEasingView.prototype = $extend(React.Component.prototyp
 		return react_ReactTools.createElement(component_basic_SelectGroupView,{ current : tmp, data : _g, onSelect : $bind(this,this.onSelect), getName : ($_=this.props.context.localize.resource,$bind($_,$_.inOut)), getIcon : component_simple_StandardEasingView.getIcon});
 	}
 	,onSelect: function(inOut) {
-		this.props.context.apply(core_RootCommand.ChangeEasing(this.props.id,core_easing_EasingCommand.InOut(inOut)));
+		this.props.context.apply(core_RootCommand.ChangeEasing(this.props.id,core_easing_EasingCommand.InOut(inOut)),true);
 	}
 	,__class__: component_simple_StandardEasingView
 });
@@ -2132,18 +2307,71 @@ component_unary_UnaryOpView.prototype = $extend(React.Component.prototype,{
 	}
 	,__class__: component_unary_UnaryOpView
 });
-var core_ApplyResult = function() {
+var core_ApplyResult = function(major) {
+	this.major = major;
 	this.undoCommands = new List();
-	this.saveRequired = false;
+	this.saveRequested = false;
+	this.updateHashRequested = true;
+	this.previews = new haxe_ds_StringMap();
 };
 $hxClasses["core.ApplyResult"] = core_ApplyResult;
 core_ApplyResult.__name__ = ["core","ApplyResult"];
 core_ApplyResult.prototype = {
 	addUndoCommand: function(command) {
+		if(($_=this.undoCommands,$bind($_,$_.last)) != null) {
+			var _g = this.undoCommands.last();
+			if(_g != null) {
+				switch(_g[1]) {
+				case 0:
+					if(command[1] == 0) {
+						if(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.equals(_g[2],command[2])) {
+							return;
+						}
+					}
+					break;
+				case 1:
+					if(command[1] == 1) {
+						return;
+					}
+					break;
+				default:
+				}
+			}
+		}
 		this.undoCommands.push(command);
 	}
 	,requestSave: function() {
-		this.saveRequired = true;
+		this.saveRequested = true;
+	}
+	,requestPreview: function(id,easing) {
+		var k = component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(id);
+		var _this = this.previews;
+		if(__map_reserved[k] != null) {
+			_this.setReserved(k,easing);
+		} else {
+			_this.h[k] = easing;
+		}
+	}
+	,requestUpdateHash: function() {
+		this.updateHashRequested = true;
+	}
+	,merge: function(nextResult) {
+		var _g_head = nextResult.undoCommands.h;
+		while(_g_head != null) {
+			var val = _g_head.item;
+			_g_head = _g_head.next;
+			this.addUndoCommand(val);
+		}
+		var tmp = this.previews.keys();
+		while(tmp.hasNext()) {
+			var id = tmp.next();
+			var tmp1 = component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.fromString(id);
+			var _this = this.previews;
+			this.requestPreview(tmp1,__map_reserved[id] != null?_this.getReserved(id):_this.h[id]);
+		}
+		this.saveRequested = this.saveRequested || nextResult.saveRequested;
+		this.updateHashRequested = this.updateHashRequested || nextResult.updateHashRequested;
+		this.major = this.major || nextResult.major;
 	}
 	,__class__: core_ApplyResult
 };
@@ -2161,6 +2389,8 @@ var core_RootContext = function() {
 	this.output = new core_output_OutputManager(this);
 	this.easing = new core_easing_EasingManager(this);
 	this.localize = new core_localize_LocalizeManager(this);
+	this.drag = new core_drag_DragManager(this);
+	this.minorResult = haxe_ds_Option.None;
 	this.currentHash = "";
 	window.setTimeout($bind(this,this.onFrame),null,0.016666666666666666);
 	window.addEventListener("hashchange",$bind(this,this.onHashChange));
@@ -2187,24 +2417,61 @@ core_RootContext.prototype = {
 	,update: function() {
 		this.application.forceUpdate();
 	}
-	,apply: function(command) {
-		this.applyAll([command]);
+	,apply: function(command,major) {
+		this.applyAll([command],major);
 	}
-	,applyAll: function(commands) {
-		var result = this.applyWithoutRecord(commands);
-		if(!result.undoCommands.isEmpty()) {
-			this.history.record(result.undoCommands);
-		}
-		this.applySave(result);
+	,applyAll: function(commands,major) {
+		this.applyResult(this.applyWithoutRecord(commands,major),false);
 		this.update();
 	}
-	,applySave: function(result) {
-		if(result.saveRequired) {
-			this.storage.save();
+	,applyNumberChange: function(id,value,major) {
+		var command;
+		switch(id[1]) {
+		case 0:
+			var _id = id[2];
+			command = core_RootCommand.ChangeEasing(component_basic__$RateId_RateId_$Impl_$.parent(_id),core_easing_EasingCommand.Rate(component_basic__$RateId_RateId_$Impl_$.rateIndex(_id),value));
+			break;
+		case 1:
+			command = core_RootCommand.ChangeAnimationTime(value);
+			break;
+		}
+		this.apply(command,major);
+	}
+	,applyResult: function(result,ignoreUndo) {
+		var _g = this.minorResult;
+		switch(_g[1]) {
+		case 0:
+			var prevResult = _g[2];
+			prevResult.merge(result);
+			result = prevResult;
+			break;
+		case 1:
+			break;
+		}
+		if(result.major) {
+			if(!ignoreUndo && !result.undoCommands.isEmpty()) {
+				this.history.record(result.undoCommands);
+			}
+			if(result.saveRequested) {
+				this.storage.save();
+			}
+			if(result.updateHashRequested) {
+				this.updateHash();
+			}
+			var tmp = result.previews.keys();
+			while(tmp.hasNext()) {
+				var id = tmp.next();
+				var tmp1 = component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.fromString(id);
+				var _this = result.previews;
+				this.animation.startPreview(tmp1,__map_reserved[id] != null?_this.getReserved(id):_this.h[id]);
+			}
+			this.minorResult = haxe_ds_Option.None;
+		} else {
+			this.minorResult = haxe_ds_Option.Some(result);
 		}
 	}
-	,applyWithoutRecord: function(commands) {
-		var result = new core_ApplyResult();
+	,applyWithoutRecord: function(commands,major) {
+		var result = new core_ApplyResult(major);
 		var tmp = $iterator(commands)();
 		while(tmp.hasNext()) {
 			var command = tmp.next();
@@ -2232,7 +2499,7 @@ core_RootContext.prototype = {
 			var data = JSON.parse(decodeURIComponent(s.split("+").join(" ")));
 			try {
 				var easing = tweenxcore_expr_ComplexEasingKindTools.fromJsonable(data.easing);
-				this.apply(core_RootCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),core_easing_EasingCommand.Replace(easing)));
+				this.apply(core_RootCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),core_easing_EasingCommand.Replace(easing)),true);
 				this.animation.startPreview(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),easing);
 			} catch( e ) {
 			}
@@ -2290,10 +2557,60 @@ core_animation_AnimationManager.prototype = {
 		}
 		result.addUndoCommand(core_RootCommand.ChangeAnimationTime(this.time));
 		this.time = newTime;
-		this.startPreview(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),this.context.easing.current);
+		result.requestPreview(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),this.context.easing.current);
 	}
 	,__class__: core_animation_AnimationManager
 };
+var core_drag_DragManager = function(context) {
+	this.context = context;
+	this.state = haxe_ds_Option.None;
+	window.addEventListener("mouseup",$bind(this,this.onMouseUp));
+	window.addEventListener("mousemove",$bind(this,this.onMouseMove));
+};
+$hxClasses["core.drag.DragManager"] = core_drag_DragManager;
+core_drag_DragManager.__name__ = ["core","drag","DragManager"];
+core_drag_DragManager.prototype = {
+	get_stateKind: function() {
+		var _g = this.state;
+		switch(_g[1]) {
+		case 0:
+			return haxe_ds_Option.Some(_g[2].kind);
+		case 1:
+			return haxe_ds_Option.None;
+		}
+	}
+	,onMouseUp: function(event) {
+		this.finishDrag();
+	}
+	,onMouseMove: function(event) {
+		var _g = this.state;
+		switch(_g[1]) {
+		case 0:
+			_g[2].move(event);
+			break;
+		case 1:
+			break;
+		}
+	}
+	,finishDrag: function() {
+		var _g = this.state;
+		switch(_g[1]) {
+		case 0:
+			this.state = haxe_ds_Option.None;
+			_g[2].finish();
+			break;
+		case 1:
+			break;
+		}
+	}
+	,dragNumberSlider: function(id,startX,centerX,centerValue) {
+		this.finishDrag();
+		this.state = haxe_ds_Option.Some(new component_basic_NumberSliderDrag(this,id,startX,centerX,centerValue));
+	}
+	,__class__: core_drag_DragManager
+};
+var core_drag_DragStateKind = $hxClasses["core.drag.DragStateKind"] = { __ename__ : ["core","drag","DragStateKind"], __constructs__ : ["NumberSlider"] };
+core_drag_DragStateKind.NumberSlider = function(detail) { var $x = ["NumberSlider",0,detail]; $x.__enum__ = core_drag_DragStateKind; $x.toString = $estr; return $x; };
 var core_easing_EasingCommand = $hxClasses["core.easing.EasingCommand"] = { __ename__ : ["core","easing","EasingCommand"], __constructs__ : ["Replace","InOut","Rate","AddRate","RemoveRate"] };
 core_easing_EasingCommand.Replace = function(easing) { var $x = ["Replace",0,easing]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
 core_easing_EasingCommand.InOut = function(inOut) { var $x = ["InOut",1,inOut]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
@@ -2401,10 +2718,10 @@ core_easing_EasingManager.prototype = {
 		var prev = this.current;
 		var next = core_easing_EasingManager._changeEasing(prev,id,easing);
 		if(!Type.enumEq(prev,next)) {
-			result.addUndoCommand(core_RootCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),core_easing_EasingCommand.Replace(prev)));
 			this.current = next;
-			this.context.updateHash();
-			this.context.animation.startPreview(id,easing);
+			result.addUndoCommand(core_RootCommand.ChangeEasing(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.root(),core_easing_EasingCommand.Replace(prev)));
+			result.requestUpdateHash();
+			result.requestPreview(id,easing);
 		}
 	}
 	,changeInOut: function(id,inOut,result) {
@@ -2598,9 +2915,9 @@ core_history_HistoryManager.prototype = {
 		if(!this.canUndo()) {
 			return;
 		}
-		var result = this.context.applyWithoutRecord(this.undoStack.pop());
+		var result = this.context.applyWithoutRecord(this.undoStack.pop(),true);
 		this.redoStack.push(result.undoCommands);
-		this.context.applySave(result);
+		this.context.applyResult(result,true);
 		this.context.update();
 	}
 	,canRedo: function() {
@@ -2611,9 +2928,9 @@ core_history_HistoryManager.prototype = {
 		if(!this.canRedo()) {
 			return;
 		}
-		var result = this.context.applyWithoutRecord(this.redoStack.pop());
+		var result = this.context.applyWithoutRecord(this.redoStack.pop(),true);
 		this.undoStack.push(result.undoCommands);
-		this.context.applySave(result);
+		this.context.applyResult(result,true);
 		this.context.update();
 	}
 	,record: function(commands) {
@@ -2847,7 +3164,7 @@ core_localize_resource_JapaneseResource.prototype = {
 			text = "繰り返し";
 			break;
 		case 14:
-			text = "線形補完";
+			text = "線形補間";
 			break;
 		case 15:
 			text = "上限下限";
@@ -5347,29 +5664,28 @@ tweenxcore_expr_BinaryOpKindTools.toExpr = function(kind,easing1,easing2,valueEx
 tweenxcore_expr_BinaryOpKindTools.toFunctionExpr = function(kind,easing1,easing2) {
 	switch(kind[1]) {
 	case 0:
-		var func1 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing1);
-		var func2 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing2);
-		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "value", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn({ expr : haxe_macro_ExprDef.ECall(func1,[{ expr : haxe_macro_ExprDef.ECall(func2,[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("value")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4856, max : 4861}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4849, max : 4862}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4842, max : 4863}}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4835, max : 4863}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4827, max : 4871}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4793, max : 4871}};
+		var expr1 = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing1,tweenxcore_expr_ComplexEasingKindTools.toExpr(easing2,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("value")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4734, max : 4739}}));
+		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "value", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn(expr1), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4835, max : 4848}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4827, max : 4856}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4793, max : 4856}};
 	case 1:
-		var func11 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing1);
-		var func21 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing2);
-		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "value", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn({ expr : haxe_macro_ExprDef.EBinop(haxe_macro_Binop.OpMult,{ expr : haxe_macro_ExprDef.ECall(func11,[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("value")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5063, max : 5068}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5056, max : 5069}},{ expr : haxe_macro_ExprDef.ECall(func21,[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("value")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5079, max : 5084}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5072, max : 5085}}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5056, max : 5085}}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5049, max : 5085}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5041, max : 5093}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5007, max : 5093}};
+		var expr11 = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing1,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("value")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4933, max : 4938}});
+		var expr2 = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing2,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("value")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4979, max : 4984}});
+		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "value", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn({ expr : haxe_macro_ExprDef.EBinop(haxe_macro_Binop.OpMult,expr11,expr2), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5047, max : 5062}}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5040, max : 5062}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5032, max : 5070}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 4998, max : 5070}};
 	case 2:
 		var strength = kind[2];
-		var func12 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing1);
-		var func22 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing2);
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5234, max : 5244}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5234, max : 5250}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5234, max : 5261}},"mixEasing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5234, max : 5271}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5234, max : 5276}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5277, max : 5278}},func12,func22,tweenxcore_expr_ExprMakeTools.floatToExpr(strength)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5234, max : 5335}};
+		var func1 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing1);
+		var func2 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing2);
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5211, max : 5221}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5211, max : 5227}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5211, max : 5238}},"mixEasing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5211, max : 5248}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5211, max : 5253}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5254, max : 5255}},func1,func2,tweenxcore_expr_ExprMakeTools.floatToExpr(strength)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5211, max : 5312}};
 	case 3:
 		var switchValue = kind[3];
 		var switchTime = kind[2];
-		var func13 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing1);
-		var func23 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing2);
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5496, max : 5506}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5496, max : 5512}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5496, max : 5523}},"connectEasing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5496, max : 5537}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5496, max : 5542}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5543, max : 5544}},func13,func23,tweenxcore_expr_ExprMakeTools.floatToExpr(switchTime),tweenxcore_expr_ExprMakeTools.floatToExpr(switchValue)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5496, max : 5646}};
+		var func11 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing1);
+		var func21 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing2);
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5473, max : 5483}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5473, max : 5489}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5473, max : 5500}},"connectEasing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5473, max : 5514}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5473, max : 5519}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5520, max : 5521}},func11,func21,tweenxcore_expr_ExprMakeTools.floatToExpr(switchTime),tweenxcore_expr_ExprMakeTools.floatToExpr(switchValue)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5473, max : 5623}};
 	case 4:
 		var switchTime1 = kind[2];
-		var func14 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing1);
-		var func24 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing2);
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5793, max : 5803}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5793, max : 5809}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5793, max : 5820}},"oneTwoEasing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5793, max : 5833}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5793, max : 5838}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5839, max : 5840}},func14,func24,tweenxcore_expr_ExprMakeTools.floatToExpr(switchTime1)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5793, max : 5899}};
+		var func12 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing1);
+		var func22 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing2);
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5770, max : 5780}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5770, max : 5786}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5770, max : 5797}},"oneTwoEasing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5770, max : 5810}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5770, max : 5815}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5816, max : 5817}},func12,func22,tweenxcore_expr_ExprMakeTools.floatToExpr(switchTime1)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/BinaryOpKindTools.hx", min : 5770, max : 5876}};
 	case 5:
 		return tweenxcore_expr_TernaryOpKindTools.toFunctionExpr(kind[3],easing1,easing2,kind[2]);
 	}
@@ -6681,8 +6997,7 @@ tweenxcore_expr_UnaryOpKindTools.fromJsonable = function(data) {
 tweenxcore_expr_UnaryOpKindTools.toExpr = function(kind,easing,valueExpr) {
 	switch(kind[1]) {
 	case 0:
-		tweenxcore_expr_ExprMakeTools.floatToExpr(kind[2]);
-		return tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,valueExpr);
+		return tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3237, max : 3247}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3237, max : 3253}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3237, max : 3264}},"repeat"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3237, max : 3271}},[{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("FloatTools")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3279, max : 3289}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3279, max : 3294}},[valueExpr,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CInt("0")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3307, max : 3308}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3279, max : 3309}},tweenxcore_expr_ExprMakeTools.floatToExpr(kind[2])]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3237, max : 3354}});
 	case 1:
 		var to = kind[3];
 		var from = kind[2];
@@ -6702,19 +7017,12 @@ tweenxcore_expr_UnaryOpKindTools.toExpr = function(kind,easing,valueExpr) {
 tweenxcore_expr_UnaryOpKindTools.toFunctionExpr = function(kind,easing) {
 	switch(kind[1]) {
 	case 0:
-		var repeat = kind[2];
-		var func = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing);
-		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "value", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn({ expr : haxe_macro_ExprDef.ECall(func,[{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4433, max : 4443}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4433, max : 4449}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4433, max : 4460}},"repeat"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4433, max : 4467}},[{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4477, max : 4487}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4477, max : 4493}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4477, max : 4504}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4477, max : 4509}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("value")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4510, max : 4515}},{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CInt("0")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4517, max : 4518}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4477, max : 4519}},tweenxcore_expr_ExprMakeTools.floatToExpr(repeat)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4433, max : 4566}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4419, max : 4574}}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4412, max : 4574}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4404, max : 4582}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4370, max : 4582}};
+		var expr = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4142, max : 4152}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4142, max : 4158}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4142, max : 4169}},"repeat"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4142, max : 4176}},[{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4184, max : 4194}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4184, max : 4200}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4184, max : 4211}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4184, max : 4216}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("value")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4217, max : 4222}},{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CInt("0")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4224, max : 4225}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4184, max : 4226}},tweenxcore_expr_ExprMakeTools.floatToExpr(kind[2])]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4142, max : 4271}});
+		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "value", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn(expr), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4362, max : 4374}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4354, max : 4382}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4320, max : 4382}};
 	case 1:
-		var to = kind[3];
-		var from = kind[2];
-		tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing);
-		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "value", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn({ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4157, max : 4167}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4157, max : 4173}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4157, max : 4184}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4157, max : 4189}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("value")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4190, max : 4195}},tweenxcore_expr_ExprMakeTools.floatToExpr(from),tweenxcore_expr_ExprMakeTools.floatToExpr(to)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4157, max : 4266}}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4150, max : 4266}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4142, max : 4274}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4108, max : 4274}};
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3966, max : 3976}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3966, max : 3982}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3966, max : 3993}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3966, max : 3998}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3966, max : 4003}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4004, max : 4005}},tweenxcore_expr_ExprMakeTools.floatToExpr(kind[2]),tweenxcore_expr_ExprMakeTools.floatToExpr(kind[3])]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3966, max : 4076}};
 	case 2:
-		var max = kind[3];
-		var min = kind[2];
-		tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing);
-		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "value", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn({ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3894, max : 3904}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3894, max : 3910}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3894, max : 3921}},"clamp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3894, max : 3927}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("value")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3928, max : 3933}},tweenxcore_expr_ExprMakeTools.floatToExpr(min),tweenxcore_expr_ExprMakeTools.floatToExpr(max)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3894, max : 4004}}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3887, max : 4004}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3879, max : 4012}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3845, max : 4012}};
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3799, max : 3809}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3799, max : 3815}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3799, max : 3826}},"clamp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3799, max : 3832}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3799, max : 3837}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3838, max : 3839}},tweenxcore_expr_ExprMakeTools.floatToExpr(kind[2]),tweenxcore_expr_ExprMakeTools.floatToExpr(kind[3])]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3799, max : 3910}};
 	case 3:
 		return tweenxcore_expr_RoundTripKindTools.toFunctionExpr(kind[2],easing);
 	case 4:
@@ -6752,6 +7060,11 @@ component_basic_GraphView.WIDTH = 120;
 component_basic_GraphView.HEIGHT = 140;
 component_basic_GraphView.displayName = "GraphView";
 component_basic_NumberInputView.displayName = "NumberInputView";
+component_basic_NumberSliderView.WIDTH = 160;
+component_basic_NumberSliderView.HEIGHT = 30;
+component_basic_NumberSliderView.BAR_WIDTH = 140;
+component_basic_NumberSliderView.BAR_HEIGHT = 4;
+component_basic_NumberSliderView.displayName = "NumberSliderView";
 component_basic_PreviewAnimation.WIDTH = 600;
 component_basic_PreviewAnimation.HEIGHT = 5;
 component_basic_PreviewAnimation.MARKER_WIDTH = 40;

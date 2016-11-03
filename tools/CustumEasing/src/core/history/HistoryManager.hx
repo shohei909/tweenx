@@ -22,9 +22,9 @@ class HistoryManager
 		context.focus.unfocus();
 		if (!canUndo()) return;
 		
-		var result = context.applyWithoutRecord(undoStack.pop());
+		var result = context.applyWithoutRecord(undoStack.pop(), true);
 		redoStack.push(result.undoCommands);
-		context.applySave(result);
+		context.applyResult(result, true);
 		context.update();
 	}
 	
@@ -38,9 +38,9 @@ class HistoryManager
 		context.focus.unfocus();
 		if (!canRedo()) return;
 		
-		var result = context.applyWithoutRecord(redoStack.pop());
+		var result = context.applyWithoutRecord(redoStack.pop(), true);
 		undoStack.push(result.undoCommands);
-		context.applySave(result);
+		context.applyResult(result, true);
 		context.update();
 	}
 	

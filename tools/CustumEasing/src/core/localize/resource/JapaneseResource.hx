@@ -34,7 +34,7 @@ class JapaneseResource implements LocalizeResource
 			case Warp:      "ワープ";
 			case Bezier:    "ベジェ曲線";
 			case Repeat:    "繰り返し";
-			case Lerp:      "線形補完";
+			case Lerp:      "線形補間";
 			case Clamp:     "上限下限";
 			case Yoyo:      "ヨーヨー";
 			case Zigzag:    "ジグザグ";

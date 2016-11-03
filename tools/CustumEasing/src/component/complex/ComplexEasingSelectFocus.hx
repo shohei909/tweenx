@@ -23,7 +23,7 @@ class ComplexEasingSelectFocus
 			case Option.Some(oldEasing):
 				var newEasing = item.createEasing(new ComplexEasingCreateContext(oldEasing));
 				var command = RootCommand.ChangeEasing(id, EasingCommand.Replace(newEasing));
-				focus.context.apply(command);
+				focus.context.apply(command, true);
 				
 				focus.unfocus();
 				

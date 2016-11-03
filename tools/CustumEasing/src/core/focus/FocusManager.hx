@@ -1,5 +1,5 @@
 package core.focus;
-import component.basic.NumberInput.NumberInputId;
+import component.basic.NumberInputId;
 import component.basic.RateId;
 import component.basic.NumberInputFocus;
 import component.complex.ComplexEasingSelectFocus;

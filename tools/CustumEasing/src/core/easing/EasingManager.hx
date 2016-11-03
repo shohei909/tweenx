@@ -88,10 +88,10 @@ class EasingManager
 		
 		if (!prev.equals(next))
 		{
-			result.addUndoCommand(RootCommand.ChangeEasing(ComplexEasingId.root(), EasingCommand.Replace(prev)));
 			current = next;
-			context.updateHash();
-			context.animation.startPreview(id, easing);
+			result.addUndoCommand(RootCommand.ChangeEasing(ComplexEasingId.root(), EasingCommand.Replace(prev)));
+			result.requestUpdateHash();
+			result.requestPreview(id, easing);
 		}
 	}
 	

@@ -38,7 +38,7 @@ class OutputModeSelectView extends ReactComponentOfProps<OutputModeSelectProps>
 	
 	private function onSelect(mode:OutputMode):Void
 	{
-		props.context.apply(RootCommand.ChangeOutputMode(mode));
+		props.context.apply(RootCommand.ChangeOutputMode(mode), true);
 	}
 	
 	private static function getIcon(mode:OutputMode):Option<String>

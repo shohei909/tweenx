@@ -107,7 +107,28 @@
 		}
 	}
 }
+
 	
+.number-input
+{
+	display: table;
+	
+	>div, >canvas
+	{
+		display: table-cell;
+		vertical-align: middle;
+		margin: 0px;
+		padding: 0px;
+		padding-left: 2px;
+	}
+	
+	>canvas
+	{
+		user-select: none;
+		cursor: pointer;
+	}
+}
+
 .output
 {
 	border-top: dashed 2px #EEEEEE;
@@ -115,8 +136,6 @@
 	padding: 10px;
 	padding-top: 50px;
 }
-
-
 
 h2
 {

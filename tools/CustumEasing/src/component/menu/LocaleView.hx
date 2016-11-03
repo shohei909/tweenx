@@ -30,7 +30,7 @@ class LocaleView extends ReactComponentOfProps<LocaleProps>
 	
 	private function onSelect(locale:LocaleKind):Void
 	{
-		props.context.apply(RootCommand.ChangeLocale(locale));
+		props.context.apply(RootCommand.ChangeLocale(locale), true);
 	}
 	
 	private static function getIcon(mode:LocaleKind):Option<String>

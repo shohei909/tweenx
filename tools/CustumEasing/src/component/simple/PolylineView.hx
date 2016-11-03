@@ -31,13 +31,16 @@ class PolylineView extends ReactComponentOfProps<PolylineProps>
 							className: "control-point"
 						},
 						[
-							NumberInputView.createElement(
-								{
-									name: Std.string(i),
-									value: props.controls[i],
-									id: props.id.numberInputId(i),
-									context: props.context
-								}
+							"div".createElement(
+								{},
+								NumberInputView.createElement(
+									{
+										name: Std.string(i),
+										value: props.controls[i],
+										id: props.id.numberInputId(i),
+										context: props.context
+									}
+								)
 							),
 							"button".createElement(
 								{
@@ -79,7 +82,7 @@ class PolylineView extends ReactComponentOfProps<PolylineProps>
 	
 	private function apply(command:EasingCommand):Void
 	{
-		props.context.apply(RootCommand.ChangeEasing(props.id, command));
+		props.context.apply(RootCommand.ChangeEasing(props.id, command), true);
 	}
 }
 

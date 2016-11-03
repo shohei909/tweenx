@@ -36,7 +36,7 @@ class StandardEasingView extends ReactComponentOfProps<StandardEasingProps>
 
 	private function onSelect(inOut:InOutKind):Void
 	{
-		props.context.apply(RootCommand.ChangeEasing(props.id, EasingCommand.InOut(inOut)));
+		props.context.apply(RootCommand.ChangeEasing(props.id, EasingCommand.InOut(inOut)), true);
 	}
 	
 	private static function getIcon(inOut:InOutKind):Option<String>

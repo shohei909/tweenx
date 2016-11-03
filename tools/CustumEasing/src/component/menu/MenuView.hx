@@ -1,6 +1,6 @@
 package component.menu;
 import api.react.ReactComponent;
-import component.basic.NumberInput.NumberInputId;
+import component.basic.NumberInputId;
 import component.basic.NumberInputView;
 import component.basic.SelectGroupView;
 import core.RootContext;

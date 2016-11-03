@@ -54,6 +54,6 @@ class AnimationManager
 		if (time == newTime) return;
 		result.addUndoCommand(RootCommand.ChangeAnimationTime(time));
 		time = newTime;
-		startPreview(ComplexEasingId.root(), context.easing.current);
+		result.requestPreview(ComplexEasingId.root(), context.easing.current);
 	}
 }

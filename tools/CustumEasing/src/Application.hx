@@ -3,7 +3,6 @@ package;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactDOM;
-import component.basic.NumberInput.NumberInputId;
 import component.basic.NumberInputView;
 import component.basic.RateId;
 import component.complex.ComplexEasingView;

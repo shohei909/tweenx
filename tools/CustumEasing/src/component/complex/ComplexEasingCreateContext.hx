@@ -20,7 +20,6 @@ class ComplexEasingCreateContext
 		return _getInOut(prevEasing);
 	}
 	
-	
 	private static function _getInOut(easing:ComplexEasingKind):InOutKind
 	{
 		return switch (easing)
