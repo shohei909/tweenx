@@ -5,11 +5,11 @@ import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.DropdownButtonView;
 import component.basic.SelectGroupView;
 import component.complex.ComplexEasingSelectItem;
-import core.GlobalCommand;
+import core.RootCommand;
 import core.easing.EasingCommand;
 import haxe.EnumTools;
 import component.complex.ComplexEasingId;
-import core.GlobalContext;
+import core.RootContext;
 import core.focus.FocusState;
 import haxe.ds.Option;
 import tweenxcore.expr.InOutKind;
@@ -36,7 +36,7 @@ class StandardEasingView extends ReactComponentOfProps<StandardEasingProps>
 
 	private function onSelect(inOut:InOutKind):Void
 	{
-		props.context.apply(GlobalCommand.ChangeEasing(props.id, EasingCommand.InOut(inOut)));
+		props.context.apply(RootCommand.ChangeEasing(props.id, EasingCommand.InOut(inOut)));
 	}
 	
 	private static function getIcon(inOut:InOutKind):Option<String>
@@ -50,7 +50,7 @@ typedef StandardEasingProps =
 	easing: StandardEasingKind,
 	inOut: InOutKind,
 	id: ComplexEasingId,
-	context: GlobalContext
+	context: RootContext
 }
 
 private typedef InOutView = SelectGroupView<InOutKind>;

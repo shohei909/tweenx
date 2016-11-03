@@ -1,7 +1,7 @@
 package component.basic;
 import api.react.ReactEvent;
 import component.basic.NumberInput.NumberInputId;
-import core.GlobalCommand;
+import core.RootCommand;
 import core.focus.FocusManager;
 import haxe.ds.Option;
 import js.html.Element;
@@ -35,10 +35,10 @@ class NumberInputFocus
 			var command = switch (id)
 			{
 				case NumberInputId.EasingRate(_id):
-					GlobalCommand.ChangeEasing(_id.parent(), Rate(_id.rateIndex(), value));
+					RootCommand.ChangeEasing(_id.parent(), Rate(_id.rateIndex(), value));
 					
 				case NumberInputId.AnimationTime:
-					GlobalCommand.ChangeAnimationTime(value);
+					RootCommand.ChangeAnimationTime(value);
 			}
 			focus.context.apply(command);
 		}

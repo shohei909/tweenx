@@ -2,7 +2,8 @@ package component.menu;
 import api.react.ReactComponent;
 import component.basic.NumberInput.NumberInputId;
 import component.basic.NumberInputView;
-import core.GlobalContext;
+import component.basic.SelectGroupView;
+import core.RootContext;
 import core.localize.ResourceKey;
 
 class MenuView extends ReactComponentOfProps<MenuProps>
@@ -41,6 +42,12 @@ class MenuView extends ReactComponentOfProps<MenuProps>
 							context: props.context,
 						}
 					)
+				),
+				"div".createElement(
+					{
+						className: "menu-item"
+					},
+					LocaleView.createElement(props)
 				)
 			]
 		);
@@ -49,5 +56,5 @@ class MenuView extends ReactComponentOfProps<MenuProps>
 
 typedef MenuProps = 
 {
-	context: GlobalContext,
+	context: RootContext,
 }

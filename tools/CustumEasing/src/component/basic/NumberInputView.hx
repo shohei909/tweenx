@@ -3,7 +3,7 @@ import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInput.NumberInputId;
-import core.GlobalContext;
+import core.RootContext;
 import core.focus.FocusState;
 import haxe.ds.Option;
 
@@ -78,5 +78,5 @@ typedef RateInputProps =
 	name: String,
 	value: Float,
 	id: NumberInputId,
-	context: GlobalContext,
+	context: RootContext,
 }

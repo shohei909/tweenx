@@ -1,6 +1,6 @@
 package core;
 import component.complex.ComplexEasingId;
-import core.GlobalCommand;
+import core.RootCommand;
 import core.animation.AnimationManager;
 import core.easing.EasingCommand;
 import core.easing.EasingManager;
@@ -9,6 +9,7 @@ import core.history.HistoryManager;
 import core.key.KeyboardManager;
 import core.localize.LocalizeManager;
 import core.output.OutputManager;
+import core.storage.StorageManager;
 import haxe.Json;
 import js.Browser;
 import js.html.Event;
@@ -17,8 +18,9 @@ import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.ComplexEasingKindTools;
 import tweenxcore.expr.SimpleEasingKind;
 
-class GlobalContext 
+class RootContext 
 {
+	public var storage(default, null):StorageManager;
 	public var key(default, null):KeyboardManager;
 	public var history(default, null):HistoryManager;
 	public var focus(default, null):FocusManager;
@@ -32,13 +34,14 @@ class GlobalContext
 	
 	public function new() 
 	{
+		storage = new StorageManager(this);
 		focus = new FocusManager(this);
 		animation = new AnimationManager(this);
 		history = new HistoryManager(this);
 		key = new KeyboardManager(this);
 		output = new OutputManager(this);
 		easing = new EasingManager(this);
-		localize = new LocalizeManager();
+		localize = new LocalizeManager(this);
 		
 		currentHash = "";
 		Browser.window.setTimeout(onFrame, 1 / 60);
@@ -78,12 +81,12 @@ class GlobalContext
 	// ------------------------------------------
 	// Apply Command
 	// ------------------------------------------
-	public function apply(command:GlobalCommand):Void
+	public function apply(command:RootCommand):Void
 	{
 		applyAll([command]);
 	}
 	
-	public function applyAll(commands:Iterable<GlobalCommand>):Void
+	public function applyAll(commands:Iterable<RootCommand>):Void
 	{
 		var result = applyWithoutRecord(commands);
 		
@@ -91,25 +94,37 @@ class GlobalContext
 		{
 			history.record(result.undoCommands);
 		}
+		applySave(result);
 		
 		update();
 	}
 	
-	public function applyWithoutRecord(commands:Iterable<GlobalCommand>):ApplyResult
+	public function applySave(result:ApplyResult):Void
+	{
+		if (result.saveRequired)
+		{
+			storage.save();
+		}
+	}
+	
+	public function applyWithoutRecord(commands:Iterable<RootCommand>):ApplyResult
 	{
 		var result = new ApplyResult();
 		for (command in commands)
 		{
 			switch (command)
 			{
-				case GlobalCommand.ChangeEasing(id, command):
+				case RootCommand.ChangeEasing(id, command):
 					easing.change(id, command, result);
 					
-				case GlobalCommand.ChangeOutputMode(mode):
+				case RootCommand.ChangeOutputMode(mode):
 					output.changeMode(mode, result);
 					
-				case GlobalCommand.ChangeAnimationTime(value):
+				case RootCommand.ChangeAnimationTime(value):
 					animation.changeTime(value, result);
+					
+				case RootCommand.ChangeLocale(locale):
+					localize.changeLocale(locale, result);
 			}
 		}
 		
@@ -127,7 +142,7 @@ class GlobalContext
 			try 
 			{
 				var easing = ComplexEasingKindTools.fromJsonable(data.easing);
-				apply(GlobalCommand.ChangeEasing(ComplexEasingId.root(), EasingCommand.Replace(easing)));
+				apply(RootCommand.ChangeEasing(ComplexEasingId.root(), EasingCommand.Replace(easing)));
 				
 				animation.startPreview(ComplexEasingId.root(), easing);
 			}

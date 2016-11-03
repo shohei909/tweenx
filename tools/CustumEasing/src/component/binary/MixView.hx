@@ -4,7 +4,7 @@ import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
-import core.GlobalContext;
+import core.RootContext;
 import core.localize.ResourceKey;
 import tweenxcore.expr.ComplexEasingKind;
 
@@ -40,5 +40,5 @@ typedef MixProps =
 	easing2: ComplexEasingKind,
 	strength: Float,
 	id: ComplexEasingId,
-	context: GlobalContext
+	context: RootContext
 }

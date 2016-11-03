@@ -3,7 +3,7 @@ import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
-import core.GlobalContext;
+import core.RootContext;
 import core.history.HistoryManager;
 import core.localize.ResourceKey;
 
@@ -60,5 +60,5 @@ class HistoryView extends ReactComponentOfProps<HistoryProps>
 
 typedef HistoryProps = 
 {
-	context: GlobalContext,
+	context: RootContext,
 }

@@ -2,7 +2,7 @@ package core.animation;
 import component.basic.PreviewAnimation;
 import component.complex.ComplexEasingId;
 import core.ApplyResult;
-import core.GlobalContext;
+import core.RootContext;
 import js.Browser;
 import js.html.CanvasElement;
 import tweenxcore.expr.ComplexEasingKind;
@@ -11,9 +11,9 @@ class AnimationManager
 {
 	public var time:Float;
 	private var animations:Map<String, Animation>;
-	private var context:GlobalContext;
+	private var context:RootContext;
 	
-	public function new(context:GlobalContext) 
+	public function new(context:RootContext) 
 	{
 		this.context = context;
 		animations = new Map();
@@ -52,7 +52,7 @@ class AnimationManager
 	public function changeTime(newTime:Float, result:ApplyResult):Void
 	{
 		if (time == newTime) return;
-		result.addUndoCommand(GlobalCommand.ChangeAnimationTime(time));
+		result.addUndoCommand(RootCommand.ChangeAnimationTime(time));
 		time = newTime;
 		startPreview(ComplexEasingId.root(), context.easing.current);
 	}

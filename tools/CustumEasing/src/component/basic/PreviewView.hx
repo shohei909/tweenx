@@ -3,7 +3,7 @@ import api.react.React;
 import api.react.ReactComponent;
 import component.basic.PreviewAnimation;
 import component.complex.ComplexEasingId;
-import core.GlobalContext;
+import core.RootContext;
 import js.html.CanvasElement;
 import tweenxcore.expr.ComplexEasingKind;
 
@@ -67,5 +67,5 @@ typedef PreviewProps =
 {
 	easing: ComplexEasingKind,
 	id: ComplexEasingId,
-	context: GlobalContext
+	context: RootContext
 }

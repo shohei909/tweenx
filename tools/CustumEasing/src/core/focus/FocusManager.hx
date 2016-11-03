@@ -4,16 +4,16 @@ import component.basic.RateId;
 import component.basic.NumberInputFocus;
 import component.complex.ComplexEasingSelectFocus;
 import component.complex.ComplexEasingId;
-import core.GlobalContext;
+import core.RootContext;
 import haxe.ds.Option;
 import js.Browser;
 
 class FocusManager 
 {
 	public var state(default, null):FocusState;
-	public var context(default, null):GlobalContext;
+	public var context(default, null):RootContext;
 	
-	public function new(context:GlobalContext) 
+	public function new(context:RootContext) 
 	{
 		this.state = FocusState.None;
 		this.context = context;

@@ -1,8 +1,8 @@
 package core.easing;
 import component.basic.RateId;
 import component.complex.ComplexEasingId;
-import core.GlobalCommand;
-import core.GlobalContext;
+import core.RootCommand;
+import core.RootContext;
 import core.easing.EasingManager;
 import haxe.Json;
 import haxe.ds.Option;
@@ -18,9 +18,9 @@ import tweenxcore.expr.UnaryOpKind;
 class EasingManager 
 {
 	public var current(default, null):ComplexEasingKind;
-	private var context:GlobalContext;
+	private var context:RootContext;
 	
-	public function new(context:GlobalContext) 
+	public function new(context:RootContext) 
 	{
 		this.context = context;
 		this.current = ComplexEasingKind.Simple(SimpleEasingKind.Linear);
@@ -88,7 +88,7 @@ class EasingManager
 		
 		if (!prev.equals(next))
 		{
-			result.addUndoCommand(GlobalCommand.ChangeEasing(ComplexEasingId.root(), EasingCommand.Replace(prev)));
+			result.addUndoCommand(RootCommand.ChangeEasing(ComplexEasingId.root(), EasingCommand.Replace(prev)));
 			current = next;
 			context.updateHash();
 			context.animation.startPreview(id, easing);

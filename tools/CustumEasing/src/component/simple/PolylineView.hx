@@ -4,8 +4,8 @@ import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
-import core.GlobalCommand;
-import core.GlobalContext;
+import core.RootCommand;
+import core.RootContext;
 import core.easing.EasingCommand;
 import tweenxcore.expr.PolylineKind;
 import tweenxcore.geom.Point;
@@ -79,7 +79,7 @@ class PolylineView extends ReactComponentOfProps<PolylineProps>
 	
 	private function apply(command:EasingCommand):Void
 	{
-		props.context.apply(GlobalCommand.ChangeEasing(props.id, command));
+		props.context.apply(RootCommand.ChangeEasing(props.id, command));
 	}
 }
 
@@ -88,5 +88,5 @@ typedef PolylineProps =
 	polyline: PolylineKind,
 	controls: Array<Float>,
 	id: ComplexEasingId,
-	context: GlobalContext
+	context: RootContext
 }

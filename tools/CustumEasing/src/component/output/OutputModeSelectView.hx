@@ -3,8 +3,8 @@ import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.SelectGroupView;
 import component.output.OutputModeSelectView;
-import core.GlobalCommand;
-import core.GlobalContext;
+import core.RootCommand;
+import core.RootContext;
 import core.output.OutputManager;
 import core.output.OutputMode;
 import haxe.EnumTools;
@@ -38,7 +38,7 @@ class OutputModeSelectView extends ReactComponentOfProps<OutputModeSelectProps>
 	
 	private function onSelect(mode:OutputMode):Void
 	{
-		props.context.apply(GlobalCommand.ChangeOutputMode(mode));
+		props.context.apply(RootCommand.ChangeOutputMode(mode));
 	}
 	
 	private static function getIcon(mode:OutputMode):Option<String>
@@ -50,7 +50,7 @@ class OutputModeSelectView extends ReactComponentOfProps<OutputModeSelectProps>
 
 typedef OutputModeSelectProps =
 {
-	context: GlobalContext,
+	context: RootContext,
 	mode: OutputMode,
 }
 

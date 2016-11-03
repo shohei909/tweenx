@@ -1,13 +1,13 @@
 package core.key;
-import core.GlobalContext;
+import core.RootContext;
 import js.Browser;
 import js.html.KeyboardEvent;
 
 class KeyboardManager 
 {
-	private var context:GlobalContext;
+	private var context:RootContext;
 	
-	public function new(context:GlobalContext) 
+	public function new(context:RootContext) 
 	{
 		this.context = context;
 		Browser.window.addEventListener("keydown", onKeyDown);

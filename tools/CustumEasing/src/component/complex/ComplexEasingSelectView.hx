@@ -4,11 +4,11 @@ import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.DropdownButtonView;
 import component.basic.SelectGroupView;
-import core.GlobalCommand;
+import core.RootCommand;
 import haxe.EnumTools.EnumValueTools;
 import haxe.ds.Option;
 import js.html.CanvasElement;
-import core.GlobalContext;
+import core.RootContext;
 import component.complex.ComplexEasingId;
 import core.focus.FocusState;
 import tweenxcore.expr.ComplexEasingKind;
@@ -89,7 +89,7 @@ typedef DropdownProps =
 {
 	easing: ComplexEasingKind,
 	id: ComplexEasingId,
-	context: GlobalContext
+	context: RootContext
 }
 
 private typedef ItemListView = SelectGroupView<ComplexEasingSelectItemId>;

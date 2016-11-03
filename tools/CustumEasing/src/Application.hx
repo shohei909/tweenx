@@ -13,7 +13,7 @@ import component.output.OutputView;
 import core.localize.ResourceKey;
 import js.Browser;
 import js.Lib;
-import core.GlobalContext;
+import core.RootContext;
 import component.complex.ComplexEasingId;
 import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.SimpleEasingKind;
@@ -25,7 +25,7 @@ class Application extends ReactComponentOfProps<ApplicationProps>
         ReactDOM.render(
 			Application.createElement(
 				{
-					context: new GlobalContext(),
+					context: new RootContext(),
 				}
 			), 
 			Browser.document.getElementById('application')
@@ -71,5 +71,5 @@ class Application extends ReactComponentOfProps<ApplicationProps>
 
 typedef ApplicationProps =
 {
-	context: GlobalContext,
+	context: RootContext,
 }

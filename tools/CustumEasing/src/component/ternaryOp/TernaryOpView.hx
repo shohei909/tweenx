@@ -5,7 +5,7 @@ import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingView;
 import component.complex.ComplexEasingId;
-import core.GlobalContext;
+import core.RootContext;
 import core.localize.ResourceKey;
 import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.TernaryOpKind;
@@ -69,5 +69,5 @@ typedef TernaryOpProps =
 	easing3: ComplexEasingKind,
 	op: TernaryOpKind,
 	id: ComplexEasingId,
-	context: GlobalContext
+	context: RootContext
 }

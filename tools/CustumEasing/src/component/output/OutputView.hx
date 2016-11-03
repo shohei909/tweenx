@@ -2,7 +2,7 @@ package component.output;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.output.OutputModeSelectView;
-import core.GlobalContext;
+import core.RootContext;
 import core.output.OutputManager;
 import tweenxcore.expr.ComplexEasingKind;
 
@@ -38,5 +38,5 @@ class OutputView extends ReactComponentOfProps<OutputProps>
 
 typedef OutputProps =
 {
-	context: GlobalContext,
+	context: RootContext,
 }

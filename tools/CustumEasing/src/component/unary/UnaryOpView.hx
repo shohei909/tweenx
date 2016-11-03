@@ -6,7 +6,7 @@ import component.binary.BinaryOpView;
 import component.complex.ComplexEasingId;
 import component.complex.ComplexEasingView;
 import component.unary.ClampView;
-import core.GlobalContext;
+import core.RootContext;
 import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.UnaryOpKind;
 
@@ -92,5 +92,5 @@ typedef UnaryOpProps =
 	easing: ComplexEasingKind,
 	op: UnaryOpKind,
 	id: ComplexEasingId,
-	context: GlobalContext
+	context: RootContext
 }

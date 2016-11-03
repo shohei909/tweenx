@@ -6,7 +6,7 @@ import component.binary.MultiplyView;
 import component.complex.ComplexEasingView;
 import component.ternaryOp.TernaryOpView;
 import component.complex.ComplexEasingId;
-import core.GlobalContext;
+import core.RootContext;
 import tweenxcore.expr.BinaryOpKind;
 import tweenxcore.expr.ComplexEasingKind;
 
@@ -106,5 +106,5 @@ typedef BinaryOpProps =
 	easing2: ComplexEasingKind,
 	op: BinaryOpKind,
 	id: ComplexEasingId,
-	context: GlobalContext
+	context: RootContext
 }

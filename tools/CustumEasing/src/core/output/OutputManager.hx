@@ -1,6 +1,8 @@
 package core.output;
 import core.ApplyResult;
+import core.storage.StorageKey;
 import haxe.Json;
+import haxe.ds.Option;
 import haxe.macro.Printer;
 import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.ComplexEasingKindTools;
@@ -8,12 +10,19 @@ import tweenxcore.expr.ComplexEasingKindTools;
 class OutputManager 
 {
 	public var mode(default, null):OutputMode;
-	private var context:GlobalContext;
+	private var context:RootContext;
 	
-	public function new(context:GlobalContext) 
+	public function new(context:RootContext) 
 	{
 		this.context = context;
-		this.mode = OutputMode.Json;
+		this.mode = switch (context.storage.get(StorageKey.Output))
+		{
+			case Option.Some(data) if (Std.is(data, OutputMode)):
+				data;
+				
+			case _:
+				OutputMode.Json;
+		}
 	}
 	
 	public function getString():String
@@ -42,5 +51,6 @@ class OutputManager
 	public function changeMode(newMode:OutputMode, result:ApplyResult):Void
 	{
 		mode = newMode;
+		result.requestSave();
 	}
 }

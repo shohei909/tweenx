@@ -4,7 +4,7 @@ import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
-import core.GlobalContext;
+import core.RootContext;
 import tweenxcore.expr.ComplexEasingKind;
 
 
@@ -39,5 +39,5 @@ typedef RepeatProps =
 	easing: ComplexEasingKind,
 	repeat: Float,
 	id: ComplexEasingId,
-	context: GlobalContext
+	context: RootContext
 }

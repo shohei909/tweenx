@@ -3,7 +3,7 @@ import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
 import component.complex.ComplexEasingId;
-import core.GlobalContext;
+import core.RootContext;
 import tweenxcore.expr.SimpleEasingKind;
 
 class SimpleEasingView extends ReactComponentOfProps<SimpleEasingProps>
@@ -47,5 +47,5 @@ typedef SimpleEasingProps =
 {
 	kind: SimpleEasingKind,
 	id: ComplexEasingId,
-	context: GlobalContext
+	context: RootContext
 }

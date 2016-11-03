@@ -7,7 +7,7 @@ import component.complex.ComplexEasingSelectView;
 import component.basic.GraphView;
 import component.simple.SimpleEasingView;
 import component.unary.UnaryOpView;
-import core.GlobalContext;
+import core.RootContext;
 import component.complex.ComplexEasingId;
 import tweenxcore.expr.ComplexEasingKind;
 
@@ -70,5 +70,5 @@ typedef ComplexEasingProps =
 {
 	easing: ComplexEasingKind,
 	id: ComplexEasingId,
-	context: GlobalContext
+	context: RootContext
 }

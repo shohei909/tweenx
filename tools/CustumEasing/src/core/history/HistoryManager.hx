@@ -2,11 +2,11 @@ package core.history;
 
 class HistoryManager 
 {
-	private var undoStack:List<List<GlobalCommand>>;
-	private var redoStack:List<List<GlobalCommand>>;
-	private var context:GlobalContext;
+	private var undoStack:List<List<RootCommand>>;
+	private var redoStack:List<List<RootCommand>>;
+	private var context:RootContext;
 	
-	public function new(context:GlobalContext) 
+	public function new(context:RootContext) 
 	{
 		this.context = context;
 		undoStack = new List();
@@ -24,6 +24,7 @@ class HistoryManager
 		
 		var result = context.applyWithoutRecord(undoStack.pop());
 		redoStack.push(result.undoCommands);
+		context.applySave(result);
 		context.update();
 	}
 	
@@ -39,10 +40,11 @@ class HistoryManager
 		
 		var result = context.applyWithoutRecord(redoStack.pop());
 		undoStack.push(result.undoCommands);
+		context.applySave(result);
 		context.update();
 	}
 	
-	public function record(commands:List<GlobalCommand>):Void
+	public function record(commands:List<RootCommand>):Void
 	{
 		undoStack.push(commands);
 		redoStack.clear();
