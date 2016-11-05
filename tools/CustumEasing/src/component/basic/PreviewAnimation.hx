@@ -5,6 +5,8 @@ import core.focus.FocusManager;
 import js.html.CanvasElement;
 import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.ComplexEasingKindTools;
+import tweenxcore.structure.FloatChange;
+import tweenxcore.structure.FloatChangePart;
 
 class PreviewAnimation implements Animation
 {
@@ -31,7 +33,12 @@ class PreviewAnimation implements Animation
     
     public function onFrame(time:Float):Void
     {
-        currentTime += time;
+        var change = new FloatChange(currentTime, currentTime += time);
+        change.handlePart(0, totalTime, updatePart);
+    }
+    
+    private function updatePart(part:FloatChangePart):Void
+    {
         init(canvas);
         
         var ctx = canvas.getContext2d();
@@ -40,8 +47,7 @@ class PreviewAnimation implements Animation
         var right = WIDTH - MARGIN - MARKER_WIDTH;
         
         ctx.fillStyle = "#ff64b1";
-        
-        var x = func(currentTime / totalTime).lerp(left, right);
+        var x = func(part.current).lerp(left, right);
         ctx.fillRect(x, 0, MARKER_WIDTH, HEIGHT);
     }
     

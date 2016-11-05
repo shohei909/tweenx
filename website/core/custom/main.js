@@ -1425,13 +1425,23 @@ component_basic_PreviewAnimation.init = function(canvas) {
 };
 component_basic_PreviewAnimation.prototype = {
 	onFrame: function(time) {
-		this.currentTime += time;
+		var previousValue = this.currentTime;
+		var currentValue = this.currentTime += time;
+		var to = this.totalTime;
+		if((0 < previousValue && currentValue < to || 0 < currentValue && previousValue < to || to < previousValue && currentValue < 0 || to < currentValue && previousValue < 0) && previousValue != currentValue) {
+			var value = previousValue / to;
+			var tmp = value <= 0.0?0.0:1.0 <= value?1.0:value;
+			var value1 = currentValue / to;
+			this.updatePart(new tweenxcore_structure_FloatChangePart(tmp,value1 <= 0.0?0.0:1.0 <= value1?1.0:value1));
+		}
+	}
+	,updatePart: function(part) {
 		component_basic_PreviewAnimation.init(this.canvas);
 		var ctx = this.canvas.getContext("2d",null);
 		var left = component_basic_PreviewAnimation.MARGIN;
 		var right = component_basic_PreviewAnimation.WIDTH - component_basic_PreviewAnimation.MARGIN - component_basic_PreviewAnimation.MARKER_WIDTH;
 		ctx.fillStyle = "#ff64b1";
-		var rate = this.func(this.currentTime / this.totalTime);
+		var rate = this.func(part.current);
 		ctx.fillRect(left * (1 - rate) + right * rate,0,component_basic_PreviewAnimation.MARKER_WIDTH,component_basic_PreviewAnimation.HEIGHT);
 	}
 	,isDead: function() {
@@ -2707,7 +2717,7 @@ core_RootContext.prototype = {
 var core_animation_AnimationManager = function(context) {
 	this.context = context;
 	this.animations = new haxe_ds_StringMap();
-	this.time = 0.3;
+	this.time = 0.25;
 };
 $hxClasses["core.animation.AnimationManager"] = core_animation_AnimationManager;
 core_animation_AnimationManager.__name__ = ["core","animation","AnimationManager"];
@@ -7492,6 +7502,438 @@ tweenxcore_expr_UnaryOpKindTools.toFunctionExpr = function(kind,easing) {
 	case 4:
 		return tweenxcore_expr_BinaryOpKindTools.toFunctionExpr(kind[3],easing,kind[2]);
 	}
+};
+var tweenxcore_structure_FloatChange = function(previousValue,currentValue) {
+	this.previous = previousValue;
+	this.current = currentValue;
+};
+$hxClasses["tweenxcore.structure.FloatChange"] = tweenxcore_structure_FloatChange;
+tweenxcore_structure_FloatChange.__name__ = ["tweenxcore","structure","FloatChange"];
+tweenxcore_structure_FloatChange.prototype = {
+	direction: function() {
+		if(this.previous < this.current) {
+			return 1;
+		} else if(this.current < this.previous) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
+	,mapFloatChange: function(func) {
+		return new tweenxcore_structure_FloatChange(func(this.previous),func(this.current));
+	}
+	,isCrossOver: function(threshold,boundaryMode) {
+		if(boundaryMode == null) {
+			boundaryMode = 1;
+		}
+		switch(boundaryMode) {
+		case 0:
+			if(!(this.previous < threshold && threshold <= this.current)) {
+				if(this.current < threshold) {
+					return threshold <= this.previous;
+				} else {
+					return false;
+				}
+			} else {
+				return true;
+			}
+			break;
+		case 1:
+			if(!(this.previous <= threshold && threshold < this.current)) {
+				if(this.current <= threshold) {
+					return threshold < this.previous;
+				} else {
+					return false;
+				}
+			} else {
+				return true;
+			}
+			break;
+		}
+	}
+	,handlePart: function(from,to,updatePart) {
+		if((from < this.previous && this.current < to || from < this.current && this.previous < to || to < this.previous && this.current < from || to < this.current && this.previous < from) && this.previous != this.current) {
+			var value = (this.previous - from) / (to - from);
+			var tmp = value <= 0.0?0.0:1.0 <= value?1.0:value;
+			var value1 = (this.current - from) / (to - from);
+			updatePart(new tweenxcore_structure_FloatChangePart(tmp,value1 <= 0.0?0.0:1.0 <= value1?1.0:value1));
+		}
+	}
+	,handleRepeatPart: function(firstPartFrom,firstPartTo,repeatLimit,updateRepeatPart) {
+		if(firstPartFrom != firstPartTo) {
+			var p = (this.previous - firstPartFrom) / (firstPartTo - firstPartFrom);
+			var c = (this.current - firstPartFrom) / (firstPartTo - firstPartFrom);
+			if(0 < c && p < repeatLimit || 0 < p && c < repeatLimit) {
+				if(p <= 0) {
+					p = 0;
+				} else if(repeatLimit <= p) {
+					p = repeatLimit;
+				} else {
+					p = p;
+				}
+				if(c <= 0) {
+					c = 0;
+				} else if(repeatLimit <= c) {
+					c = repeatLimit;
+				} else {
+					c = c;
+				}
+				var pCount = p | 0;
+				var cCount = c | 0;
+				var hasNext = true;
+				if(p < c) {
+					while(true) {
+						if(cCount == pCount) {
+							var previousValue = p - pCount;
+							var currentValue = c - pCount;
+							hasNext = false;
+							if(previousValue != currentValue) {
+								updateRepeatPart(new tweenxcore_structure_FloatChangeRepeatPart(previousValue,currentValue,pCount,repeatLimit,false));
+							}
+						} else {
+							hasNext = pCount + 1 != c;
+							var previousValue1 = p - pCount;
+							if(previousValue1 != 1) {
+								updateRepeatPart(new tweenxcore_structure_FloatChangeRepeatPart(previousValue1,1,pCount,repeatLimit,hasNext));
+							}
+						}
+						p = ++pCount;
+						if(!hasNext) {
+							break;
+						}
+					}
+				} else {
+					while(true) {
+						if(pCount == cCount) {
+							var previousValue2 = p - pCount;
+							var currentValue1 = c - pCount;
+							hasNext = false;
+							if(previousValue2 != currentValue1) {
+								updateRepeatPart(new tweenxcore_structure_FloatChangeRepeatPart(previousValue2,currentValue1,pCount,repeatLimit,false));
+							}
+						} else {
+							hasNext = pCount - 1 != c;
+							var previousValue3 = p - pCount;
+							if(previousValue3 != 0) {
+								updateRepeatPart(new tweenxcore_structure_FloatChangeRepeatPart(previousValue3,0,pCount,repeatLimit,hasNext));
+							}
+						}
+						p = pCount;
+						--pCount;
+						if(!hasNext) {
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	,handleTimelinePart: function(timelineFrom,timelineTo,updatePartTimeline) {
+		if(timelineFrom != timelineTo) {
+			var p = (this.previous - timelineFrom) / (timelineTo - timelineFrom);
+			var c = (this.current - timelineFrom) / (timelineTo - timelineFrom);
+			if(0 < p && c < 1 || 0 < c && p < 1) {
+				if(p <= 0) {
+					p = 0;
+				} else if(1 <= p) {
+					p = 1;
+				} else {
+					p = p;
+				}
+				if(c <= 0) {
+					c = 0;
+				} else if(1 <= c) {
+					c = 1;
+				} else {
+					c = c;
+				}
+				if(updatePartTimeline.dataArray.length == 0) {
+					throw new js__$Boot_HaxeError("timeline is not initialized");
+				}
+				var sortedValues = updatePartTimeline.weightArray;
+				var value = p * updatePartTimeline.totalWeight;
+				var min = 0;
+				var max = sortedValues.length;
+				while(true) {
+					var next = ((max - min) / 2 | 0) + min;
+					if(sortedValues[next] < value) {
+						min = next + 1;
+					} else {
+						max = next;
+					}
+					if(min == max) {
+						break;
+					}
+				}
+				var searchResult = min;
+				var baseWeight = searchResult == 0?0:updatePartTimeline.weightArray[searchResult - 1] / updatePartTimeline.totalWeight;
+				var nextWeight = searchResult == updatePartTimeline.dataArray.length - 1?1:updatePartTimeline.weightArray[searchResult] / updatePartTimeline.totalWeight;
+				var pResult_rangeLeft = baseWeight;
+				var pResult_rangeRight = nextWeight;
+				if(updatePartTimeline.dataArray.length == 0) {
+					throw new js__$Boot_HaxeError("timeline is not initialized");
+				}
+				var sortedValues1 = updatePartTimeline.weightArray;
+				var value1 = c * updatePartTimeline.totalWeight;
+				var min1 = 0;
+				var max1 = sortedValues1.length;
+				while(true) {
+					var next1 = ((max1 - min1) / 2 | 0) + min1;
+					if(sortedValues1[next1] < value1) {
+						min1 = next1 + 1;
+					} else {
+						max1 = next1;
+					}
+					if(min1 == max1) {
+						break;
+					}
+				}
+				var searchResult1 = min1;
+				var baseWeight1 = searchResult1 == 0?0:updatePartTimeline.weightArray[searchResult1 - 1] / updatePartTimeline.totalWeight;
+				var nextWeight1 = searchResult1 == updatePartTimeline.dataArray.length - 1?1:updatePartTimeline.weightArray[searchResult1] / updatePartTimeline.totalWeight;
+				var cResult_rangeLeft = baseWeight1;
+				var cResult_rangeRight = nextWeight1;
+				var pCount = searchResult;
+				var pRate = (p - pResult_rangeLeft) / (pResult_rangeRight - pResult_rangeLeft);
+				var cRate = (c - cResult_rangeLeft) / (cResult_rangeRight - cResult_rangeLeft);
+				var hasNext = false;
+				if(p < c) {
+					while(true) {
+						if(pCount == searchResult1) {
+							hasNext = false;
+							var part = new tweenxcore_structure_FloatChangeTimelinePart(pRate,cRate,pCount,pCount == 0?0.0:updatePartTimeline.weightArray[pCount - 1] / updatePartTimeline.totalWeight,pCount == updatePartTimeline.dataArray.length?1.0:updatePartTimeline.weightArray[pCount] / updatePartTimeline.totalWeight,false);
+							if(updatePartTimeline.dataArray.length == 0) {
+								throw new js__$Boot_HaxeError("timeline is not initialized");
+							}
+							updatePartTimeline.dataArray[pCount](part);
+						} else {
+							if(pCount + 1 == searchResult1) {
+								hasNext = cRate != 0;
+							} else {
+								hasNext = true;
+							}
+							var part1 = new tweenxcore_structure_FloatChangeTimelinePart(pRate,1,pCount,pCount == 0?0.0:updatePartTimeline.weightArray[pCount - 1] / updatePartTimeline.totalWeight,pCount == updatePartTimeline.dataArray.length?1.0:updatePartTimeline.weightArray[pCount] / updatePartTimeline.totalWeight,hasNext);
+							if(updatePartTimeline.dataArray.length == 0) {
+								throw new js__$Boot_HaxeError("timeline is not initialized");
+							}
+							updatePartTimeline.dataArray[pCount](part1);
+						}
+						pRate = 0;
+						++pCount;
+						if(!hasNext) {
+							break;
+						}
+					}
+				} else {
+					while(true) {
+						if(pCount == searchResult1) {
+							hasNext = false;
+							var part2 = new tweenxcore_structure_FloatChangeTimelinePart(pRate,cRate,pCount,pCount == 0?0.0:updatePartTimeline.weightArray[pCount - 1] / updatePartTimeline.totalWeight,pCount == updatePartTimeline.dataArray.length?1.0:updatePartTimeline.weightArray[pCount] / updatePartTimeline.totalWeight,false);
+							if(updatePartTimeline.dataArray.length == 0) {
+								throw new js__$Boot_HaxeError("timeline is not initialized");
+							}
+							updatePartTimeline.dataArray[pCount](part2);
+						} else {
+							if(pCount - 1 == searchResult1) {
+								hasNext = cRate != 1;
+							} else {
+								hasNext = true;
+							}
+							var part3 = new tweenxcore_structure_FloatChangeTimelinePart(pRate,0,pCount,pCount == 0?0.0:updatePartTimeline.weightArray[pCount - 1] / updatePartTimeline.totalWeight,pCount == updatePartTimeline.dataArray.length?1.0:updatePartTimeline.weightArray[pCount] / updatePartTimeline.totalWeight,hasNext);
+							if(updatePartTimeline.dataArray.length == 0) {
+								throw new js__$Boot_HaxeError("timeline is not initialized");
+							}
+							updatePartTimeline.dataArray[pCount](part3);
+						}
+						pRate = 1;
+						--pCount;
+						if(!hasNext) {
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	,__class__: tweenxcore_structure_FloatChange
+};
+var tweenxcore_structure_FloatChangePart = function(previousValue,currentValue) {
+	tweenxcore_structure_FloatChange.call(this,previousValue,currentValue);
+};
+$hxClasses["tweenxcore.structure.FloatChangePart"] = tweenxcore_structure_FloatChangePart;
+tweenxcore_structure_FloatChangePart.__name__ = ["tweenxcore","structure","FloatChangePart"];
+tweenxcore_structure_FloatChangePart.__super__ = tweenxcore_structure_FloatChange;
+tweenxcore_structure_FloatChangePart.prototype = $extend(tweenxcore_structure_FloatChange.prototype,{
+	isEntrance: function() {
+		if(!(this.previous <= 0 && 0 < this.current)) {
+			if(this.current < 1.0) {
+				return 1.0 <= this.previous;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
+	,isExit: function() {
+		if(!(this.current <= 0.0 && 0.0 < this.previous)) {
+			if(this.previous < 1.0) {
+				return 1.0 <= this.current;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
+	,__class__: tweenxcore_structure_FloatChangePart
+});
+var tweenxcore_structure_FloatChangeRepeatPart = function(previousValue,currentValue,repeatIndex,repeatLength,isMinerChange) {
+	tweenxcore_structure_FloatChangePart.call(this,previousValue,currentValue);
+	this.repeatIndex = repeatIndex;
+	this.repeatLength = repeatLength;
+	this.isMinerChange = isMinerChange;
+};
+$hxClasses["tweenxcore.structure.FloatChangeRepeatPart"] = tweenxcore_structure_FloatChangeRepeatPart;
+tweenxcore_structure_FloatChangeRepeatPart.__name__ = ["tweenxcore","structure","FloatChangeRepeatPart"];
+tweenxcore_structure_FloatChangeRepeatPart.__super__ = tweenxcore_structure_FloatChangePart;
+tweenxcore_structure_FloatChangeRepeatPart.prototype = $extend(tweenxcore_structure_FloatChangePart.prototype,{
+	isFirstEntrance: function() {
+		if(!(this.repeatIndex == 0 && this.previous <= 0 && 0 < this.current)) {
+			if(this.repeatIndex == this.repeatLength - 1 && this.current < 1.0) {
+				return 1.0 <= this.previous;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
+	,isLastExit: function() {
+		if(!(this.repeatIndex == 0 && this.current <= 0.0 && 0.0 < this.previous)) {
+			if(this.repeatIndex == this.repeatLength - 1 && this.previous < 1.0) {
+				return 1.0 <= this.current;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
+	,__class__: tweenxcore_structure_FloatChangeRepeatPart
+});
+var tweenxcore_structure_FloatChangeTimelinePart = function(previousValue,currentValue,index,rangeLeft,rangeRight,isMinerChange) {
+	tweenxcore_structure_FloatChangePart.call(this,previousValue,currentValue);
+	this.index = index;
+	this.rangeLeft = rangeLeft;
+	this.rangeRight = rangeRight;
+};
+$hxClasses["tweenxcore.structure.FloatChangeTimelinePart"] = tweenxcore_structure_FloatChangeTimelinePart;
+tweenxcore_structure_FloatChangeTimelinePart.__name__ = ["tweenxcore","structure","FloatChangeTimelinePart"];
+tweenxcore_structure_FloatChangeTimelinePart.__super__ = tweenxcore_structure_FloatChangePart;
+tweenxcore_structure_FloatChangeTimelinePart.prototype = $extend(tweenxcore_structure_FloatChangePart.prototype,{
+	__class__: tweenxcore_structure_FloatChangeTimelinePart
+});
+var tweenxcore_structure_Timeline = function() {
+	this.dataArray = [];
+	this.weightArray = [];
+	this.totalWeight = 0;
+};
+$hxClasses["tweenxcore.structure.Timeline"] = tweenxcore_structure_Timeline;
+tweenxcore_structure_Timeline.__name__ = ["tweenxcore","structure","Timeline"];
+tweenxcore_structure_Timeline.prototype = {
+	get_length: function() {
+		return this.dataArray.length;
+	}
+	,add: function(data,weight) {
+		if(weight == null) {
+			weight = 1.0;
+		}
+		if(weight <= 0) {
+			throw new js__$Boot_HaxeError("weight must be positive number");
+		}
+		if(this.dataArray.length == 0) {
+			this.totalWeight = weight;
+		} else {
+			this.weightArray.push(this.totalWeight);
+			this.totalWeight += weight;
+		}
+		this.dataArray.push(data);
+		return this;
+	}
+	,search: function(rate,boundaryMode) {
+		if(boundaryMode == null) {
+			boundaryMode = 1;
+		}
+		if(this.dataArray.length == 0) {
+			throw new js__$Boot_HaxeError("timeline is not initialized");
+		}
+		var sortedValues = this.weightArray;
+		var value = rate * this.totalWeight;
+		var min = 0;
+		var max = sortedValues.length;
+		if(boundaryMode == 0) {
+			while(true) {
+				var next = ((max - min) / 2 | 0) + min;
+				if(sortedValues[next] <= value) {
+					min = next + 1;
+				} else {
+					max = next;
+				}
+				if(min == max) {
+					break;
+				}
+			}
+		} else {
+			while(true) {
+				var next1 = ((max - min) / 2 | 0) + min;
+				if(sortedValues[next1] < value) {
+					min = next1 + 1;
+				} else {
+					max = next1;
+				}
+				if(min == max) {
+					break;
+				}
+			}
+		}
+		var searchResult = min;
+		return new tweenxcore_structure_TimelineSearchResult(this.dataArray[searchResult],searchResult,searchResult == 0?0:this.weightArray[searchResult - 1] / this.totalWeight,searchResult == this.dataArray.length - 1?1:this.weightArray[searchResult] / this.totalWeight);
+	}
+	,dataAt: function(index) {
+		if(this.dataArray.length == 0) {
+			throw new js__$Boot_HaxeError("timeline is not initialized");
+		}
+		return this.dataArray[index];
+	}
+	,rangeLeft: function(index) {
+		if(index == 0) {
+			return 0.0;
+		}
+		return this.weightArray[index - 1] / this.totalWeight;
+	}
+	,rangeRight: function(index) {
+		if(index == this.dataArray.length) {
+			return 1.0;
+		}
+		return this.weightArray[index] / this.totalWeight;
+	}
+	,__class__: tweenxcore_structure_Timeline
+};
+var tweenxcore_structure_TimelineSearchResult = function(data,index,rangeLeft,rangeRight) {
+	this.data = data;
+	this.index = index;
+	this.rangeLeft = rangeLeft;
+	this.rangeRight = rangeRight;
+};
+$hxClasses["tweenxcore.structure.TimelineSearchResult"] = tweenxcore_structure_TimelineSearchResult;
+tweenxcore_structure_TimelineSearchResult.__name__ = ["tweenxcore","structure","TimelineSearchResult"];
+tweenxcore_structure_TimelineSearchResult.prototype = {
+	innerRate: function(rate) {
+		var from = this.rangeLeft;
+		return (rate - from) / (this.rangeRight - from);
+	}
+	,__class__: tweenxcore_structure_TimelineSearchResult
 };
 function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; }
 var $_, $fid = 0;
