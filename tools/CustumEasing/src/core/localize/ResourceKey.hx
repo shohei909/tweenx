@@ -13,4 +13,7 @@ enum ResourceKey
     Undo;
     Redo;
     Weight;
+    Repeat;
+    DropToMove;
+    DropToDuplicate;
 }

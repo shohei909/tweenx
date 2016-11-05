@@ -41,6 +41,9 @@ class EnglishResource implements LocalizeResource
             case Undo:          "Undo";
             case Redo:          "Redo";
             case Weight:        "Weight";
+            case Repeat:        "Repeat";
+            case DropToMove:      "Move";
+            case DropToDuplicate: "Duplicate";
         }
     }
 }

@@ -89,6 +89,9 @@ class JapaneseResource implements LocalizeResource
             case Undo:          "元にもどす";
             case Redo:          "やりなおし";
             case Weight:        "重み";
+            case Repeat:        "繰り返し";
+            case DropToMove:      "移動";
+            case DropToDuplicate: "複製";
         }
     }
 }

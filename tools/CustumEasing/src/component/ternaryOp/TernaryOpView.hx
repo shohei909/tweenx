@@ -41,7 +41,7 @@ class TernaryOpView extends ReactComponentOfProps<TernaryOpProps>
                         [
                             NumberInputView.createElement(
                                 {
-                                    name: props.context.localize.resource.common(ResourceKey.Min),
+                                    name: props.context.localize.resource.common(ResourceKey.From),
                                     value: min,
                                     id: props.id.numberInputId(0),
                                     context: props.context
@@ -49,7 +49,7 @@ class TernaryOpView extends ReactComponentOfProps<TernaryOpProps>
                             ),
                             NumberInputView.createElement(
                                 {
-                                    name: props.context.localize.resource.common(ResourceKey.Max),
+                                    name: props.context.localize.resource.common(ResourceKey.To),
                                     value: max,
                                     id: props.id.numberInputId(1),
                                     context: props.context

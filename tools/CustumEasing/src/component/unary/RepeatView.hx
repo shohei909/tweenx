@@ -5,6 +5,7 @@ import api.react.ReactComponent.ReactComponentOfProps;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.RootContext;
+import core.localize.ResourceKey;
 import tweenxcore.expr.ComplexEasingKind;
 
 
@@ -24,7 +25,7 @@ class RepeatView extends ReactComponentOfProps<RepeatProps>
             }, 
             NumberInputView.createElement(
                 {
-                    name: "Repeat",
+                    name: props.context.localize.resource.common(ResourceKey.Repeat),
                     value: props.repeat,
                     id: props.id.numberInputId(0),
                     context: props.context

@@ -2210,10 +2210,12 @@ component_complex_DragButtonView.__name__ = ["component","complex","DragButtonVi
 component_complex_DragButtonView.__super__ = React.Component;
 component_complex_DragButtonView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "swap-button-box"},React.createElement("button",{ className : "btn btn-default btn", onMouseDown : $bind(this,this.onMouseDown)},React.createElement("span",{ className : "glyphicon glyphicon-" + (this.props.context.key.ctrl?"duplicate":"sort")})));
+		var _g = this.props.context.drag.get_stateKind();
+		return React.createElement("div",{ className : "swap-button-box"},[_g[1] == 0?_g[2][1] == 1?component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.equals(_g[2][2].fromId,this.props.id)?React.createElement("div",{ className : "label label-default"},this.props.context.localize.resource.common(this.props.context.key.ctrl?core_localize_ResourceKey.DropToDuplicate:core_localize_ResourceKey.DropToMove)):React.createElement("button",{ className : "btn btn-default btn-sm", onMouseDown : $bind(this,this.onMouseDown)},React.createElement("span",{ className : "glyphicon glyphicon-" + (this.props.context.key.ctrl?"duplicate":"sort")})):React.createElement("button",{ className : "btn btn-default btn-sm", onMouseDown : $bind(this,this.onMouseDown)},React.createElement("span",{ className : "glyphicon glyphicon-" + (this.props.context.key.ctrl?"duplicate":"sort")})):React.createElement("button",{ className : "btn btn-default btn-sm", onMouseDown : $bind(this,this.onMouseDown)},React.createElement("span",{ className : "glyphicon glyphicon-" + (this.props.context.key.ctrl?"duplicate":"sort")}))]);
 	}
-	,onMouseDown: function() {
+	,onMouseDown: function(e) {
 		this.props.context.drag.dragComplexEasing(this.props.id);
+		e.preventDefault();
 	}
 	,__class__: component_complex_DragButtonView
 });
@@ -2406,7 +2408,7 @@ component_ternaryOp_TernaryOpView.prototype = $extend(React.Component.prototype,
 	render: function() {
 		var tmp = react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.easing3, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.concat(this.props.id,2), context : this.props.context});
 		var _g = this.props.op;
-		return React.createElement("div",{ },tmp,react_ReactStringTools.createElement("div",{ className : "param-group"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Min), value : _g[2], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Max), value : _g[3], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context})]));
+		return React.createElement("div",{ },tmp,react_ReactStringTools.createElement("div",{ className : "param-group"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.From), value : _g[2], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.To), value : _g[3], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context})]));
 	}
 	,__class__: component_ternaryOp_TernaryOpView
 });
@@ -2442,7 +2444,7 @@ component_unary_RepeatView.__name__ = ["component","unary","RepeatView"];
 component_unary_RepeatView.__super__ = React.Component;
 component_unary_RepeatView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : "Repeat", value : this.props.repeat, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Repeat), value : this.props.repeat, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
 	}
 	,__class__: component_unary_RepeatView
 });
@@ -3341,7 +3343,7 @@ core_localize_LocalizeResource.__name__ = ["core","localize","LocalizeResource"]
 core_localize_LocalizeResource.prototype = {
 	__class__: core_localize_LocalizeResource
 };
-var core_localize_ResourceKey = $hxClasses["core.localize.ResourceKey"] = { __ename__ : ["core","localize","ResourceKey"], __constructs__ : ["Title","Min","Max","From","To","AnimationTime","SwitchTime","SwitchValue","Undo","Redo","Weight"] };
+var core_localize_ResourceKey = $hxClasses["core.localize.ResourceKey"] = { __ename__ : ["core","localize","ResourceKey"], __constructs__ : ["Title","Min","Max","From","To","AnimationTime","SwitchTime","SwitchValue","Undo","Redo","Weight","Repeat","DropToMove","DropToDuplicate"] };
 core_localize_ResourceKey.Title = ["Title",0];
 core_localize_ResourceKey.Title.toString = $estr;
 core_localize_ResourceKey.Title.__enum__ = core_localize_ResourceKey;
@@ -3375,6 +3377,15 @@ core_localize_ResourceKey.Redo.__enum__ = core_localize_ResourceKey;
 core_localize_ResourceKey.Weight = ["Weight",10];
 core_localize_ResourceKey.Weight.toString = $estr;
 core_localize_ResourceKey.Weight.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.Repeat = ["Repeat",11];
+core_localize_ResourceKey.Repeat.toString = $estr;
+core_localize_ResourceKey.Repeat.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.DropToMove = ["DropToMove",12];
+core_localize_ResourceKey.DropToMove.toString = $estr;
+core_localize_ResourceKey.DropToMove.__enum__ = core_localize_ResourceKey;
+core_localize_ResourceKey.DropToDuplicate = ["DropToDuplicate",13];
+core_localize_ResourceKey.DropToDuplicate.toString = $estr;
+core_localize_ResourceKey.DropToDuplicate.__enum__ = core_localize_ResourceKey;
 var core_localize_resource_EnglishResource = function() {
 };
 $hxClasses["core.localize.resource.EnglishResource"] = core_localize_resource_EnglishResource;
@@ -3414,6 +3425,12 @@ core_localize_resource_EnglishResource.prototype = {
 			return "Redo";
 		case 10:
 			return "Weight";
+		case 11:
+			return "Repeat";
+		case 12:
+			return "Move";
+		case 13:
+			return "Duplicate";
 		}
 	}
 	,__class__: core_localize_resource_EnglishResource
@@ -3554,6 +3571,12 @@ core_localize_resource_JapaneseResource.prototype = {
 			return "やりなおし";
 		case 10:
 			return "重み";
+		case 11:
+			return "繰り返し";
+		case 12:
+			return "移動";
+		case 13:
+			return "複製";
 		}
 	}
 	,__class__: core_localize_resource_JapaneseResource
