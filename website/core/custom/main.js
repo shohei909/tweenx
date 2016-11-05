@@ -1634,12 +1634,28 @@ component_complex_ComplexEasingCreateContext._getInOut = function(easing) {
 		return component_complex_ComplexEasingCreateContext._getInOut(easing[2]);
 	}
 };
+component_complex_ComplexEasingCreateContext._getControls = function(easing) {
+	switch(easing[1]) {
+	case 0:
+		if(easing[2][1] == 2) {
+			return easing[2][3].slice();
+		} else {
+			return [0,0,1,1];
+		}
+		break;
+	case 1:
+		return component_complex_ComplexEasingCreateContext._getControls(easing[2]);
+	}
+};
 component_complex_ComplexEasingCreateContext.prototype = {
 	getInOut: function() {
 		return component_complex_ComplexEasingCreateContext._getInOut(this.prevEasing);
 	}
 	,getEasing: function() {
 		return this.prevEasing;
+	}
+	,getControls: function() {
+		return component_complex_ComplexEasingCreateContext._getControls(this.prevEasing);
 	}
 	,__class__: component_complex_ComplexEasingCreateContext
 };
@@ -1997,7 +2013,7 @@ component_complex_ComplexEasingSelectItem.createStandard = function(easing,conte
 	return tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Standard(easing,context.getInOut()));
 };
 component_complex_ComplexEasingSelectItem.createPolyline = function(polyline,context) {
-	return tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Line(polyline,[0,0,1,1]));
+	return tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Line(polyline,context.getControls()));
 };
 component_complex_ComplexEasingSelectItem.createUnaryOp = function(op,context) {
 	return tweenxcore_expr_ComplexEasingKind.Op(context.getEasing(),op);
@@ -2798,7 +2814,7 @@ core_easing_EasingManager.prototype = {
 		if(_g[1] == 0) {
 			if(_g[2][1] == 0) {
 				if(_g[2][2][1] == 2) {
-					var newControls = _g[2][2][3].slice(0);
+					var newControls = _g[2][2][3].slice();
 					newControls.splice(index + 1,0,newControls[index]);
 					this.replace(id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Line(_g[2][2][2],newControls)),result);
 				}
@@ -2811,7 +2827,7 @@ core_easing_EasingManager.prototype = {
 		if(_g[1] == 0) {
 			if(_g[2][1] == 0) {
 				if(_g[2][2][1] == 2) {
-					var newControls = _g[2][2][3].slice(0);
+					var newControls = _g[2][2][3].slice();
 					newControls.splice(index,1);
 					this.replace(id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Line(_g[2][2][2],newControls)),result);
 				}
@@ -2830,7 +2846,7 @@ core_easing_EasingManager.prototype = {
 					var controls = oldEasing[2][3];
 					var kind = oldEasing[2][2];
 					if(controls[index] != value) {
-						var newControls = controls.slice(0);
+						var newControls = controls.slice();
 						newControls[index] = value;
 						newEasing = tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Line(kind,newControls));
 					} else {

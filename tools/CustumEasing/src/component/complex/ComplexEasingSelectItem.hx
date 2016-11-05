@@ -169,7 +169,7 @@ class ComplexEasingSelectItem
     
     private static function createPolyline(polyline:LineKind, context:ComplexEasingCreateContext):ComplexEasingKind
     {
-        return ComplexEasingKind.Simple(SimpleEasingKind.Line(polyline, [0, 0, 1, 1]));
+        return ComplexEasingKind.Simple(SimpleEasingKind.Line(polyline, context.getControls()));
     }
     
     private static function createUnaryOp(op:UnaryOpKind, context:ComplexEasingCreateContext):ComplexEasingKind

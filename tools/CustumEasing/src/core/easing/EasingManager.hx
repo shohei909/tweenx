@@ -113,7 +113,7 @@ class EasingManager
         switch (resolveEasing(id))
         {
             case Option.Some(ComplexEasingKind.Simple(SimpleEasingKind.Line(kind, controls))):
-                var newControls = controls.slice(0);
+                var newControls = controls.copy();
                 newControls.insert(index + 1, newControls[index]);
                 replace(id, ComplexEasingKind.Simple(SimpleEasingKind.Line(kind, newControls)), result);
                 
@@ -129,7 +129,7 @@ class EasingManager
         switch (resolveEasing(id))
         {
             case Option.Some(ComplexEasingKind.Simple(SimpleEasingKind.Line(kind, controls))):
-                var newControls = controls.slice(0);
+                var newControls = controls.copy();
                 newControls.splice(index, 1);
                 replace(id, ComplexEasingKind.Simple(SimpleEasingKind.Line(kind, newControls)), result);
                 
@@ -147,7 +147,7 @@ class EasingManager
                     case [Simple(SimpleEasingKind.Line(kind, controls)), _]:
                         if (controls[index] != value)
                         {
-                            var newControls = controls.slice(0);
+                            var newControls = controls.copy();
                             newControls[index] = value;
                             Simple(SimpleEasingKind.Line(kind, newControls));
                         }

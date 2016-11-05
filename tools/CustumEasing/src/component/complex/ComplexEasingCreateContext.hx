@@ -39,4 +39,26 @@ class ComplexEasingCreateContext
     {
         return prevEasing;
     }    
+    
+    public function getControls():Array<Float>
+    {
+        return _getControls(prevEasing);
+    }
+    
+    private static function _getControls(easing:ComplexEasingKind):Array<Float>
+    {
+        return switch (easing)
+        {
+            case ComplexEasingKind.Op(nextEasing, _):
+                _getControls(nextEasing);
+                
+            case ComplexEasingKind.Simple(SimpleEasingKind.Line(_, controls)):
+                controls.copy();
+                
+            case ComplexEasingKind.Simple(_):
+                [0, 0, 1, 1];
+        }
+    }
+    
+    
 }
