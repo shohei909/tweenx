@@ -1,6 +1,8 @@
 package core.drag;
 import component.basic.NumberInputId;
 import component.basic.NumberSliderDrag;
+import component.complex.ComplexEasingDrag;
+import component.complex.ComplexEasingId;
 import core.RootContext;
 import haxe.ds.Option;
 import js.Browser;
@@ -56,6 +58,7 @@ class DragManager
             case Option.Some(detail):
                 state = Option.None;
                 detail.finish();
+                context.update();
                 
             case Option.None:
         }
@@ -66,5 +69,11 @@ class DragManager
         finishDrag();
         state = Option.Some((new NumberSliderDrag(this, id, startX, centerX, centerValue):DragState));
     }
+    
+    public function dragComplexEasing(id:ComplexEasingId):Void 
+    {
+        finishDrag();
+        state = Option.Some((new ComplexEasingDrag(this, id):DragState));
+        context.update();
+    }
 }
-

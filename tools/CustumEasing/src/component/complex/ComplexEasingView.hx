@@ -9,7 +9,11 @@ import component.simple.SimpleEasingView;
 import component.unary.UnaryOpView;
 import core.RootContext;
 import component.complex.ComplexEasingId;
+import core.drag.DragStateKind;
+import haxe.ds.Option;
+import js.html.MouseEvent;
 import tweenxcore.expr.ComplexEasingKind;
+using component.complex.ComplexEasingId;
 
 class ComplexEasingView extends ReactComponentOfProps<ComplexEasingProps>
 {
@@ -20,12 +24,30 @@ class ComplexEasingView extends ReactComponentOfProps<ComplexEasingProps>
     
     override public function render():ReactComponent 
     {
+        var background = switch (props.context.drag.stateKind)
+        {
+            case Option.Some(DragStateKind.ComplexEasing(detail)) if (detail.fromId.equals(props.id)):
+                "from";
+                
+            case Option.Some(DragStateKind.ComplexEasing(detail)) if (detail.toId.equals(props.id)):
+                "to";
+                
+            case _:
+                "";
+        }
+        
         return React.createElement(
             "div",
             { className: "complex-easing" },
             React.createElement(
                 "div",
-                { className: "complex-easing-head" },
+                { 
+                    ref: "head",
+                    className: "complex-easing-head " + background,
+                    onMouseEnter: onMouseEnter,
+                    onMouseLeave: onMouseLeave,
+                },
+                DragButtonView.createElement(props),
                 GraphView.createElement(
                     {
                         lines: [
@@ -35,7 +57,9 @@ class ComplexEasingView extends ReactComponentOfProps<ComplexEasingProps>
                 ),
                 React.createElement(
                     "div",
-                    { className: "complex-easing-child" },
+                    { 
+                        className: "complex-easing-child"
+                    },
                     PreviewView.createElement(props),
                     ComplexEasingSelectView.createElement(props),
                     switch (props.easing)
@@ -64,6 +88,29 @@ class ComplexEasingView extends ReactComponentOfProps<ComplexEasingProps>
         );
     }
     
+    private function onMouseEnter(e:MouseEvent):Void
+    {
+        switch (props.context.drag.stateKind)
+        {
+            case Option.Some(DragStateKind.ComplexEasing(detail)):
+                detail.enter(props.id);
+                e.preventDefault();
+                
+            case _:
+        }
+    }
+    
+    private function onMouseLeave(e:MouseEvent):Void
+    {
+        switch (props.context.drag.stateKind)
+        {
+            case Option.Some(DragStateKind.ComplexEasing(detail)) if (detail.toId.equals(props.id)):
+                detail.leave();
+                e.preventDefault();
+                
+            case _:
+        }
+    }
 }
 
 typedef ComplexEasingProps =

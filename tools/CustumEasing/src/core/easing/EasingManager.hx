@@ -1,6 +1,7 @@
 package core.easing;
 import component.basic.RateId;
 import component.complex.ComplexEasingId;
+import core.ApplyResult;
 import core.RootCommand;
 import core.RootContext;
 import core.easing.EasingManager;
@@ -67,6 +68,12 @@ class EasingManager
             case EasingCommand.Replace(easing):
                 replace(id, easing, result);
                 
+            case EasingCommand.Move(fromId):
+                move(id, fromId, result);
+                
+            case EasingCommand.Paste(fromId):
+                paste(id, fromId, result);
+                
             case EasingCommand.InOut(inOut):
                 changeInOut(id, inOut, result);
                 
@@ -79,6 +86,38 @@ class EasingManager
             case EasingCommand.RemoveRate(index):
                 removeRate(id, index, result);
         }
+    }
+    
+    private function move(toId:ComplexEasingId, fromId:ComplexEasingId, result:ApplyResult):Void
+    {
+        if (toId.contains(fromId) || fromId.contains(toId))
+        {
+            paste(toId, fromId, result);
+            return;
+        }
+        
+        var toEasing = switch (resolveEasing(toId))
+        {
+            case Option.Some(easing): easing;
+            case Option.None: return;
+        }
+        var fromEasing = switch (resolveEasing(fromId))
+        {
+            case Option.Some(easing): easing;
+            case Option.None: return;
+        }
+        replace(fromId, toEasing, result);
+        replace(toId, fromEasing, result);
+    }
+    
+    private function paste(toId:ComplexEasingId, fromId:ComplexEasingId, result:ApplyResult):Void
+    {
+        var fromEasing = switch (resolveEasing(fromId))
+        {
+            case Option.Some(easing): easing;
+            case Option.None: return;
+        }
+        replace(toId, fromEasing, result);
     }
     
     private function replace(id:ComplexEasingId, easing:ComplexEasingKind, result:ApplyResult):Void

@@ -1,6 +1,7 @@
 package component.complex;
 import component.basic.NumberInputId;
 import component.basic.RateId;
+import component.complex.ComplexEasingId;
 
 abstract ComplexEasingId(Array<Int>) 
 {
@@ -58,5 +59,32 @@ abstract ComplexEasingId(Array<Int>)
     public function toString():String
     {
         return this.join(".");
+    }
+    
+    private function toArray():Array<Int>
+    {
+        return this;
+    }
+    
+    public function contains(fromId:ComplexEasingId):Bool
+    {
+        var fromArr = fromId.toArray();
+        if (this.length > fromArr.length)
+        {
+            trace(this.length, fromArr.length);
+            return false;
+        }
+        
+        for (i in 0...this.length)
+        {
+            if (this[i] != fromArr[i])
+            {
+                trace(this[i], fromArr[i]);
+                return false;
+            }
+        }
+        
+        trace(true);
+        return true;
     }
 }

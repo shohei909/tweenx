@@ -6,27 +6,41 @@
 .complex-easing
 {
     margin-top: 12px;
-    padding-left: 8px;
-    margin-left: 30px;
+    padding-left: 0px;
+    margin-left: 22px;
 	border-left: dashed 1px #E0E0E0;
 	
 	.complex-easing-head
 	{
 		display: table;
-			
-		> .graph
-		{
-			display: table-cell;
-		}
 		
-		> .complex-easing-child
+		> div
 		{
 			display: table-cell;
 			vertical-align: top;
-			padding: 15px;
+            padding-left: 2px;
+            padding-right: 5px;
 		}
+        
+        background: #FFFFFF;
 	}
 	
+    .from
+    {
+        background: #FAFCFF;
+        border-top: dashed 1px #E0E0FF;
+        border-bottom: dashed 1px #E0E0FF;
+        border-right: dashed 1px #E0E0FF;
+    }
+    
+    .to
+    {
+        background: #F0F2FF;
+        border-top: dashed 1px #E0E0FF;
+        border-bottom: dashed 1px #E0E0FF;
+        border-right: dashed 1px #E0E0FF;
+    }
+    
 	.preview
 	{
 		display: table;
@@ -80,6 +94,7 @@
 			vertical-align: top;
 		}
 	}
+    
 }
 
 .select-group

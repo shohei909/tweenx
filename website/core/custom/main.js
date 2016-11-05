@@ -1659,6 +1659,35 @@ component_complex_ComplexEasingCreateContext.prototype = {
 	}
 	,__class__: component_complex_ComplexEasingCreateContext
 };
+var component_complex_ComplexEasingDrag = function(drag,id) {
+	this.drag = drag;
+	this.fromId = id;
+	this.toId = id;
+	this.kind = core_drag_DragStateKind.ComplexEasing(this);
+};
+$hxClasses["component.complex.ComplexEasingDrag"] = component_complex_ComplexEasingDrag;
+component_complex_ComplexEasingDrag.__name__ = ["component","complex","ComplexEasingDrag"];
+component_complex_ComplexEasingDrag.__interfaces__ = [core_drag_DragState];
+component_complex_ComplexEasingDrag.prototype = {
+	move: function(e) {
+	}
+	,finish: function() {
+		this.drag.context.apply(core_RootCommand.ChangeEasing(this.toId,core_easing_EasingCommand.Move(this.fromId)),true);
+	}
+	,enter: function(id) {
+		this.toId = id;
+		this.drag.context.update();
+	}
+	,leave: function() {
+		if(!component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.isEmpty(this.toId)) {
+			this.toId = component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(this.toId);
+		} else {
+			this.toId = this.fromId;
+		}
+		this.drag.context.update();
+	}
+	,__class__: component_complex_ComplexEasingDrag
+};
 var component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$ = {};
 $hxClasses["component.complex._ComplexEasingId.ComplexEasingId_Impl_"] = component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$;
 component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.__name__ = ["component","complex","_ComplexEasingId","ComplexEasingId_Impl_"];
@@ -1702,6 +1731,27 @@ component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.fromString = functio
 };
 component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString = function(this1) {
 	return this1.join(".");
+};
+component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toArray = function(this1) {
+	return this1;
+};
+component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.contains = function(this1,fromId) {
+	var fromArr = component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toArray(fromId);
+	if(this1.length > fromArr.length) {
+		haxe_Log.trace(this1.length,{ fileName : "ComplexEasingId.hx", lineNumber : 74, className : "component.complex._ComplexEasingId.ComplexEasingId_Impl_", methodName : "contains", customParams : [fromArr.length]});
+		return false;
+	}
+	var _g1 = 0;
+	var _g = this1.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		if(this1[i] != fromArr[i]) {
+			haxe_Log.trace(this1[i],{ fileName : "ComplexEasingId.hx", lineNumber : 82, className : "component.complex._ComplexEasingId.ComplexEasingId_Impl_", methodName : "contains", customParams : [fromArr[i]]});
+			return false;
+		}
+	}
+	haxe_Log.trace(true,{ fileName : "ComplexEasingId.hx", lineNumber : 87, className : "component.complex._ComplexEasingId.ComplexEasingId_Impl_", methodName : "contains"});
+	return true;
 };
 var component_complex_ComplexEasingSelectFocus = function(focus,id) {
 	this.focus = focus;
@@ -2091,22 +2141,77 @@ component_complex_ComplexEasingView.__name__ = ["component","complex","ComplexEa
 component_complex_ComplexEasingView.__super__ = React.Component;
 component_complex_ComplexEasingView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		var tmp = react_ReactTools.createElement(component_basic_GraphView,{ lines : [{ easing : this.props.easing, color : component_basic_GraphColor.Theme}]});
-		var tmp1 = react_ReactTools.createElement(component_basic_PreviewView,this.props);
-		var tmp2 = react_ReactTools.createElement(component_complex_ComplexEasingSelectView,this.props);
-		var _g = this.props.easing;
-		var tmp3;
-		switch(_g[1]) {
+		var background;
+		var _g = this.props.context.drag.get_stateKind();
+		if(_g[1] == 0) {
+			if(_g[2][1] == 1) {
+				if(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.equals(_g[2][2].fromId,this.props.id)) {
+					background = "from";
+				} else if(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.equals(_g[2][2].toId,this.props.id)) {
+					background = "to";
+				} else {
+					background = "";
+				}
+			} else {
+				background = "";
+			}
+		} else {
+			background = "";
+		}
+		var tmp = "complex-easing-head " + background;
+		var tmp1 = react_ReactTools.createElement(component_complex_DragButtonView,this.props);
+		var tmp2 = react_ReactTools.createElement(component_basic_GraphView,{ lines : [{ easing : this.props.easing, color : component_basic_GraphColor.Theme}]});
+		var tmp3 = react_ReactTools.createElement(component_basic_PreviewView,this.props);
+		var tmp4 = react_ReactTools.createElement(component_complex_ComplexEasingSelectView,this.props);
+		var _g1 = this.props.easing;
+		var tmp5;
+		switch(_g1[1]) {
 		case 0:
-			tmp3 = react_ReactTools.createElement(component_simple_SimpleEasingView,{ kind : _g[2], id : this.props.id, context : this.props.context});
+			tmp5 = react_ReactTools.createElement(component_simple_SimpleEasingView,{ kind : _g1[2], id : this.props.id, context : this.props.context});
 			break;
 		case 1:
-			tmp3 = react_ReactTools.createElement(component_unary_UnaryOpView,{ easing : _g[2], op : _g[3], id : this.props.id, context : this.props.context});
+			tmp5 = react_ReactTools.createElement(component_unary_UnaryOpView,{ easing : _g1[2], op : _g1[3], id : this.props.id, context : this.props.context});
 			break;
 		}
-		return React.createElement("div",{ className : "complex-easing"},React.createElement("div",{ className : "complex-easing-head"},tmp,React.createElement("div",{ className : "complex-easing-child"},tmp1,tmp2,tmp3)));
+		return React.createElement("div",{ className : "complex-easing"},React.createElement("div",{ ref : "head", className : tmp, onMouseEnter : $bind(this,this.onMouseEnter), onMouseLeave : $bind(this,this.onMouseLeave)},tmp1,tmp2,React.createElement("div",{ className : "complex-easing-child"},tmp3,tmp4,tmp5)));
+	}
+	,onMouseEnter: function(e) {
+		var _g = this.props.context.drag.get_stateKind();
+		if(_g[1] == 0) {
+			if(_g[2][1] == 1) {
+				_g[2][2].enter(this.props.id);
+				e.preventDefault();
+			}
+		}
+	}
+	,onMouseLeave: function(e) {
+		var _g = this.props.context.drag.get_stateKind();
+		if(_g[1] == 0) {
+			if(_g[2][1] == 1) {
+				var detail = _g[2][2];
+				if(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.equals(detail.toId,this.props.id)) {
+					detail.leave();
+					e.preventDefault();
+				}
+			}
+		}
 	}
 	,__class__: component_complex_ComplexEasingView
+});
+var component_complex_DragButtonView = function(props) {
+	React.Component.call(this,props);
+};
+$hxClasses["component.complex.DragButtonView"] = component_complex_DragButtonView;
+component_complex_DragButtonView.__name__ = ["component","complex","DragButtonView"];
+component_complex_DragButtonView.__super__ = React.Component;
+component_complex_DragButtonView.prototype = $extend(React.Component.prototype,{
+	render: function() {
+		return React.createElement("div",{ className : "swap-button-box"},React.createElement("button",{ className : "btn btn-default btn-sm", onMouseDown : $bind(this,this.onMouseDown)},React.createElement("span",{ className : "glyphicon glyphicon-sort"})));
+	}
+	,onMouseDown: function() {
+		this.props.context.drag.dragComplexEasing(this.props.id);
+	}
+	,__class__: component_complex_DragButtonView
 });
 var component_menu_HistoryView = function(props) {
 	React.Component.call(this,props);
@@ -2672,6 +2777,7 @@ core_drag_DragManager.prototype = {
 		case 0:
 			this.state = haxe_ds_Option.None;
 			_g[2].finish();
+			this.context.update();
 			break;
 		case 1:
 			break;
@@ -2681,16 +2787,24 @@ core_drag_DragManager.prototype = {
 		this.finishDrag();
 		this.state = haxe_ds_Option.Some(new component_basic_NumberSliderDrag(this,id,startX,centerX,centerValue));
 	}
+	,dragComplexEasing: function(id) {
+		this.finishDrag();
+		this.state = haxe_ds_Option.Some(new component_complex_ComplexEasingDrag(this,id));
+		this.context.update();
+	}
 	,__class__: core_drag_DragManager
 };
-var core_drag_DragStateKind = $hxClasses["core.drag.DragStateKind"] = { __ename__ : ["core","drag","DragStateKind"], __constructs__ : ["NumberSlider"] };
+var core_drag_DragStateKind = $hxClasses["core.drag.DragStateKind"] = { __ename__ : ["core","drag","DragStateKind"], __constructs__ : ["NumberSlider","ComplexEasing"] };
 core_drag_DragStateKind.NumberSlider = function(detail) { var $x = ["NumberSlider",0,detail]; $x.__enum__ = core_drag_DragStateKind; $x.toString = $estr; return $x; };
-var core_easing_EasingCommand = $hxClasses["core.easing.EasingCommand"] = { __ename__ : ["core","easing","EasingCommand"], __constructs__ : ["Replace","InOut","Rate","AddRate","RemoveRate"] };
+core_drag_DragStateKind.ComplexEasing = function(detail) { var $x = ["ComplexEasing",1,detail]; $x.__enum__ = core_drag_DragStateKind; $x.toString = $estr; return $x; };
+var core_easing_EasingCommand = $hxClasses["core.easing.EasingCommand"] = { __ename__ : ["core","easing","EasingCommand"], __constructs__ : ["Replace","InOut","Rate","AddRate","RemoveRate","Move","Paste"] };
 core_easing_EasingCommand.Replace = function(easing) { var $x = ["Replace",0,easing]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
 core_easing_EasingCommand.InOut = function(inOut) { var $x = ["InOut",1,inOut]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
 core_easing_EasingCommand.Rate = function(index,rate) { var $x = ["Rate",2,index,rate]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
 core_easing_EasingCommand.AddRate = function(index) { var $x = ["AddRate",3,index]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
 core_easing_EasingCommand.RemoveRate = function(index) { var $x = ["RemoveRate",4,index]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
+core_easing_EasingCommand.Move = function(fromId) { var $x = ["Move",5,fromId]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
+core_easing_EasingCommand.Paste = function(fromId) { var $x = ["Paste",6,fromId]; $x.__enum__ = core_easing_EasingCommand; $x.toString = $estr; return $x; };
 var core_easing_EasingManager = function(context) {
 	this.context = context;
 	this.current = tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Linear);
@@ -2786,7 +2900,51 @@ core_easing_EasingManager.prototype = {
 		case 4:
 			this.removeRate(id,command[2],result);
 			break;
+		case 5:
+			this.move(id,command[2],result);
+			break;
+		case 6:
+			this.paste(id,command[2],result);
+			break;
 		}
+	}
+	,move: function(toId,fromId,result) {
+		if(component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.contains(toId,fromId) || component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.contains(fromId,toId)) {
+			this.paste(toId,fromId,result);
+			return;
+		}
+		var toEasing;
+		var _g = this.resolveEasing(toId);
+		switch(_g[1]) {
+		case 0:
+			toEasing = _g[2];
+			break;
+		case 1:
+			return;
+		}
+		var fromEasing;
+		var _g1 = this.resolveEasing(fromId);
+		switch(_g1[1]) {
+		case 0:
+			fromEasing = _g1[2];
+			break;
+		case 1:
+			return;
+		}
+		this.replace(fromId,toEasing,result);
+		this.replace(toId,fromEasing,result);
+	}
+	,paste: function(toId,fromId,result) {
+		var fromEasing;
+		var _g = this.resolveEasing(fromId);
+		switch(_g[1]) {
+		case 0:
+			fromEasing = _g[2];
+			break;
+		case 1:
+			return;
+		}
+		this.replace(toId,fromEasing,result);
 	}
 	,replace: function(id,easing,result) {
 		var prev = this.current;
@@ -3402,6 +3560,12 @@ core_storage_StorageManager.prototype = {
 var haxe_IMap = function() { };
 $hxClasses["haxe.IMap"] = haxe_IMap;
 haxe_IMap.__name__ = ["haxe","IMap"];
+var haxe_Log = function() { };
+$hxClasses["haxe.Log"] = haxe_Log;
+haxe_Log.__name__ = ["haxe","Log"];
+haxe_Log.trace = function(v,infos) {
+	js_Boot.__trace(v,infos);
+};
 var haxe_Serializer = function() {
 	this.buf = new StringBuf();
 	this.cache = [];
@@ -4671,6 +4835,35 @@ js__$Boot_HaxeError.prototype = $extend(Error.prototype,{
 var js_Boot = function() { };
 $hxClasses["js.Boot"] = js_Boot;
 js_Boot.__name__ = ["js","Boot"];
+js_Boot.__unhtml = function(s) {
+	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
+};
+js_Boot.__trace = function(v,i) {
+	var msg = i != null?i.fileName + ":" + i.lineNumber + ": ":"";
+	msg += js_Boot.__string_rec(v,"");
+	if(i != null && i.customParams != null) {
+		var _g = 0;
+		var _g1 = i.customParams;
+		while(_g < _g1.length) {
+			var v1 = _g1[_g];
+			++_g;
+			msg += "," + js_Boot.__string_rec(v1,"");
+		}
+	}
+	var d;
+	var tmp;
+	if(typeof(document) != "undefined") {
+		d = document.getElementById("haxe:trace");
+		tmp = d != null;
+	} else {
+		tmp = false;
+	}
+	if(tmp) {
+		d.innerHTML += js_Boot.__unhtml(msg) + "<br/>";
+	} else if(typeof console != "undefined" && console.log != null) {
+		console.log(msg);
+	}
+};
 js_Boot.getClass = function(o) {
 	if((o instanceof Array) && o.__enum__ == null) {
 		return Array;
@@ -7252,6 +7445,7 @@ component_binary_OneTwoView.displayName = "OneTwoView";
 component_complex_ComplexEasingSelectItem.itemIds = [[component_complex_ComplexEasingSelectItemId.Linear,component_complex_ComplexEasingSelectItemId.Quad,component_complex_ComplexEasingSelectItemId.Cubic,component_complex_ComplexEasingSelectItemId.Quart,component_complex_ComplexEasingSelectItemId.Quint,component_complex_ComplexEasingSelectItemId.Sine,component_complex_ComplexEasingSelectItemId.Circ,component_complex_ComplexEasingSelectItemId.Expo,component_complex_ComplexEasingSelectItemId.Back,component_complex_ComplexEasingSelectItemId.Bounce,component_complex_ComplexEasingSelectItemId.Elastic,component_complex_ComplexEasingSelectItemId.Warp],[component_complex_ComplexEasingSelectItemId.Polyline,component_complex_ComplexEasingSelectItemId.Bezier,component_complex_ComplexEasingSelectItemId.UniformQuadraticBSpline],[component_complex_ComplexEasingSelectItemId.Lerp,component_complex_ComplexEasingSelectItemId.Clamp,component_complex_ComplexEasingSelectItemId.Repeat,component_complex_ComplexEasingSelectItemId.Yoyo,component_complex_ComplexEasingSelectItemId.Zigzag],[component_complex_ComplexEasingSelectItemId.Composite,component_complex_ComplexEasingSelectItemId.Multiply,component_complex_ComplexEasingSelectItemId.Connect,component_complex_ComplexEasingSelectItemId.OneTwo,component_complex_ComplexEasingSelectItemId.Mix,component_complex_ComplexEasingSelectItemId.Crossfade]];
 component_complex_ComplexEasingSelectView.displayName = "ComplexEasingSelectView";
 component_complex_ComplexEasingView.displayName = "ComplexEasingView";
+component_complex_DragButtonView.displayName = "DragButtonView";
 component_menu_HistoryView.displayName = "HistoryView";
 component_menu_LocaleView.displayName = "LocaleView";
 component_menu_MenuView.displayName = "MenuView";

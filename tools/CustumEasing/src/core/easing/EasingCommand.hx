@@ -11,4 +11,6 @@ enum EasingCommand
     Rate(index:Int, rate:Float);
     AddRate(index:Int);
     RemoveRate(index:Int);
+    Move(fromId:ComplexEasingId);
+    Paste(fromId:ComplexEasingId);
 }
