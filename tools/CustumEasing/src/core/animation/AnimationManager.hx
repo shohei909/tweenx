@@ -17,15 +17,15 @@ class AnimationManager
     {
         this.context = context;
         animations = new Map();
-        time = 1;
+        time = 0.25;
     }
 
-    public function onFrame():Void
+    public function onFrame(time:Float):Void
     {
         for (key in animations.keys())
         {
             var animation = animations[key];
-            animation.onFrame();
+            animation.onFrame(time);
             
             if (animation.isDead())
             {

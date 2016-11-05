@@ -1407,8 +1407,8 @@ var component_basic_PreviewAnimation = function(manager,canvas,easing) {
 	}
 	this.func = tmp;
 	this.canvas = canvas;
-	this.totalFrame = component_basic_PreviewAnimation.TOTAL_FRAME * manager.time;
-	this.currentFrame = 0;
+	this.totalTime = component_basic_PreviewAnimation.TOTAL_TIME * manager.time;
+	this.currentTime = 0;
 };
 $hxClasses["component.basic.PreviewAnimation"] = component_basic_PreviewAnimation;
 component_basic_PreviewAnimation.__name__ = ["component","basic","PreviewAnimation"];
@@ -1424,18 +1424,18 @@ component_basic_PreviewAnimation.init = function(canvas) {
 	ctx.fillRect(left,0,component_basic_PreviewAnimation.WIDTH - component_basic_PreviewAnimation.MARGIN * 2,component_basic_PreviewAnimation.HEIGHT);
 };
 component_basic_PreviewAnimation.prototype = {
-	onFrame: function() {
-		this.currentFrame++;
+	onFrame: function(time) {
+		this.currentTime += time;
 		component_basic_PreviewAnimation.init(this.canvas);
 		var ctx = this.canvas.getContext("2d",null);
 		var left = component_basic_PreviewAnimation.MARGIN;
 		var right = component_basic_PreviewAnimation.WIDTH - component_basic_PreviewAnimation.MARGIN - component_basic_PreviewAnimation.MARKER_WIDTH;
 		ctx.fillStyle = "#ff64b1";
-		var rate = this.func(this.currentFrame / this.totalFrame);
+		var rate = this.func(this.currentTime / this.totalTime);
 		ctx.fillRect(left * (1 - rate) + right * rate,0,component_basic_PreviewAnimation.MARKER_WIDTH,component_basic_PreviewAnimation.HEIGHT);
 	}
 	,isDead: function() {
-		return this.currentFrame >= this.totalFrame;
+		return this.currentTime >= this.totalTime;
 	}
 	,__class__: component_basic_PreviewAnimation
 };
@@ -2577,7 +2577,8 @@ var core_RootContext = function() {
 	this.drag = new core_drag_DragManager(this);
 	this.minorResult = haxe_ds_Option.None;
 	this.currentHash = "";
-	window.setTimeout($bind(this,this.onFrame),null,0.016666666666666666);
+	this.prevTime = new Date().getTime();
+	window.setInterval($bind(this,this.onFrame),16);
 	window.addEventListener("hashchange",$bind(this,this.onHashChange));
 };
 $hxClasses["core.RootContext"] = core_RootContext;
@@ -2593,8 +2594,9 @@ core_RootContext.prototype = {
 		}
 	}
 	,onFrame: function() {
-		this.animation.onFrame();
-		window.setTimeout($bind(this,this.onFrame),null,0.016666666666666666);
+		var time = new Date().getTime();
+		this.animation.onFrame(time - this.prevTime);
+		this.prevTime = time;
 	}
 	,setup: function(application) {
 		this.application = application;
@@ -2705,18 +2707,18 @@ core_RootContext.prototype = {
 var core_animation_AnimationManager = function(context) {
 	this.context = context;
 	this.animations = new haxe_ds_StringMap();
-	this.time = 1;
+	this.time = 0.3;
 };
 $hxClasses["core.animation.AnimationManager"] = core_animation_AnimationManager;
 core_animation_AnimationManager.__name__ = ["core","animation","AnimationManager"];
 core_animation_AnimationManager.prototype = {
-	onFrame: function() {
+	onFrame: function(time) {
 		var tmp = this.animations.keys();
 		while(tmp.hasNext()) {
 			var key = tmp.next();
 			var _this = this.animations;
 			var animation = __map_reserved[key] != null?_this.getReserved(key):_this.h[key];
-			animation.onFrame();
+			animation.onFrame(time);
 			if(animation.isDead()) {
 				this.animations.remove(key);
 			}
@@ -7531,7 +7533,7 @@ component_basic_PreviewAnimation.WIDTH = 600;
 component_basic_PreviewAnimation.HEIGHT = 5;
 component_basic_PreviewAnimation.MARKER_WIDTH = 40;
 component_basic_PreviewAnimation.MARGIN = 100;
-component_basic_PreviewAnimation.TOTAL_FRAME = 60;
+component_basic_PreviewAnimation.TOTAL_TIME = 1000;
 component_basic_PreviewView.displayName = "PreviewView";
 component_basic_SelectGroupView.displayName = "SelectGroupView";
 component_binary_BinaryOpView.displayName = "BinaryOpView";

@@ -12,11 +12,11 @@ class PreviewAnimation implements Animation
     public static var HEIGHT = 5;
     public static var MARKER_WIDTH = 40;
     public static var MARGIN = 100;
-    public static var TOTAL_FRAME = 60;
+    public static var TOTAL_TIME = 1000;
     
     private var canvas:CanvasElement;
-    private var currentFrame:Int;
-    private var totalFrame:Float;
+    private var currentTime:Float;
+    private var totalTime:Float;
     private var func:Float->Float;
     private var manager:AnimationManager;
     
@@ -25,13 +25,13 @@ class PreviewAnimation implements Animation
         this.manager = manager;
         this.func = ComplexEasingKindTools.toFunction(easing);
         this.canvas = canvas;
-        totalFrame = TOTAL_FRAME * manager.time;
-        currentFrame = 0;
+        totalTime = TOTAL_TIME * manager.time;
+        currentTime = 0;
     }
     
-    public function onFrame():Void
+    public function onFrame(time:Float):Void
     {
-        currentFrame++;
+        currentTime += time;
         init(canvas);
         
         var ctx = canvas.getContext2d();
@@ -41,13 +41,13 @@ class PreviewAnimation implements Animation
         
         ctx.fillStyle = "#ff64b1";
         
-        var x = func(currentFrame / totalFrame).lerp(left, right);
+        var x = func(currentTime / totalTime).lerp(left, right);
         ctx.fillRect(x, 0, MARKER_WIDTH, HEIGHT);
     }
     
     public function isDead():Bool
     {
-        return currentFrame >= totalFrame;
+        return currentTime >= totalTime;
     }
     
     public static function init(canvas:CanvasElement):Void 

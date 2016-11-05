@@ -36,6 +36,7 @@ class RootContext
     private var application:Application;
     private var currentHash:String;
     private var minorResult:Option<ApplyResult>;
+    private var prevTime:Float;
     
     public function new() 
     {
@@ -51,7 +52,8 @@ class RootContext
         minorResult = Option.None;
         
         currentHash = "";
-        Browser.window.setTimeout(onFrame, 1 / 60);
+        prevTime = Date.now().getTime();
+        Browser.window.setInterval(onFrame, 16);
         Browser.window.addEventListener("hashchange", onHashChange);
     }
     
@@ -71,8 +73,9 @@ class RootContext
     
     private function onFrame():Void
     {
-        animation.onFrame();
-        Browser.window.setTimeout(onFrame, 1 / 60);
+        var time = Date.now().getTime();
+        animation.onFrame(time - prevTime);
+        prevTime = time;
     }
     
     public function setup(application:Application):Void
