@@ -6447,7 +6447,7 @@ tweenxcore_expr_SimpleEasingKindTools.toJsonable = function(easing) {
 	case 1:
 		return ["Standard",easing[2][0],easing[3][0]];
 	case 2:
-		return ["Polyline",easing[2][0],easing[3]];
+		return ["Line",easing[2][0],easing[3]];
 	}
 };
 tweenxcore_expr_SimpleEasingKindTools.fromJsonable = function(data) {
@@ -6459,7 +6459,7 @@ tweenxcore_expr_SimpleEasingKindTools.fromJsonable = function(data) {
 		}
 	} else if(data.length == 3) {
 		switch(data[0]) {
-		case "Polyline":
+		case "Line":
 			var controls = data[2];
 			var tmp = Type.createEnum(tweenxcore_expr_LineKind,data[1],null);
 			var _g = [];
@@ -6484,7 +6484,7 @@ tweenxcore_expr_SimpleEasingKindTools.fromJsonable = function(data) {
 tweenxcore_expr_SimpleEasingKindTools.toExpr = function(easing,valueExpr) {
 	switch(easing[1]) {
 	case 0:
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2906, max : 2916}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2906, max : 2922}},"Easing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2906, max : 2929}},"linear"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2906, max : 2936}},[valueExpr]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2906, max : 2948}};
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2898, max : 2908}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2898, max : 2914}},"Easing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2898, max : 2921}},"linear"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2898, max : 2928}},[valueExpr]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2898, max : 2940}};
 	case 1:
 		return tweenxcore_expr_StandardEasingKindTools.toExpr(easing[2],easing[3],valueExpr);
 	case 2:
@@ -6494,7 +6494,7 @@ tweenxcore_expr_SimpleEasingKindTools.toExpr = function(easing,valueExpr) {
 tweenxcore_expr_SimpleEasingKindTools.toFunctionExpr = function(easing) {
 	switch(easing[1]) {
 	case 0:
-		return { expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 3481, max : 3491}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 3481, max : 3497}},"Easing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 3481, max : 3504}},"linear"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 3481, max : 3511}};
+		return { expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 3473, max : 3483}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 3473, max : 3489}},"Easing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 3473, max : 3496}},"linear"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 3473, max : 3503}};
 	case 1:
 		return tweenxcore_expr_StandardEasingKindTools.toFunctionExpr(easing[2],easing[3]);
 	case 2:

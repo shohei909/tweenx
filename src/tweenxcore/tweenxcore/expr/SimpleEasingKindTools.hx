@@ -39,7 +39,7 @@ class SimpleEasingKindTools
                 
             case SimpleEasingKind.Line(kind, controls):
                 ([
-                    "Polyline",
+                    "Line",
                     EnumValueTools.getName(kind),
                     controls
                 ]:Array<Dynamic>);
@@ -69,7 +69,7 @@ class SimpleEasingKindTools
                         EnumTools.createByName(InOutKind, inOut)
                     );
                     
-                case ["Polyline", kind, controls]:
+                case ["Line", kind, controls]:
                     SimpleEasingKind.Line(
                         EnumTools.createByName(LineKind, kind),
                         [for (c in (controls:Array<Float>)) cast(c, Float)]
