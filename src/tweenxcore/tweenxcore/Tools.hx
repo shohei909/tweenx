@@ -529,7 +529,25 @@ class FloatTools
         }
         return min;
     }
+    
 
+    // =================================================
+    // Polyline
+    // =================================================
+
+    public static inline function polyline(rate:Float, values:Array<Float>):Float
+    {
+        return if (values.length < 2) {
+            throw "points length must be more than 2";
+        } else {
+            var max = values.length - 1;
+            var scaledRate = rate * max;
+            var index = Math.floor(clamp(scaledRate, 0, max - 1)); 
+            var innerRate = scaledRate - index;
+            lerp(innerRate, values[index], values[index + 1]);
+        }
+    }
+    
 
     // =================================================
     // Bernstein Polynomial
@@ -567,19 +585,27 @@ class FloatTools
         return _bezier(rate, [for (i in 0...values.length - 1) lerp(rate, values[i], values[i + 1])]);
     }
 
-    public static inline function polyline(rate:Float, values:Array<Float>):Float
+    /**
+     * Uniform Quadratic B-spline
+     */
+    public static inline function uniformQuadraticBSpline(rate:Float, values:Array<Float>):Float
     {
-        if (values.length < 2) {
+        return if (values.length < 2) {
             throw "points length must be more than 2";
+        } else if (values.length == 2) {
+            lerp(rate, values[0], values[1]);
+        } else {
+            var max = values.length - 2;
+            var scaledRate = rate * max;
+            var index = Math.floor(clamp(scaledRate, 0, max - 1)); 
+            var innerRate = scaledRate - index;
+            var p0 = values[index];
+            var p1 = values[index + 1];
+            var p2 = values[index + 2];
+            innerRate * innerRate * (p0 / 2 - p1 + p2 / 2) + innerRate * (-p0 + p1) + p0 / 2 + p1 / 2;
         }
-		
-		var max = values.length - 1;
-		var scaledRate = rate * max;
-		var index = Math.floor(clamp(scaledRate, 0, max - 1)); 
-		var innerRate = scaledRate - index;
-		return lerp(innerRate, values[index], values[index + 1]);
     }
-	
+    
     // =================================================
     // Converter
     // =================================================
