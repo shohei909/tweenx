@@ -22,7 +22,7 @@ class FloatChange {
     // ===============
 
     public inline function direction():Direction 
-	{
+    {
         return if (previous < current) {
             Direction.Forward;
         } else if (current < previous) {
@@ -48,8 +48,8 @@ class FloatChange {
         }
     }
 
-	
-	
+    
+    
     public inline function handlePart(from:Float, to:Float, updatePart:FloatChangePart->Void):Void
     {
         if (

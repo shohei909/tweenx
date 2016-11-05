@@ -6,19 +6,19 @@ import tweenxcore.expr.ComplexEasingKind;
 
 class CompositeView extends ReactComponentOfProps<CompositeProps>
 {
-	public function new(props:CompositeProps) 
-	{
-		super(props);
-	}
-	
-	override public function render():ReactComponent 
-	{
-		return null;
-	}
+    public function new(props:CompositeProps) 
+    {
+        super(props);
+    }
+    
+    override public function render():ReactComponent 
+    {
+        return null;
+    }
 }
 
 typedef CompositeProps =
 {
-	easing1: ComplexEasingKind,
-	easing2: ComplexEasingKind,
+    easing1: ComplexEasingKind,
+    easing2: ComplexEasingKind,
 }

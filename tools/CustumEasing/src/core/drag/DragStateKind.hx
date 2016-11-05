@@ -3,5 +3,5 @@ import component.basic.NumberSliderDrag;
 
 enum DragStateKind 
 {
-	NumberSlider(detail:NumberSliderDrag);
+    NumberSlider(detail:NumberSliderDrag);
 }

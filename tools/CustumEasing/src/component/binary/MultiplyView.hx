@@ -8,19 +8,19 @@ import tweenxcore.expr.ComplexEasingKind;
 
 class MultiplyView extends ReactComponentOfProps<MultiplyProps>
 {
-	public function new(props:MultiplyProps) 
-	{
-		super(props);
-	}
-	
-	override public function render():ReactComponent 
-	{
-		return null;
-	}
+    public function new(props:MultiplyProps) 
+    {
+        super(props);
+    }
+    
+    override public function render():ReactComponent 
+    {
+        return null;
+    }
 }
 
 typedef MultiplyProps =
 {
-	easing1: ComplexEasingKind,
-	easing2: ComplexEasingKind
+    easing1: ComplexEasingKind,
+    easing2: ComplexEasingKind
 }

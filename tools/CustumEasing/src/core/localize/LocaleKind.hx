@@ -2,6 +2,6 @@ package core.localize;
 
 enum LocaleKind 
 {
-	English;
-	Japanese;
+    English;
+    Japanese;
 }

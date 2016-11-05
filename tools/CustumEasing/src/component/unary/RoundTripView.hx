@@ -7,19 +7,19 @@ import tweenxcore.expr.RoundTripKind;
 
 class RoundTripView extends ReactComponentOfProps<RoundTripProps>
 {
-	public function new(props:RoundTripProps) 
-	{
-		super(props);
-	}
-	
-	override public function render():ReactComponent 
-	{
-		return null;
-	}
+    public function new(props:RoundTripProps) 
+    {
+        super(props);
+    }
+    
+    override public function render():ReactComponent 
+    {
+        return null;
+    }
 }
 
 typedef RoundTripProps =
 {
-	easing: ComplexEasingKind,
-	roundTrip: RoundTripKind,
+    easing: ComplexEasingKind,
+    roundTrip: RoundTripKind,
 }

@@ -3,5 +3,5 @@ import component.complex.ComplexEasingId;
 
 enum HistoryRecord 
 {
-	ChangeEasing(id:ComplexEasingId, );
+    ChangeEasing(id:ComplexEasingId, );
 }

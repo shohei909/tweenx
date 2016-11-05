@@ -20,55 +20,55 @@ import tweenxcore.expr.SimpleEasingKind;
 class Application extends ReactComponentOfProps<ApplicationProps>
 {
     static public function main() 
-	{
+    {
         ReactDOM.render(
-			Application.createElement(
-				{
-					context: new RootContext(),
-				}
-			), 
-			Browser.document.getElementById('application')
-		);
+            Application.createElement(
+                {
+                    context: new RootContext(),
+                }
+            ), 
+            Browser.document.getElementById('application')
+        );
     }
 
     public function new(props:ComplexEasingProps) 
-	{
+    {
         super(props);
-		props.context.setup(this);
+        props.context.setup(this);
     }
-	
-	public override function componentDidMount():Void 
-	{
-		props.context.init();
-	}
+    
+    public override function componentDidMount():Void 
+    {
+        props.context.init();
+    }
 
     override function render():ReactComponent
-	{
+    {
         return "div".createElement(
-			{},
-			[
-				"h2".createElement(
-					{}, 
-					"a".createElement(
-						{ href: "./" }, 
-						props.context.localize.resource.common(ResourceKey.Title)
-					)
-				),
-				MenuView.createElement(props),
-				ComplexEasingView.createElement(
-				{
-					easing: props.context.easing.current,
-					id: ComplexEasingId.root(),
-					context: props.context
-				}
-				),
-				OutputView.createElement(props)
-			]
-		);
+            {},
+            [
+                "h2".createElement(
+                    {}, 
+                    "a".createElement(
+                        { href: "./" }, 
+                        props.context.localize.resource.common(ResourceKey.Title)
+                    )
+                ),
+                MenuView.createElement(props),
+                ComplexEasingView.createElement(
+                {
+                    easing: props.context.easing.current,
+                    id: ComplexEasingId.root(),
+                    context: props.context
+                }
+                ),
+                OutputView.createElement(props)
+            ]
+        );
     }
 }
 
 typedef ApplicationProps =
 {
-	context: RootContext,
+    context: RootContext,
 }

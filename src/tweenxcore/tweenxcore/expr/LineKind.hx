@@ -2,6 +2,7 @@ package tweenxcore.expr;
 
 enum LineKind 
 {
-	Bezier;
-	Polyline;
+    Bezier;
+    Polyline;
+    UniformQuadraticBSpline;
 }

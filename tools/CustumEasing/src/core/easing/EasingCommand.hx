@@ -6,9 +6,9 @@ import tweenxcore.expr.InOutKind;
 
 enum EasingCommand 
 {
-	Replace(easing:ComplexEasingKind);
-	InOut(inOut:InOutKind);
-	Rate(index:Int, rate:Float);
-	AddRate(index:Int);
-	RemoveRate(index:Int);
+    Replace(easing:ComplexEasingKind);
+    InOut(inOut:InOutKind);
+    Rate(index:Int, rate:Float);
+    AddRate(index:Int);
+    RemoveRate(index:Int);
 }

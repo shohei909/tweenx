@@ -2,8 +2,8 @@ package tweenxcore.expr;
 
 enum InOutKind 
 {
-	In;
-	Out;
-	InOut;
-	OutIn;
+    In;
+    Out;
+    InOut;
+    OutIn;
 }

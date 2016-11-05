@@ -9,8 +9,8 @@ import tweenxcore.expr.InOutKind;
 
 enum RootCommand 
 {
-	ChangeEasing(id:ComplexEasingId, command:EasingCommand);
-	ChangeAnimationTime(rate:Float);
-	ChangeOutputMode(mode:OutputMode);
-	ChangeLocale(locale:LocaleKind);
+    ChangeEasing(id:ComplexEasingId, command:EasingCommand);
+    ChangeAnimationTime(rate:Float);
+    ChangeOutputMode(mode:OutputMode);
+    ChangeLocale(locale:LocaleKind);
 }
