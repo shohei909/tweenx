@@ -614,11 +614,23 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 					}
 					break;
 				case 2:
-					func = (function(a2) {
-						return function(a1) {
-							return tweenxcore_FloatTools.bezier(a1,a2[0]);
-						};
-					})([kind[3]]);
+					var controls = kind[3];
+					switch(kind[2][1]) {
+					case 0:
+						func = (function(a2) {
+							return function(a1) {
+								return tweenxcore_FloatTools.bezier(a1,a2[0]);
+							};
+						})([controls]);
+						break;
+					case 1:
+						func = (function(a21) {
+							return function(a11) {
+								return tweenxcore_FloatTools.polyline(a11,a21[0]);
+							};
+						})([controls]);
+						break;
+					}
 					break;
 				}
 				break;
@@ -715,9 +727,9 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 						var strength = op1[2];
 						var func15 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 						var func25 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-						func = (function(a4,a3,a21) {
-							return function(a11) {
-								return tweenxcore_FloatTools.mixEasing(a11,a21[0],a3[0],a4[0]);
+						func = (function(a4,a3,a22) {
+							return function(a12) {
+								return tweenxcore_FloatTools.mixEasing(a12,a22[0],a3[0],a4[0]);
 							};
 						})([strength],[func25],[func15]);
 						break;
@@ -726,9 +738,9 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 						var switchTime = op1[2];
 						var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 						var func26 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-						func = (function(a5,a41,a31,a22) {
-							return function(a12) {
-								return tweenxcore_FloatTools.connectEasing(a12,a22[0],a31[0],a41[0],a5[0]);
+						func = (function(a5,a41,a31,a23) {
+							return function(a13) {
+								return tweenxcore_FloatTools.connectEasing(a13,a23[0],a31[0],a41[0],a5[0]);
 							};
 						})([switchValue],[switchTime],[func26],[func16]);
 						break;
@@ -736,9 +748,9 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 						var switchTime1 = op1[2];
 						var func17 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 						var func27 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-						func = (function(a42,a32,a23) {
-							return function(a13) {
-								return tweenxcore_FloatTools.oneTwoEasing(a13,a23[0],a32[0],a42[0]);
+						func = (function(a42,a32,a24) {
+							return function(a14) {
+								return tweenxcore_FloatTools.oneTwoEasing(a14,a24[0],a32[0],a42[0]);
 							};
 						})([switchTime1],[func27],[func17]);
 						break;
@@ -750,9 +762,9 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 						var func18 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 						var func28 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
 						var func31 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
-						func = (function(a6,a51,a43,a33,a24) {
-							return function(a14) {
-								return tweenxcore_FloatTools.crossfadeEasing(a14,a24[0],a33[0],a43[0],a51[0],a6[0]);
+						func = (function(a6,a51,a43,a33,a25) {
+							return function(a15) {
+								return tweenxcore_FloatTools.crossfadeEasing(a15,a25[0],a33[0],a43[0],a51[0],a6[0]);
 							};
 						})([end],[start],[func31],[func28],[func18]);
 						break;
@@ -1007,8 +1019,8 @@ component_basic_NumberSliderView.prototype = $extend(React.Component.prototype,{
 		var left = (component_basic_NumberSliderView.WIDTH - component_basic_NumberSliderView.BAR_WIDTH) / 2;
 		var right = (component_basic_NumberSliderView.WIDTH + component_basic_NumberSliderView.BAR_WIDTH) / 2;
 		var bottom = (component_basic_NumberSliderView.HEIGHT + component_basic_NumberSliderView.BAR_HEIGHT) / 2;
-		var low = component_basic_NumberSliderView.mod(1 - centerValue,2) / 2;
-		var high = component_basic_NumberSliderView.mod(-centerValue,2) / 2;
+		var low = component_basic_NumberSliderView.mod(-centerValue,2) / 2;
+		var high = component_basic_NumberSliderView.mod(1 - centerValue,2) / 2;
 		if(high < low) {
 			ctx.fillRect(left,top,left * (1 - high) + right * high - left,bottom - top);
 			var left1 = left * (1 - low) + right * low;
@@ -1231,10 +1243,21 @@ var component_basic_PreviewAnimation = function(manager,canvas,easing) {
 			}
 			break;
 		case 2:
-			var a2 = kind[3];
-			tmp = function(a1) {
-				return tweenxcore_FloatTools.bezier(a1,a2);
-			};
+			var controls = kind[3];
+			switch(kind[2][1]) {
+			case 0:
+				var a2 = controls;
+				tmp = function(a1) {
+					return tweenxcore_FloatTools.bezier(a1,a2);
+				};
+				break;
+			case 1:
+				var a21 = controls;
+				tmp = function(a11) {
+					return tweenxcore_FloatTools.polyline(a11,a21);
+				};
+				break;
+			}
 			break;
 		}
 		break;
@@ -1316,11 +1339,11 @@ var component_basic_PreviewAnimation = function(manager,canvas,easing) {
 				var strength = op1[2];
 				var func13 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 				var func23 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-				var a21 = func13;
+				var a22 = func13;
 				var a3 = func23;
 				var a4 = strength;
-				tmp = function(a11) {
-					return tweenxcore_FloatTools.mixEasing(a11,a21,a3,a4);
+				tmp = function(a12) {
+					return tweenxcore_FloatTools.mixEasing(a12,a22,a3,a4);
 				};
 				break;
 			case 3:
@@ -1328,23 +1351,23 @@ var component_basic_PreviewAnimation = function(manager,canvas,easing) {
 				var switchTime = op1[2];
 				var func14 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 				var func24 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-				var a22 = func14;
+				var a23 = func14;
 				var a31 = func24;
 				var a41 = switchTime;
 				var a5 = switchValue;
-				tmp = function(a12) {
-					return tweenxcore_FloatTools.connectEasing(a12,a22,a31,a41,a5);
+				tmp = function(a13) {
+					return tweenxcore_FloatTools.connectEasing(a13,a23,a31,a41,a5);
 				};
 				break;
 			case 4:
 				var switchTime1 = op1[2];
 				var func15 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 				var func25 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-				var a23 = func15;
+				var a24 = func15;
 				var a32 = func25;
 				var a42 = switchTime1;
-				tmp = function(a13) {
-					return tweenxcore_FloatTools.oneTwoEasing(a13,a23,a32,a42);
+				tmp = function(a14) {
+					return tweenxcore_FloatTools.oneTwoEasing(a14,a24,a32,a42);
 				};
 				break;
 			case 5:
@@ -1355,13 +1378,13 @@ var component_basic_PreviewAnimation = function(manager,canvas,easing) {
 				var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 				var func26 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
 				var func31 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
-				var a24 = func16;
+				var a25 = func16;
 				var a33 = func26;
 				var a43 = func31;
 				var a51 = start;
 				var a6 = end;
-				tmp = function(a14) {
-					return tweenxcore_FloatTools.crossfadeEasing(a14,a24,a33,a43,a51,a6);
+				tmp = function(a15) {
+					return tweenxcore_FloatTools.crossfadeEasing(a15,a25,a33,a43,a51,a6);
 				};
 				break;
 			}
@@ -1672,7 +1695,7 @@ component_complex_ComplexEasingSelectFocus.prototype = {
 	}
 	,__class__: component_complex_ComplexEasingSelectFocus
 };
-var component_complex_ComplexEasingSelectItemId = $hxClasses["component.complex.ComplexEasingSelectItemId"] = { __ename__ : ["component","complex","ComplexEasingSelectItemId"], __constructs__ : ["Linear","Quad","Cubic","Quart","Quint","Sine","Circ","Expo","Back","Bounce","Elastic","Warp","Bezier","Repeat","Lerp","Clamp","Yoyo","Zigzag","Composite","Multiply","Mix","Connect","OneTwo","Crossfade"] };
+var component_complex_ComplexEasingSelectItemId = $hxClasses["component.complex.ComplexEasingSelectItemId"] = { __ename__ : ["component","complex","ComplexEasingSelectItemId"], __constructs__ : ["Linear","Quad","Cubic","Quart","Quint","Sine","Circ","Expo","Back","Bounce","Elastic","Warp","Bezier","Polyline","Repeat","Lerp","Clamp","Yoyo","Zigzag","Composite","Multiply","Mix","Connect","OneTwo","Crossfade"] };
 component_complex_ComplexEasingSelectItemId.Linear = ["Linear",0];
 component_complex_ComplexEasingSelectItemId.Linear.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Linear.__enum__ = component_complex_ComplexEasingSelectItemId;
@@ -1712,37 +1735,40 @@ component_complex_ComplexEasingSelectItemId.Warp.__enum__ = component_complex_Co
 component_complex_ComplexEasingSelectItemId.Bezier = ["Bezier",12];
 component_complex_ComplexEasingSelectItemId.Bezier.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Bezier.__enum__ = component_complex_ComplexEasingSelectItemId;
-component_complex_ComplexEasingSelectItemId.Repeat = ["Repeat",13];
+component_complex_ComplexEasingSelectItemId.Polyline = ["Polyline",13];
+component_complex_ComplexEasingSelectItemId.Polyline.toString = $estr;
+component_complex_ComplexEasingSelectItemId.Polyline.__enum__ = component_complex_ComplexEasingSelectItemId;
+component_complex_ComplexEasingSelectItemId.Repeat = ["Repeat",14];
 component_complex_ComplexEasingSelectItemId.Repeat.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Repeat.__enum__ = component_complex_ComplexEasingSelectItemId;
-component_complex_ComplexEasingSelectItemId.Lerp = ["Lerp",14];
+component_complex_ComplexEasingSelectItemId.Lerp = ["Lerp",15];
 component_complex_ComplexEasingSelectItemId.Lerp.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Lerp.__enum__ = component_complex_ComplexEasingSelectItemId;
-component_complex_ComplexEasingSelectItemId.Clamp = ["Clamp",15];
+component_complex_ComplexEasingSelectItemId.Clamp = ["Clamp",16];
 component_complex_ComplexEasingSelectItemId.Clamp.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Clamp.__enum__ = component_complex_ComplexEasingSelectItemId;
-component_complex_ComplexEasingSelectItemId.Yoyo = ["Yoyo",16];
+component_complex_ComplexEasingSelectItemId.Yoyo = ["Yoyo",17];
 component_complex_ComplexEasingSelectItemId.Yoyo.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Yoyo.__enum__ = component_complex_ComplexEasingSelectItemId;
-component_complex_ComplexEasingSelectItemId.Zigzag = ["Zigzag",17];
+component_complex_ComplexEasingSelectItemId.Zigzag = ["Zigzag",18];
 component_complex_ComplexEasingSelectItemId.Zigzag.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Zigzag.__enum__ = component_complex_ComplexEasingSelectItemId;
-component_complex_ComplexEasingSelectItemId.Composite = ["Composite",18];
+component_complex_ComplexEasingSelectItemId.Composite = ["Composite",19];
 component_complex_ComplexEasingSelectItemId.Composite.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Composite.__enum__ = component_complex_ComplexEasingSelectItemId;
-component_complex_ComplexEasingSelectItemId.Multiply = ["Multiply",19];
+component_complex_ComplexEasingSelectItemId.Multiply = ["Multiply",20];
 component_complex_ComplexEasingSelectItemId.Multiply.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Multiply.__enum__ = component_complex_ComplexEasingSelectItemId;
-component_complex_ComplexEasingSelectItemId.Mix = ["Mix",20];
+component_complex_ComplexEasingSelectItemId.Mix = ["Mix",21];
 component_complex_ComplexEasingSelectItemId.Mix.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Mix.__enum__ = component_complex_ComplexEasingSelectItemId;
-component_complex_ComplexEasingSelectItemId.Connect = ["Connect",21];
+component_complex_ComplexEasingSelectItemId.Connect = ["Connect",22];
 component_complex_ComplexEasingSelectItemId.Connect.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Connect.__enum__ = component_complex_ComplexEasingSelectItemId;
-component_complex_ComplexEasingSelectItemId.OneTwo = ["OneTwo",22];
+component_complex_ComplexEasingSelectItemId.OneTwo = ["OneTwo",23];
 component_complex_ComplexEasingSelectItemId.OneTwo.toString = $estr;
 component_complex_ComplexEasingSelectItemId.OneTwo.__enum__ = component_complex_ComplexEasingSelectItemId;
-component_complex_ComplexEasingSelectItemId.Crossfade = ["Crossfade",23];
+component_complex_ComplexEasingSelectItemId.Crossfade = ["Crossfade",24];
 component_complex_ComplexEasingSelectItemId.Crossfade.toString = $estr;
 component_complex_ComplexEasingSelectItemId.Crossfade.__enum__ = component_complex_ComplexEasingSelectItemId;
 var component_complex_ComplexEasingSelectItem = function(id,createEasing) {
@@ -1785,7 +1811,13 @@ component_complex_ComplexEasingSelectItem.resolveItemId = function(easing) {
 			}
 			break;
 		case 2:
-			return component_complex_ComplexEasingSelectItemId.Bezier;
+			switch(kind[2][1]) {
+			case 0:
+				return component_complex_ComplexEasingSelectItemId.Bezier;
+			case 1:
+				return component_complex_ComplexEasingSelectItemId.Polyline;
+			}
+			break;
 		}
 		break;
 	case 1:
@@ -1875,57 +1907,61 @@ component_complex_ComplexEasingSelectItem.createItem = function(id) {
 		});
 	case 12:
 		return new component_complex_ComplexEasingSelectItem(id,function(a211) {
-			return component_complex_ComplexEasingSelectItem.createPolyline(tweenxcore_expr_PolylineKind.Bezier,a211);
+			return component_complex_ComplexEasingSelectItem.createPolyline(tweenxcore_expr_LineKind.Bezier,a211);
 		});
 	case 13:
+		return new component_complex_ComplexEasingSelectItem(id,function(a212) {
+			return component_complex_ComplexEasingSelectItem.createPolyline(tweenxcore_expr_LineKind.Polyline,a212);
+		});
+	case 14:
 		var op = tweenxcore_expr_UnaryOpKind.Repeat(2);
 		return new component_complex_ComplexEasingSelectItem(id,function(a1) {
 			return component_complex_ComplexEasingSelectItem.createUnaryOp(op,a1);
 		});
-	case 14:
+	case 15:
 		var op1 = tweenxcore_expr_UnaryOpKind.Lerp(0,1);
 		return new component_complex_ComplexEasingSelectItem(id,function(a11) {
 			return component_complex_ComplexEasingSelectItem.createUnaryOp(op1,a11);
 		});
-	case 15:
+	case 16:
 		var op2 = tweenxcore_expr_UnaryOpKind.Clamp(0,1);
 		return new component_complex_ComplexEasingSelectItem(id,function(a12) {
 			return component_complex_ComplexEasingSelectItem.createUnaryOp(op2,a12);
 		});
-	case 16:
+	case 17:
 		var op3 = tweenxcore_expr_UnaryOpKind.RoundTrip(tweenxcore_expr_RoundTripKind.Yoyo);
 		return new component_complex_ComplexEasingSelectItem(id,function(a13) {
 			return component_complex_ComplexEasingSelectItem.createUnaryOp(op3,a13);
 		});
-	case 17:
+	case 18:
 		var op4 = tweenxcore_expr_UnaryOpKind.RoundTrip(tweenxcore_expr_RoundTripKind.Zigzag);
 		return new component_complex_ComplexEasingSelectItem(id,function(a14) {
 			return component_complex_ComplexEasingSelectItem.createUnaryOp(op4,a14);
 		});
-	case 18:
+	case 19:
 		return new component_complex_ComplexEasingSelectItem(id,function(a15) {
 			return component_complex_ComplexEasingSelectItem.createBinaryOp(tweenxcore_expr_BinaryOpKind.Composite,a15);
 		});
-	case 19:
+	case 20:
 		return new component_complex_ComplexEasingSelectItem(id,function(a16) {
 			return component_complex_ComplexEasingSelectItem.createBinaryOp(tweenxcore_expr_BinaryOpKind.Multiply,a16);
 		});
-	case 20:
+	case 21:
 		var op5 = tweenxcore_expr_BinaryOpKind.Mix(0.5);
 		return new component_complex_ComplexEasingSelectItem(id,function(a17) {
 			return component_complex_ComplexEasingSelectItem.createBinaryOp(op5,a17);
 		});
-	case 21:
+	case 22:
 		var op6 = tweenxcore_expr_BinaryOpKind.Connect(0.5,0.5);
 		return new component_complex_ComplexEasingSelectItem(id,function(a18) {
 			return component_complex_ComplexEasingSelectItem.createBinaryOp(op6,a18);
 		});
-	case 22:
+	case 23:
 		var op7 = tweenxcore_expr_BinaryOpKind.OneTwo(0.5);
 		return new component_complex_ComplexEasingSelectItem(id,function(a19) {
 			return component_complex_ComplexEasingSelectItem.createBinaryOp(op7,a19);
 		});
-	case 23:
+	case 24:
 		var op8 = tweenxcore_expr_TernaryOpKind.Crossfade(0,1);
 		return new component_complex_ComplexEasingSelectItem(id,function(a110) {
 			return component_complex_ComplexEasingSelectItem.createTernaryOp(op8,a110);
@@ -1939,7 +1975,7 @@ component_complex_ComplexEasingSelectItem.createStandard = function(easing,conte
 	return tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Standard(easing,context.getInOut()));
 };
 component_complex_ComplexEasingSelectItem.createPolyline = function(polyline,context) {
-	return tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Polyline(polyline,[0,0,1,1]));
+	return tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Line(polyline,[0,0,1,1]));
 };
 component_complex_ComplexEasingSelectItem.createUnaryOp = function(op,context) {
 	return tweenxcore_expr_ComplexEasingKind.Op(context.getEasing(),op);
@@ -2742,7 +2778,7 @@ core_easing_EasingManager.prototype = {
 				if(_g[2][2][1] == 2) {
 					var newControls = _g[2][2][3].slice(0);
 					newControls.splice(index + 1,0,newControls[index]);
-					this.replace(id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Polyline(_g[2][2][2],newControls)),result);
+					this.replace(id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Line(_g[2][2][2],newControls)),result);
 				}
 			}
 		}
@@ -2755,7 +2791,7 @@ core_easing_EasingManager.prototype = {
 				if(_g[2][2][1] == 2) {
 					var newControls = _g[2][2][3].slice(0);
 					newControls.splice(index,1);
-					this.replace(id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Polyline(_g[2][2][2],newControls)),result);
+					this.replace(id,tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Line(_g[2][2][2],newControls)),result);
 				}
 			}
 		}
@@ -2774,7 +2810,7 @@ core_easing_EasingManager.prototype = {
 					if(controls[index] != value) {
 						var newControls = controls.slice(0);
 						newControls[index] = value;
-						newEasing = tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Polyline(kind,newControls));
+						newEasing = tweenxcore_expr_ComplexEasingKind.Simple(tweenxcore_expr_SimpleEasingKind.Line(kind,newControls));
 					} else {
 						newEasing = oldEasing;
 					}
@@ -3161,36 +3197,39 @@ core_localize_resource_JapaneseResource.prototype = {
 			text = "ベジェ曲線";
 			break;
 		case 13:
-			text = "繰り返し";
+			text = "折れ線";
 			break;
 		case 14:
-			text = "線形補間";
+			text = "繰り返し";
 			break;
 		case 15:
-			text = "上限下限";
+			text = "線形補間";
 			break;
 		case 16:
-			text = "ヨーヨー";
+			text = "上限下限";
 			break;
 		case 17:
-			text = "ジグザグ";
+			text = "ヨーヨー";
 			break;
 		case 18:
-			text = "関数合成";
+			text = "ジグザグ";
 			break;
 		case 19:
-			text = "かけ算";
+			text = "関数合成";
 			break;
 		case 20:
-			text = "ミックス";
+			text = "かけ算";
 			break;
 		case 21:
-			text = "コネクト";
+			text = "ミックス";
 			break;
 		case 22:
-			text = "ワンツー";
+			text = "コネクト";
 			break;
 		case 23:
+			text = "ワンツー";
+			break;
+		case 24:
 			text = "クロスフェード";
 			break;
 		}
@@ -5473,6 +5512,17 @@ tweenxcore_FloatTools._bezier = function(rate,values) {
 	}
 	return tweenxcore_FloatTools._bezier(rate,_g);
 };
+tweenxcore_FloatTools.polyline = function(rate,values) {
+	if(values.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	}
+	var max = values.length - 1;
+	var scaledRate = rate * max;
+	var max1 = max - 1;
+	var index = Math.floor(scaledRate <= 0?0:max1 <= scaledRate?max1:scaledRate);
+	var innerRate = scaledRate - index;
+	return values[index] * (1 - innerRate) + values[index + 1] * innerRate;
+};
 tweenxcore_FloatTools.frameToSecond = function(frame,fps) {
 	return frame / fps;
 };
@@ -5841,10 +5891,20 @@ tweenxcore_expr_ComplexEasingKindTools.toFunction = function(easing) {
 			}
 			break;
 		case 2:
-			var a2 = kind[3];
-			return function(a1) {
-				return tweenxcore_FloatTools.bezier(a1,a2);
-			};
+			var controls = kind[3];
+			switch(kind[2][1]) {
+			case 0:
+				var a2 = controls;
+				return function(a1) {
+					return tweenxcore_FloatTools.bezier(a1,a2);
+				};
+			case 1:
+				var a21 = controls;
+				return function(a11) {
+					return tweenxcore_FloatTools.polyline(a11,a21);
+				};
+			}
+			break;
 		}
 		break;
 	case 1:
@@ -5918,33 +5978,33 @@ tweenxcore_expr_ComplexEasingKindTools.toFunction = function(easing) {
 				var strength = op1[2];
 				var func13 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 				var func23 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-				var a21 = func13;
+				var a22 = func13;
 				var a3 = func23;
 				var a4 = strength;
-				return function(a11) {
-					return tweenxcore_FloatTools.mixEasing(a11,a21,a3,a4);
+				return function(a12) {
+					return tweenxcore_FloatTools.mixEasing(a12,a22,a3,a4);
 				};
 			case 3:
 				var switchValue = op1[3];
 				var switchTime = op1[2];
 				var func14 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 				var func24 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-				var a22 = func14;
+				var a23 = func14;
 				var a31 = func24;
 				var a41 = switchTime;
 				var a5 = switchValue;
-				return function(a12) {
-					return tweenxcore_FloatTools.connectEasing(a12,a22,a31,a41,a5);
+				return function(a13) {
+					return tweenxcore_FloatTools.connectEasing(a13,a23,a31,a41,a5);
 				};
 			case 4:
 				var switchTime1 = op1[2];
 				var func15 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 				var func25 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-				var a23 = func15;
+				var a24 = func15;
 				var a32 = func25;
 				var a42 = switchTime1;
-				return function(a13) {
-					return tweenxcore_FloatTools.oneTwoEasing(a13,a23,a32,a42);
+				return function(a14) {
+					return tweenxcore_FloatTools.oneTwoEasing(a14,a24,a32,a42);
 				};
 			case 5:
 				var op2 = op1[3];
@@ -5954,13 +6014,13 @@ tweenxcore_expr_ComplexEasingKindTools.toFunction = function(easing) {
 				var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
 				var func26 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
 				var func31 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
-				var a24 = func16;
+				var a25 = func16;
 				var a33 = func26;
 				var a43 = func31;
 				var a51 = start;
 				var a6 = end;
-				return function(a14) {
-					return tweenxcore_FloatTools.crossfadeEasing(a14,a24,a33,a43,a51,a6);
+				return function(a15) {
+					return tweenxcore_FloatTools.crossfadeEasing(a15,a25,a33,a43,a51,a6);
 				};
 			}
 			break;
@@ -6045,24 +6105,45 @@ tweenxcore_expr_InOutKind.InOut.__enum__ = tweenxcore_expr_InOutKind;
 tweenxcore_expr_InOutKind.OutIn = ["OutIn",3];
 tweenxcore_expr_InOutKind.OutIn.toString = $estr;
 tweenxcore_expr_InOutKind.OutIn.__enum__ = tweenxcore_expr_InOutKind;
-var tweenxcore_expr_PolylineKind = $hxClasses["tweenxcore.expr.PolylineKind"] = { __ename__ : ["tweenxcore","expr","PolylineKind"], __constructs__ : ["Bezier"] };
-tweenxcore_expr_PolylineKind.Bezier = ["Bezier",0];
-tweenxcore_expr_PolylineKind.Bezier.toString = $estr;
-tweenxcore_expr_PolylineKind.Bezier.__enum__ = tweenxcore_expr_PolylineKind;
-var tweenxcore_expr_PolylineKindTools = function() { };
-$hxClasses["tweenxcore.expr.PolylineKindTools"] = tweenxcore_expr_PolylineKindTools;
-tweenxcore_expr_PolylineKindTools.__name__ = ["tweenxcore","expr","PolylineKindTools"];
-tweenxcore_expr_PolylineKindTools.toFunction = function(kind,controls) {
-	var a2 = controls;
-	return function(a1) {
-		return tweenxcore_FloatTools.bezier(a1,a2);
-	};
+var tweenxcore_expr_LineKind = $hxClasses["tweenxcore.expr.LineKind"] = { __ename__ : ["tweenxcore","expr","LineKind"], __constructs__ : ["Bezier","Polyline"] };
+tweenxcore_expr_LineKind.Bezier = ["Bezier",0];
+tweenxcore_expr_LineKind.Bezier.toString = $estr;
+tweenxcore_expr_LineKind.Bezier.__enum__ = tweenxcore_expr_LineKind;
+tweenxcore_expr_LineKind.Polyline = ["Polyline",1];
+tweenxcore_expr_LineKind.Polyline.toString = $estr;
+tweenxcore_expr_LineKind.Polyline.__enum__ = tweenxcore_expr_LineKind;
+var tweenxcore_expr_LineKindTools = function() { };
+$hxClasses["tweenxcore.expr.LineKindTools"] = tweenxcore_expr_LineKindTools;
+tweenxcore_expr_LineKindTools.__name__ = ["tweenxcore","expr","LineKindTools"];
+tweenxcore_expr_LineKindTools.toFunction = function(kind,controls) {
+	switch(kind[1]) {
+	case 0:
+		var a2 = controls;
+		return function(a1) {
+			return tweenxcore_FloatTools.bezier(a1,a2);
+		};
+	case 1:
+		var a21 = controls;
+		return function(a11) {
+			return tweenxcore_FloatTools.polyline(a11,a21);
+		};
+	}
 };
-tweenxcore_expr_PolylineKindTools.toExpr = function(kind,controls,valueExpr) {
-	return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 711, max : 721}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 711, max : 727}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 711, max : 738}},"bezier"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 711, max : 745}},[valueExpr,tweenxcore_expr_ExprMakeTools.floatArrayToExpr(controls)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 711, max : 802}};
+tweenxcore_expr_LineKindTools.toExpr = function(kind,controls,valueExpr) {
+	switch(kind[1]) {
+	case 0:
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 769, max : 779}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 769, max : 785}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 769, max : 796}},"bezier"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 769, max : 803}},[valueExpr,tweenxcore_expr_ExprMakeTools.floatArrayToExpr(controls)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 769, max : 860}};
+	case 1:
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 907, max : 917}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 907, max : 923}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 907, max : 934}},"polyline"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 907, max : 943}},[valueExpr,tweenxcore_expr_ExprMakeTools.floatArrayToExpr(controls)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 907, max : 1000}};
+	}
 };
-tweenxcore_expr_PolylineKindTools.toFunctionExpr = function(kind,controls) {
-	return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 993, max : 1003}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 993, max : 1009}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 993, max : 1020}},"bezier"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 993, max : 1027}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 993, max : 1032}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 1033, max : 1034}},tweenxcore_expr_ExprMakeTools.floatArrayToExpr(controls)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/PolylineKindTools.hx", min : 993, max : 1080}};
+tweenxcore_expr_LineKindTools.toFunctionExpr = function(kind,controls) {
+	switch(kind[1]) {
+	case 0:
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1183, max : 1193}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1183, max : 1199}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1183, max : 1210}},"bezier"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1183, max : 1217}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1183, max : 1222}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1223, max : 1224}},tweenxcore_expr_ExprMakeTools.floatArrayToExpr(controls)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1183, max : 1270}};
+	case 1:
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1317, max : 1327}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1317, max : 1333}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1317, max : 1344}},"polyline"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1317, max : 1353}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1317, max : 1358}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1359, max : 1360}},tweenxcore_expr_ExprMakeTools.floatArrayToExpr(controls)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/LineKindTools.hx", min : 1317, max : 1406}};
+	}
 };
 var tweenxcore_expr_RoundTripKind = $hxClasses["tweenxcore.expr.RoundTripKind"] = { __ename__ : ["tweenxcore","expr","RoundTripKind"], __constructs__ : ["Yoyo","Zigzag"] };
 tweenxcore_expr_RoundTripKind.Yoyo = ["Yoyo",0];
@@ -6112,12 +6193,12 @@ tweenxcore_expr_RoundTripKindTools.toFunctionExpr = function(kind,easing) {
 		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1466, max : 1476}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1466, max : 1482}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1466, max : 1493}},"zigzag"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1466, max : 1500}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1466, max : 1505}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1506, max : 1507}},expr1]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1466, max : 1515}};
 	}
 };
-var tweenxcore_expr_SimpleEasingKind = $hxClasses["tweenxcore.expr.SimpleEasingKind"] = { __ename__ : ["tweenxcore","expr","SimpleEasingKind"], __constructs__ : ["Linear","Standard","Polyline"] };
+var tweenxcore_expr_SimpleEasingKind = $hxClasses["tweenxcore.expr.SimpleEasingKind"] = { __ename__ : ["tweenxcore","expr","SimpleEasingKind"], __constructs__ : ["Linear","Standard","Line"] };
 tweenxcore_expr_SimpleEasingKind.Linear = ["Linear",0];
 tweenxcore_expr_SimpleEasingKind.Linear.toString = $estr;
 tweenxcore_expr_SimpleEasingKind.Linear.__enum__ = tweenxcore_expr_SimpleEasingKind;
 tweenxcore_expr_SimpleEasingKind.Standard = function(easing,inOut) { var $x = ["Standard",1,easing,inOut]; $x.__enum__ = tweenxcore_expr_SimpleEasingKind; $x.toString = $estr; return $x; };
-tweenxcore_expr_SimpleEasingKind.Polyline = function(kind,controls) { var $x = ["Polyline",2,kind,controls]; $x.__enum__ = tweenxcore_expr_SimpleEasingKind; $x.toString = $estr; return $x; };
+tweenxcore_expr_SimpleEasingKind.Line = function(kind,controls) { var $x = ["Line",2,kind,controls]; $x.__enum__ = tweenxcore_expr_SimpleEasingKind; $x.toString = $estr; return $x; };
 var tweenxcore_expr_SimpleEasingKindTools = function() { };
 $hxClasses["tweenxcore.expr.SimpleEasingKindTools"] = tweenxcore_expr_SimpleEasingKindTools;
 tweenxcore_expr_SimpleEasingKindTools.__name__ = ["tweenxcore","expr","SimpleEasingKindTools"];
@@ -6263,10 +6344,20 @@ tweenxcore_expr_SimpleEasingKindTools.toFunction = function(easing) {
 		}
 		break;
 	case 2:
-		var a2 = easing[3];
-		return function(a1) {
-			return tweenxcore_FloatTools.bezier(a1,a2);
-		};
+		var controls = easing[3];
+		switch(easing[2][1]) {
+		case 0:
+			var a2 = controls;
+			return function(a1) {
+				return tweenxcore_FloatTools.bezier(a1,a2);
+			};
+		case 1:
+			var a21 = controls;
+			return function(a11) {
+				return tweenxcore_FloatTools.polyline(a11,a21);
+			};
+		}
+		break;
 	}
 };
 tweenxcore_expr_SimpleEasingKindTools.toJsonable = function(easing) {
@@ -6290,7 +6381,7 @@ tweenxcore_expr_SimpleEasingKindTools.fromJsonable = function(data) {
 		switch(data[0]) {
 		case "Polyline":
 			var controls = data[2];
-			var tmp = Type.createEnum(tweenxcore_expr_PolylineKind,data[1],null);
+			var tmp = Type.createEnum(tweenxcore_expr_LineKind,data[1],null);
 			var _g = [];
 			var _g1 = 0;
 			var _g2 = controls;
@@ -6299,7 +6390,7 @@ tweenxcore_expr_SimpleEasingKindTools.fromJsonable = function(data) {
 				++_g1;
 				_g.push(js_Boot.__cast(c , Float));
 			}
-			return tweenxcore_expr_SimpleEasingKind.Polyline(tmp,_g);
+			return tweenxcore_expr_SimpleEasingKind.Line(tmp,_g);
 		case "Standard":
 			var inOut = data[2];
 			return tweenxcore_expr_SimpleEasingKind.Standard(Type.createEnum(tweenxcore_expr_StandardEasingKind,data[1],null),Type.createEnum(tweenxcore_expr_InOutKind,inOut,null));
@@ -6313,21 +6404,21 @@ tweenxcore_expr_SimpleEasingKindTools.fromJsonable = function(data) {
 tweenxcore_expr_SimpleEasingKindTools.toExpr = function(easing,valueExpr) {
 	switch(easing[1]) {
 	case 0:
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2156, max : 2166}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2156, max : 2172}},"Easing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2156, max : 2179}},"linear"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2156, max : 2186}},[valueExpr]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2156, max : 2198}};
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2132, max : 2142}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2132, max : 2148}},"Easing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2132, max : 2155}},"linear"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2132, max : 2162}},[valueExpr]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2132, max : 2174}};
 	case 1:
 		return tweenxcore_expr_StandardEasingKindTools.toExpr(easing[2],easing[3],valueExpr);
 	case 2:
-		return tweenxcore_expr_PolylineKindTools.toExpr(easing[2],easing[3],valueExpr);
+		return tweenxcore_expr_LineKindTools.toExpr(easing[2],easing[3],valueExpr);
 	}
 };
 tweenxcore_expr_SimpleEasingKindTools.toFunctionExpr = function(easing) {
 	switch(easing[1]) {
 	case 0:
-		return { expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2622, max : 2632}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2622, max : 2638}},"Easing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2622, max : 2645}},"linear"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2622, max : 2652}};
+		return { expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2590, max : 2600}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2590, max : 2606}},"Easing"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2590, max : 2613}},"linear"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/SimpleEasingKindTools.hx", min : 2590, max : 2620}};
 	case 1:
 		return tweenxcore_expr_StandardEasingKindTools.toFunctionExpr(easing[2],easing[3]);
 	case 2:
-		return tweenxcore_expr_PolylineKindTools.toFunctionExpr(easing[2],easing[3]);
+		return tweenxcore_expr_LineKindTools.toFunctionExpr(easing[2],easing[3]);
 	}
 };
 var tweenxcore_expr_StandardEasingKind = $hxClasses["tweenxcore.expr.StandardEasingKind"] = { __ename__ : ["tweenxcore","expr","StandardEasingKind"], __constructs__ : ["Quad","Cubic","Quart","Quint","Sine","Circ","Expo","Back","Bounce","Elastic","Warp"] };
@@ -7078,7 +7169,7 @@ component_binary_ConnectView.displayName = "ConnectView";
 component_binary_MixView.displayName = "MixView";
 component_binary_MultiplyView.displayName = "MultiplyView";
 component_binary_OneTwoView.displayName = "OneTwoView";
-component_complex_ComplexEasingSelectItem.itemIds = [[component_complex_ComplexEasingSelectItemId.Linear,component_complex_ComplexEasingSelectItemId.Quad,component_complex_ComplexEasingSelectItemId.Cubic,component_complex_ComplexEasingSelectItemId.Quart,component_complex_ComplexEasingSelectItemId.Quint,component_complex_ComplexEasingSelectItemId.Sine,component_complex_ComplexEasingSelectItemId.Circ,component_complex_ComplexEasingSelectItemId.Expo,component_complex_ComplexEasingSelectItemId.Back,component_complex_ComplexEasingSelectItemId.Bounce,component_complex_ComplexEasingSelectItemId.Elastic,component_complex_ComplexEasingSelectItemId.Warp],[component_complex_ComplexEasingSelectItemId.Bezier],[component_complex_ComplexEasingSelectItemId.Lerp,component_complex_ComplexEasingSelectItemId.Clamp,component_complex_ComplexEasingSelectItemId.Repeat,component_complex_ComplexEasingSelectItemId.Yoyo,component_complex_ComplexEasingSelectItemId.Zigzag],[component_complex_ComplexEasingSelectItemId.Composite,component_complex_ComplexEasingSelectItemId.Multiply,component_complex_ComplexEasingSelectItemId.Connect,component_complex_ComplexEasingSelectItemId.OneTwo,component_complex_ComplexEasingSelectItemId.Mix,component_complex_ComplexEasingSelectItemId.Crossfade]];
+component_complex_ComplexEasingSelectItem.itemIds = [[component_complex_ComplexEasingSelectItemId.Linear,component_complex_ComplexEasingSelectItemId.Quad,component_complex_ComplexEasingSelectItemId.Cubic,component_complex_ComplexEasingSelectItemId.Quart,component_complex_ComplexEasingSelectItemId.Quint,component_complex_ComplexEasingSelectItemId.Sine,component_complex_ComplexEasingSelectItemId.Circ,component_complex_ComplexEasingSelectItemId.Expo,component_complex_ComplexEasingSelectItemId.Back,component_complex_ComplexEasingSelectItemId.Bounce,component_complex_ComplexEasingSelectItemId.Elastic,component_complex_ComplexEasingSelectItemId.Warp],[component_complex_ComplexEasingSelectItemId.Polyline,component_complex_ComplexEasingSelectItemId.Bezier],[component_complex_ComplexEasingSelectItemId.Lerp,component_complex_ComplexEasingSelectItemId.Clamp,component_complex_ComplexEasingSelectItemId.Repeat,component_complex_ComplexEasingSelectItemId.Yoyo,component_complex_ComplexEasingSelectItemId.Zigzag],[component_complex_ComplexEasingSelectItemId.Composite,component_complex_ComplexEasingSelectItemId.Multiply,component_complex_ComplexEasingSelectItemId.Connect,component_complex_ComplexEasingSelectItemId.OneTwo,component_complex_ComplexEasingSelectItemId.Mix,component_complex_ComplexEasingSelectItemId.Crossfade]];
 component_complex_ComplexEasingSelectView.displayName = "ComplexEasingSelectView";
 component_complex_ComplexEasingView.displayName = "ComplexEasingView";
 component_menu_HistoryView.displayName = "HistoryView";

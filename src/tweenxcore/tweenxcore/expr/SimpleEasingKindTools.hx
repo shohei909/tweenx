@@ -4,7 +4,7 @@ import haxe.EnumTools.EnumValueTools;
 import haxe.macro.Expr;
 import tweenxcore.Tools.Easing;
 import tweenxcore.Tools.FloatTools;
-import tweenxcore.expr.PolylineKindTools;
+import tweenxcore.expr.LineKindTools;
 
 class SimpleEasingKindTools 
 {
@@ -18,8 +18,8 @@ class SimpleEasingKindTools
 			case SimpleEasingKind.Standard(easing, inOut):
 				StandardEasingKindTools.toFunction(easing, inOut);
 				
-			case SimpleEasingKind.Polyline(polyline, controls):
-				PolylineKindTools.toFunction(polyline, controls);
+			case SimpleEasingKind.Line(polyline, controls):
+				LineKindTools.toFunction(polyline, controls);
 		}
 	}	
 	
@@ -37,7 +37,7 @@ class SimpleEasingKindTools
 					EnumValueTools.getName(inOut),
 				]:Array<Dynamic>);
 				
-			case SimpleEasingKind.Polyline(kind, controls):
+			case SimpleEasingKind.Line(kind, controls):
 				([
 					"Polyline",
 					EnumValueTools.getName(kind),
@@ -70,8 +70,8 @@ class SimpleEasingKindTools
 					);
 					
 				case ["Polyline", kind, controls]:
-					SimpleEasingKind.Polyline(
-						EnumTools.createByName(PolylineKind, kind),
+					SimpleEasingKind.Line(
+						EnumTools.createByName(LineKind, kind),
 						[for (c in (controls:Array<Float>)) cast(c, Float)]
 					);
 					
@@ -91,8 +91,8 @@ class SimpleEasingKindTools
 			case SimpleEasingKind.Standard(easing, inOut):
 				StandardEasingKindTools.toExpr(easing, inOut, valueExpr);
 				
-			case SimpleEasingKind.Polyline(polyline, controls):
-				PolylineKindTools.toExpr(polyline, controls, valueExpr);
+			case SimpleEasingKind.Line(polyline, controls):
+				LineKindTools.toExpr(polyline, controls, valueExpr);
 		}
 	}
 	
@@ -106,8 +106,8 @@ class SimpleEasingKindTools
 			case SimpleEasingKind.Standard(easing, inOut):
 				StandardEasingKindTools.toFunctionExpr(easing, inOut);
 				
-			case SimpleEasingKind.Polyline(polyline, controls):
-				PolylineKindTools.toFunctionExpr(polyline, controls);
+			case SimpleEasingKind.Line(polyline, controls):
+				LineKindTools.toFunctionExpr(polyline, controls);
 		}
 	}
 }

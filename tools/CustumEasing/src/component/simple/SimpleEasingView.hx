@@ -30,7 +30,7 @@ class SimpleEasingView extends ReactComponentOfProps<SimpleEasingProps>
 					}
 				);
 				
-			case SimpleEasingKind.Polyline(polyline, controls):
+			case SimpleEasingKind.Line(polyline, controls):
 				PolylineView.createElement(
 					{
 						polyline: polyline,

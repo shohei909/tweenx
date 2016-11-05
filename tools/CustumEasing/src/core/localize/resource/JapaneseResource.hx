@@ -32,6 +32,7 @@ class JapaneseResource implements LocalizeResource
 			case Bounce:    "バウンド";
 			case Elastic:   "バネ";
 			case Warp:      "ワープ";
+			case Polyline:  "折れ線";
 			case Bezier:    "ベジェ曲線";
 			case Repeat:    "繰り返し";
 			case Lerp:      "線形補間";

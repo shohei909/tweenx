@@ -19,6 +19,7 @@ enum ComplexEasingSelectItemId
 	
 	// Free line
 	Bezier;
+	Polyline;
 	
 	// Unary Op
 	Repeat;

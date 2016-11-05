@@ -4,5 +4,5 @@ enum SimpleEasingKind
 {
 	Linear;
 	Standard(easing:StandardEasingKind, inOut:InOutKind);
-	Polyline(kind:PolylineKind, controls:Array<Float>);
+	Line(kind:LineKind, controls:Array<Float>);
 }

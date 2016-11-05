@@ -567,7 +567,19 @@ class FloatTools
         return _bezier(rate, [for (i in 0...values.length - 1) lerp(rate, values[i], values[i + 1])]);
     }
 
-
+    public static inline function polyline(rate:Float, values:Array<Float>):Float
+    {
+        if (values.length < 2) {
+            throw "points length must be more than 2";
+        }
+		
+		var max = values.length - 1;
+		var scaledRate = rate * max;
+		var index = Math.floor(clamp(scaledRate, 0, max - 1)); 
+		var innerRate = scaledRate - index;
+		return lerp(innerRate, values[index], values[index + 1]);
+    }
+	
     // =================================================
     // Converter
     // =================================================

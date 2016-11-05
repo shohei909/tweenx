@@ -112,10 +112,10 @@ class EasingManager
 		
 		switch (resolveEasing(id))
 		{
-			case Option.Some(ComplexEasingKind.Simple(SimpleEasingKind.Polyline(kind, controls))):
+			case Option.Some(ComplexEasingKind.Simple(SimpleEasingKind.Line(kind, controls))):
 				var newControls = controls.slice(0);
 				newControls.insert(index + 1, newControls[index]);
-				replace(id, ComplexEasingKind.Simple(SimpleEasingKind.Polyline(kind, newControls)), result);
+				replace(id, ComplexEasingKind.Simple(SimpleEasingKind.Line(kind, newControls)), result);
 				
 			case _:
 		}
@@ -128,10 +128,10 @@ class EasingManager
 		
 		switch (resolveEasing(id))
 		{
-			case Option.Some(ComplexEasingKind.Simple(SimpleEasingKind.Polyline(kind, controls))):
+			case Option.Some(ComplexEasingKind.Simple(SimpleEasingKind.Line(kind, controls))):
 				var newControls = controls.slice(0);
 				newControls.splice(index, 1);
-				replace(id, ComplexEasingKind.Simple(SimpleEasingKind.Polyline(kind, newControls)), result);
+				replace(id, ComplexEasingKind.Simple(SimpleEasingKind.Line(kind, newControls)), result);
 				
 			case _:
 		}
@@ -144,12 +144,12 @@ class EasingManager
 			case Option.Some(oldEasing):
 				var newEasing:ComplexEasingKind = switch [oldEasing, index] 
 				{
-					case [Simple(SimpleEasingKind.Polyline(kind, controls)), _]:
+					case [Simple(SimpleEasingKind.Line(kind, controls)), _]:
 						if (controls[index] != value)
 						{
 							var newControls = controls.slice(0);
 							newControls[index] = value;
-							Simple(SimpleEasingKind.Polyline(kind, newControls));
+							Simple(SimpleEasingKind.Line(kind, newControls));
 						}
 						else
 						{

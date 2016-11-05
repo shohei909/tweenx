@@ -1,6 +1,7 @@
 package tweenxcore.expr;
 
-enum PolylineKind 
+enum LineKind 
 {
 	Bezier;
+	Polyline;
 }

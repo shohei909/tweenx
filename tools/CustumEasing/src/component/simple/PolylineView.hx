@@ -7,7 +7,7 @@ import component.complex.ComplexEasingId;
 import core.RootCommand;
 import core.RootContext;
 import core.easing.EasingCommand;
-import tweenxcore.expr.PolylineKind;
+import tweenxcore.expr.LineKind;
 import tweenxcore.geom.Point;
 
 class PolylineView extends ReactComponentOfProps<PolylineProps>
@@ -88,7 +88,7 @@ class PolylineView extends ReactComponentOfProps<PolylineProps>
 
 typedef PolylineProps = 
 {
-	polyline: PolylineKind,
+	polyline: LineKind,
 	controls: Array<Float>,
 	id: ComplexEasingId,
 	context: RootContext

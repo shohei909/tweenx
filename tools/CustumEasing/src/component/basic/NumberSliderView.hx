@@ -72,8 +72,8 @@ class NumberSliderView extends ReactComponentOfProps<NumberSliderProps>
 			var right = (WIDTH + BAR_WIDTH) / 2;
 			var bottom = (HEIGHT + BAR_HEIGHT) / 2;
 			
-			var low = mod(1 - centerValue, 2) / 2;
-			var high = mod(-centerValue, 2) / 2;
+			var low = mod(-centerValue, 2) / 2;
+			var high = mod(1 - centerValue, 2) / 2;
 			if (high < low)
 			{
 				rect(left, top, high.lerp(left, right), bottom);

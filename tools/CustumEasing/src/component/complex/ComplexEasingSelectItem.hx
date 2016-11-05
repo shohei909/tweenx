@@ -3,7 +3,7 @@ import component.complex.ComplexEasingCreateContext;
 import haxe.EnumTools;
 import tweenxcore.expr.BinaryOpKind;
 import tweenxcore.expr.ComplexEasingKind;
-import tweenxcore.expr.PolylineKind;
+import tweenxcore.expr.LineKind;
 import tweenxcore.expr.SimpleEasingKind;
 import tweenxcore.expr.StandardEasingKind;
 import tweenxcore.expr.TernaryOpKind;
@@ -30,6 +30,7 @@ class ComplexEasingSelectItem
 		],
 		[
 			// Free line
+			Polyline,
 			Bezier,
 		],
 		[
@@ -88,8 +89,12 @@ class ComplexEasingSelectItem
 							case Warp:    ComplexEasingSelectItemId.Warp;
 						}
 						
-					case SimpleEasingKind.Polyline(Bezier, _):
-						ComplexEasingSelectItemId.Bezier;
+					case SimpleEasingKind.Line(kind, _):
+						switch (kind)
+						{
+							case Bezier:    ComplexEasingSelectItemId.Bezier;
+							case Polyline:  ComplexEasingSelectItemId.Polyline;
+						}
 				}
 			
 			case ComplexEasingKind.Op(_, op):
@@ -133,7 +138,8 @@ class ComplexEasingSelectItem
 			case ComplexEasingSelectItemId.Bounce:    new ComplexEasingSelectItem(id, createStandard.bind(StandardEasingKind.Bounce));
 			case ComplexEasingSelectItemId.Elastic:   new ComplexEasingSelectItem(id, createStandard.bind(StandardEasingKind.Elastic));
 			case ComplexEasingSelectItemId.Warp:      new ComplexEasingSelectItem(id, createStandard.bind(StandardEasingKind.Warp));
-			case ComplexEasingSelectItemId.Bezier:    new ComplexEasingSelectItem(id, createPolyline.bind(PolylineKind.Bezier));
+			case ComplexEasingSelectItemId.Bezier:    new ComplexEasingSelectItem(id, createPolyline.bind(LineKind.Bezier));
+			case ComplexEasingSelectItemId.Polyline:  new ComplexEasingSelectItem(id, createPolyline.bind(LineKind.Polyline));
 			case ComplexEasingSelectItemId.Repeat:    new ComplexEasingSelectItem(id, createUnaryOp.bind(UnaryOpKind.Repeat(2)));
 			case ComplexEasingSelectItemId.Lerp:      new ComplexEasingSelectItem(id, createUnaryOp.bind(UnaryOpKind.Lerp(0, 1)));
 			case ComplexEasingSelectItemId.Clamp:     new ComplexEasingSelectItem(id, createUnaryOp.bind(UnaryOpKind.Clamp(0, 1)));
@@ -158,9 +164,9 @@ class ComplexEasingSelectItem
 		return ComplexEasingKind.Simple(SimpleEasingKind.Standard(easing, context.getInOut()));
 	}
 	
-	private static function createPolyline(polyline:PolylineKind, context:ComplexEasingCreateContext):ComplexEasingKind
+	private static function createPolyline(polyline:LineKind, context:ComplexEasingCreateContext):ComplexEasingKind
 	{
-		return ComplexEasingKind.Simple(SimpleEasingKind.Polyline(polyline, [0, 0, 1, 1]));
+		return ComplexEasingKind.Simple(SimpleEasingKind.Line(polyline, [0, 0, 1, 1]));
 	}
 	
 	private static function createUnaryOp(op:UnaryOpKind, context:ComplexEasingCreateContext):ComplexEasingKind
