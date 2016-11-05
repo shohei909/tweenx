@@ -1450,7 +1450,7 @@ component_basic_PreviewView.prototype = $extend(React.Component.prototype,{
 		component_basic_PreviewAnimation.init(this.refs.canvas);
 	}
 	,render: function() {
-		return React.createElement("div",{ className : "preview"},React.createElement("div",{ },React.createElement("button",{ onClick : $bind(this,this.onClick), className : "btn btn-default"},React.createElement("span",{ className : "glyphicon glyphicon-play"}))),React.createElement("div",{ },react_ReactStringTools.createElement("canvas",{ id : "preview-canvas-" + component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(this.props.id), ref : "canvas", width : component_basic_PreviewAnimation.WIDTH, height : component_basic_PreviewAnimation.HEIGHT})));
+		return React.createElement("div",{ className : "preview"},React.createElement("div",{ },React.createElement("button",{ onClick : $bind(this,this.onClick), className : "btn btn-default btn-lg"},React.createElement("span",{ className : "glyphicon glyphicon-play"}))),React.createElement("div",{ },react_ReactStringTools.createElement("canvas",{ id : "preview-canvas-" + component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(this.props.id), ref : "canvas", width : component_basic_PreviewAnimation.WIDTH, height : component_basic_PreviewAnimation.HEIGHT})));
 	}
 	,onClick: function() {
 		this.props.context.animation.startPreview(this.props.id,this.props.easing);
@@ -1672,7 +1672,11 @@ component_complex_ComplexEasingDrag.prototype = {
 	move: function(e) {
 	}
 	,finish: function() {
-		this.drag.context.apply(core_RootCommand.ChangeEasing(this.toId,core_easing_EasingCommand.Move(this.fromId)),true);
+		if(this.drag.context.key.ctrl) {
+			this.drag.context.apply(core_RootCommand.ChangeEasing(this.toId,core_easing_EasingCommand.Paste(this.fromId)),true);
+		} else {
+			this.drag.context.apply(core_RootCommand.ChangeEasing(this.toId,core_easing_EasingCommand.Move(this.fromId)),true);
+		}
 	}
 	,enter: function(id) {
 		this.toId = id;
@@ -2206,7 +2210,7 @@ component_complex_DragButtonView.__name__ = ["component","complex","DragButtonVi
 component_complex_DragButtonView.__super__ = React.Component;
 component_complex_DragButtonView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "swap-button-box"},React.createElement("button",{ className : "btn btn-default btn-sm", onMouseDown : $bind(this,this.onMouseDown)},React.createElement("span",{ className : "glyphicon glyphicon-sort"})));
+		return React.createElement("div",{ className : "swap-button-box"},React.createElement("button",{ className : "btn btn-default btn", onMouseDown : $bind(this,this.onMouseDown)},React.createElement("span",{ className : "glyphicon glyphicon-" + (this.props.context.key.ctrl?"duplicate":"sort")})));
 	}
 	,onMouseDown: function() {
 		this.props.context.drag.dragComplexEasing(this.props.id);
@@ -3176,8 +3180,12 @@ core_history_HistoryManager.prototype = {
 	,__class__: core_history_HistoryManager
 };
 var core_key_KeyboardManager = function(context) {
+	this.alt = false;
+	this.shift = false;
+	this.ctrl = false;
 	this.context = context;
 	window.addEventListener("keydown",$bind(this,this.onKeyDown));
+	window.addEventListener("keyup",$bind(this,this.onKeyUp));
 };
 $hxClasses["core.key.KeyboardManager"] = core_key_KeyboardManager;
 core_key_KeyboardManager.__name__ = ["core","key","KeyboardManager"];
@@ -3190,6 +3198,16 @@ core_key_KeyboardManager.prototype = {
 			if(_g2 == true) {
 				if(_g1 == false) {
 					switch(_g) {
+					case 16:
+						this.shift = true;
+						break;
+					case 17:
+						this.ctrl = true;
+						this.context.update();
+						break;
+					case 18:
+						this.alt = true;
+						break;
 					case 89:
 						this.context.history.redo();
 						e.preventDefault();
@@ -3200,8 +3218,65 @@ core_key_KeyboardManager.prototype = {
 						break;
 					default:
 					}
+				} else {
+					switch(_g) {
+					case 16:
+						this.shift = true;
+						break;
+					case 17:
+						this.ctrl = true;
+						this.context.update();
+						break;
+					case 18:
+						this.alt = true;
+						break;
+					default:
+					}
+				}
+			} else {
+				switch(_g) {
+				case 16:
+					this.shift = true;
+					break;
+				case 17:
+					this.ctrl = true;
+					this.context.update();
+					break;
+				case 18:
+					this.alt = true;
+					break;
+				default:
 				}
 			}
+		} else {
+			switch(_g) {
+			case 16:
+				this.shift = true;
+				break;
+			case 17:
+				this.ctrl = true;
+				this.context.update();
+				break;
+			case 18:
+				this.alt = true;
+				break;
+			default:
+			}
+		}
+	}
+	,onKeyUp: function(e) {
+		switch(e.keyCode) {
+		case 16:
+			this.shift = false;
+			break;
+		case 17:
+			this.ctrl = false;
+			this.context.update();
+			break;
+		case 18:
+			this.alt = false;
+			break;
+		default:
 		}
 	}
 	,__class__: core_key_KeyboardManager

@@ -27,7 +27,14 @@ class ComplexEasingDrag implements DragState
     
     public function finish():Void 
     {
-        drag.context.apply(RootCommand.ChangeEasing(toId, EasingCommand.Move(fromId)), true);
+        if (drag.context.key.ctrl)
+        {
+            drag.context.apply(RootCommand.ChangeEasing(toId, EasingCommand.Paste(fromId)), true);
+        }
+        else
+        {
+            drag.context.apply(RootCommand.ChangeEasing(toId, EasingCommand.Move(fromId)), true);
+        }
     }
     
     public function enter(id:ComplexEasingId):Void

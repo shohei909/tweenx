@@ -33,7 +33,7 @@ class PreviewView extends ReactComponentOfProps<PreviewProps>
                     "button",
                     {
                         onClick: onClick,
-                        className: "btn btn-default",
+                        className: "btn btn-default btn-lg",
                     },
                     React.createElement(
                         "span",

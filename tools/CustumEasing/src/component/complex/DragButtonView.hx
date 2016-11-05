@@ -22,12 +22,12 @@ class DragButtonView extends ReactComponentOfProps<ComplexEasingProps>
             React.createElement(
                 "button",
                 {
-                    className: "btn btn-default btn-sm",
+                    className: "btn btn-default btn",
                     onMouseDown: onMouseDown,
                 },
                 React.createElement(
                     "span",
-                    { className: "glyphicon glyphicon-sort" }
+                    { className: "glyphicon glyphicon-" + if (props.context.key.ctrl) "duplicate" else "sort" }
                 )
             )
         );
