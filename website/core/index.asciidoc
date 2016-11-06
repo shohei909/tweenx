@@ -18,9 +18,10 @@ logo: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
 
 実行速度を速く、開発速度を速く、バグを少なく、学習コストを少なく、そしてモーションを自由に面白くするために作られています。
 
-**「ここにカッコいいデモ(予定)」**
+{% include sample.asciidoc num="312" title="CustomEasing" %}
 
 toc::[]
+
 
 == 機能
 
@@ -34,61 +35,16 @@ toc::[]
 *　``lerp``、``inverseLerp``、``clamp``など、``Float``の機能の拡張
 
 
-
 == 速度
 
-Flashプラットフォーム上で動作する高速なトゥイーンライブラリとして名高いBetweenAS3よりも、さらに高速に動作しています。
+余計な処理やインスタンス生成を行わないため、非常に高速に動作します。
 
 {sampleLink}tweenx/800_BenchMark/src[[コードを見る(Github)\]]
 
 
-
-== {{page.logo}}の思想
-
-=== 脱インタープリタ
-
-Flashプラットフォームで流行したトゥイーンライブラリはどれも内部にトゥイーンを実行するインタープリタを持ち、ユーザーはそれに対してトゥイーンの処理を登録していきます。
-
-
-しかし、このようなインタープリタはバグの温床になりやすいものです。
-
-× 同じオブジェクトに対して2つのトゥイーンが走ったときの挙動は混乱を生みます。
-× 常にメモリリークを気にかけながら実装を行う必要があります。
-× イベントハンドラの取り扱いも厄介です。
-
-インタープリタはとりあえず動くコードを書くのに便利で、プロトタイプや小さなゲームを作るのに向いていますが、もっと大きな製品を作る場合は事情が違います。
-
-例えば
-
-* ゲームの場合、**「一時停止ボタンが押されたときにゲーム内のアニメーションをすべて一時停止した上で、さらにアニメーション付きでポップアップを表示させたい」**ことがあります。
-* 通信待ちのインジケータなら、**「インジケータのフェードイン中に通信が終われば、フェードインの途中からフェードアウトに切り替えをしたい」**と思うはずです。
-
-これらはインタープリタの苦手分野です。
-
-もちろん http://tweenx.spheresofa.net/[TweenX] はそういった用途にも耐えうるように細心の注意をはらって設計していますが、そういったものを作るにはインタープリタの動作を詳細に知らなくてはいけませんし、新しい言語を覚えるような大きい学習コストもかかります。製作者のわたし自身もTweenXのバックグラウンドで何かをやってくれるような機能は使わなくなり、TweenXのイージング関数を直接使ってモーションのコードを書くようになっていました。
-
-そして、staticな関数群といくつかの頻出な構造体だけを用意してあれば、自由で簡単で高速なトゥイーンライブラリができることに気が付きました。そうして作られたのが{{page.logo}}です。
-
-
-=== 0.0から始まり、1.0で終わる
-
-{{page.logo}}の世界では、始まりの値は0.0であり、終わりの値は1.0です。つまり、
-
-* モーションの時刻の場合、開始時刻は0.0で表し終了時刻は1.0を使います。
-* アルファ値の場合、完全な透明は0.0で完全な不透明は1.0です。
-* 円の1周の場合、0度は0.0であり360度は1.0です。
-* RGBカラーのRed値の場合、0.0が赤みが全くなく1.0が完全な赤です。
-
-{{page.logo}}では、このような0.0から1.0を基準とする値について``rate``という変数名をよく使います。
-
-{{page.logo}}は、**この0.0から1.0を基準とする値を、自由にあやつるためのツール**だと考えてください。
-
-
-
-=== オープンソース
+== ライセンス
 
 MITライセンスですので、商用、非商用、個人、法人を問わず、利用、改変、再配布ができます。
-
 
 
 == {{page.logo}}を始める
@@ -109,7 +65,7 @@ haxelib install tweenxcore
 
 === Hello {{page.logo}}
 
-{{page.logo}}の最初のサンプルとして四角のx座標を0から420まで、動かすコードを見てみます。
+{{page.logo}}の最初のサンプルとして、四角のx座標を0から420まで、動かすコードを見てみます。
 
 {% include sample.asciidoc num="301" title="Simplest" %}
 
@@ -118,12 +74,9 @@ haxelib install tweenxcore
 import flash.display.Sprite;
 import flash.events.Event;
 import sample.SampleSuport.Square;
-import tweenxcore.structure.FloatChange;
-import tweenxcore.structure.FloatChangePart;
 using tweenxcore.Tools;
 
 class Sample extends Sprite {
-    public static inline var MOTION_END = 60;
     var square:Square;
     var frameCount = 0;
 
@@ -132,20 +85,17 @@ class Sample extends Sprite {
         addChild(square = new Square());
         square.x = 15;
         square.y = Square.SIZE * 2.5;
-
+        
         addEventListener(Event.ENTER_FRAME, onFrame);
     }
-
+    
     // フレームごとに呼び出し。
     function onFrame(e:Event) {
-        var change = new FloatChange(frameCount, frameCount + 1);
-        change.handlePart(5, 25, updateSquare);
+        var rate = frameCount / 20;
+        if (rate <= 1) {
+            square.x = rate.quadOut().lerp(15, 435);
+        }
         frameCount++;
-    }
-
-    // 四角の位置を更新する。
-    function updateSquare(part:FloatChangePart) {
-        square.x = part.current.lerp(15, 435);
     }
 }
 ---------
@@ -161,17 +111,7 @@ using tweenxcore.Tools;
 
 [source,haxe]
 ---------
-// フレームごとに呼び出し。
-function onFrame(e:Event) {
-    var change = new FloatChange(frameCount, frameCount + 1);
-    change.handlePart(5, 25, updateSquare);
-    frameCount++;
-}
-
-// 四角の位置を更新する。
-function updateSquare(part:FloatChangePart) {
-    square.x = part.current.lerp(15, 435);
-}
+            square.x = rate.quadOut().lerp(15, 435);
 ---------
 
 
@@ -201,57 +141,19 @@ MatrixToolsクラス::
 
 {sourceLink}tweenxcore/Tools.hx[[ソースを見る(tweenxcore.Tools)\]]
 
-==== FloatChange、FloatChangePart
-``FloatChange``と``FloatChangePart``は``tweenxcore.structure``パッケージに含まれる型です。
 
-``FloatChange``は直前の``Float``値と現在の``Float``値をまとめて1つの型に持つことで、値の変化を簡単にあつかえるようにします。
+==== イージング関数
 
-この``FloatChange``の``handlePart``関数は、値が指定した範囲にあった場合にすぐに関数呼び出しを行います。つまり例では、``frame``または``frame + 1``が``0 < 値 < 20``の範囲にあるとき、``updateSquare``関数を呼び出します。
+``quadOut``はイージング関数です。0から1へと変化する``rate``の値を、2次関数をつかって後詰めの値へと変えています
 
-``FloatChangePart``は始まりの値が0.0で終わりの値が1.0であるような``FloatChange``です。例の``updateSquare``の引数は``frame``の5から25が、0.0から1.0の範囲に変換されたものとなっています。
+{{page.logo}}が提供するイージング関数はもちろん``quadOut``のみではありません。
 
-``FloatChange``と``FloatChangePart``はどちらも変数``current``で現在の値を取得できます。``FloatChangePart``の場合、この値は``0.0 < current \<= 1.0``の範囲にあります。
-
-* {sourceLink}tweenxcore/structure/FloatChange.hx[[ソースを見る(tweenxcore.structure.FloatChange)\]]
-* {sourceLink}tweenxcore/structure/FloatChangePart.hx[[ソースを見る(tweenxcore.structure.FloatChangePart)\]]
-
-==== lerp
-
-``lerp`` は線形補間の関数で、``tweenxcore.Tools.FloatTools``が持つ関数です。0.0から1.0の値を指定した範囲の値、例の場合、15から435までの値に変換しています。これにより、``part.current``が0.0から1.0まで変化する間に、``square.x``は15から435へと移動します。
-
-
-
-
-
-== {{page.logo}}チュートリアル
-
-=== イージング関数
+link:http://easings.net/[Robert Pennerのイージング関数]を基本とし、中央で減速して再度加速する``OutIn``のモードと、瞬間的に移動を行うwarpが追加された計44個の関数を提供しています。
 
 {% include sample.asciidoc num="400" title="EasingVisualizer" width=700 height=500 %}
 
-{{page.logo}}は、link:http://easings.net/[Robert Pennerのイージング関数]を基本とし、中央で減速して再度加速する``OutIn``のモードと、瞬間的に移動を行うwarpが追加された計44個の関数を提供しています。
 
-上の曲線としては一般的なトゥイーンライブラリとの違いはありませんが、コードの面では大きな違いがあります。
-
-一般的なものでは、cubicInの関数は以下の形です。
-
-[source,haxe]
----------
-function cubicIn(t:Float, b:Float, c:Float, d:Float):Float {
-    return c * (t /= d) * t * t + b;
-}
----------
-
-この関数には4つの引数があり、それぞれ
-
-* ``t``は動き始めてからの経過時刻
-* ``b``は値の初期値
-* ``c``は値の変化量
-* ``d``は完了までの時間
-
-です。
-
-一方、{{page.logo}}での``cubicIn``関数は以下の通りです。
+{{page.logo}}での、``cubicIn``関数は以下の通りです。
 
 [source,haxe]
 ---------
@@ -260,18 +162,8 @@ function cubicIn(t:Float):Float {
 }
 ---------
 
-引数が1つだけという、ずっとシンプルな形です。
+ただ単にFloatを受け取ってFloatを返す、とてもシンプルな関数です。
 
-これは前に説明したとおり、{{page.logo}}の世界では**始まりの値は0.0であり、終わりの値は1.0**だからです。このルールでは、もとの4つの引数は以下のように考えることができます。
-
-* ``t``は、経過時刻を0.0から1.0までで表したもの
-* 値の初期値は0.0
-* 値の変化量は1.0
-* 完了までの時間は1.0
-
-つまり、{{page.logo}}の世界では変数は``t``のみで、他は3つは定数と考えられます。
-
-イージング関数に引数が4つもあると直接利用するには不便ですが、引数が1つになることでイージング関数を直接使っても何をやっているのかわかりやすくなります。
 
 この関数を使って先ほどのサンプルコードにのイージングをつけてみます。たった1行、以下のように変更を加えます。
 
@@ -284,7 +176,170 @@ square.x = part.current.cubicIn().lerp(15, 435);
 
 {% include sample.asciidoc num="302" title="Easing" %}
 
-=== 基本的な動き
+
+==== lerp
+
+``lerp`` は線形補間の関数で、``tweenxcore.Tools.FloatTools``が持つ関数です。0.0から1.0の値を指定した範囲の値、例の場合、15から435までの値に変換しています。これにより、``rate``が0.0から1.0まで変化する間に、``square.x``は15から435へと移動します。
+
+
+
+== {{page.logo}}の思想
+
+=== 脱ブラックボックス
+
+{{page.logo}}は、出発地点や到達地点を指定して自動
+
+
+例えば
+
+* **「一時停止ボタンが押されたときにゲーム内のアニメーションをすべて一時停止した上で、さらにアニメーション付きでポップアップを表示させたい」**ことがあります。
+* 通信待ちのインジケータなら、**「インジケータのフェードイン中に通信が終われば、フェードインの途中からフェードアウトに切り替えをしたい」**と思うはずです。
+
+
+=== 0.0から始まり、1.0で終わる
+
+{{page.logo}}の世界では、始まりの値は0.0であり、終わりの値は1.0です。つまり、
+
+* モーションの時刻の場合、開始時刻は0.0で表し終了時刻は1.0を使います。
+* アルファ値の場合、完全な透明は0.0で完全な不透明は1.0です。
+* 円の1周の場合、0度は0.0であり360度は1.0です。
+* RGBカラーのRed値の場合、0.0が赤みが全くなく1.0が完全な赤です。
+
+{{page.logo}}では、このような0.0から1.0を基準とする値について``rate``という変数名をよく使います。
+
+
+
+== {{page.logo}}チュートリアル
+
+
+=== イージングを自作する
+
+{{page.logo}}には44種類のイージングありますがこれらを単に使うだけでは、ありふれたモーションになりがちです。{{page.logo}}ではイージングを組み合わせたり混ぜ合わせたりして自分だけのイージングを作り出すことができます。
+
+
+==== ヨーヨー
+
+ヨーヨーは0.0から1.0に行って、逆再生の動きで0.0に帰ってくるようなモーションです。
+
+{% include sample.asciidoc num="304" title="Yoyo" %}
+
+```haxe
+// ヨーヨー
+square.x = rate.yoyo(Easing.quintOut).lerp(15, 435);
+```
+
+==== ジグザグ
+
+ジグザグは0.0から1.0に行って、移動方向を反転させた動きで0.0に帰ってくるようなモーションです。
+
+{% include sample.asciidoc num="319" title="Zigzag" %}
+
+```
+// ジグザグ
+square.x = rate.zigzag(Easing.quintOut).lerp(15, 435);
+```
+
+==== 多重のイージング（関数合成）
+
+イージングを2重、3重に使うと、新しい動きを作ることができます。
+
+{% include sample.asciidoc num="307" title="Composite" %}
+
+```haxe
+// 上
+square1.x = rate.quintInOut().quintInOut().lerp(15, 435);
+
+// 下
+square2.x = rate.cubicIn().bounceOut().lerp(15, 435);
+```
+
+上は``quintInOut``を2重に使ってより急激な加速減速を作っており、下は``cubicIn``と``bounceOut``で加速していくバウンドのイージングを作っています。
+
+
+==== ミックス
+
+``mixEasing``は2つのイージングの中間的なイージングです。
+
+{% include sample.asciidoc num="308" title="Mix" %}
+
+```haxe
+square.x = rate.mixEasing(Easing.expoOutIn, Easing.linear, 0.12).lerp(15, 435);
+```
+
+サンプルとしてゲームのカットイン演出にありそうなイージングを作りました。``expoOutIn``に``linear``関数を``0.12``ミックスすることで、``OutIn``のイージングの真ん中でピタッっと止まる感じを無くしています。
+
+
+==== クロスフェード
+
+``crossfadeEasing``は、始まりと終わりで別のイージングに徐々に変わっていくようなイージングです。
+
+{% include sample.asciidoc num="309" title="Crossfade" %}
+
+```haxe
+square.x = rate.crossfadeEasing(
+    Easing.quintOut,
+    Easing.bounceOut,
+    Easing.sineInOut
+).lerp(15, 435);
+```
+
+サンプルは``quintOut``として始まって、徐々に``Easing.bounceOut``に変わっていくイージングです。変化の仕方の曲線として``Easing.sineInOut``を使っています。
+
+
+==== コネクト
+
+``connectEasing``は、2つのイージングをつなげて再生する機能です。
+
+{% include sample.asciidoc num="310" title="Connect" %}
+
+```haxe
+square.x = rate.connectEasing(Easing.backOut, 0.9, 0.4, Easing.linear).lerp(15, 435);
+```
+
+サンプルでは、最初の``0.9``の時間で``0.4``の位置まで``backOut``で移動した後、残りを``linear``で移動しています。
+
+
+==== ワンツー
+
+``oneTwoEasing``は、別々のイージングで2回移動を行うイージングです。
+
+{% include sample.asciidoc num="311" title="OneTwo" %}
+
+```haxe
+square1.x = rate.oneTwoEasing(Easing.backIn, 0.8, Easing.linear).lerp(45, 405);
+```
+
+単純に``backIn``で1回目の``linear``で2回目の移動を行っています。
+
+
+==== CustomEasingクラス
+
+このようなイージングのカスタム機能を何度も使う場合、自作のイージングをまとめたCustomEasingクラスを作っておくと便利です。
+
+```haxe
+using tweenxcore.Tools;
+
+class CustomEasing {
+    public static inline function quintQuintInOut(rate:Float) {
+       return rate.quintInOut().quintInOut();
+    }
+}
+```
+
+このように``CustomEasing``クラスを定義しておけば、自分の作ったイージングを``using packageName.CustomEasing;``して簡単に利用できるようになります。
+
+
+==== イージングエディタ
+
+イージングエディタは、イージングを自作するためのツールです。イージングを組み合わせをブラウザ上で実際に試しながら作ることができます。
+
+image::/images/easing_editor_ja.png[alt="イージングエディタ" class="large" link="./custom/"]
+link:./custom/[イージングエディタ | TweenXCore]
+
+
+=== 変化量をあつかう（FloatChange）
+
+
 
 ==== 繰り返し
 
@@ -303,23 +358,6 @@ change.handleRepeatPart(5, 25, 3, updateSquare);
 
 {sourceLink}tweenxcore/structure/FloatChangeRepeatPart.hx[[ソースを見る(tweenxcore.structure.FloatChangeRepeatPart)\]]
 
-==== ヨーヨー、ジグザグ
-
-ヨーヨーとジグザグはどちらも0.0から1.0に行って0.0に帰ってくるようなモーションです。
-
-{% include sample.asciidoc num="304" title="YoyoZigzag" %}
-
-上がヨーヨー、下がジグザグのアニメーションです。ヨーヨーは戻るときに逆再生の動きをしますが、ジグザグは行きと同じイージングで戻ります。
-
-それぞれ以下のように使います。
-
-```haxe
-// ヨーヨー
-square1.x = part.current.yoyo(Easing.quadOut).lerp(15, 435);
-
-// ジグザグ
-square2.x = part.current.zigzag(Easing.quadOut).lerp(15, 435);
-```
 
 ==== モーションの特定のタイミングに処理をする
 
@@ -402,117 +440,6 @@ function update3(change:FloatChangeTimelinePart) {
 
 {sourceLink}tweenxcore/structure/FloatChangeTimelinePart.hx[[ソースを見る(tweenxcore.structure.FloatChangeTimelinePart)\]]
 
-=== イージングを自作する
-
-{{page.logo}}には46種類のイージングありますがこれらを単に使うだけでは、ありふれた退屈なモーションになりがちです。{{page.logo}}ではイージングを組み合わせたり混ぜ合わせたりして自分だけのイージングを作り出すことができます。
-
-==== 多重のイージング
-
-イージングを2重、3重に使うと、新しい動きを作ることができます。
-
-{% include sample.asciidoc num="307" title="Composite" %}
-
-```haxe
-// 上
-square1.x = part.current.quintInOut().quintInOut().lerp(15, 435);
-
-// 下
-square2.x = part.current.cubicIn().bounceOut().lerp(15, 435);
-```
-
-上は``quintInOut``を2重に使ってより急激な加速減速を作っており、下は``cubicIn``と``bounceOut``で加速していくバウンドのイージングを作っています。
-
-==== ミックス
-
-``mixEasing``は2つのイージングの中間的なイージングです。
-
-{% include sample.asciidoc num="308" title="Mix" %}
-
-```haxe
-square.x = part.current.mixEasing(Easing.expoOutIn, Easing.linear, 0.12).lerp(15, 435);
-```
-
-サンプルとしてゲームのカットイン演出にありそうなイージングを作りました。``expoOutIn``に``linear``関数を``0.12``ミックスすることで、``OutIn``のイージングの真ん中でピタッっと止まる感じを無くしています。
-
-==== クロスフェード
-
-``crossfadeEasing``は、始まりと終わりで別のイージングに徐々に変わっていくようなイージングです。
-
-{% include sample.asciidoc num="309" title="Crossfade" %}
-
-```haxe
-square.x = part.current.crossfadeEasing(
-    Easing.quintOut,
-    Easing.bounceOut,
-    Easing.sineInOut
-).lerp(15, 435);
-```
-
-サンプルは``quintOut``として始まって、徐々に``Easing.bounceOut``に変わっていくイージングです。変化の仕方の曲線として``Easing.sineInOut``を使っています。
-
-==== コネクト
-
-``connectEasing``は、2つのイージングをつなげて再生する機能です。
-
-{% include sample.asciidoc num="310" title="Connect" %}
-
-```haxe
-square.x = part.current.connectEasing(Easing.backOut, 0.9, 0.4, Easing.linear).lerp(15, 435);
-```
-
-サンプルでは、最初の``0.9``の時間で``0.4``の位置まで``backOut``で移動した後、残りを``linear``で移動しています。
-
-==== ワンツー
-
-``oneTwoEasing``は、別々のイージングで2回移動を行うイージングです。
-
-{% include sample.asciidoc num="311" title="OneTwo" %}
-
-```haxe
-// 上
-square1.x = part.current.oneTwoEasing(Easing.backIn, 0.8, Easing.linear).lerp(45, 405);
-
-// 中
-square2.x = part.current.oneTwoEasing(
-    function (r:Float) { return r.yoyo(Easing.cubicOut).lerp(0, 0.3); },
-    0.9,
-    Easing.linear
-).lerp(45, 405);
-
-// 下
-square3.x = part.current.oneTwoEasing(
-    function (r:Float) { return r.backOut(); },
-    0.8,
-    function (r:Float) { return r.revert().sineIn(); }
-).lerp(45, 405);
-```
-
-サンプルの一番上は単純に``backIn``で1回目の``linear``で2回目の移動を行っています。ワンツーのイージングはこのような単純な使い方よりも、真ん中や下の例のように``yoyo``、``zigzag``、``revert``などの関数と合わせて往復をするようなイージングを作るのに適しています。
-
-=== CustomEasingクラス
-
-このようなイージングのカスタム機能を何度も使う場合、自作のイージングをまとめたCustomEasingクラスを作っておくと便利です。
-
-```haxe
-using tweenxcore.Tools;
-
-class CustomEasing {
-    public static inline function quintQuintInOut(rate:Float) {
-       return rate.quintInOut().quintInOut();
-    }
-}
-```
-
-このように``CustomEasing``クラスを定義しておけば、自分の作ったイージングを``using packageName.CustomEasing;``して簡単に利用できるようになります。
-
-
-=== 応用
-
-ここまでの機能を合わせて使ったサンプルです。
-
-{% include sample.asciidoc num="312" title="CustomEasing" %}
-
-このようにカスタムイージングを使えるようになれば、新しくて気持ちのよいモーションを簡単に作ることができるようになります。
 
 === 2次元の動き
 
@@ -523,8 +450,8 @@ class CustomEasing {
 {% include sample.asciidoc num="313" title="Xy" %}
 
 ```haxe
-square.x = part.current.expoOutIn().lerp(15, 435);
-square.y = part.current.sinByRate().lerp(75, 95);
+square.x = rate.expoOutIn().lerp(15, 435);
+square.y = rate.sinByRate().lerp(75, 95);
 ```
 
 四角をY方向に揺らしてみました。ここで使っている``sinByRate``は円の一周を1.0としてあつかう``sin``関数です。
@@ -547,8 +474,8 @@ public function new() {
 }
 
 function updateSquare(part:FloatChangePart) {
-	var x = part.current.expoOutIn();
-	var y = part.current.sinByRate().lerp(0, 0.1);
+	var x = rate.expoOutIn();
+	var y = rate.sinByRate().lerp(0, 0.1);
 	var point = matrix.transformPoint(new Point(x, y));
 
 	square.x = point.x;
@@ -577,9 +504,9 @@ public function new() {
 
 function updateSquare(part:FloatChangePart) {
 	// 原点に近づいていく
-	var distance = part.current.expoOut().lerp(1, 0);
+	var distance = rate.expoOut().lerp(1, 0);
 	// 反時計回りに2周する。
-	var angle = part.current.lerp(0, -2);
+	var angle = rate.lerp(0, -2);
 	var polarPoint = new PolarPoint(distance, angle);
 
 	// 実際の座標へ変換
@@ -593,6 +520,7 @@ function updateSquare(part:FloatChangePart) {
 
 {sourceLink}tweenxcore/geom/PolarPoint.hx[[ソースを見る(tweenxcore.geom.PolarPoint)\]]
 
+
 ==== ベジェ曲線
 
 {{page.logo}}はベジェ曲線もサポートしています。
@@ -600,8 +528,8 @@ function updateSquare(part:FloatChangePart) {
 {% include sample.asciidoc num="316" title="Bezier" %}
 
 ```haxe
-square.x = part.current.bezier3(15, 50, 400, 435);
-square.y = part.current.bezier3(15, 200, -50, 135);
+square.x = rate.bezier3(15, 50, 400, 435);
+square.y = rate.bezier3(15, 200, -50, 135);
 ```
 
 サンプルは、始点が``(15, 15)``、制御点が``(50, 200)``と``(400, -50)``、終点が``(400, 135)``の3次ベジェ曲線です。
@@ -609,6 +537,7 @@ square.y = part.current.bezier3(15, 200, -50, 135);
 ベジェ曲線は3次だけでなく任意の次数ののベジェ曲線が使えます。詳しくは``tweenxcore.Tools``モジュールを確認してください。
 
 {sourceLink}tweenxcore/Tools.hx[[ソースを見る(tweenxcore.Tools)\]]
+
 
 
 === いろんなものを動かす
@@ -643,6 +572,8 @@ graphics.drawRect(prevX, 90, currentX - prevX, 30);
 サンプルはRGBと、HSVのそれぞれの値を動かしながら帯を描いています。
 
 {sourceLink}tweenxcore/color[[ソースを見る(tweenxcore.color)\]]
+
+
 
 ==== 画像
 

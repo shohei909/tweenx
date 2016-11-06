@@ -29,17 +29,17 @@ h1{
 	font-size:96px;
 }
 h2{
-	margin: 48px 2px 10px 2px ;
+	margin: 72px 2px 10px 2px ;
 	font-size: 48px;
 }
 h3 {
-	margin: 32px 2px 10px 2px ;
+	margin: 64px 2px 10px 2px ;
 	font-family: $title_font2;
 	font-size: 24px;
 }
 
 h4{
-	margin: 32px 2px 10px 2px;
+	margin: 48px 2px 10px 2px;
 	font-family: $title_font2;
 	font-size: 16px;
 }
@@ -165,4 +165,14 @@ object {
 
 a:hover span.tweenxcore, a:hover span.core {
   color: #FFD251;
+}
+
+a.image
+{
+    > img
+    {
+        margin: 3px;
+        padding: 1px;
+        border: dashed #0074BC 1px;
+    }
 }
