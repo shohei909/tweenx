@@ -9,8 +9,8 @@ class AhsvColor extends HsvColor {
         super(hue, saturation, value);
     }
 
-    public static inline function ahsvToInt(a:Float, h:Float, s:Float, v:Float):Int {
-        return (Std.int(a.clamp() * 0xFF) << 24) | HsvColor.hsvToInt(h, s, v);
+    public static inline function ahsvToArgbInt(a:Float, h:Float, s:Float, v:Float):Int {
+        return (Std.int(a.clamp() * 0xFF) << 24) | HsvColor.hsvToRgbInt(h, s, v);
     }
 
     public static inline function of(color:Int, hueIndex:Int = 0) {
@@ -24,5 +24,17 @@ class AhsvColor extends HsvColor {
 
     public inline function toArgb():ArgbColor {
         return ArgbColor.fromAhsv(a, h, s, v);
+    }
+    
+    public inline function toArgbInt():Int {
+        return ahsvToArgbInt(a, h, s, v);
+    }
+    
+    public inline function toArgbHexString():String {
+        return StringTools.hex(toArgbInt(), 8);
+    }
+    
+    public function toRgbaCssString():String {
+        return toArgb().toRgbaCssString();
     }
 }

@@ -37,7 +37,7 @@ class Sample extends Sprite {
     }
 
     function update1(part:FloatChangePart) {
-        square.x = part.current.lerp(15, 435);
+        square.x = part.current.lerp(0, 450);
     }
 
     function update2(part:FloatChangeTimelinePart) {

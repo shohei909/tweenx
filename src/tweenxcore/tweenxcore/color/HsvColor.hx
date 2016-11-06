@@ -12,7 +12,7 @@ class HsvColor {
         this.v = value;
     }
 
-    public static function hsvToInt(h:Float, s:Float, v:Float):Int {
+    public static function hsvToRgbInt(h:Float, s:Float, v:Float):Int {
         h = (h - Math.floor(h)) * 6;
         var hi = Math.floor(h);
 
@@ -25,11 +25,11 @@ class HsvColor {
         var r = 0.0, g = 0.0, b = 0.0;
         switch(hi) {
             case 0: r = v; g = v * (1 - s * (1 - f)); b = m;
-            case 1:    r = v * (1 - s * f); g = v; b = m;
-            case 2:    r = m; g = v; b = v * (1 - s * (1 - f));
-            case 3:    r = m; g = v * (1 - s * f); b = v;
-            case 4:    r = v * (1 - s * (1 - f)); g = m; b = v;
-            case 5:    r = v; g = m; b = v * (1 - s * f);
+            case 1: r = v * (1 - s * f); g = v; b = m;
+            case 2: r = m; g = v; b = v * (1 - s * (1 - f));
+            case 3: r = m; g = v * (1 - s * f); b = v;
+            case 4: r = v * (1 - s * (1 - f)); g = m; b = v;
+            case 5: r = v; g = m; b = v * (1 - s * f);
         }
 
         return (Std.int(r * 0xFF) << 16) | (Std.int(g * 0xFF) << 8) | Std.int(b * 0xFF);
@@ -80,10 +80,18 @@ class HsvColor {
         return new HsvColor(h + hueIndex, s, max);
     }
 
-    public inline function toInt():Int {
-        return hsvToInt(h, s, v);
+    public inline function toRgbInt():Int {
+        return hsvToRgbInt(h, s, v);
     }
 
+    public inline function toRgbString():String {
+        return StringTools.hex(toRgbInt(), 6);
+    }
+    
+    public function toRgbCssString():String {
+        return toRgb().toRgbCssString();
+    }
+    
     public inline function toRgb():RgbColor {
         return RgbColor.fromHsv(h, s, v);
     }

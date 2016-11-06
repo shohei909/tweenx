@@ -1,5 +1,0 @@
-++++
-<object type="application/x-shockwave-flash" data="/sample/swf/{{include.file}}.swf" {% if include.width == null %}width="451" height="151"{% else %}width="{{include.width}}" height="{{include.height}}"{% endif %} id="flash-{{include.file}}">
-<param name="movie" value="{{include.file}}.swf" />
-</object>
-++++

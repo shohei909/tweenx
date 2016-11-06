@@ -40,7 +40,7 @@ class RgbColor {
 
         var r = 0.0, g = 0.0, b = 0.0;
         switch(hi) {
-            case 0: r = v; g = v * (1 - s * (1 - f)); b = m;
+            case 0:    r = v; g = v * (1 - s * (1 - f)); b = m;
             case 1:    r = v * (1 - s * f); g = v; b = m;
             case 2:    r = m; g = v; b = v * (1 - s * (1 - f));
             case 3:    r = m; g = v * (1 - s * f); b = v;
@@ -51,10 +51,18 @@ class RgbColor {
         return new RgbColor(r, g, b);
     }
 
-    public inline function toInt():Int {
+    public inline function toRgbInt():Int {
         return rgbToInt(r, g, b);
     }
 
+    public inline function toRgbHexString():String {
+        return StringTools.hex(toRgbInt(), 6);
+    }
+    
+    public function toRgbCssString():String {
+        return "rgb(" + Std.int(r * 0xFF) + "," + Std.int(g * 0xFF) + "," + Std.int(b * 0xFF) + ")";
+    }
+    
     public inline function toArgb(a:Float):ArgbColor {
         return new ArgbColor(a, r, g, b);
     }

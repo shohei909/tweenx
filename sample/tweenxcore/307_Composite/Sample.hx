@@ -36,7 +36,7 @@ class Sample extends Sprite {
     }
 
     function updateSquare(part:FloatChangePart) {
-        square1.x = part.current.quintInOut().quintInOut().lerp(15, 435);
-        square2.x = part.current.cubicIn().bounceOut().lerp(15, 435);
+        square1.x = part.current.quintInOut().quintInOut().lerp(0, 450);
+        square2.x = part.current.cubicIn().bounceOut().lerp(0, 450);
     }
 }

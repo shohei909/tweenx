@@ -1,6 +1,0 @@
--swf-header 720:512:60:FFFFFF
--cp sample/tweenxcore/401_Demo
--cp src/tweenx
--cp src/tweenxcore
--cp sample/common
--main sample.main.DirectMain

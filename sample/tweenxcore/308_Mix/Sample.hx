@@ -28,6 +28,6 @@ class Sample extends Sprite {
     }
 
     function updateSquare(part:FloatChangePart) {
-        square.x = part.current.mixEasing(Easing.expoOutIn, Easing.linear, 0.12).lerp(15, 435);
+        square.x = part.current.mixEasing(Easing.expoOutIn, Easing.linear, 0.12).lerp(0, 450);
     }
 }

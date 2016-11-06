@@ -29,7 +29,7 @@ class Sample extends Sprite {
     }
 
     function updateSquare(part:FloatChangePart) {
-        square.x = part.current.expoOutIn().lerp(15, 435);
+        square.x = part.current.expoOutIn().lerp(0, 450);
         square.y = part.current.sinByRate().lerp(75, 95);
     }
 }

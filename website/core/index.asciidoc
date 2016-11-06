@@ -18,7 +18,7 @@ logo: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
 
 実行速度を速く、開発速度を速く、バグを少なく、学習コストを少なく、そしてモーションを自由に面白くするために作られています。
 
-{% include sample.asciidoc num="312" title="CustomEasing" %}
+{% include sample.asciidoc num="312" id="CustomEasing" %}
 
 toc::[]
 
@@ -39,6 +39,7 @@ toc::[]
 
 余計な処理やインスタンス生成を行わないため、非常に高速に動作します。
 
+以下は、多数のトゥイーンライブラリが作られているFlashプラットフォームでの比較です。
 {sampleLink}tweenx/800_BenchMark/src[[コードを見る(Github)\]]
 
 
@@ -65,44 +66,41 @@ haxelib install tweenxcore
 
 === Hello {{page.logo}}
 
-{{page.logo}}の最初のサンプルとして、四角のx座標を0から420まで、動かすコードを見てみます。
+{{page.logo}}の最初のサンプルとして、四角のx座標を0から450まで、動かすコードを見てみます。
 
-{% include sample.asciidoc num="301" title="Simplest" %}
+{% include sample.asciidoc num="301" id="Simplest" %}
 
 [source,haxe,linenums]
 ---------
-import flash.display.Sprite;
-import flash.events.Event;
-import sample.SampleSuport.Square;
+import sample.Sprite;
+import sample.Square;
 using tweenxcore.Tools;
 
-class Sample extends Sprite {
-    var square:Square;
-    var frameCount = 0;
+class SimplestSample extends Sprite {
+    public static var TOTAL_FRAME:Int = 20;
+    private var square:Square;
+    private var frameCount = 0;
 
     public function new() {
         super();
-        addChild(square = new Square());
-        square.x = 15;
-        square.y = Square.SIZE * 2.5;
         
-        addEventListener(Event.ENTER_FRAME, onFrame);
+        // 正方形を初期位置に配置
+        addChild(square = new Square());
+        square.y = Square.SIZE * 2.0;
     }
-    
-    // フレームごとに呼び出し。
-    function onFrame(e:Event) {
-        var rate = frameCount / 20;
+
+    // 毎フレーム、この関数を呼び出す
+    public function update():Void {
+        var rate = frameCount / TOTAL_FRAME;
         if (rate <= 1) {
-            square.x = rate.quadOut().lerp(15, 435);
+            square.x = rate.quintOut().lerp(0, 450);
         }
         frameCount++;
     }
 }
 ---------
 
-サンプルはFlashプラットフォームのコードですが、他のプラットフォームであっても{{page.logo}}の使い方はほとんど変わりません。
-
-{{page.logo}}の説明として重要なのは以下のコードです。
+{{page.logo}}に関係するコードは、以下の部分です。
 
 [source,haxe]
 ---------
@@ -111,7 +109,7 @@ using tweenxcore.Tools;
 
 [source,haxe]
 ---------
-            square.x = rate.quadOut().lerp(15, 435);
+            square.x = rate.quintOut().lerp(0, 450);
 ---------
 
 
@@ -144,14 +142,16 @@ MatrixToolsクラス::
 
 ==== イージング関数
 
-``quadOut``はイージング関数です。0から1へと変化する``rate``の値を、2次関数をつかって後詰めの値へと変えています
+``quintOut``はイージング関数です。0から1へと変化する``rate``の値を、5次関数をつかって後詰めの値へと変えています
 
-{{page.logo}}が提供するイージング関数はもちろん``quadOut``のみではありません。
+{{page.logo}}が提供するイージング関数はもちろん``quintOut``のみではありません。
 
 link:http://easings.net/[Robert Pennerのイージング関数]を基本とし、中央で減速して再度加速する``OutIn``のモードと、瞬間的に移動を行うwarpが追加された計44個の関数を提供しています。
 
-{% include sample.asciidoc num="400" title="EasingVisualizer" width=700 height=500 %}
+{% include sample.asciidoc num="400" id="EasingVisualize" %}
 
+
+これらの関数の中身が具体的にどうなっているのか少し見てみます。
 
 {{page.logo}}での、``cubicIn``関数は以下の通りです。
 
@@ -165,25 +165,29 @@ function cubicIn(t:Float):Float {
 ただ単にFloatを受け取ってFloatを返す、とてもシンプルな関数です。
 
 
-この関数を使って先ほどのサンプルコードにのイージングをつけてみます。たった1行、以下のように変更を加えます。
+この関数に先ほどのサンプルコードのイージングを差し替えてみます。たった1行、以下のように変更を加えます。
 
 [source,haxe]
 ---------
-square.x = part.current.cubicIn().lerp(15, 435);
+square.x = part.current.cubicIn().lerp(0, 450);
 ---------
 
-``part.current``の0.0から1.0までの値を、``cubicIn()``を使ってカーブをつけた後に、``lerp``関数で15から435の値に変換しています。{{page.logo}}を使用するコードでは、このようなFloatの値に対するメソッドチェーンがよく出てきます。
+{% include sample.asciidoc num="302" id="Easing" %}
 
-{% include sample.asciidoc num="302" title="Easing" %}
+モーションの詰まり方が、もとの``quintOut``とは別のものになっているのがわかると思います。
 
 
 ==== lerp
 
-``lerp`` は線形補間の関数で、``tweenxcore.Tools.FloatTools``が持つ関数です。0.0から1.0の値を指定した範囲の値、例の場合、15から435までの値に変換しています。これにより、``rate``が0.0から1.0まで変化する間に、``square.x``は15から435へと移動します。
+``lerp`` は線形補間の関数で、``tweenxcore.Tools.FloatTools``が持つ関数です。
+
+さきほどのサンプルでは、0.0から1.0の値を指定した範囲の値を、0から450までの値に変換しています。これにより``rate``が0.0から1.0まで変化する間に、``square.x``は0から450へと移動します。
 
 
 
 == {{page.logo}}の思想
+
+
 
 === 脱ブラックボックス
 
@@ -208,6 +212,14 @@ square.x = part.current.cubicIn().lerp(15, 435);
 {{page.logo}}では、このような0.0から1.0を基準とする値について``rate``という変数名をよく使います。
 
 
+=== どこでも使える
+
+{{page.logo}}は、プラットフォームや、合わせて使うフレームワーク、プログラミングのパラダイムに左右されることなく利用可能です。
+
+* 目指しているスタイルが、オブジェクト指向でも、手続き型プログラミングでも、関数型プログラミングでも利用できます。
+* 使用するフレームワークが、OpenFLであっても、Reactであっても、Unityであっても同じように動作します。
+* クライアントサイドだけでなく、たとえサーバーサイドであっても動作します。
+
 
 == {{page.logo}}チュートリアル
 
@@ -217,83 +229,80 @@ square.x = part.current.cubicIn().lerp(15, 435);
 {{page.logo}}には44種類のイージングありますがこれらを単に使うだけでは、ありふれたモーションになりがちです。{{page.logo}}ではイージングを組み合わせたり混ぜ合わせたりして自分だけのイージングを作り出すことができます。
 
 
-==== ヨーヨー
-
-ヨーヨーは0.0から1.0に行って、逆再生の動きで0.0に帰ってくるようなモーションです。
-
-{% include sample.asciidoc num="304" title="Yoyo" %}
-
-```haxe
-// ヨーヨー
-square.x = rate.yoyo(Easing.quintOut).lerp(15, 435);
-```
-
-==== ジグザグ
-
-ジグザグは0.0から1.0に行って、移動方向を反転させた動きで0.0に帰ってくるようなモーションです。
-
-{% include sample.asciidoc num="319" title="Zigzag" %}
-
-```
-// ジグザグ
-square.x = rate.zigzag(Easing.quintOut).lerp(15, 435);
-```
-
 ==== 多重のイージング（関数合成）
 
 イージングを2重、3重に使うと、新しい動きを作ることができます。
 
-{% include sample.asciidoc num="307" title="Composite" %}
+{% include sample.asciidoc num="307" id="Composite" %}
 
 ```haxe
-// 上
-square1.x = rate.quintInOut().quintInOut().lerp(15, 435);
-
-// 下
-square2.x = rate.cubicIn().bounceOut().lerp(15, 435);
+square.x = rate.cubicIn().bounceOut().lerp(0, 450);
 ```
 
-上は``quintInOut``を2重に使ってより急激な加速減速を作っており、下は``cubicIn``と``bounceOut``で加速していくバウンドのイージングを作っています。
+``cubicIn``を使ってから``bounceOut``を使ってことで、加速していくバウンドのイージングを作っています。
 
 
 ==== ミックス
 
 ``mixEasing``は2つのイージングの中間的なイージングです。
 
-{% include sample.asciidoc num="308" title="Mix" %}
+{% include sample.asciidoc num="308" id="Mix" %}
 
 ```haxe
-square.x = rate.mixEasing(Easing.expoOutIn, Easing.linear, 0.12).lerp(15, 435);
+square.x = rate.mixEasing(Easing.expoOutIn, Easing.linear, 0.18).lerp(0, 450);
 ```
 
-サンプルとしてゲームのカットイン演出にありそうなイージングを作りました。``expoOutIn``に``linear``関数を``0.12``ミックスすることで、``OutIn``のイージングの真ん中でピタッっと止まる感じを無くしています。
+サンプルはゲームのカットイン演出にありそうな動きです。``expoOutIn``に``linear``関数を``0.18``ミックスすることで、``OutIn``のイージングの真ん中での静止を無くしています。
 
 
 ==== クロスフェード
 
 ``crossfadeEasing``は、始まりと終わりで別のイージングに徐々に変わっていくようなイージングです。
 
-{% include sample.asciidoc num="309" title="Crossfade" %}
+{% include sample.asciidoc num="309" id="Crossfade" %}
 
 ```haxe
 square.x = rate.crossfadeEasing(
     Easing.quintOut,
     Easing.bounceOut,
     Easing.sineInOut
-).lerp(15, 435);
+).lerp(0, 450);
 ```
 
 サンプルは``quintOut``として始まって、徐々に``Easing.bounceOut``に変わっていくイージングです。変化の仕方の曲線として``Easing.sineInOut``を使っています。
+
+
+==== ヨーヨー
+
+ヨーヨーは0.0から1.0に行って、逆再生の動きで0.0に帰ってくるようなモーションです。
+
+{% include sample.asciidoc num="304" id="Yoyo" %}
+
+```haxe
+// ヨーヨー
+square.x = rate.yoyo(Easing.quintOut).lerp(0, 450);
+```
+
+==== ジグザグ
+
+ジグザグは0.0から1.0に行って、移動方向を反転させた動きで0.0に帰ってくるようなモーションです。
+
+{% include sample.asciidoc num="319" id="Zigzag" %}
+
+```
+// ジグザグ
+square.x = rate.zigzag(Easing.quintOut).lerp(0, 450);
+```
 
 
 ==== コネクト
 
 ``connectEasing``は、2つのイージングをつなげて再生する機能です。
 
-{% include sample.asciidoc num="310" title="Connect" %}
+{% include sample.asciidoc num="310" id="Connect" %}
 
 ```haxe
-square.x = rate.connectEasing(Easing.backOut, 0.9, 0.4, Easing.linear).lerp(15, 435);
+square.x = rate.connectEasing(Easing.backOut, Easing.linear, 0.9, 0.4).lerp(0, 450);
 ```
 
 サンプルでは、最初の``0.9``の時間で``0.4``の位置まで``backOut``で移動した後、残りを``linear``で移動しています。
@@ -303,13 +312,13 @@ square.x = rate.connectEasing(Easing.backOut, 0.9, 0.4, Easing.linear).lerp(15, 
 
 ``oneTwoEasing``は、別々のイージングで2回移動を行うイージングです。
 
-{% include sample.asciidoc num="311" title="OneTwo" %}
+{% include sample.asciidoc num="311" id="OneTwo" %}
 
 ```haxe
-square1.x = rate.oneTwoEasing(Easing.backIn, 0.8, Easing.linear).lerp(45, 405);
+square1.x = rate.oneTwoEasing(Easing.backIn, Easing.linear, 0.7).lerp(30, 420);
 ```
 
-単純に``backIn``で1回目の``linear``で2回目の移動を行っています。
+``backIn``で1回目の移動を、``linear``で2回目の移動を行っています。
 
 
 ==== CustomEasingクラス
@@ -337,65 +346,122 @@ image::/images/easing_editor_ja.png[alt="イージングエディタ" class="lar
 link:./custom/[イージングエディタ | TweenXCore]
 
 
-=== 変化量をあつかう（FloatChange）
+=== 値の変化をあつかう（FloatChange）
+
+これまでのサンプルは現在の値のみを使うものでしたが、直前の値と現在の値の両方を使うことで、さまざまな動作を作ることができます。
+
+{{page.logo}}では、直前の値と現在の値をあつかう``FloatChange``というクラスを提供しています。
+
+==== 値を横切った瞬間を取得
+
+``FloatChange``を使用する例として、フレームカウントが特定の値を横切った瞬間の判定があります。
+
+{% include sample.asciidoc num="305" id="CrossOver" %}
+
+```haxe
+public function update():Void {
+    var floatChange = new FloatChange(frameCount, frameCount += 1);
+    
+    // フレームカウントが30.0を横切った瞬間に、画面全体に四角を表示
+    if (floatChange.isCrossOver(30.0)) {
+        addChild(square = new Square());
+        square.width = 481;
+        square.height = 151;
+    }
+}
+```
+
+``new FloatChange``の第1引数は直前の値``previous``、第2引数は現在の値``current``で、``FloatChange``はこの2つの値をあつかうための便利関数を提供します。
+
+``isCrossOver``関数は、この``previous``と``current``が指定した値を横切った瞬間のみ``true``になります。
+
+この例の場合は``previous \<= 30.0 && 30.0 < current``または``current \<= 30.0 && 30.0 < previous``の条件で判定されます。
+
+``FloatChange``は時間ベースでモーションをさせる場合に特に役に立ちます。例えば、``new FloatChange(previousTime, currentTime)``としたときに、**``previousTime``と``currentTime``がたまたま同一の値になったとしても、``isCrossOver``で判定した処理が2重に呼び出されることはありません。**
+
+{sourceLink}tweenxcore/structure/FloatChange.hx[[ソースを見る(tweenxcore.structure.FloatChange)\]]
 
 
+==== 値がある区間にいる間を取得
+
+フレームが特定の区間にある時のモーションです。
+
+{% include sample.asciidoc num="305" id="FloatChangePart" %}
+
+```haxe
+public function update():Void {
+    var floatChange = new FloatChange(frameCount, frameCount += 1);
+    floatChange.handlePart(20.0, 50.5, updatePart);
+}
+
+private function updatePart(part:FloatChangePart):Void {
+    var left  = part.previous.expoOutIn().lerp(0, 480);
+    var right = part.current.expoOutIn().lerp(0, 480);
+    
+    square.x = left;
+    square.width = right - left; 
+}
+```
+
+``handlePart``関数は、``FloatChange``が指定した区間を移動しているときに、すぐに（同期処理で）第3引数であたえた関数を呼び出します。
+
+この例では``20.0``から``50.5``の区間を通過しているときに、``updatePart``関数を呼び出します。
+
+``updatePart``の第1引数の``FloatChangePart``は、開始値が``0.0``、終了値が``1.0``であるような``FloatChange``です。この場合、元の``FloatChange``値が``20.0``のとき``0.0``、``50.5``のとき``1.0``になるように対応させて渡されます。
+
+この時、``FloatChangePart``の``current``と``previous``の値が``0.0``より低い値や、``1.0``より高い値で、``updatePart``が呼び出されることはありません。
+
+{sourceLink}tweenxcore/structure/FloatChangePart.hx[[ソースを見る(tweenxcore.structure.FloatChangePart)\]]
+
+
+==== 区間の開始と、終了を取得する
+
+``FloatChangePart``には、モーションの開始タイミングや、終了タイミングを取得するための関数が用意されています。
+
+{% include sample.asciidoc num="305" id="EntranceExit" %}
+
+```haxe
+private function updatePart(part:FloatChangePart) {
+    if (part.isEntrance()) {
+        var topBar = new Square();
+        addChild(topBar);
+        topBar.width = 481;
+    }
+
+    square.x = part.current.expoIn().lerp(0, 450);
+
+    if (part.isExit()) {
+        var bottomBar = new Square();
+        addChild(bottomBar);
+        bottomBar.y = 120;
+        bottomBar.width = 481;
+    }
+}
+```
 
 ==== 繰り返し
 
 1つのパートを、複数回繰り返したい場合、``handlePart``の代わりに``handleRepeatPart``を使います。
 
-{% include sample.asciidoc num="303" title="Repeat" %}
+{% include sample.asciidoc num="303" id="Repeat" %}
 
 [source,haxe]
 ---------
-change.handleRepeatPart(5, 25, 3, updateSquare);
+change.handleRepeatPart(20, 40, 3, updatePart);
 ---------
 
-このサンプルでは、5フレーム目から65フレーム目までの60フレームの間に``FloatChangePart``の0.0から1.0の移動が3回繰り返されています。
+このサンプルでは、20フレーム目から80フレーム目までの60フレームの間に``FloatChangePart``の0.0から1.0の移動が3回繰り返されています。
 
 ``handleRepeatPart``が``updateSquare``に引数として渡す``FloatChangePart``は``FloatChangeRepeatPart``として拡張したもので、現在が何回目の繰り返しかなどの追加の情報にアクセスができます。
 
 {sourceLink}tweenxcore/structure/FloatChangeRepeatPart.hx[[ソースを見る(tweenxcore.structure.FloatChangeRepeatPart)\]]
 
 
-==== モーションの特定のタイミングに処理をする
-
-``FloatChangePart``には、モーションの開始タイミングや、終了タイミングを取得するための関数が用意されています。
-
-{% include sample.asciidoc num="305" title="CrossOver" %}
-
-この例では、パートの開始のタイミング、真ん中のタイミング、終了のタイミングのみ``true``になるフラグを使って各タイミングで色を変えています。
-
-```haxe
-function updateSquare(part:FloatChangePart) {
-	square.x = part.current.cubicIn().lerp(15, 435);
-
-	// パートの開始タイミングだったら、赤に変更
-	if (part.isEntrance())
-	{
-		square.transform.colorTransform = new ColorTransform(0, 0, 0, 1, 0xFF, 0x78, 0x78);
-	}
-
-	// パートが半分経過したタイミングだったら、緑に変更
-	if (part.isCrossOver(0.5))
-	{
-		square.transform.colorTransform = new ColorTransform(0, 0, 0, 1, 0x78, 0xFF, 0x78);
-	}
-
-	// パートの終了タイミングだったら、青に変更
-	if (part.isExit())
-	{
-		square.transform.colorTransform = new ColorTransform(0, 0, 0, 1, 0x78, 0x78, 0xFF);
-	}
-}
-```
-
 ====　連続したモーションをあつかう
 
 連続したモーションをあつかうには、``FloatChange``の``handleTimelinePart``が使えます。
 
-{% include sample.asciidoc num="306" title="TimelinePart" %}
+{% include sample.asciidoc num="306" id="TimelinePart" %}
 
 右、下、左の三つの移動を行いました。
 
@@ -406,80 +472,85 @@ public function new() {
     // (中略)
 
     // 重み付きのupdate関数の配列を作成。
-    timeline = new Timeline().add(update1, 1).add(update2, 3).add(update3, 12);
+    timeline = new Timeline().add(update1, 1).add(update2, 2).add(update3, 5);
 }
 
-function onFrame(e:Event) {
-    var change = new FloatChange(frameCount, frameCount += 1);
+public function update():Void {
+    var floatChange = new FloatChange(frameCount, frameCount += 1);
 
-    // Timelineに合わせて、update関数呼び出し。
-    change.handleTimelinePart(0, 80, timeline);
+    floatChange.handleTimelinePart(0, 80, timeline);
 }
 
-function update1(change:FloatChangeTimelinePart) {
+private function update1(part:FloatChangeTimelinePart):Void {
     // 右へ移動
-    square.x = change.current.lerp(15, 435);
+    square.x = part.current.lerp(0, 450);
 }
 
-function update2(change:FloatChangeTimelinePart) {
+private function update2(part:FloatChangeTimelinePart):Void {
     // 下へ移動
-    square.y = change.current.cubicInOut().lerp(15, 135);
+    square.y = part.current.cubicInOut().lerp(0, 120);
 }
 
-function update3(change:FloatChangeTimelinePart) {
+private function update3(part:FloatChangeTimelinePart):Void {
     // 左へ移動
-    square.x = change.current.quartIn().cubicIn().lerp(435, 15);
+    square.x = part.current.quartIn().cubicIn().lerp(450, 0);
 }
 ```
 
-``Timeline``は重み付きの配列です。配列の各要素に``Float``で重みがつけられています。サンプルでは``update1, update2, update3``に``1:3:12``の重みを付けています。
+``Timeline``は重み付きの配列です。配列の各要素に``Float``で重みがつけられています。サンプルでは``update1, update2, update3``に``1:2:5``の重みを付けています。
 
-``handleTimelinePart``は、この重みに従ってupdate関数を呼び出します。サンプルでは、5フレームかけて``update1``を、15フレームかけて``update2``を、60フレームかけて``update3``を呼び出しています。
+``handleTimelinePart``は、この重みに従ってupdate関数を呼び出します。サンプルでは、10フレームかけて``update1``を、20フレームかけて``update2``を、50フレームかけて``update3``を呼び出しています。
 
 ``FloatChangeTimelinePart``は``FloatChangePart``を継承しており、現在タイムラインのどの位置にいるかなどの情報が追加で取得できます。
 
+{sourceLink}tweenxcore/structure/Timeline.hx[[ソースを見る(tweenxcore.structure.Timeline)\]]
 {sourceLink}tweenxcore/structure/FloatChangeTimelinePart.hx[[ソースを見る(tweenxcore.structure.FloatChangeTimelinePart)\]]
 
 
 === 2次元の動き
-
-==== マトリックス
-
+==== 単純な動き
 いままでのモーションはすべてX方向の動きをあつかってきましたが、Y方向の動きも入れてみます。
 
-{% include sample.asciidoc num="313" title="Xy" %}
+{% include sample.asciidoc num="313" id="Xy" %}
 
 ```haxe
-square.x = rate.expoOutIn().lerp(15, 435);
-square.y = rate.sinByRate().lerp(75, 95);
+square.x = part.current.lerp(0, 450);
+square.y = part.current.sinByRate().lerp(60, 105);
 ```
 
 四角をY方向に揺らしてみました。ここで使っている``sinByRate``は円の一周を1.0としてあつかう``sin``関数です。
 
-このサンプルはそれほど目新しくはありません。問題は同じようなモーションを斜め方向に行う場合です。これまで0.0から1.0の値を実際の``x``座標に変換するのには``lerp``関数を使ってきましたが、回転が加わる場合``lerp``関数は使えません。
+このサンプルはそれほど目新しくはありません。問題は同じようなモーションを斜め方向に行う場合です。
+
+==== マトリックス
+
+これまで0.0から1.0の値を実際の``x``座標に変換するのには``lerp``関数を使ってきましたが、回転が加わる場合``lerp``関数では表現できません。
 
 そういった場合は、``MatrixTools.createSimilarityTransform``を使います。
 
-{% include sample.asciidoc num="314" title="Matrix" %}
+{% include sample.asciidoc num="314" id="Matrix" %}
 
 ```haxe
-var matrix:flash.geom.Matrix;
+private var matrix:MatrixImpl;
 
 public function new() {
-	// (中略)
+    // (中略)
 
-	// X座標を100から350、Y座標を15から135に移動するための行列を作成
-	matrix = new flash.geom.Matrix();
-	matrix.createSimilarityTransform(100, 15, 350, 135);
+    // Flashプラットフォームなら、flash.geom.Matrixを使える。
+    // pixi.jsや、OpenFLのなど場合、それぞれのフレームワークで定義されているMatrixが使える。
+    // 実際のサンプルコードでは、自前でサンプル用に定義したクラスを使っている。
+    matrix = new MatrixImpl();
+    
+    // (0, 0)から(1, 0)への移動を、(100, 0)から(350, 120)への移動に相似変換する行列を作成。
+    matrix.createSimilarityTransform(100, 0, 350, 120);
 }
 
-function updateSquare(part:FloatChangePart) {
-	var x = rate.expoOutIn();
-	var y = rate.sinByRate().lerp(0, 0.1);
-	var point = matrix.transformPoint(new Point(x, y));
+private function updatePart(part:FloatChangePart):Void {
+    var x = part.current;
+    var y = part.current.sinByRate().lerp(0, 0.1);
 
-	square.x = point.x;
-	square.y = point.y;
+    square.x = matrix.a * x + matrix.c * y + matrix.tx;
+    square.y = matrix.b * x + matrix.d * y + matrix.ty;
 }
 ```
 
@@ -489,34 +560,35 @@ function updateSquare(part:FloatChangePart) {
 
 {{page.logo}}は極座標をサポートしています。
 
-{% include sample.asciidoc num="315" title="Polar" %}
+{% include sample.asciidoc num="315" id="Polar" %}
 
 ```haxe
-var matrix:Matrix;
-
 public function new() {
-	// (中略)
+    // (中略)
 
-	// 相似変換を作成
-	matrix = new Matrix();
-	matrix.createSimilarityTransform(225, 75, 15, 15);
+    // 相似変換を作成
+    matrix = new MatrixImpl();
+    matrix.createSimilarityTransform(210, 60, 0, 0);
 }
 
-function updateSquare(part:FloatChangePart) {
-	// 原点に近づいていく
-	var distance = rate.expoOut().lerp(1, 0);
-	// 反時計回りに2周する。
-	var angle = rate.lerp(0, -2);
-	var polarPoint = new PolarPoint(distance, angle);
+private function updatePart(part:FloatChangePart) {
+    // 原点に近づいていく
+    var distance = part.current.expoOut().lerp(1, 0);
+    // 反時計回りに2周する。
+    var angle = part.current.lerp(0, -2);
+    
+    // 極座標からXY座標へ変換
+    var polarPoint = new PolarPoint(distance, angle);
+    var x = polarPoint.x;
+    var y = polarPoint.y;
 
-	// 実際の座標へ変換
-	var point = matrix.transformPoint(new Point(polarPoint.x, polarPoint.y));
-	square.x = point.x;
-	square.y = point.y;
+    // 実際の座標へ変換
+    square.x = matrix.a * x + matrix.c * y + matrix.tx;
+    square.y = matrix.b * x + matrix.d * y + matrix.ty;
 }
 ```
 
-サンプルは、``(x, y)=(225, 75)``を極座標の中心として、そこに``(x, y)=(15, 15)``の位置から回転しながら近づいていくモーションです。
+サンプルは、``(x, y)=(210, 60)``を極座標の中心として、そこに``(x, y)=(0, 0)``の位置から回転しながら近づいていくモーションです。
 
 {sourceLink}tweenxcore/geom/PolarPoint.hx[[ソースを見る(tweenxcore.geom.PolarPoint)\]]
 
@@ -525,7 +597,7 @@ function updateSquare(part:FloatChangePart) {
 
 {{page.logo}}はベジェ曲線もサポートしています。
 
-{% include sample.asciidoc num="316" title="Bezier" %}
+{% include sample.asciidoc num="316" id="Bezier" %}
 
 ```haxe
 square.x = rate.bezier3(15, 50, 400, 435);
@@ -546,7 +618,7 @@ square.y = rate.bezier3(15, 200, -50, 135);
 
 {{page.logo}}では、RGBカラーとHSVカラーが使えます。
 
-{% include sample.asciidoc num="317" title="Color" %}
+{% include sample.asciidoc num="317" id="Color" %}
 
 ```haxe
 var prevX = part.previous.expoInOut().lerp(0, 450);
@@ -579,4 +651,8 @@ graphics.drawRect(prevX, 90, currentX - prevX, 30);
 
 連続したモーションをあつかうのに重み付き配列の``Timeline``を紹介しましたが、この``Timeline``は画像のパラパラアニメーションを作るのにも使えます。
 
-{% include sample.asciidoc num="318" title="Bitmap" width="151" %}
+{% include sample.asciidoc num="318" id="Bitmap" width="151" %}
+
+++++
+<script src="/js/Sample.js"></script>
+++++

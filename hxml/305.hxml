@@ -1,7 +1,0 @@
--swf-header 451:151:60:FFFFFF
--cp sample/tweenxcore/305_CrossOver
--cp src/tweenx
--cp src/tweenxcore
--cp sample/common
--main sample.main.RepeatableMain
--D grid_background

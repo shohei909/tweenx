@@ -1,3 +1,4 @@
-{% include movie.asciidoc file=include.num width=include.width height=include.height %}
-
-{sampleLink}tweenxcore/{{include.num}}_{{include.title}}/Sample.hx[[サンプルコードを見る({{include.title}})\]]
+++++
+<div><canvas class="movie" id="{{include.id}}Sample" /></canvas></div>
+++++
+{sampleLink}tweenxcore/{{include.id}}Sample.hx[[サンプルコードを見る({{include.id}}Sample)\]]

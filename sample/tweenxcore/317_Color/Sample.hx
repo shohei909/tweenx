@@ -35,7 +35,7 @@ class Sample extends Sprite {
         var red = rgbCurve.lerp(0.8, 0.7);
         var green = rgbCurve.lerp(0.7, 1);
         var blue = rgbCurve.lerp(0.5, 1);
-        graphics.beginFill(new RgbColor(red, green, blue).toInt());
+        graphics.beginFill(new RgbColor(red, green, blue).toRgbInt());
         graphics.drawRect(prevX, 30, currentX - prevX, 30);
 
         // HSVカラー

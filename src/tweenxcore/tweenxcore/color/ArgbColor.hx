@@ -23,6 +23,18 @@ class ArgbColor extends RgbColor
         );
     }
 
+    public inline function toArgbInt():Int {
+        return argbToInt(a, r, g, b);
+    }
+    
+    public inline function toArgbHexString():String {
+        return StringTools.hex(toArgbInt(), 8);
+    }
+    
+    public inline function toRgbaCssString():String {
+        return "rgba(" + Std.int(r * 0xFF) + "," + Std.int(g * 0xFF) + "," + Std.int(b * 0xFF) + "," + a + ")";
+    }
+    
     public static inline function fromAhsv(a:Float, h:Float, s:Float, v:Float, hueIndex:Int = 0) {
         return RgbColor.fromHsv(h, s, v).toArgb(a);
     }

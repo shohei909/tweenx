@@ -27,6 +27,6 @@ class Sample extends Sprite {
     }
 
     function updateSquare(part:FloatChangeRepeatPart) {
-        square.x = part.current.cubicIn().lerp(15, 435);
+        square.x = part.current.cubicIn().lerp(0, 450);
     }
 }

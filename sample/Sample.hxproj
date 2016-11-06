@@ -5,27 +5,27 @@
     <movie outputType="CustomBuild" />
     <movie input="" />
     <movie path="build.hxml" />
-    <movie fps="60" />
-    <movie width="451" />
-    <movie height="151" />
+    <movie fps="0" />
+    <movie width="0" />
+    <movie height="0" />
     <movie version="0" />
     <movie minorVersion="0" />
     <movie platform="hxml" />
-    <movie background="FFFFFF" />
+    <movie background="#FFFFFF" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="sample\tweenxcore\301_Simplest" />
-    <class path="src\tweenx" />
-    <class path="src\tweenxcore" />
-    <class path="sample\common" />
+    <class path="tweenxcore" />
+    <class path="..\src\tweenxcore" />
+    <class path="js" />
+    <class path="common" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="grid_background" />
+    <option directives="" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="sample.main.RepeatableMain" />
+    <option mainClass="Main" />
     <option enabledebug="False" />
     <option additional="" />
   </build>
@@ -35,21 +35,21 @@
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <!-- example: <compile path="..." /> -->
+    <compile path="src\Main.hx" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
     <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>cmd /c haxe $(OutputFile) --times</preBuildCommand>
+  <preBuildCommand>cmd /c haxe $(OutputFile)</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->
   <options>
-    <option showHiddenPaths="True" />
+    <option showHiddenPaths="False" />
     <option testMovie="OpenDocument" />
-    <option testMovieCommand="bin/main.swf" />
+    <option testMovieCommand="http://127.0.0.1:4000/core" />
   </options>
   <!-- Plugin storage -->
   <storage />

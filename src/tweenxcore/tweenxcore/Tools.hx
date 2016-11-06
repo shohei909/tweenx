@@ -668,7 +668,6 @@ class PointTools {
 
 
 class MatrixTools {
-    @:generic
     public static inline function createSimilarityTransform<T:Matrix>(outputMatrix:T, fromX:Float, fromY:Float, toX:Float, toY:Float) {
         var dx = toX - fromX;
         var dy = toY - fromY;
