@@ -31,6 +31,33 @@ sample_Sprite.prototype = {
 	}
 	,__class__: sample_Sprite
 };
+var BezierSample = function() {
+	this.frameCount = 0;
+	sample_Sprite.call(this);
+	this.addChild(this.square = new sample_Square());
+};
+BezierSample.__name__ = ["BezierSample"];
+BezierSample.__super__ = sample_Sprite;
+BezierSample.prototype = $extend(sample_Sprite.prototype,{
+	update: function() {
+		var previousValue = this.frameCount;
+		var currentValue = this.frameCount += 1;
+		if((20.0 < previousValue && currentValue < 50.5 || 20.0 < currentValue && previousValue < 50.5 || 50.5 < previousValue && currentValue < 20.0 || 50.5 < currentValue && previousValue < 20.0) && previousValue != currentValue) {
+			var value = (previousValue - 20.0) / 30.5;
+			var tmp = value <= 0.0?0.0:1.0 <= value?1.0:value;
+			var value1 = (currentValue - 20.0) / 30.5;
+			this.updatePart(new tweenxcore_structure_FloatChangePart(tmp,value1 <= 0.0?0.0:1.0 <= value1?1.0:value1));
+		}
+	}
+	,updatePart: function(part) {
+		var rate = part.current;
+		var control = 50 * (1 - rate) + 400 * rate;
+		this.square.x = ((0 * (1 - rate) + 50 * rate) * (1 - rate) + control * rate) * (1 - rate) + (control * (1 - rate) + (400 * (1 - rate) + 450 * rate) * rate) * rate;
+		var control1 = 200 * (1 - rate) + -50 * rate;
+		this.square.y = ((0 * (1 - rate) + 200 * rate) * (1 - rate) + control1 * rate) * (1 - rate) + (control1 * (1 - rate) + (-50 * (1 - rate) + 120 * rate) * rate) * rate;
+	}
+	,__class__: BezierSample
+});
 var CompositeSample = function() {
 	this.frameCount = 0;
 	sample_Sprite.call(this);
@@ -126,6 +153,105 @@ CrossfadeSample.prototype = $extend(sample_Sprite.prototype,{
 	}
 	,__class__: CrossfadeSample
 });
+var CustomEasingSample = function() {
+	this.frame = 0;
+	sample_Sprite.call(this);
+	this.squares = [];
+	var _g = 0;
+	while(_g < 5) {
+		var i = _g++;
+		var square = new sample_Square();
+		square.x = 30;
+		square.y = 30 * i;
+		this.addChild(square);
+		this.squares.push(square);
+	}
+};
+CustomEasingSample.__name__ = ["CustomEasingSample"];
+CustomEasingSample.__super__ = sample_Sprite;
+CustomEasingSample.prototype = $extend(sample_Sprite.prototype,{
+	update: function() {
+		new tweenxcore_structure_FloatChange(this.frame,this.frame += 1).handleRepeatPart(0,60,3,$bind(this,this.updatePart));
+	}
+	,updatePart: function(part) {
+		var start = 30;
+		var end = 420;
+		if(part.repeatIndex % 2 == 1) {
+			end = 30;
+			start = 420;
+		}
+		var max = this.squares.length - 1;
+		var _g1 = 0;
+		var _g = this.squares.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var rate = i / max;
+			var from = 0 * (1 - rate) + 0.2 * rate;
+			var to = 0.2 * (1 - rate) + rate;
+			if((from < part.previous && part.current < to || from < part.current && part.previous < to || to < part.previous && part.current < from || to < part.current && part.previous < from) && part.previous != part.current) {
+				var tmp = (function(a2,a1,i1,f) {
+					return function(a3) {
+						f[0](i1[0],a1[0],a2[0],a3);
+					};
+				})([end],[start],[i],[$bind(this,this.updateSquare)]);
+				var value = (part.previous - from) / (to - from);
+				var tmp1 = value <= 0.0?0.0:1.0 <= value?1.0:value;
+				var value1 = (part.current - from) / (to - from);
+				tmp(new tweenxcore_structure_FloatChangePart(tmp1,value1 <= 0.0?0.0:1.0 <= value1?1.0:value1));
+			}
+		}
+	}
+	,updateSquare: function(i,start,end,part) {
+		var square = this.squares[i];
+		var rate = part.current;
+		var rate1 = CustomEasing.quintQuintInOut(rate);
+		var rate2 = 0 * (1 - rate1) + rate1;
+		var rate3 = tweenxcore_Easing.backIn(rate) * (1 - rate2) + CustomEasing.littleBackOut(rate) * rate2;
+		square.x = start * (1 - rate3) + end * rate3;
+		var rate4 = part.current;
+		var rate5 = tweenxcore_Easing.linear(rate4);
+		var rate6 = 0 * (1 - rate5) + 0.2 * rate5;
+		var rate7 = tweenxcore_FloatTools.yoyo(rate4,tweenxcore_Easing.backIn) * (1 - rate6) + tweenxcore_FloatTools.yoyo(rate4,tweenxcore_Easing.sineIn) * rate6;
+		var curve = 1 - rate7 + 0.1 * rate7;
+		square.width = 30 / curve;
+		square.height = 30 * curve;
+		square.y = (i + (1 - curve) / 2) * 30;
+	}
+	,__class__: CustomEasingSample
+});
+var CustomEasing = function() { };
+CustomEasing.__name__ = ["CustomEasing"];
+CustomEasing.stylishBackIn = function(rate) {
+	var rate1 = CustomEasing.quintQuintInOut(rate);
+	var rate2 = 0 * (1 - rate1) + rate1;
+	return tweenxcore_Easing.backIn(rate) * (1 - rate2) + CustomEasing.littleBackOut(rate) * rate2;
+};
+CustomEasing.quintQuintInOut = function(rate) {
+	var t = rate;
+	var t1;
+	t = rate * 2;
+	if(t < 1) {
+		t1 = 0.5 * t * t * t * t * t;
+	} else {
+		t -= 2;
+		t1 = 0.5 * t * t * t * t * t + 1;
+	}
+	t1 *= 2;
+	if(t1 < 1) {
+		return 0.5 * t1 * t1 * t1 * t1 * t1;
+	} else {
+		t1 -= 2;
+		return 0.5 * t1 * t1 * t1 * t1 * t1 + 1;
+	}
+};
+CustomEasing.littleBackOut = function(rate) {
+	return tweenxcore_Easing.expoOut(rate) * 0.85 + tweenxcore_Easing.backOut(rate) * 0.15;
+};
+CustomEasing.customYoyo = function(rate) {
+	var rate1 = tweenxcore_Easing.linear(rate);
+	var rate2 = 0 * (1 - rate1) + 0.2 * rate1;
+	return tweenxcore_FloatTools.yoyo(rate,tweenxcore_Easing.backIn) * (1 - rate2) + tweenxcore_FloatTools.yoyo(rate,tweenxcore_Easing.sineIn) * rate2;
+};
 var EasingSample = function() {
 	this.frameCount = 0;
 	sample_Sprite.call(this);
@@ -256,7 +382,8 @@ _$EasingVisualizeSample_Chart.prototype = {
 		if(change.current <= 0.0 && 0.0 < change.previous || change.previous < 1.0 && 1.0 <= change.current) {
 			var index = change.repeatIndex;
 			var rate = this.easing((change.current + index) / change.repeatLength);
-			this.context.strokeStyle = Style.DARKEN_THEME_COLOR.toRgbCssString();
+			var _this = Style.DARKEN_THEME_COLOR;
+			this.context.strokeStyle = "rgb(" + (_this.r * 255 | 0) + "," + (_this.g * 255 | 0) + "," + (_this.b * 255 | 0) + ")";
 			this.context.lineWidth = 1;
 			this.context.beginPath();
 			this.context.moveTo(this.x + 80 * index / this.repeat,this.y + 60 * (1 - this.prevRate));
@@ -336,10 +463,84 @@ FloatChangePartSample.prototype = $extend(sample_Sprite.prototype,{
 	}
 	,__class__: FloatChangePartSample
 });
+var HsvSample = function() {
+	this.frameCount = 0;
+	sample_Sprite.call(this);
+};
+HsvSample.__name__ = ["HsvSample"];
+HsvSample.__super__ = sample_Sprite;
+HsvSample.prototype = $extend(sample_Sprite.prototype,{
+	update: function() {
+		var previousValue = this.frameCount;
+		var currentValue = this.frameCount += 1;
+		if((0 < previousValue && currentValue < 40 || 0 < currentValue && previousValue < 40 || 40 < previousValue && currentValue < 0 || 40 < currentValue && previousValue < 0) && previousValue != currentValue) {
+			var value = previousValue / 40;
+			var tmp = value <= 0.0?0.0:1.0 <= value?1.0:value;
+			var value1 = currentValue / 40;
+			this.updatePart(new tweenxcore_structure_FloatChangePart(tmp,value1 <= 0.0?0.0:1.0 <= value1?1.0:value1));
+		}
+	}
+	,updatePart: function(part) {
+		var t = part.previous;
+		var rate;
+		if(t == 0) {
+			rate = 0;
+		} else if(t == 1) {
+			rate = 1;
+		} else {
+			t *= 2;
+			if(t < 1) {
+				rate = 0.5 * Math.pow(2,10 * (t - 1));
+			} else {
+				rate = 0.5 * (2 - Math.pow(2,-10 * --t));
+			}
+		}
+		var prevX = 0 * (1 - rate) + 480 * rate;
+		var t1 = part.current;
+		var rate1;
+		if(t1 == 0) {
+			rate1 = 0;
+		} else if(t1 == 1) {
+			rate1 = 1;
+		} else {
+			t1 *= 2;
+			if(t1 < 1) {
+				rate1 = 0.5 * Math.pow(2,10 * (t1 - 1));
+			} else {
+				rate1 = 0.5 * (2 - Math.pow(2,-10 * --t1));
+			}
+		}
+		var currentX = 0 * (1 - rate1) + 480 * rate1;
+		var t2 = part.current;
+		var hsvCurve;
+		if(t2 == 0) {
+			hsvCurve = 0;
+		} else if(t2 == 1) {
+			hsvCurve = 1;
+		} else {
+			t2 *= 2;
+			if(t2 < 1) {
+				hsvCurve = 0.5 * Math.pow(2,10 * (t2 - 1));
+			} else {
+				hsvCurve = 0.5 * (2 - Math.pow(2,-10 * --t2));
+			}
+		}
+		var hue = 0.0 * (1 - hsvCurve) + hsvCurve;
+		var saturation = 0.0 * (1 - hsvCurve) + 0.8 * hsvCurve;
+		var square = new sample_Square();
+		this.addChild(square);
+		square.color = new tweenxcore_color_HsvColor(hue,saturation,0.95);
+		square.x = prevX;
+		square.y = 60;
+		square.width = currentX - prevX;
+	}
+	,__class__: HsvSample
+});
 var Main = function() { };
 Main.__name__ = ["Main"];
 Main.main = function() {
 	Main.players = [];
+	Main.attach(CustomEasingSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(SimplestSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(EasingSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(YoyoSample,481,151,PlayMode.ClickToPlay);
@@ -357,6 +558,8 @@ Main.main = function() {
 	Main.attach(XySample,481,151,PlayMode.ClickToPlay);
 	Main.attach(MatrixSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(PolarSample,481,151,PlayMode.ClickToPlay);
+	Main.attach(BezierSample,481,151,PlayMode.ClickToPlay);
+	Main.attach(HsvSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(EasingVisualizeSample,800,500,PlayMode.Direct);
 	window.setInterval(Main.onFrame,16);
 };
@@ -604,12 +807,18 @@ StringTools.hex = function(n,digits) {
 	}
 	return s;
 };
+var tweenxcore_color_IColor = function() { };
+tweenxcore_color_IColor.__name__ = ["tweenxcore","color","IColor"];
+tweenxcore_color_IColor.prototype = {
+	__class__: tweenxcore_color_IColor
+};
 var tweenxcore_color_RgbColor = function(red,green,blue) {
 	this.r = red;
 	this.g = green;
 	this.b = blue;
 };
 tweenxcore_color_RgbColor.__name__ = ["tweenxcore","color","RgbColor"];
+tweenxcore_color_RgbColor.__interfaces__ = [tweenxcore_color_IColor];
 tweenxcore_color_RgbColor.rgbToInt = function(r,g,b) {
 	if(r <= 0.0) {
 		r = 0.0;
@@ -694,7 +903,38 @@ tweenxcore_color_RgbColor.fromHsv = function(h,s,v) {
 	return new tweenxcore_color_RgbColor(r,g,b);
 };
 tweenxcore_color_RgbColor.prototype = {
-	toRgbInt: function() {
+	getRed: function() {
+		return this.r;
+	}
+	,getGreen: function() {
+		return this.g;
+	}
+	,getBlue: function() {
+		return this.b;
+	}
+	,getHue: function() {
+		return tweenxcore_color_HsvColor.fromRgb(this.r,this.g,this.b).h;
+	}
+	,getSaturation: function() {
+		return tweenxcore_color_HsvColor.fromRgb(this.r,this.g,this.b).s;
+	}
+	,getBrightness: function() {
+		return tweenxcore_color_HsvColor.fromRgb(this.r,this.g,this.b).v;
+	}
+	,toRgb: function() {
+		return new tweenxcore_color_RgbColor(this.r,this.g,this.b);
+	}
+	,toHsv: function() {
+		return tweenxcore_color_HsvColor.fromRgb(this.r,this.g,this.b);
+	}
+	,toRgbWithAlpha: function(alpha) {
+		return new tweenxcore_color_ArgbColor(alpha,this.r,this.g,this.b);
+	}
+	,toHsvWithAlpha: function(alpha) {
+		var _this = tweenxcore_color_HsvColor.fromRgb(this.r,this.g,this.b,0);
+		return new tweenxcore_color_AhsvColor(alpha,_this.h,_this.s,_this.v);
+	}
+	,toRgbInt: function() {
 		var r = this.r;
 		var g = this.g;
 		var b = this.b;
@@ -750,12 +990,6 @@ tweenxcore_color_RgbColor.prototype = {
 	}
 	,toRgbCssString: function() {
 		return "rgb(" + (this.r * 255 | 0) + "," + (this.g * 255 | 0) + "," + (this.b * 255 | 0) + ")";
-	}
-	,toArgb: function(a) {
-		return new tweenxcore_color_ArgbColor(a,this.r,this.g,this.b);
-	}
-	,toHsv: function() {
-		return tweenxcore_color_HsvColor.fromRgb(this.r,this.g,this.b);
 	}
 	,__class__: tweenxcore_color_RgbColor
 };
@@ -1291,12 +1525,13 @@ var sample_Square = function() {
 	this.width = 30;
 	this.y = 0;
 	this.x = 0;
+	this.color = Style.THEME_COLOR;
 };
 sample_Square.__name__ = ["sample","Square"];
 sample_Square.__interfaces__ = [sample_context_Drawable];
 sample_Square.prototype = {
 	draw: function(context) {
-		context.context.fillStyle = Style.THEME_COLOR.toRgbCssString();
+		context.context.fillStyle = this.color.toRgbCssString();
 		context.context.fillRect(this.x,this.y,this.width,this.height);
 	}
 	,__class__: sample_Square
@@ -1392,7 +1627,8 @@ sample_player_ClickToPlaySamplePlayer.prototype = {
 		this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
 	}
 	,drawGrid: function() {
-		this.context.fillStyle = Style.GRID_COLOR.toRgbCssString();
+		var _this = Style.GRID_COLOR;
+		this.context.fillStyle = "rgb(" + (_this.r * 255 | 0) + "," + (_this.g * 255 | 0) + "," + (_this.b * 255 | 0) + ")";
 		var _g1 = 0;
 		var _g = Math.ceil(this.canvas.width / Style.GRID_SCALE);
 		while(_g1 < _g) this.context.fillRect(_g1++ * Style.GRID_SCALE,0,1,this.canvas.height);
@@ -1401,7 +1637,8 @@ sample_player_ClickToPlaySamplePlayer.prototype = {
 		while(_g11 < _g2) this.context.fillRect(0,_g11++ * Style.GRID_SCALE,this.canvas.width,1);
 	}
 	,drawButton: function(rate) {
-		this.context.fillStyle = Style.THEME_COLOR.toRgbCssString();
+		var _this = Style.THEME_COLOR;
+		this.context.fillStyle = "rgb(" + (_this.r * 255 | 0) + "," + (_this.g * 255 | 0) + "," + (_this.b * 255 | 0) + ")";
 		var size = Style.BUTTON_SIZE * (0.2 * (1 - rate) + rate);
 		var centerX = this.canvas.width / 2;
 		var centerY = this.canvas.height / 2;
@@ -1415,14 +1652,17 @@ sample_player_ClickToPlaySamplePlayer.prototype = {
 		this.context.lineTo(centerX - side / 2,centerY + 0.866 * side);
 		this.context.lineTo(centerX - side / 2,centerY - 0.866 * side);
 		this.context.fill();
-		var _this = Style.THEME_COLOR;
-		var _this1 = tweenxcore_color_HsvColor.fromRgb(_this.r,_this.g,_this.b);
-		var color = new tweenxcore_color_AhsvColor(0.4,_this1.h,_this1.s,_this1.v);
+		var _this1 = Style.THEME_COLOR;
+		var _this2 = tweenxcore_color_HsvColor.fromRgb(_this1.r,_this1.g,_this1.b,0);
+		var color = new tweenxcore_color_AhsvColor(0.4,_this2.h,_this2.s,_this2.v);
 		var t = color.s;
 		color.s = t == 0?0:t == 1?1:Math.sin(t * 1.5707963267948966);
 		var rate1 = color.v;
 		color.v = 0.1 * (1 - rate1) + 0.3 * rate1;
-		this.context.fillStyle = color.toRgbaCssString();
+		var a = color.a;
+		var _this3 = tweenxcore_color_RgbColor.fromHsv(color.h,color.s,color.v);
+		var _this4 = new tweenxcore_color_ArgbColor(a,_this3.r,_this3.g,_this3.b);
+		this.context.fillStyle = "rgba(" + (_this4.r * 255 | 0) + "," + (_this4.g * 255 | 0) + "," + (_this4.b * 255 | 0) + "," + _this4.a + ")";
 		var height = this.canvas.height;
 		var size1 = size * 1.1;
 		this.context.beginPath();
@@ -2086,6 +2326,7 @@ var tweenxcore_color_HsvColor = function(hue,saturation,value) {
 	this.v = value;
 };
 tweenxcore_color_HsvColor.__name__ = ["tweenxcore","color","HsvColor"];
+tweenxcore_color_HsvColor.__interfaces__ = [tweenxcore_color_IColor];
 tweenxcore_color_HsvColor.hsvToRgbInt = function(h,s,v) {
 	h = (h - Math.floor(h)) * 6;
 	var hi = Math.floor(h);
@@ -2202,28 +2443,61 @@ tweenxcore_color_HsvColor.fromRgb = function(r,g,b,hueIndex) {
 	return new tweenxcore_color_HsvColor(h + hueIndex,s,max);
 };
 tweenxcore_color_HsvColor.prototype = {
-	toRgbInt: function() {
-		return tweenxcore_color_HsvColor.hsvToRgbInt(this.h,this.s,this.v);
+	getRed: function() {
+		return tweenxcore_color_RgbColor.fromHsv(this.h,this.s,this.v).r;
 	}
-	,toRgbString: function() {
-		return StringTools.hex(tweenxcore_color_HsvColor.hsvToRgbInt(this.h,this.s,this.v),6);
+	,getGreen: function() {
+		return tweenxcore_color_RgbColor.fromHsv(this.h,this.s,this.v).g;
 	}
-	,toRgbCssString: function() {
-		return tweenxcore_color_RgbColor.fromHsv(this.h,this.s,this.v).toRgbCssString();
+	,getBlue: function() {
+		return tweenxcore_color_RgbColor.fromHsv(this.h,this.s,this.v).b;
+	}
+	,getHue: function() {
+		return this.h;
+	}
+	,getSaturation: function() {
+		return this.s;
+	}
+	,getBrightness: function() {
+		return this.v;
 	}
 	,toRgb: function() {
 		return tweenxcore_color_RgbColor.fromHsv(this.h,this.s,this.v);
 	}
-	,toAhsv: function(a) {
-		return new tweenxcore_color_AhsvColor(a,this.h,this.s,this.v);
+	,toHsv: function() {
+		return new tweenxcore_color_HsvColor(this.h,this.s,this.v);
+	}
+	,toHsvWithAlpha: function(alpha) {
+		return new tweenxcore_color_AhsvColor(alpha,this.h,this.s,this.v);
+	}
+	,toRgbWithAlpha: function(alpha) {
+		var _this = tweenxcore_color_RgbColor.fromHsv(this.h,this.s,this.v);
+		return new tweenxcore_color_ArgbColor(alpha,_this.r,_this.g,_this.b);
+	}
+	,toRgbInt: function() {
+		return tweenxcore_color_HsvColor.hsvToRgbInt(this.h,this.s,this.v);
+	}
+	,toRgbHexString: function() {
+		return StringTools.hex(tweenxcore_color_HsvColor.hsvToRgbInt(this.h,this.s,this.v),6);
+	}
+	,toRgbCssString: function() {
+		var _this = tweenxcore_color_RgbColor.fromHsv(this.h,this.s,this.v);
+		return "rgb(" + (_this.r * 255 | 0) + "," + (_this.g * 255 | 0) + "," + (_this.b * 255 | 0) + ")";
 	}
 	,__class__: tweenxcore_color_HsvColor
+};
+var tweenxcore_color_ITransparentColor = function() { };
+tweenxcore_color_ITransparentColor.__name__ = ["tweenxcore","color","ITransparentColor"];
+tweenxcore_color_ITransparentColor.__interfaces__ = [tweenxcore_color_IColor];
+tweenxcore_color_ITransparentColor.prototype = {
+	__class__: tweenxcore_color_ITransparentColor
 };
 var tweenxcore_color_AhsvColor = function(alpha,hue,saturation,value) {
 	this.a = alpha;
 	tweenxcore_color_HsvColor.call(this,hue,saturation,value);
 };
 tweenxcore_color_AhsvColor.__name__ = ["tweenxcore","color","AhsvColor"];
+tweenxcore_color_AhsvColor.__interfaces__ = [tweenxcore_color_ITransparentColor];
 tweenxcore_color_AhsvColor.ahsvToArgbInt = function(a,h,s,v) {
 	return ((a <= 0.0?0.0:1.0 <= a?1.0:a) * 255 | 0) << 24 | tweenxcore_color_HsvColor.hsvToRgbInt(h,s,v);
 };
@@ -2245,10 +2519,16 @@ tweenxcore_color_AhsvColor.fromArgb = function(a,r,g,b,hueIndex) {
 };
 tweenxcore_color_AhsvColor.__super__ = tweenxcore_color_HsvColor;
 tweenxcore_color_AhsvColor.prototype = $extend(tweenxcore_color_HsvColor.prototype,{
-	toArgb: function() {
+	getAlpha: function() {
+		return this.a;
+	}
+	,toArgb: function() {
 		var a = this.a;
 		var _this = tweenxcore_color_RgbColor.fromHsv(this.h,this.s,this.v);
 		return new tweenxcore_color_ArgbColor(a,_this.r,_this.g,_this.b);
+	}
+	,toAhsv: function() {
+		return new tweenxcore_color_AhsvColor(this.a,this.h,this.s,this.v);
 	}
 	,toArgbInt: function() {
 		var a = this.a;
@@ -2271,6 +2551,7 @@ var tweenxcore_color_ArgbColor = function(alpha,red,green,blue) {
 	tweenxcore_color_RgbColor.call(this,red,green,blue);
 };
 tweenxcore_color_ArgbColor.__name__ = ["tweenxcore","color","ArgbColor"];
+tweenxcore_color_ArgbColor.__interfaces__ = [tweenxcore_color_ITransparentColor];
 tweenxcore_color_ArgbColor.argbToInt = function(a,r,g,b) {
 	var tmp = ((a <= 0.0?0.0:1.0 <= a?1.0:a) * 255 | 0) << 24;
 	var r1 = r;
@@ -2311,7 +2592,18 @@ tweenxcore_color_ArgbColor.fromAhsv = function(a,h,s,v,hueIndex) {
 };
 tweenxcore_color_ArgbColor.__super__ = tweenxcore_color_RgbColor;
 tweenxcore_color_ArgbColor.prototype = $extend(tweenxcore_color_RgbColor.prototype,{
-	toArgbInt: function() {
+	getAlpha: function() {
+		return this.a;
+	}
+	,toArgb: function() {
+		return new tweenxcore_color_ArgbColor(this.a,this.r,this.g,this.b);
+	}
+	,toAhsv: function() {
+		var a = this.a;
+		var _this = tweenxcore_color_HsvColor.fromRgb(this.r,this.g,this.b,0);
+		return new tweenxcore_color_AhsvColor(a,_this.h,_this.s,_this.v);
+	}
+	,toArgbInt: function() {
 		var a = this.a;
 		var r = this.r;
 		var g = this.g;
@@ -2377,11 +2669,6 @@ tweenxcore_color_ArgbColor.prototype = $extend(tweenxcore_color_RgbColor.prototy
 	}
 	,toRgbaCssString: function() {
 		return "rgba(" + (this.r * 255 | 0) + "," + (this.g * 255 | 0) + "," + (this.b * 255 | 0) + "," + this.a + ")";
-	}
-	,toAhsv: function() {
-		var a = this.a;
-		var _this = tweenxcore_color_HsvColor.fromRgb(this.r,this.g,this.b,0);
-		return new tweenxcore_color_AhsvColor(a,_this.h,_this.s,_this.v);
 	}
 	,__class__: tweenxcore_color_ArgbColor
 });
@@ -2857,10 +3144,12 @@ var Bool = Boolean;
 Bool.__ename__ = ["Bool"];
 var Class = { __name__ : ["Class"]};
 var Enum = { };
+BezierSample.TOTAL_FRAME = 60;
 CompositeSample.TOTAL_FRAME = 40;
 ConnectSample.TOTAL_FRAME = 40;
 CrossOverSample.TOTAL_FRAME = 60;
 CrossfadeSample.TOTAL_FRAME = 40;
+CustomEasingSample.TOTAL_FRAME = 180;
 EasingSample.TOTAL_FRAME = 20;
 EasingVisualizeSample.MOTION_END = 240;
 EasingVisualizeSample.CELL_SIZE = 20;
@@ -2868,11 +3157,12 @@ _$EasingVisualizeSample_Chart.H = 60;
 _$EasingVisualizeSample_Chart.W = 80;
 EntranceExitSample.TOTAL_FRAME = 60;
 FloatChangePartSample.TOTAL_FRAME = 60;
+HsvSample.TOTAL_FRAME = 40;
 MatrixSample.TOTAL_FRAME = 40;
 MixSample.TOTAL_FRAME = 40;
 OneTwoSample.TOTAL_FRAME = 40;
 PolarSample.TOTAL_FRAME = 40;
-RepeatSample.TOTAL_FRAME = 60;
+RepeatSample.TOTAL_FRAME = 140;
 SimplestSample.TOTAL_FRAME = 20;
 Style.SQUARE_SIZE = 15;
 Style.START_FRAME = 15;
@@ -2882,7 +3172,7 @@ Style.GRID_COLOR = new tweenxcore_color_RgbColor(0.94509803921568625,0.945098039
 Style.THEME_COLOR = new tweenxcore_color_RgbColor(0.30588235294117649,0.85490196078431369,0.88235294117647056);
 Style.DARKEN_THEME_COLOR = new tweenxcore_color_RgbColor(0.054901960784313725,0.60392156862745094,0.69411764705882351);
 Style.BUTTON_SIZE = 33;
-Style.DELAY_FRAME = 120;
+Style.DELAY_FRAME = 60;
 TimelinePartSample.TOTAL_FRAME = 80;
 XySample.TOTAL_FRAME = 40;
 YoyoSample.TOTAL_FRAME = 40;

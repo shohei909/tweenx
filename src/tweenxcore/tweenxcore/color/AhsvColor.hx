@@ -1,7 +1,7 @@
 package tweenxcore.color;
 using tweenxcore.Tools;
 
-class AhsvColor extends HsvColor {
+class AhsvColor extends HsvColor implements ITransparentColor {
     public var a:Float;
 
     public function new(alpha:Float, hue:Float, saturation:Float, value:Float) {
@@ -15,15 +15,23 @@ class AhsvColor extends HsvColor {
 
     public static inline function of(color:Int, hueIndex:Int = 0) {
         var a = ((color >>> 24) & 0xFF) / 0xFF;
-        return HsvColor.of(color & 0xFFFFFF, hueIndex).toAhsv(a);
+        return HsvColor.of(color & 0xFFFFFF, hueIndex).toHsvWithAlpha(a);
     }
 
     public static inline function fromArgb(a:Float, r:Float, g:Float, b:Float, hueIndex:Int = 0) {
-        return HsvColor.fromRgb(r, g, b, hueIndex).toAhsv(a);
+        return HsvColor.fromRgb(r, g, b, hueIndex).toHsvWithAlpha(a);
     }
 
+    public inline function getAlpha():Float {
+        return a;
+    }
+    
     public inline function toArgb():ArgbColor {
         return ArgbColor.fromAhsv(a, h, s, v);
+    }
+    
+    public inline function toAhsv():AhsvColor {
+        return new AhsvColor(a, h, s, v);
     }
     
     public inline function toArgbInt():Int {
@@ -34,7 +42,7 @@ class AhsvColor extends HsvColor {
         return StringTools.hex(toArgbInt(), 8);
     }
     
-    public function toRgbaCssString():String {
+    public inline function toRgbaCssString():String {
         return toArgb().toRgbaCssString();
     }
 }

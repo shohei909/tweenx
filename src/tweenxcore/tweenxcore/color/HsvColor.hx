@@ -1,12 +1,13 @@
 package tweenxcore.color;
+import tweenxcore.color.RgbColor;
 using tweenxcore.Tools;
 
-class HsvColor {
+class HsvColor implements IColor {
     public var h:Float;
     public var s:Float;
     public var v:Float;
 
-    public function new(hue:Float, saturation:Float, value:Float) {
+    public inline function new(hue:Float, saturation:Float, value:Float) {
         this.h = hue;
         this.s = saturation;
         this.v = value;
@@ -80,23 +81,57 @@ class HsvColor {
         return new HsvColor(h + hueIndex, s, max);
     }
 
-    public inline function toRgbInt():Int {
-        return hsvToRgbInt(h, s, v);
-    }
-
-    public inline function toRgbString():String {
-        return StringTools.hex(toRgbInt(), 6);
+    
+    
+    public inline function getRed():Float {
+        return toRgb().r;
     }
     
-    public function toRgbCssString():String {
-        return toRgb().toRgbCssString();
+    public inline function getGreen():Float {
+        return toRgb().g;
+    }
+    
+    public inline function getBlue():Float {
+        return toRgb().b;
+    }
+    
+    public inline function getHue():Float {
+        return h;
+    }
+    
+    public inline function getSaturation():Float {
+        return s;
+    }
+    
+    public inline function getBrightness():Float {
+        return v;
     }
     
     public inline function toRgb():RgbColor {
         return RgbColor.fromHsv(h, s, v);
     }
 
-    public inline function toAhsv(a:Float):AhsvColor {
-        return new AhsvColor(a, h, s, v);
+    public inline function toHsv():HsvColor {
+        return new HsvColor(h, s, v);
+    }
+    
+    public inline function toHsvWithAlpha(alpha:Float):AhsvColor {
+        return new AhsvColor(alpha, h, s, v);
+    }
+    
+    public inline function toRgbWithAlpha(alpha:Float):ArgbColor {
+        return ArgbColor.fromAhsv(alpha, h, s, v);
+    }
+    
+    public inline function toRgbInt():Int {
+        return hsvToRgbInt(h, s, v);
+    }
+
+    public inline function toRgbHexString():String {
+        return StringTools.hex(toRgbInt(), 6);
+    }
+    
+    public inline function toRgbCssString():String {
+        return toRgb().toRgbCssString();
     }
 }

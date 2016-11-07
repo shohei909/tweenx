@@ -10,6 +10,7 @@ class Main {
     public static function main():Void {
         players = [];
         
+        attach(CustomEasingSample,    481, 151, ClickToPlay);
         attach(SimplestSample,        481, 151, ClickToPlay);
         attach(EasingSample,          481, 151, ClickToPlay);
         attach(YoyoSample,            481, 151, ClickToPlay);
@@ -26,7 +27,9 @@ class Main {
         attach(TimelinePartSample,    481, 151, ClickToPlay);
         attach(XySample,              481, 151, ClickToPlay);
         attach(MatrixSample,          481, 151, ClickToPlay);
-        attach(PolarSample,          481, 151, ClickToPlay);
+        attach(PolarSample,           481, 151, ClickToPlay);
+        attach(BezierSample,          481, 151, ClickToPlay);
+        attach(HsvSample,             481, 151, ClickToPlay);
         attach(EasingVisualizeSample, 800, 500, Direct);
         
         Browser.window.setInterval(onFrame, 16);

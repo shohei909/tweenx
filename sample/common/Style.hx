@@ -13,7 +13,7 @@ class Style {
     public static var THEME_COLOR:RgbColor        = RgbColor.of(0x4EDAE1);
     public static var DARKEN_THEME_COLOR:RgbColor = RgbColor.of(0x0E9AB1);
     public static var BUTTON_SIZE:Int = 33;
-    public static var DELAY_FRAME:Int = 120;
+    public static var DELAY_FRAME:Int = 60;
     
     public static function startEasing(rate:Float):Float {
         return FloatTools.connectEasing(

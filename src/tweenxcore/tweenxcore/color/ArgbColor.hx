@@ -1,8 +1,7 @@
 package tweenxcore.color;
 using tweenxcore.Tools;
 
-class ArgbColor extends RgbColor
-{
+class ArgbColor extends RgbColor implements ITransparentColor {
     public var a:Float;
 
     public function new(alpha:Float, red:Float, green:Float, blue:Float) {
@@ -23,6 +22,18 @@ class ArgbColor extends RgbColor
         );
     }
 
+    public inline function getAlpha():Float {
+        return a;
+    }
+
+    public inline function toArgb():ArgbColor {
+        return new ArgbColor(a, r, g, b);
+    }
+    
+    public inline function toAhsv():AhsvColor {
+        return AhsvColor.fromArgb(a, r, g, b);
+    }
+    
     public inline function toArgbInt():Int {
         return argbToInt(a, r, g, b);
     }
@@ -36,10 +47,6 @@ class ArgbColor extends RgbColor
     }
     
     public static inline function fromAhsv(a:Float, h:Float, s:Float, v:Float, hueIndex:Int = 0) {
-        return RgbColor.fromHsv(h, s, v).toArgb(a);
-    }
-
-    public inline function toAhsv():AhsvColor {
-        return AhsvColor.fromArgb(a, r, g, b);
+        return RgbColor.fromHsv(h, s, v).toRgbWithAlpha(a);
     }
 }

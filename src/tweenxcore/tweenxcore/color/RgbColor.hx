@@ -1,7 +1,10 @@
 package tweenxcore.color;
+import tweenxcore.color.AhsvColor;
+import tweenxcore.color.ArgbColor;
+import tweenxcore.color.RgbColor;
 using tweenxcore.Tools.FloatTools;
 
-class RgbColor {
+class RgbColor implements IColor {
     public var r:Float;
     public var g:Float;
     public var b:Float;
@@ -51,6 +54,46 @@ class RgbColor {
         return new RgbColor(r, g, b);
     }
 
+    public inline function getRed():Float {
+        return r;
+    }
+    
+    public inline function getGreen():Float {
+        return g;
+    }
+    
+    public inline function getBlue():Float {
+        return b;
+    }
+    
+    public inline function getHue():Float {
+        return toHsv().h;
+    }
+    
+    public inline function getSaturation():Float {
+        return toHsv().s;
+    }
+    
+    public inline function getBrightness():Float {
+        return toHsv().v;
+    }
+    
+    public inline function toRgb():RgbColor {
+        return new RgbColor(r, g, b);
+    }
+    
+    public inline function toHsv():HsvColor {
+        return HsvColor.fromRgb(r, g, b);
+    }
+    
+    public inline function toRgbWithAlpha(alpha:Float):ArgbColor {
+        return new ArgbColor(alpha, r, g, b);
+    }
+    
+    public inline function toHsvWithAlpha(alpha:Float):AhsvColor {
+        return AhsvColor.fromArgb(alpha, r, g, b);
+    }
+
     public inline function toRgbInt():Int {
         return rgbToInt(r, g, b);
     }
@@ -59,15 +102,7 @@ class RgbColor {
         return StringTools.hex(toRgbInt(), 6);
     }
     
-    public function toRgbCssString():String {
+    public inline function toRgbCssString():String {
         return "rgb(" + Std.int(r * 0xFF) + "," + Std.int(g * 0xFF) + "," + Std.int(b * 0xFF) + ")";
-    }
-    
-    public inline function toArgb(a:Float):ArgbColor {
-        return new ArgbColor(a, r, g, b);
-    }
-
-    public inline function toHsv():HsvColor {
-        return HsvColor.fromRgb(r, g, b);
     }
 }

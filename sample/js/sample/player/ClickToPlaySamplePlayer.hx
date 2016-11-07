@@ -128,7 +128,7 @@ class ClickToPlaySamplePlayer implements Player {
         context.fill();
         
         
-        var color = Style.THEME_COLOR.toHsv().toAhsv(0.4);
+        var color = Style.THEME_COLOR.toHsvWithAlpha(0.4);
         color.s = color.s.sineOut();
         color.v = color.v.lerp(0.1, 0.3);
 

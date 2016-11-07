@@ -18,7 +18,9 @@ logo: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
 
 実行速度を速く、開発速度を速く、バグを少なく、学習コストを少なく、そしてモーションを自由に面白くするために作られています。
 
-{% include sample.asciidoc num="312" id="CustomEasing" %}
+++++
+<div><canvas class="movie" id="CustomEasingSample" /></canvas></div>
+++++
 
 toc::[]
 
@@ -109,7 +111,7 @@ using tweenxcore.Tools;
 
 [source,haxe]
 ---------
-            square.x = rate.quintOut().lerp(0, 450);
+square.x = rate.quintOut().lerp(0, 450);
 ---------
 
 
@@ -162,19 +164,19 @@ function cubicIn(t:Float):Float {
 }
 ---------
 
-ただ単にFloatを受け取ってFloatを返す、とてもシンプルな関数です。
+ただ単にFloatを受け取ってFloatを返す、シンプルな関数です。
 
 
 この関数に先ほどのサンプルコードのイージングを差し替えてみます。たった1行、以下のように変更を加えます。
 
 [source,haxe]
 ---------
-square.x = part.current.cubicIn().lerp(0, 450);
+square.x = rate.cubicIn().lerp(0, 450);
 ---------
 
 {% include sample.asciidoc num="302" id="Easing" %}
 
-モーションの詰まり方が、もとの``quintOut``とは別のものになっているのがわかると思います。
+動きが、もとの``quintOut``から変わっているのがわかると思います。
 
 
 ==== lerp
@@ -554,7 +556,7 @@ private function updatePart(part:FloatChangePart):Void {
 }
 ```
 
-``createSimilarityTransform(fromX, fromY, toX, toY)``は、X方向の0.0から1.0までの移動を、X方向に``fromX``から``toX``Y方向に``fromY``から``toY``の移動に相似変換するような行列を作成します。
+``createSimilarityTransform(fromX, fromY, toX, toY)``関数は、X方向の0.0から1.0までの移動を、X方向に``fromX``から``toX``Y方向に``fromY``から``toY``の移動に相似変換するような行列を作成します。
 
 ==== 極座標
 
@@ -588,7 +590,7 @@ private function updatePart(part:FloatChangePart) {
 }
 ```
 
-サンプルは、``(x, y)=(210, 60)``を極座標の中心として、そこに``(x, y)=(0, 0)``の位置から回転しながら近づいていくモーションです。
+サンプルは、``(210, 60)``を極座標の中心として、そこに``(0, 0)``の位置から回転しながら近づいていくモーションです。
 
 {sourceLink}tweenxcore/geom/PolarPoint.hx[[ソースを見る(tweenxcore.geom.PolarPoint)\]]
 
@@ -600,11 +602,11 @@ private function updatePart(part:FloatChangePart) {
 {% include sample.asciidoc num="316" id="Bezier" %}
 
 ```haxe
-square.x = rate.bezier3(15, 50, 400, 435);
-square.y = rate.bezier3(15, 200, -50, 135);
+square.x = rate.bezier3(0, 50, 400, 450);
+square.y = rate.bezier3(0, 200, -50, 120);
 ```
 
-サンプルは、始点が``(15, 15)``、制御点が``(50, 200)``と``(400, -50)``、終点が``(400, 135)``の3次ベジェ曲線です。
+サンプルは、始点が``(0, 0)``、制御点が``(50, 200)``と``(400, -50)``、終点が``(450, 120)``の3次ベジェ曲線です。
 
 ベジェ曲線は3次だけでなく任意の次数ののベジェ曲線が使えます。詳しくは``tweenxcore.Tools``モジュールを確認してください。
 
@@ -618,30 +620,26 @@ square.y = rate.bezier3(15, 200, -50, 135);
 
 {{page.logo}}では、RGBカラーとHSVカラーが使えます。
 
-{% include sample.asciidoc num="317" id="Color" %}
+{% include sample.asciidoc num="317" id="Hsv" %}
 
 ```haxe
-var prevX = part.previous.expoInOut().lerp(0, 450);
-var currentX = part.current.expoInOut().lerp(0, 450);
+var prevX = part.previous.expoInOut().lerp(0, 480);
+var currentX = part.current.expoInOut().lerp(0, 480);
 
-// RGB
-var rgbCurve = part.current.expoInOut();
-var red = rgbCurve.lerp(0.8, 0.7);
-var green = rgbCurve.lerp(0.7, 1);
-var blue = rgbCurve.lerp(0.5, 1);
-graphics.beginFill(new RgbColor(red, green, blue).toInt());
-graphics.drawRect(prevX, 30, currentX - prevX, 30);
-
-// HSV
 var hsvCurve = part.current.expoInOut();
 var hue = hsvCurve.lerp(0.0, 1.0);
 var saturation = hsvCurve.lerp(0.0, 0.8);
 var value = 0.95;
-graphics.beginFill(new HsvColor(hue, saturation, value).toInt());
-graphics.drawRect(prevX, 90, currentX - prevX, 30);
+
+var square = new Square();
+addChild(square);
+square.color = new HsvColor(hue, saturation, value);
+square.x = prevX;
+square.y = 60;
+square.width = currentX - prevX;
 ```
 
-サンプルはRGBと、HSVのそれぞれの値を動かしながら帯を描いています。
+サンプルはHSVのそれぞれの値を動かしながら帯を描いています。
 
 {sourceLink}tweenxcore/color[[ソースを見る(tweenxcore.color)\]]
 
