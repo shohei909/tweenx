@@ -536,6 +536,86 @@ HsvSample.prototype = $extend(sample_Sprite.prototype,{
 	}
 	,__class__: HsvSample
 });
+var ImageSample = function() {
+	this.frameCount = 0;
+	sample_Sprite.call(this);
+	this.addChild(this.image = new _$ImageSample_FaceImage());
+	this.timeline = new tweenxcore_structure_Timeline();
+	var _this = this.timeline;
+	if(_this.dataArray.length == 0) {
+		_this.totalWeight = 0.5;
+	} else {
+		_this.weightArray.push(_this.totalWeight);
+		_this.totalWeight += 0.5;
+	}
+	_this.dataArray.push(0);
+	var _g = 1;
+	while(_g < 16) {
+		var i = _g++;
+		var _this1 = this.timeline;
+		if(_this1.dataArray.length == 0) {
+			_this1.totalWeight = 1.0;
+		} else {
+			_this1.weightArray.push(_this1.totalWeight);
+			_this1.totalWeight += 1.0;
+		}
+		_this1.dataArray.push(i);
+	}
+	var _this2 = this.timeline;
+	if(_this2.dataArray.length == 0) {
+		_this2.totalWeight = 0.5;
+	} else {
+		_this2.weightArray.push(_this2.totalWeight);
+		_this2.totalWeight += 0.5;
+	}
+	_this2.dataArray.push(0);
+};
+ImageSample.__name__ = ["ImageSample"];
+ImageSample.__super__ = sample_Sprite;
+ImageSample.prototype = $extend(sample_Sprite.prototype,{
+	update: function() {
+		new tweenxcore_structure_FloatChange(this.frameCount,this.frameCount += 1).handleRepeatPart(0,100,10,$bind(this,this.updatePart));
+	}
+	,updatePart: function(part) {
+		var rate = part.current;
+		var curve = tweenxcore_Easing.linear(rate) * 0.5 + tweenxcore_FloatTools.connectEasing(rate,tweenxcore_Easing.quadInOut,tweenxcore_Easing.quadInOut) * 0.5;
+		var _this = this.timeline;
+		if(_this.dataArray.length == 0) {
+			throw new js__$Boot_HaxeError("timeline is not initialized");
+		}
+		var sortedValues = _this.weightArray;
+		var value = curve * _this.totalWeight;
+		var min = 0;
+		var max = sortedValues.length;
+		while(true) {
+			var next = ((max - min) / 2 | 0) + min;
+			if(sortedValues[next] < value) {
+				min = next + 1;
+			} else {
+				max = next;
+			}
+			if(min == max) {
+				break;
+			}
+		}
+		var searchResult = min;
+		this.image.index = new tweenxcore_structure_TimelineSearchResult(_this.dataArray[searchResult],searchResult,searchResult == 0?0:_this.weightArray[searchResult - 1] / _this.totalWeight,searchResult == _this.dataArray.length - 1?1:_this.weightArray[searchResult] / _this.totalWeight).data;
+	}
+	,__class__: ImageSample
+});
+var _$ImageSample_FaceImage = function() {
+	this.index = 0;
+	this.image = new Image();
+	this.image.src = "/images/character.png";
+};
+_$ImageSample_FaceImage.__name__ = ["_ImageSample","FaceImage"];
+_$ImageSample_FaceImage.__interfaces__ = [sample_context_Drawable];
+_$ImageSample_FaceImage.prototype = {
+	draw: function(context) {
+		context.context.drawImage(this.image,_$ImageSample_FaceImage.WIDTH * this.index,0,_$ImageSample_FaceImage.WIDTH,_$ImageSample_FaceImage.HEIGHT,0,0,_$ImageSample_FaceImage.WIDTH,_$ImageSample_FaceImage.HEIGHT);
+	}
+	,__class__: _$ImageSample_FaceImage
+};
 var Main = function() { };
 Main.__name__ = ["Main"];
 Main.main = function() {
@@ -560,6 +640,7 @@ Main.main = function() {
 	Main.attach(PolarSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(BezierSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(HsvSample,481,151,PlayMode.ClickToPlay);
+	Main.attach(ImageSample,96,96,PlayMode.ClickToPlay);
 	Main.attach(EasingVisualizeSample,800,500,PlayMode.Direct);
 	window.setInterval(Main.onFrame,16);
 };
@@ -2120,11 +2201,14 @@ tweenxcore_FloatTools.repeat = function(value,from,to) {
 	var p = (value - from) / (to - from);
 	return p - Math.floor(p);
 };
-tweenxcore_FloatTools.shake = function(rate,center) {
+tweenxcore_FloatTools.shake = function(rate,center,randomFunc) {
 	if(center == null) {
 		center = 0.0;
 	}
-	return center + rate * (1 - 2 * Math.random());
+	if(randomFunc == null) {
+		randomFunc = Math.random;
+	}
+	return center + rate * (1 - 2 * randomFunc());
 };
 tweenxcore_FloatTools.sinByRate = function(rate) {
 	return Math.sin(rate * 2 * Math.PI);
@@ -3158,6 +3242,9 @@ _$EasingVisualizeSample_Chart.W = 80;
 EntranceExitSample.TOTAL_FRAME = 60;
 FloatChangePartSample.TOTAL_FRAME = 60;
 HsvSample.TOTAL_FRAME = 40;
+ImageSample.TOTAL_FRAME = 1000;
+_$ImageSample_FaceImage.WIDTH = 96;
+_$ImageSample_FaceImage.HEIGHT = 96;
 MatrixSample.TOTAL_FRAME = 40;
 MixSample.TOTAL_FRAME = 40;
 OneTwoSample.TOTAL_FRAME = 40;

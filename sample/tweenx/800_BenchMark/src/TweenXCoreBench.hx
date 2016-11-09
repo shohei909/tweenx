@@ -10,14 +10,14 @@ import flash.text.TextField;
 import flash.text.TextFormat;
 import haxe.ds.Vector;
 
-using tweenxcore.tools.Tools;
+using tweenxcore.Tools;
 
 class TweenXCoreBench extends Sprite {
-    static inline var LENGTH = 30000;
-    static inline var WIDTH            = 465;
-    static inline var HEIGHT        = 465;
-    static inline var COLOR            = 0xFFFFFFFF;
-    static inline var TIME_LIMIT     = 60000;
+    static inline var LENGTH     = 230000;
+    static inline var WIDTH      = 465;
+    static inline var HEIGHT     = 465;
+    static inline var COLOR      = 0xFFFFFFFF;
+    static inline var TIME_LIMIT = 30000;
 
     static var colorTransform     = new ColorTransform(0.9, 0.7, 0.8);
 

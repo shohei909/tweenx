@@ -30,6 +30,7 @@ class Main {
         attach(PolarSample,           481, 151, ClickToPlay);
         attach(BezierSample,          481, 151, ClickToPlay);
         attach(HsvSample,             481, 151, ClickToPlay);
+        attach(ImageSample,           96, 96, ClickToPlay);
         attach(EasingVisualizeSample, 800, 500, Direct);
         
         Browser.window.setInterval(onFrame, 16);

@@ -14,7 +14,7 @@ class HsvRuleX {
         var s = _from.s * t2 + _to.s * t1;
         var v = _from.v * t2 + _to.v * t1;
 
-        return HsvColor.hsvToInt(h, s, v);
+        return HsvColor.hsvToRgbInt(h, s, v);
     }
 
     public static function defaultFrom(value:Int, _to:HsvColor, tween:TweenX) {

@@ -10,7 +10,7 @@
 
 -swf bin/TweensyBench.swf
 -cp src
--swf-lib lib/TweensyOriginalCS4.swc
+-swf-lib lib/Tweensy_0_2_22_OriginalCS4.swc
 -swf-header 465:465:60:FFFFFF
 -main TweensyBench
 -D analyzer
@@ -20,7 +20,7 @@
 
 -swf bin/BetweenAS3Bench.swf
 -cp src
--swf-lib lib/BetweenAS3.swc
+-swf-lib lib/BetweenAS3-Alpha-r3022-fp10.swc
 -swf-header 465:465:60:FFFFFF
 -main BetweenAS3Bench
 -D analyzer
@@ -30,7 +30,7 @@
 
 -swf bin/TweenerBench.swf
 -cp src
--swf-lib lib/tweener.swc
+-swf-lib lib/tweener_1_33_74_as3.swc
 -swf-header 465:465:60:FFFFFF
 -main TweenerBench
 -D analyzer
@@ -57,13 +57,12 @@
 -D analyzer
 -dce full
 
-
 --next
 
--js bin/TweenXCoreBench.js
+-as3 bin/TweenXCoreBench
 -cp src
 -cp ../../../src/tweenxcore
 -swf-header 465:465:60:FFFFFF
--main Test
+-main TweenXCoreBench
 -D analyzer
 -dce full

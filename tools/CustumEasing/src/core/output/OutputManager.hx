@@ -38,11 +38,11 @@ class OutputManager
                 
             case OutputMode.Haxe:
                 var print = new Printer();
-                var bodyExpr = ComplexEasingKindTools.toExpr(easing, macro value);
+                var bodyExpr = ComplexEasingKindTools.toExpr(easing, macro rate);
                 print.printExpr(
-                    macro function customEase(value:Float):Void
+                    macro function customEase(rate:Float):Float
                     {
-                        $bodyExpr;
+                        return $bodyExpr;
                     }
                 );
         }

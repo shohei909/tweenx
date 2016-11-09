@@ -19,23 +19,23 @@ class UnaryOpKindTools
         {
             case UnaryOpKind.Clamp(min, max):
                 var func = easing.toFunction();
-                function (value:Float):Float
+                function (rate:Float):Float
                 {
-                    return func(value).clamp(min, max);
+                    return func(rate).clamp(min, max);
                 }
                 
             case UnaryOpKind.Lerp(from, to):
                 var func = easing.toFunction();
-                function (value:Float):Float
+                function (rate:Float):Float
                 {
-                    return func(value).lerp(from, to);
+                    return func(rate).lerp(from, to);
                 }
                 
             case UnaryOpKind.Repeat(repeat):
                 var func = easing.toFunction();
-                function (value:Float):Float
+                function (rate:Float):Float
                 {
-                    return func(value.lerp(0, repeat).repeat());
+                    return func(rate.lerp(0, repeat).repeat());
                 }
                 
             case UnaryOpKind.RoundTrip(roundTrip):
@@ -141,10 +141,10 @@ class UnaryOpKindTools
                 
             case UnaryOpKind.Repeat(repeat):
                 var arg = macro tweenxcore.Tools.FloatTools.repeat(
-                    tweenxcore.Tools.FloatTools.lerp(value, 0), ${ExprMakeTools.floatToExpr(repeat)}
+                    tweenxcore.Tools.FloatTools.lerp(rate, 0), ${ExprMakeTools.floatToExpr(repeat)}
                 );
                 var expr = easing.toExpr(arg);
-                macro function (value:Float):Float
+                macro function (rate:Float):Float
                 {
                     return $expr;
                 }

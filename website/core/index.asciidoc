@@ -14,9 +14,9 @@ logo: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
 
 = {{page.logo}}
 
-{{page.logo}}は https://haxe.org/[Haxe] で気持ちの良いモーションをより簡単に作成するための、シンプルな**トゥイーンライブラリ**です。
+{{page.logo}}は https://haxe.org/[Haxe] で気持ちの良いモーションをより簡単に作成するための、クロスプラットフォームな**トゥイーンライブラリ**です。
 
-実行速度を速く、開発速度を速く、バグを少なく、学習コストを少なく、そしてモーションを自由に面白くするために作られています。
+実行速度が速く、開発速度が速く、バグが少なく、学習コストが少なく、そしてモーションが自由で面白くなるように作られています。
 
 ++++
 <div><canvas class="movie" id="CustomEasingSample" /></canvas></div>
@@ -42,6 +42,9 @@ toc::[]
 余計な処理やインスタンス生成を行わないため、非常に高速に動作します。
 
 以下は、多数のトゥイーンライブラリが作られているFlashプラットフォームでの比較です。
+
+
+
 {sampleLink}tweenx/800_BenchMark/src[[コードを見る(Github)\]]
 
 
@@ -193,7 +196,7 @@ square.x = rate.cubicIn().lerp(0, 450);
 
 === 脱ブラックボックス
 
-{{page.logo}}は、出発地点や到達地点を指定して自動
+{{page.logo}}は、出発地点や到達地点を指定して自動で
 
 
 例えば
@@ -647,9 +650,11 @@ square.width = currentX - prevX;
 
 ==== 画像
 
-連続したモーションをあつかうのに重み付き配列の``Timeline``を紹介しましたが、この``Timeline``は画像のパラパラアニメーションを作るのにも使えます。
+連続したモーションをあつかうのに重み付き配列の``Timeline``を紹介しましたが、この``Timeline``は連続でない値のアニメーションの指定にも使用できます。
 
-{% include sample.asciidoc num="318" id="Bitmap" width="151" %}
+つまり、例えば画像のパラパラアニメーションを作るのにも使えます。
+
+{% include sample.asciidoc num="318" id="Image"%}
 
 ++++
 <script src="/js/Sample.js"></script>

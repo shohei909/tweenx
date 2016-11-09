@@ -5,9 +5,10 @@ import tweenxcore.structure.BoundaryMode;
 using tweenxcore.Tools;
 
 class Easing {
-    static inline var PI = 3.1415926535897932384626433832795;
-    static inline var PI_H = PI / 2;
-
+    static inline var PI       = 3.1415926535897932384626433832795;
+    static inline var PI_H     = PI / 2;
+    static inline var LN_2     = 0.6931471805599453;
+    static inline var LN_2_10  = 6.931471805599453;
     /*
      * LINEAR
      */
@@ -98,16 +99,16 @@ class Easing {
      * QUART EASING
      */
     public static inline function quartIn(t:Float):Float {
-        return t * t * t * t;
+        return (t *= t) * t;
     }
     public static inline function quartOut(t:Float):Float {
         return 1 - (t = (t = t - 1) * t) * t;
     }
     public static inline function quartInOut(t:Float):Float {
-        return ((t *= 2) < 1) ? 0.5 * t * t * t * t : -0.5 * ((t -= 2) * t * t * t - 2);
+        return ((t *= 2) < 1) ? 0.5 * (t *= t) * t : -0.5 * ((t = (t -= 2) * t) * t - 2);
     }
     public static inline function quartOutIn(t:Float):Float {
-        return (t < 0.5) ? -0.5 * (t = t * 2 - 1) * t * t * t + 0.5 : 0.5 * (t = t * 2 - 1) * t * t * t + 0.5;
+        return (t < 0.5) ? -0.5 * (t = (t = t * 2 - 1) * t) * t + 0.5 : 0.5 * (t = (t = t * 2 - 1) * t) * t + 0.5;
     }
 
 
@@ -115,16 +116,16 @@ class Easing {
      * QUINT EASING
      */
     public static inline function quintIn(t:Float):Float {
-        return t * t * t * t * t;
+        return t * (t *= t) * t;
     }
     public static inline function quintOut(t:Float):Float {
-        return (t = t - 1) * t * t * t * t + 1;
+        return (t = t - 1) * (t *= t) * t + 1;
     }
     public static inline function quintInOut(t:Float):Float {
-        return ((t *= 2) < 1) ? 0.5 * t * t * t * t * t : 0.5 * (t -= 2) * t * t * t * t + 1;
+        return ((t *= 2) < 1) ? 0.5 * t * (t *= t) * t : 0.5 * (t -= 2) * (t *= t) * t + 1;
     }
     public static inline function quintOutIn(t:Float):Float {
-        return 0.5 * ((t = t * 2 - 1) * t * t * t * t + 1);
+        return 0.5 * ((t = t * 2 - 1) * (t *= t) * t + 1);
     }
 
 
@@ -132,10 +133,10 @@ class Easing {
      * EXPO EASING
      */
     public static inline function expoIn(t:Float):Float {
-        return t == 0 ? 0 : Math.pow(2, 10 * (t - 1));
+        return t == 0 ? 0 : Math.exp(LN_2_10 * (t - 1));
     }
     public static inline function expoOut(t:Float):Float {
-        return t == 1 ? 1 : (1 - Math.pow(2, -10 * t));
+        return t == 1 ? 1 : (1 - Math.exp(-LN_2_10 * t));
     }
     public static inline function expoInOut(t:Float):Float {
         return if (t == 0) {
@@ -143,18 +144,18 @@ class Easing {
         } else if (t == 1) {
             1;
         } else if ((t *= 2) < 1) {
-            0.5 * Math.pow(2, 10 * (t - 1));
+            0.5 * Math.exp(LN_2_10 * (t - 1));
         } else {
-            0.5 * (2 - Math.pow(2, -10 * --t));
+            0.5 * (2 - Math.exp(-LN_2_10 * --t));
         }
     }
     public static inline function expoOutIn(t:Float):Float {
         return if (t < 0.5) {
-            0.5 * (1 - Math.pow(2, -20 * t));
+            0.5 * (1 - Math.exp(-20 * LN_2 * t));
         } else if (t == 0.5) {
             0.5;
         } else {
-            0.5 * (Math.pow(2, 20 * (t - 1)) + 1);
+            0.5 * (Math.exp(20 * LN_2 * (t - 1)) + 1);
         }
     }
 
@@ -307,7 +308,7 @@ class Easing {
             1;
         } else {
             var s:Float = period / 4;
-            -(amplitude * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * 0.001 - s) * (2 * PI) / period));
+            -(amplitude * Math.exp(LN_2_10 * (t -= 1)) * Math.sin((t * 0.001 - s) * (2 * PI) / period));
         }
     }
     public static inline function elasticOut(t:Float):Float {
@@ -317,7 +318,7 @@ class Easing {
             1;
         } else {
             var s:Float = period / 4;
-            Math.pow(2, -10 * t) * Math.sin((t * 0.001 - s) * (2 * PI) / period) + 1;
+            Math.exp(-LN_2_10 * t) * Math.sin((t * 0.001 - s) * (2 * PI) / period) + 1;
         }
     }
     public static inline function elasticInOut(t:Float):Float {
@@ -329,9 +330,9 @@ class Easing {
             var s:Float = period / 4;
 
             if ((t *= 2) < 1) {
-                -0.5 * (amplitude * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * 0.001 - s) * (2 * PI) / period));
+                -0.5 * (amplitude * Math.exp(LN_2_10 * (t -= 1)) * Math.sin((t * 0.001 - s) * (2 * PI) / period));
             } else {
-                amplitude * Math.pow(2, -10 * (t -= 1)) * Math.sin((t * 0.001 - s) * (2 * PI) / period) * 0.5 + 1;
+                amplitude * Math.exp(-LN_2_10 * (t -= 1)) * Math.sin((t * 0.001 - s) * (2 * PI) / period) * 0.5 + 1;
             }
         }
     }
@@ -341,7 +342,7 @@ class Easing {
                 0;
             } else {
                 var s = period / 4;
-                (amplitude / 2) * Math.pow(2, -10 * t) * Math.sin((t * 0.001 - s) * (2 * PI) / period) + 0.5;
+                (amplitude / 2) * Math.exp(-LN_2_10 * t) * Math.sin((t * 0.001 - s) * (2 * PI) / period) + 0.5;
             }
         } else {
             if (t == 0.5) {
@@ -351,7 +352,7 @@ class Easing {
             } else {
                 t = t * 2 - 1;
                 var s = period / 4;
-                -((amplitude / 2) * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * 0.001 - s) * (2 * PI) / period)) + 0.5;
+                -((amplitude / 2) * Math.exp(LN_2_10 * (t -= 1)) * Math.sin((t * 0.001 - s) * (2 * PI) / period)) + 0.5;
             }
         }
     }
@@ -403,9 +404,10 @@ class FloatTools
         return p - Math.floor(p);
     }
 
-    public static inline function shake(rate:Float, center:Float = 0.0)
+    public static inline function shake(rate:Float, center:Float = 0.0, ?randomFunc:Void->Float):Float
     {
-        return center + rate * (1 - 2 * Math.random());
+        if (randomFunc == null) randomFunc = Math.random;
+        return center + rate * (1 - 2 * randomFunc());
     }
 
     public static inline function sinByRate(rate:Float) {

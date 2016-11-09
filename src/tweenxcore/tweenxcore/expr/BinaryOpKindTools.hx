@@ -15,17 +15,17 @@ class BinaryOpKindTools
             case BinaryOpKind.Composite:
                 var func1 = easing1.toFunction();
                 var func2 = easing2.toFunction();
-                function (value:Float):Float
+                function (rate:Float):Float
                 {
-                    return func1(func2(value));
+                    return func1(func2(rate));
                 }
                 
             case BinaryOpKind.Multiply:
                 var func1 = easing1.toFunction();
                 var func2 = easing2.toFunction();
-                function (value:Float):Float
+                function (rate:Float):Float
                 {
-                    return func1(value) * func2(value);
+                    return func1(rate) * func2(rate);
                 }
                 
             case BinaryOpKind.Mix(strength):
@@ -154,17 +154,17 @@ class BinaryOpKindTools
         return switch (kind)
         {
             case BinaryOpKind.Composite:
-                var expr2 = easing2.toExpr(macro value);
+                var expr2 = easing2.toExpr(macro rate);
                 var expr1 = easing1.toExpr(expr2);
-                macro function (value:Float):Float
+                macro function (rate:Float):Float
                 {
                     return $expr1;
                 }
                 
             case BinaryOpKind.Multiply:
-                var expr1 = easing1.toExpr(macro value);
-                var expr2 = easing2.toExpr(macro value);
-                macro function (value:Float):Float
+                var expr1 = easing1.toExpr(macro rate);
+                var expr2 = easing2.toExpr(macro rate);
+                macro function (rate:Float):Float
                 {
                     return $expr1 * $expr2;
                 }
