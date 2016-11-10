@@ -4,6 +4,7 @@ import fl.motion.easing.Exponential;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
+import flash.display.StageQuality;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.geom.ColorTransform;
@@ -14,11 +15,11 @@ import flash.text.TextFormat;
 import haxe.ds.Vector;
 
 class TweensyBench extends Sprite {
-    static inline var LENGTH     = 230000;
+    static inline var LENGTH     = 250000;
     static inline var WIDTH      = 465;
     static inline var HEIGHT     = 465;
     static inline var COLOR      = 0xFFFFFFFF;
-    static inline var TIME_LIMIT = 60000;
+    static inline var TIME_LIMIT = 30000;
     
     static var colorTransform     = new ColorTransform(0.9, 0.7, 0.8);
 
@@ -40,7 +41,7 @@ class TweensyBench extends Sprite {
     public function new() {
         super();
         Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-
+        Lib.current.stage.quality = StageQuality.LOW;
 
         points = new Vector<Point>(LENGTH);
         for(i in 0...LENGTH){
@@ -67,7 +68,7 @@ class TweensyBench extends Sprite {
         b.colorTransform(b.rect, colorTransform);
         for (i in 0...LENGTH) {
             var p = points[i];
-            b.setPixel(Std.int(p.x), Std.int(p.y), COLOR);
+            b.setPixel(i % 456, Std.int(p.y), COLOR);
         }
         b.unlock();
 

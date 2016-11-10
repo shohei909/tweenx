@@ -1,3 +1,13 @@
+-as3 bin/TweenXCoreBench
+-cp src
+-cp ../../../src/tweenxcore
+-swf-header 465:465:60:FFFFFF
+-main TweenXCoreBench
+-D analyzer
+-dce full
+
+--next
+
 -swf bin/ActuateBench.swf
 -cp src
 -lib actuate
@@ -50,16 +60,6 @@
 --next
 
 -swf bin/TweenXCoreBench.swf
--cp src
--cp ../../../src/tweenxcore
--swf-header 465:465:60:FFFFFF
--main TweenXCoreBench
--D analyzer
--dce full
-
---next
-
--as3 bin/TweenXCoreBench
 -cp src
 -cp ../../../src/tweenxcore
 -swf-header 465:465:60:FFFFFF

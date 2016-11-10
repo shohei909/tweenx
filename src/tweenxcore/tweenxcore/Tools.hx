@@ -146,7 +146,7 @@ class Easing {
         } else if ((t *= 2) < 1) {
             0.5 * Math.exp(LN_2_10 * (t - 1));
         } else {
-            0.5 * (2 - Math.exp(-LN_2_10 * --t));
+            0.5 * (2 - Math.exp(-LN_2_10 * (t - 1)));
         }
     }
     public static inline function expoOutIn(t:Float):Float {

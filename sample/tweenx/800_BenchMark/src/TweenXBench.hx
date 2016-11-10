@@ -1,6 +1,7 @@
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
+import flash.display.StageQuality;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.geom.ColorTransform;
@@ -15,7 +16,7 @@ import tweenx909.TweenX;
 using tweenx909.ChainX;
 
 class TweenXBench extends Sprite {
-    static inline var LENGTH     = 230000;
+    static inline var LENGTH     = 250000;
     static inline var WIDTH      = 465;
     static inline var HEIGHT     = 465;
     static inline var COLOR      = 0xFFFFFFFF;
@@ -40,6 +41,7 @@ class TweenXBench extends Sprite {
     public function new() {
         super();
         Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+        Lib.current.stage.quality = StageQuality.LOW;
 
         points = new Vector<Point>(LENGTH);
         for(i in 0...LENGTH){

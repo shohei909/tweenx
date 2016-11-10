@@ -1,6 +1,7 @@
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
+import flash.display.StageQuality;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.geom.ColorTransform;
@@ -13,11 +14,11 @@ import haxe.ds.Vector;
 using tweenxcore.Tools;
 
 class TweenXCoreBench extends Sprite {
-    static inline var LENGTH     = 230000;
+    static inline var LENGTH     = 250000;
     static inline var WIDTH      = 465;
     static inline var HEIGHT     = 465;
     static inline var COLOR      = 0xFFFFFFFF;
-    static inline var TIME_LIMIT = 30000;
+    static inline var TIME_LIMIT = 3000;
 
     static var colorTransform     = new ColorTransform(0.9, 0.7, 0.8);
 
@@ -30,7 +31,7 @@ class TweenXCoreBench extends Sprite {
     var oldTime:Float = 0;
 
     var fpsField:TextField;
-    var points:Vector<Point>;
+    var xs:Vector<Int>;
     var times:Vector<Float>;
     var bitmapData:BitmapData;
     var startTime:Float = 0;
@@ -40,11 +41,12 @@ class TweenXCoreBench extends Sprite {
     public function new() {
         super();
         Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+        Lib.current.stage.quality = StageQuality.LOW;
 
-        points = new Vector<Point>(LENGTH);
+        xs = new Vector<Int>(LENGTH);
         times = new Vector<Float>(LENGTH);
         for(i in 0...LENGTH){
-            points[i] = new Point(WIDTH * Math.random(), HEIGHT);
+            xs[i] = i % WIDTH;
             times[i] = 0.2 + 10 * Math.random();
         }
 
@@ -67,9 +69,8 @@ class TweenXCoreBench extends Sprite {
         b.lock();
         b.colorTransform(b.rect, colorTransform);
         for (i in 0...LENGTH) {
-            var p = points[i];
-            p.y = second.repeat(0, times[i]).expoIn().lerp(465, 0);
-            b.setPixel(Std.int(p.x), Std.int(p.y), COLOR);
+            var y = second.repeat(0, times[i]).expoIn().lerp(465, 0);
+            b.setPixel(xs[i], Std.int(y), COLOR);
         }
         b.unlock();
 

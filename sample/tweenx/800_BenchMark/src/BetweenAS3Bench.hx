@@ -1,6 +1,7 @@
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
+import flash.display.StageQuality;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.geom.ColorTransform;
@@ -15,7 +16,7 @@ import org.libspark.betweenas3.tweens.ITween;
 
 
 class BetweenAS3Bench extends Sprite {
-    static inline var LENGTH     = 230000;
+    static inline var LENGTH     = 250000;
     static inline var WIDTH      = 465;
     static inline var HEIGHT     = 465;
     static inline var COLOR      = 0xFFFFFFFF;
@@ -31,6 +32,7 @@ class BetweenAS3Bench extends Sprite {
     var oldTime:Float = 0;
 
     var fpsField:TextField;
+    var xs:Vector<Int>;
     var points:Vector<Point>;
     var bitmapData:BitmapData;
     var startTime:Float     = 0;
@@ -39,7 +41,7 @@ class BetweenAS3Bench extends Sprite {
     public function new() {
         super();
         Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-
+        Lib.current.stage.quality = StageQuality.LOW;
 
         addChild(new Bitmap(bitmapData = new BitmapData(WIDTH, HEIGHT, false, 0)));
         addChild(fpsField = new TextField());
@@ -49,7 +51,7 @@ class BetweenAS3Bench extends Sprite {
 
         points = new Vector<Point>(LENGTH);
         for(i in 0...LENGTH){
-            var p = points[i] = new Point(WIDTH * Math.random(), HEIGHT);
+            var p = points[i] = new Point(i % WIDTH, HEIGHT);
 
             var t:ITween = BetweenAS3.to(p, { "y":0 }, 0.2 + 10 * Math.random(), Expo.easeIn);
             t.stopOnComplete = false;
