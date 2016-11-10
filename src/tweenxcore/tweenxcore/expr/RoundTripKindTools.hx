@@ -32,11 +32,11 @@ class RoundTripKindTools
         return switch (kind)
         {
             case RoundTripKind.Yoyo:
-                var expr = easing.toExpr(valueExpr);
+                var expr = easing.toFunctionExpr();
                 macro tweenxcore.Tools.FloatTools.yoyo($valueExpr, $expr);
                 
             case RoundTripKind.Zigzag:
-                var expr = easing.toExpr(valueExpr);
+                var expr = easing.toFunctionExpr();
                 macro tweenxcore.Tools.FloatTools.zigzag($valueExpr, $expr);
         }
     }
