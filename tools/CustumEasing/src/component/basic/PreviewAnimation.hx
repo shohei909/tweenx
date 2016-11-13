@@ -12,8 +12,8 @@ class PreviewAnimation implements Animation
 {
     public static var WIDTH = 600;
     public static var HEIGHT = 5;
-    public static var MARKER_WIDTH = 40;
-    public static var MARGIN = 100;
+    public static var MARKER_WIDTH = 30;
+    public static var MARGIN = 80;
     public static var TOTAL_TIME = 1000;
     
     private var canvas:CanvasElement;
@@ -63,11 +63,11 @@ class PreviewAnimation implements Animation
         var left = MARGIN;
         var right = WIDTH - MARGIN - MARKER_WIDTH;
         
-        ctx.fillStyle = "#F0F0F0";
+        ctx.fillStyle = "#E6E6E6";
         ctx.fillRect(0, 0, left - 2, HEIGHT);
         ctx.fillRect(WIDTH - MARGIN + 1, 0, MARGIN - 2, HEIGHT);
         
-        ctx.fillStyle = "#E6E6E6";
+        ctx.fillStyle = "#F5F5F5";
         ctx.fillRect(left, 0, WIDTH - MARGIN * 2, HEIGHT);
     }
 }

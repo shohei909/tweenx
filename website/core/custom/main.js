@@ -1417,10 +1417,10 @@ component_basic_PreviewAnimation.init = function(canvas) {
 	var ctx = canvas.getContext("2d",null);
 	ctx.clearRect(0,0,component_basic_PreviewAnimation.WIDTH,component_basic_PreviewAnimation.HEIGHT);
 	var left = component_basic_PreviewAnimation.MARGIN;
-	ctx.fillStyle = "#F0F0F0";
+	ctx.fillStyle = "#E6E6E6";
 	ctx.fillRect(0,0,left - 2,component_basic_PreviewAnimation.HEIGHT);
 	ctx.fillRect(component_basic_PreviewAnimation.WIDTH - component_basic_PreviewAnimation.MARGIN + 1,0,component_basic_PreviewAnimation.MARGIN - 2,component_basic_PreviewAnimation.HEIGHT);
-	ctx.fillStyle = "#E6E6E6";
+	ctx.fillStyle = "#F5F5F5";
 	ctx.fillRect(left,0,component_basic_PreviewAnimation.WIDTH - component_basic_PreviewAnimation.MARGIN * 2,component_basic_PreviewAnimation.HEIGHT);
 };
 component_basic_PreviewAnimation.prototype = {
@@ -5449,7 +5449,7 @@ tweenxcore_Easing.expoInOut = function(t) {
 		if(t < 1) {
 			return 0.5 * Math.exp(6.931471805599453 * (t - 1));
 		} else {
-			return 0.5 * (2 - Math.exp(-6.9314718055994531 * --t));
+			return 0.5 * (2 - Math.exp(-6.9314718055994531 * (t - 1)));
 		}
 	}
 };
@@ -5739,14 +5739,8 @@ tweenxcore_FloatTools.repeat = function(value,from,to) {
 	var p = (value - from) / (to - from);
 	return p - Math.floor(p);
 };
-tweenxcore_FloatTools.shake = function(rate,center,randomFunc) {
-	if(center == null) {
-		center = 0.0;
-	}
-	if(randomFunc == null) {
-		randomFunc = Math.random;
-	}
-	return center + rate * (1 - 2 * randomFunc());
+tweenxcore_FloatTools.spread = function(rate,scale) {
+	return -scale * (1 - rate) + scale * rate;
 };
 tweenxcore_FloatTools.sinByRate = function(rate) {
 	return Math.sin(rate * 2 * Math.PI);
@@ -6584,21 +6578,21 @@ tweenxcore_expr_RoundTripKindTools.toFunction = function(kind,easing) {
 tweenxcore_expr_RoundTripKindTools.toExpr = function(kind,easing,valueExpr) {
 	switch(kind[1]) {
 	case 0:
-		var expr = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,valueExpr);
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1137, max : 1147}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1137, max : 1153}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1137, max : 1164}},"yoyo"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1137, max : 1169}},[valueExpr,expr]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1137, max : 1188}};
+		var expr = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing);
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1136, max : 1146}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1136, max : 1152}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1136, max : 1163}},"yoyo"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1136, max : 1168}},[valueExpr,expr]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1136, max : 1187}};
 	case 1:
-		var expr1 = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,valueExpr);
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1325, max : 1335}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1325, max : 1341}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1325, max : 1352}},"zigzag"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1325, max : 1359}},[valueExpr,expr1]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1325, max : 1378}};
+		var expr1 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing);
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1323, max : 1333}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1323, max : 1339}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1323, max : 1350}},"zigzag"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1323, max : 1357}},[valueExpr,expr1]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1323, max : 1376}};
 	}
 };
 tweenxcore_expr_RoundTripKindTools.toFunctionExpr = function(kind,easing) {
 	switch(kind[1]) {
 	case 0:
 		var expr = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing);
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1676, max : 1686}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1676, max : 1692}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1676, max : 1703}},"yoyo"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1676, max : 1708}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1676, max : 1713}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1714, max : 1715}},expr]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1676, max : 1723}};
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1674, max : 1684}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1674, max : 1690}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1674, max : 1701}},"yoyo"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1674, max : 1706}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1674, max : 1711}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1712, max : 1713}},expr]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1674, max : 1721}};
 	case 1:
 		var expr1 = tweenxcore_expr_ComplexEasingKindTools.toFunctionExpr(easing);
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1859, max : 1869}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1859, max : 1875}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1859, max : 1886}},"zigzag"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1859, max : 1893}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1859, max : 1898}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1899, max : 1900}},expr1]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1859, max : 1908}};
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1857, max : 1867}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1857, max : 1873}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1857, max : 1884}},"zigzag"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1857, max : 1891}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1857, max : 1896}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1897, max : 1898}},expr1]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/RoundTripKindTools.hx", min : 1857, max : 1906}};
 	}
 };
 var tweenxcore_expr_SimpleEasingKind = $hxClasses["tweenxcore.expr.SimpleEasingKind"] = { __ename__ : ["tweenxcore","expr","SimpleEasingKind"], __constructs__ : ["Linear","Standard","Line"] };
@@ -8003,8 +7997,8 @@ component_basic_NumberSliderView.BAR_HEIGHT = 4;
 component_basic_NumberSliderView.displayName = "NumberSliderView";
 component_basic_PreviewAnimation.WIDTH = 600;
 component_basic_PreviewAnimation.HEIGHT = 5;
-component_basic_PreviewAnimation.MARKER_WIDTH = 40;
-component_basic_PreviewAnimation.MARGIN = 100;
+component_basic_PreviewAnimation.MARKER_WIDTH = 30;
+component_basic_PreviewAnimation.MARGIN = 80;
 component_basic_PreviewAnimation.TOTAL_TIME = 1000;
 component_basic_PreviewView.displayName = "PreviewView";
 component_basic_SelectGroupView.displayName = "SelectGroupView";

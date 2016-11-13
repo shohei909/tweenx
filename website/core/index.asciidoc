@@ -41,7 +41,7 @@ toc::[]
 
 余計な処理やインスタンス生成を行わないため、非常に高速に動作します。
 
-以下は、多数のトゥイーンライブラリが作られているFlashプラットフォームでの比較です。
+以下は、Flashプラットフォームでの各トゥイーンライブラリとの比較です。
 
 
 
@@ -73,7 +73,7 @@ haxelib install tweenxcore
 
 {{page.logo}}の最初のサンプルとして、四角のx座標を0から450まで、動かすコードを見てみます。
 
-{% include sample.asciidoc num="301" id="Simplest" %}
+{% include sample.asciidoc id="Simplest" %}
 
 [source,haxe,linenums]
 ---------
@@ -97,7 +97,10 @@ class SimplestSample extends Sprite {
     // 毎フレーム、この関数を呼び出す
     public function update():Void {
         var rate = frameCount / TOTAL_FRAME;
+        
+        // rateが0から1のとき、アニメーション。
         if (rate <= 1) {
+            // rateの値に応じて、xを0から450まで動かす。
             square.x = rate.quintOut().lerp(0, 450);
         }
         frameCount++;
@@ -153,7 +156,7 @@ MatrixToolsクラス::
 
 link:http://easings.net/[Robert Pennerのイージング関数]を基本とし、中央で減速して再度加速する``OutIn``のモードと、瞬間的に移動を行うwarpが追加された計44個の関数を提供しています。
 
-{% include sample.asciidoc num="400" id="EasingVisualize" %}
+{% include sample.asciidoc id="EasingVisualize" %}
 
 
 これらの関数の中身が具体的にどうなっているのか少し見てみます。
@@ -177,7 +180,7 @@ function cubicIn(t:Float):Float {
 square.x = rate.cubicIn().lerp(0, 450);
 ---------
 
-{% include sample.asciidoc num="302" id="Easing" %}
+{% include sample.asciidoc id="Easing" %}
 
 動きが、もとの``quintOut``から変わっているのがわかると思います。
 
@@ -194,20 +197,11 @@ square.x = rate.cubicIn().lerp(0, 450);
 
 
 
-=== 脱ブラックボックス
-
-{{page.logo}}は、出発地点や到達地点を指定して自動で
-
-
-例えば
-
-* **「一時停止ボタンが押されたときにゲーム内のアニメーションをすべて一時停止した上で、さらにアニメーション付きでポップアップを表示させたい」**ことがあります。
-* 通信待ちのインジケータなら、**「インジケータのフェードイン中に通信が終われば、フェードインの途中からフェードアウトに切り替えをしたい」**と思うはずです。
-
-
 === 0.0から始まり、1.0で終わる
 
-{{page.logo}}の世界では、始まりの値は0.0であり、終わりの値は1.0です。つまり、
+{{page.logo}}の世界では、始まりの値は0.0であり、終わりの値は1.0です。
+
+つまり、
 
 * モーションの時刻の場合、開始時刻は0.0で表し終了時刻は1.0を使います。
 * アルファ値の場合、完全な透明は0.0で完全な不透明は1.0です。
@@ -217,17 +211,50 @@ square.x = rate.cubicIn().lerp(0, 450);
 {{page.logo}}では、このような0.0から1.0を基準とする値について``rate``という変数名をよく使います。
 
 
+
+=== 脱ブラックボックス
+
+{{page.logo}}は、出発地点や到達地点を指定して自動でオブジェクトを動かすような機能は持ちません。
+
+トゥイーンライブラリが自動的にオブジェクトを動かしてくれる機能はただモーションを再生するだけなら簡単ですが、少し凝ったことをしようとすると途端に難しくなります。
+
+例えば、以下のようなことです
+
+* 一時停止ボタンが押されたときにゲーム内の**アニメーションを一時停止した上で、さらにアニメーション付きでポップアップを表示させたい**
+* インジケータが**フェードインしている途中に**通信が終わったら、**すぐにフェードアウトに切り替えをしたい**
+* あるモーションについて、マウスダウン中だけ**スロー再生にしたい**
+
+多くのトゥイーンライブラリでは、こういった内容の実現はできなかったり、複雑な仕様をおぼえなきゃいけなかったりします。
+
+それに対して、{{page.logo}}の解決策は簡単です。
+
+* モーションを止めたければ、止めたい場所の**更新をやめれば止まります**
+* フェードインとフェードアウトは、単純な**``if``文で切り替えることができます**
+* フレームカウント(``frameCount``)の上昇を1づつから、**0.5づつにすれば、モーションは0.5倍速再生になります**
+
+何も難しいことがありません。
+
+{{page.logo}}が提供するのは、以下の3つです。
+
+* 0.0から1.0の範囲ではない値を、0.0から1.0の数値に変換する機能。　（``FloatTools.inverseLerp``関数や、``FloatChange``クラス）
+* 0.0から1.0の数値を、別の曲線を描く0.0から1.0の数値に変換する機能。（``Easing``やカスタムイージングの機能）
+* 0.0から1.0の数値を、様々な値へと変換する機能。（``FloatTools.lerp``や、``Timeline``クラス）
+
+たったこれだけの機能があれば、自由に思いのままのモーションを作ることができます。その方法については、チュートリアルで解説していきます。
+
+
+
 === どこでも使える
 
-{{page.logo}}は、プラットフォームや、合わせて使うフレームワーク、プログラミングのパラダイムに左右されることなく利用可能です。
+{{page.logo}}は、プラットフォームや、あわせて使うフレームワーク、プログラミングのパラダイムに左右されることなく利用可能です。
 
-* 目指しているスタイルが、オブジェクト指向でも、手続き型プログラミングでも、関数型プログラミングでも利用できます。
+* 目指しているスタイルが、オブジェクト指向でも、手続き型プログラミングでも、関数型プログラミングでもよくマッチします。
 * 使用するフレームワークが、OpenFLであっても、Reactであっても、Unityであっても同じように動作します。
-* クライアントサイドだけでなく、たとえサーバーサイドであっても動作します。
+* クライアントサイドでも、サーバーサイドでも、コンパイル時でも動作します。
+
 
 
 == {{page.logo}}チュートリアル
-
 
 === イージングを自作する
 
@@ -238,7 +265,7 @@ square.x = rate.cubicIn().lerp(0, 450);
 
 イージングを2重、3重に使うと、新しい動きを作ることができます。
 
-{% include sample.asciidoc num="307" id="Composite" %}
+{% include sample.asciidoc id="Composite" %}
 
 ```haxe
 square.x = rate.cubicIn().bounceOut().lerp(0, 450);
@@ -251,7 +278,7 @@ square.x = rate.cubicIn().bounceOut().lerp(0, 450);
 
 ``mixEasing``は2つのイージングの中間的なイージングです。
 
-{% include sample.asciidoc num="308" id="Mix" %}
+{% include sample.asciidoc id="Mix" %}
 
 ```haxe
 square.x = rate.mixEasing(Easing.expoOutIn, Easing.linear, 0.18).lerp(0, 450);
@@ -264,7 +291,7 @@ square.x = rate.mixEasing(Easing.expoOutIn, Easing.linear, 0.18).lerp(0, 450);
 
 ``crossfadeEasing``は、始まりと終わりで別のイージングに徐々に変わっていくようなイージングです。
 
-{% include sample.asciidoc num="309" id="Crossfade" %}
+{% include sample.asciidoc id="Crossfade" %}
 
 ```haxe
 square.x = rate.crossfadeEasing(
@@ -281,7 +308,7 @@ square.x = rate.crossfadeEasing(
 
 ヨーヨーは0.0から1.0に行って、逆再生の動きで0.0に帰ってくるようなモーションです。
 
-{% include sample.asciidoc num="304" id="Yoyo" %}
+{% include sample.asciidoc id="Yoyo" %}
 
 ```haxe
 // ヨーヨー
@@ -292,7 +319,7 @@ square.x = rate.yoyo(Easing.quintOut).lerp(0, 450);
 
 ジグザグは0.0から1.0に行って、移動方向を反転させた動きで0.0に帰ってくるようなモーションです。
 
-{% include sample.asciidoc num="319" id="Zigzag" %}
+{% include sample.asciidoc id="Zigzag" %}
 
 ```
 // ジグザグ
@@ -304,7 +331,7 @@ square.x = rate.zigzag(Easing.quintOut).lerp(0, 450);
 
 ``connectEasing``は、2つのイージングをつなげて再生する機能です。
 
-{% include sample.asciidoc num="310" id="Connect" %}
+{% include sample.asciidoc id="Connect" %}
 
 ```haxe
 square.x = rate.connectEasing(Easing.backOut, Easing.linear, 0.9, 0.4).lerp(0, 450);
@@ -317,7 +344,7 @@ square.x = rate.connectEasing(Easing.backOut, Easing.linear, 0.9, 0.4).lerp(0, 4
 
 ``oneTwoEasing``は、別々のイージングで2回移動を行うイージングです。
 
-{% include sample.asciidoc num="311" id="OneTwo" %}
+{% include sample.asciidoc id="OneTwo" %}
 
 ```haxe
 square1.x = rate.oneTwoEasing(Easing.backIn, Easing.linear, 0.7).lerp(30, 420);
@@ -361,7 +388,7 @@ link:./custom/[イージングエディタ | TweenXCore]
 
 ``FloatChange``を使用する例として、フレームカウントが特定の値を横切った瞬間の判定があります。
 
-{% include sample.asciidoc num="305" id="CrossOver" %}
+{% include sample.asciidoc id="CrossOver" %}
 
 ```haxe
 public function update():Void {
@@ -391,7 +418,7 @@ public function update():Void {
 
 フレームが特定の区間にある時のモーションです。
 
-{% include sample.asciidoc num="305" id="FloatChangePart" %}
+{% include sample.asciidoc id="FloatChangePart" %}
 
 ```haxe
 public function update():Void {
@@ -423,7 +450,7 @@ private function updatePart(part:FloatChangePart):Void {
 
 ``FloatChangePart``には、モーションの開始タイミングや、終了タイミングを取得するための関数が用意されています。
 
-{% include sample.asciidoc num="305" id="EntranceExit" %}
+{% include sample.asciidoc id="EntranceExit" %}
 
 ```haxe
 private function updatePart(part:FloatChangePart) {
@@ -448,7 +475,7 @@ private function updatePart(part:FloatChangePart) {
 
 1つのパートを、複数回繰り返したい場合、``handlePart``の代わりに``handleRepeatPart``を使います。
 
-{% include sample.asciidoc num="303" id="Repeat" %}
+{% include sample.asciidoc id="Repeat" %}
 
 [source,haxe]
 ---------
@@ -466,7 +493,7 @@ change.handleRepeatPart(20, 40, 3, updatePart);
 
 連続したモーションをあつかうには、``FloatChange``の``handleTimelinePart``が使えます。
 
-{% include sample.asciidoc num="306" id="TimelinePart" %}
+{% include sample.asciidoc id="TimelinePart" %}
 
 右、下、左の三つの移動を行いました。
 
@@ -513,10 +540,11 @@ private function update3(part:FloatChangeTimelinePart):Void {
 
 
 === 2次元の動き
+
 ==== 単純な動き
 いままでのモーションはすべてX方向の動きをあつかってきましたが、Y方向の動きも入れてみます。
 
-{% include sample.asciidoc num="313" id="Xy" %}
+{% include sample.asciidoc id="Xy" %}
 
 ```haxe
 square.x = part.current.lerp(0, 450);
@@ -527,13 +555,12 @@ square.y = part.current.sinByRate().lerp(60, 105);
 
 このサンプルはそれほど目新しくはありません。問題は同じようなモーションを斜め方向に行う場合です。
 
-==== マトリックス
-
+==== 相似変換
 これまで0.0から1.0の値を実際の``x``座標に変換するのには``lerp``関数を使ってきましたが、回転が加わる場合``lerp``関数では表現できません。
 
 そういった場合は、``MatrixTools.createSimilarityTransform``を使います。
 
-{% include sample.asciidoc num="314" id="Matrix" %}
+{% include sample.asciidoc id="Matrix" %}
 
 ```haxe
 private var matrix:MatrixImpl;
@@ -565,7 +592,7 @@ private function updatePart(part:FloatChangePart):Void {
 
 {{page.logo}}は極座標をサポートしています。
 
-{% include sample.asciidoc num="315" id="Polar" %}
+{% include sample.asciidoc id="Polar" %}
 
 ```haxe
 public function new() {
@@ -602,7 +629,7 @@ private function updatePart(part:FloatChangePart) {
 
 {{page.logo}}はベジェ曲線もサポートしています。
 
-{% include sample.asciidoc num="316" id="Bezier" %}
+{% include sample.asciidoc id="Bezier" %}
 
 ```haxe
 square.x = rate.bezier3(0, 50, 400, 450);
@@ -623,23 +650,14 @@ square.y = rate.bezier3(0, 200, -50, 120);
 
 {{page.logo}}では、RGBカラーとHSVカラーが使えます。
 
-{% include sample.asciidoc num="317" id="Hsv" %}
+{% include sample.asciidoc id="Hsv" %}
 
 ```haxe
-var prevX = part.previous.expoInOut().lerp(0, 480);
-var currentX = part.current.expoInOut().lerp(0, 480);
-
-var hsvCurve = part.current.expoInOut();
-var hue = hsvCurve.lerp(0.0, 1.0);
-var saturation = hsvCurve.lerp(0.0, 0.8);
-var value = 0.95;
-
-var square = new Square();
-addChild(square);
-square.color = new HsvColor(hue, saturation, value);
-square.x = prevX;
-square.y = 60;
-square.width = currentX - prevX;
+var curve = part.current.expoInOut();
+var hue = hsvCurve.lerp(0.0, 1.0);        // 色相を1周させる
+var saturation = hsvCurve.lerp(0.0, 0.8); // 彩度を上げていく
+var value = 0.95;                         // 明度は固定 
+var color = new HsvColor(hue, saturation, value);
 ```
 
 サンプルはHSVのそれぞれの値を動かしながら帯を描いています。
@@ -650,11 +668,38 @@ square.width = currentX - prevX;
 
 ==== 画像
 
-連続したモーションをあつかうのに重み付き配列の``Timeline``を紹介しましたが、この``Timeline``は連続でない値のアニメーションの指定にも使用できます。
+連続したモーションをあつかうのに重み付き配列の``Timeline``を紹介しましたが、この``Timeline``は連続でない値を動かすのにも使えます。
 
 つまり、例えば画像のパラパラアニメーションを作るのにも使えます。
 
-{% include sample.asciidoc num="318" id="Image"%}
+{% include sample.asciidoc id="Image"%}
+
+
+
+=== 時間以外に基づくトゥイーン
+
+==== マウス座標を元にトゥイーンさせる
+
+0.0から1.0の値に変換可能であればトゥイーンのもとになる値は、時間でなくても構いません。以下のサンプルでは、マウス座標を元に四角の位置を動かしています。
+
+{% include sample.asciidoc id="Mouse"%}
+
+```haxe
+var rateX = mouseX.inverseLerp(10, 800).clamp(0, 1);
+var rateY = mouseY.repeat(0, 400);
+
+square.x = rateX.expoInOut().lerp(0, 450);
+square.y = rateY.yoyo(Easing.expoInOut).lerp(0, 120);
+```
+
+``inverseLerp``は、``lerp``とは逆向きの線形補間で、例では10から800までの値を0から1に変換しています。
+
+``clamp``は下限と上限を設定する関数で、例では0より小さい値を0に、1より大きい値を1に変換しています。
+
+``repeat``は繰り返しを行う関数で、まず0から400の値を0から1に変換するところまでは``inverseLerp``と同じですが、0より小さい値や400より大きい値など、指定した間隔の外側での挙動が違います。
+つまり、``repeat``では-400から0、0から400、400から800、800から1200といった各値で0から1への変換がされます。
+
+
 
 ++++
 <script src="/js/Sample.js"></script>
