@@ -159,21 +159,21 @@ class Easing {
         }
     }
 
-
+    
     /*
      * CIRC EASING
      */
     public static inline function circIn(t:Float):Float {
-        return 1 - Math.sqrt(1 - t * t);
+        return if (t < -1 || 1 < t) 0 else 1 - Math.sqrt(1 - t * t);
     }
     public static inline function circOut(t:Float):Float {
-        return Math.sqrt(t * (2 - t));
+        return if (t < 0 || 2 < t) 0 else Math.sqrt(t * (2 - t));
     }
     public static inline function circInOut(t:Float):Float {
-        return ((t *= 2) < 1) ? -0.5 * (Math.sqrt(1 - t * t) - 1) : 0.5 * (Math.sqrt(1 - (t -= 2) * t) + 1);
+        return if (t < -0.5 || 1.5 < t) 0.5 else if ((t *= 2) < 1)- 0.5 * (Math.sqrt(1 - t * t) - 1) else 0.5 * (Math.sqrt(1 - (t -= 2) * t) + 1);
     }
     public static inline function circOutIn(t:Float):Float {
-        return (t < 0.5) ? 0.5 * Math.sqrt(1 - (t = t * 2 - 1) * t) : -0.5 * ((Math.sqrt(1 - (t = t * 2 - 1) * t) - 1) - 1);
+        return if (t < 0) 0 else if (1 < t) 1 else if (t < 0.5) 0.5 * Math.sqrt(1 - (t = t * 2 - 1) * t) else -0.5 * ((Math.sqrt(1 - (t = t * 2 - 1) * t) - 1) - 1);
     }
 
 
@@ -360,16 +360,16 @@ class Easing {
     /*
      * WARP EASING
      */
-    public static inline function warpOut(t:Float) {
+    public static inline function warpOut(t:Float):Float {
         return t <= 0 ? 0 : 1;
     }
-    public static inline function warpIn(t:Float) {
+    public static inline function warpIn(t:Float):Float {
         return t < 1 ? 0 : 1;
     }
-    public static inline function warpInOut(t:Float) {
+    public static inline function warpInOut(t:Float):Float {
         return t < 0.5 ? 0 : 1;
     }
-    public static inline function warpOutIn(t:Float) {
+    public static inline function warpOutIn(t:Float):Float {
         return if (t <= 0) 0 else if (t < 1) 0.5 else 1;
     }
 }
