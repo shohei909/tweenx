@@ -1,6 +1,7 @@
 package sample.player;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
+import js.html.MouseEvent;
 import sample.context.DrawContext;
 import sample.context.Updatable.SampleSprite;
 import tweenxcore.color.HsvColor;
@@ -141,6 +142,17 @@ class ClickToPlaySamplePlayer implements Player {
         context.lineTo(centerX - size, height);
         context.lineTo(centerX + size, height);
         context.fill();
+    }
+    
+    
+    public function onMouseMove(e:MouseEvent):Void 
+    {
+        switch (state) {
+            case PlayerState.Playing(_, child):
+                child.onMouseMove(e);
+                
+            case PlayerState.Starting(_) | PlayerState.Stay | PlayerState.Finishing(_):
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 package sample;
+import js.html.MouseEvent;
 import sample.context.DrawContext;
 import sample.context.Drawable;
 
@@ -17,5 +18,8 @@ class Sprite implements Drawable {
         for (child in children) {
             child.draw(context);
         }
+    }
+    
+    public function onMouseMove(e:MouseEvent):Void {
     }
 }

@@ -54,11 +54,11 @@ class CustomEasingSample extends Sprite {
 
     private function updateSquare(i:Int, start:Float, end:Float, part:FloatChangePart) {
         var square:Square = squares[i];
-        square.x = part.current.stylishBackIn().lerp(start, end);
 
         var curve = part.current.customYoyo().lerp(1.0, 0.1);
         square.width = Square.SIZE * 1 / curve;
         square.height = Square.SIZE * curve;
+        square.x = part.current.stylishBackIn().lerp(start, end) - (square.width - Square.SIZE) / 2;
         square.y = (i + (1 - curve) / 2) * Square.SIZE;
     }
 }

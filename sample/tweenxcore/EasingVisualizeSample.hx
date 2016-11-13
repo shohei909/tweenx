@@ -1,6 +1,7 @@
 import haxe.macro.Format;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
+import js.html.MouseEvent;
 import sample.Sprite;
 import sample.player.Player;
 import tweenxcore.structure.FloatChange;
@@ -142,6 +143,8 @@ class EasingVisualizeSample implements Player {
             chart.init();
         }
     }
+    
+    public function onMouseMove(e:MouseEvent):Void {}
 }
 
 private class Chart {

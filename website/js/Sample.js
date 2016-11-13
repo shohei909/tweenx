@@ -29,6 +29,8 @@ sample_Sprite.prototype = {
 			child.draw(context);
 		}
 	}
+	,onMouseMove: function(e) {
+	}
 	,__class__: sample_Sprite
 };
 var BezierSample = function() {
@@ -204,17 +206,17 @@ CustomEasingSample.prototype = $extend(sample_Sprite.prototype,{
 	,updateSquare: function(i,start,end,part) {
 		var square = this.squares[i];
 		var rate = part.current;
-		var rate1 = CustomEasing.quintQuintInOut(rate);
-		var rate2 = 0 * (1 - rate1) + rate1;
-		var rate3 = tweenxcore_Easing.backIn(rate) * (1 - rate2) + CustomEasing.littleBackOut(rate) * rate2;
-		square.x = start * (1 - rate3) + end * rate3;
-		var rate4 = part.current;
-		var rate5 = tweenxcore_Easing.linear(rate4);
-		var rate6 = 0 * (1 - rate5) + 0.2 * rate5;
-		var rate7 = tweenxcore_FloatTools.yoyo(rate4,tweenxcore_Easing.backIn) * (1 - rate6) + tweenxcore_FloatTools.yoyo(rate4,tweenxcore_Easing.sineIn) * rate6;
-		var curve = 1 - rate7 + 0.1 * rate7;
+		var rate1 = tweenxcore_Easing.linear(rate);
+		var rate2 = 0 * (1 - rate1) + 0.2 * rate1;
+		var rate3 = tweenxcore_FloatTools.yoyo(rate,tweenxcore_Easing.backIn) * (1 - rate2) + tweenxcore_FloatTools.yoyo(rate,tweenxcore_Easing.sineIn) * rate2;
+		var curve = 1 - rate3 + 0.1 * rate3;
 		square.width = 30 / curve;
 		square.height = 30 * curve;
+		var rate4 = part.current;
+		var rate5 = CustomEasing.quintQuintInOut(rate4);
+		var rate6 = 0 * (1 - rate5) + rate5;
+		var rate7 = tweenxcore_Easing.backIn(rate4) * (1 - rate6) + CustomEasing.littleBackOut(rate4) * rate6;
+		square.x = start * (1 - rate7) + end * rate7 - (square.width - 30) / 2;
 		square.y = (i + (1 - curve) / 2) * 30;
 	}
 	,__class__: CustomEasingSample
@@ -231,17 +233,25 @@ CustomEasing.quintQuintInOut = function(rate) {
 	var t1;
 	t = rate * 2;
 	if(t < 1) {
-		t1 = 0.5 * t * t * t * t * t;
+		var tmp = 0.5 * t;
+		t *= t;
+		t1 = tmp * t * t;
 	} else {
 		t -= 2;
-		t1 = 0.5 * t * t * t * t * t + 1;
+		var tmp1 = 0.5 * t;
+		t *= t;
+		t1 = tmp1 * t * t + 1;
 	}
 	t1 *= 2;
 	if(t1 < 1) {
-		return 0.5 * t1 * t1 * t1 * t1 * t1;
+		var tmp2 = 0.5 * t1;
+		t1 *= t1;
+		return tmp2 * t1 * t1;
 	} else {
 		t1 -= 2;
-		return 0.5 * t1 * t1 * t1 * t1 * t1 + 1;
+		var tmp3 = 0.5 * t1;
+		t1 *= t1;
+		return tmp3 * t1 * t1 + 1;
 	}
 };
 CustomEasing.littleBackOut = function(rate) {
@@ -347,6 +357,8 @@ EasingVisualizeSample.prototype = {
 			chart.init();
 		}
 	}
+	,onMouseMove: function(e) {
+	}
 	,__class__: EasingVisualizeSample
 };
 var _$EasingVisualizeSample_Chart = function(x,y,title,easing,context) {
@@ -420,7 +432,7 @@ EntranceExitSample.prototype = $extend(sample_Sprite.prototype,{
 			topBar.width = 481;
 		}
 		var t = part.current;
-		var rate = t == 0?0:Math.pow(2,10 * (t - 1));
+		var rate = t == 0?0:Math.exp(6.931471805599453 * (t - 1));
 		this.square.x = 0 * (1 - rate) + 450 * rate;
 		if(part.current <= 0.0 && 0.0 < part.previous || part.previous < 1.0 && 1.0 <= part.current) {
 			var bottomBar = new sample_Square();
@@ -453,10 +465,10 @@ FloatChangePartSample.prototype = $extend(sample_Sprite.prototype,{
 	}
 	,updatePart: function(part) {
 		var t = part.previous;
-		var rate = t == 0?0:Math.pow(2,10 * (t - 1));
+		var rate = t == 0?0:Math.exp(6.931471805599453 * (t - 1));
 		var left = 0 * (1 - rate) + 480 * rate;
 		var t1 = part.current;
-		var rate1 = t1 == 0?0:Math.pow(2,10 * (t1 - 1));
+		var rate1 = t1 == 0?0:Math.exp(6.931471805599453 * (t1 - 1));
 		var right = 0 * (1 - rate1) + 480 * rate1;
 		this.square.x = left;
 		this.square.width = right - left;
@@ -490,9 +502,9 @@ HsvSample.prototype = $extend(sample_Sprite.prototype,{
 		} else {
 			t *= 2;
 			if(t < 1) {
-				rate = 0.5 * Math.pow(2,10 * (t - 1));
+				rate = 0.5 * Math.exp(6.931471805599453 * (t - 1));
 			} else {
-				rate = 0.5 * (2 - Math.pow(2,-10 * --t));
+				rate = 0.5 * (2 - Math.exp(-6.9314718055994531 * (t - 1)));
 			}
 		}
 		var prevX = 0 * (1 - rate) + 480 * rate;
@@ -505,34 +517,33 @@ HsvSample.prototype = $extend(sample_Sprite.prototype,{
 		} else {
 			t1 *= 2;
 			if(t1 < 1) {
-				rate1 = 0.5 * Math.pow(2,10 * (t1 - 1));
+				rate1 = 0.5 * Math.exp(6.931471805599453 * (t1 - 1));
 			} else {
-				rate1 = 0.5 * (2 - Math.pow(2,-10 * --t1));
+				rate1 = 0.5 * (2 - Math.exp(-6.9314718055994531 * (t1 - 1)));
 			}
 		}
 		var currentX = 0 * (1 - rate1) + 480 * rate1;
 		var t2 = part.current;
-		var hsvCurve;
+		var curve;
 		if(t2 == 0) {
-			hsvCurve = 0;
+			curve = 0;
 		} else if(t2 == 1) {
-			hsvCurve = 1;
+			curve = 1;
 		} else {
 			t2 *= 2;
 			if(t2 < 1) {
-				hsvCurve = 0.5 * Math.pow(2,10 * (t2 - 1));
+				curve = 0.5 * Math.exp(6.931471805599453 * (t2 - 1));
 			} else {
-				hsvCurve = 0.5 * (2 - Math.pow(2,-10 * --t2));
+				curve = 0.5 * (2 - Math.exp(-6.9314718055994531 * (t2 - 1)));
 			}
 		}
-		var hue = 0.0 * (1 - hsvCurve) + hsvCurve;
-		var saturation = 0.0 * (1 - hsvCurve) + 0.8 * hsvCurve;
+		var color = new tweenxcore_color_HsvColor(0.0 * (1 - curve) + curve,0.0 * (1 - curve) + 0.8 * curve,0.95);
 		var square = new sample_Square();
-		this.addChild(square);
-		square.color = new tweenxcore_color_HsvColor(hue,saturation,0.95);
+		square.color = color;
 		square.x = prevX;
 		square.y = 60;
 		square.width = currentX - prevX;
+		this.addChild(square);
 	}
 	,__class__: HsvSample
 });
@@ -641,6 +652,7 @@ Main.main = function() {
 	Main.attach(BezierSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(HsvSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(ImageSample,96,96,PlayMode.ClickToPlay);
+	Main.attach(MouseSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(EasingVisualizeSample,800,500,PlayMode.Direct);
 	window.setInterval(Main.onFrame,16);
 };
@@ -674,6 +686,7 @@ Main.attach = function(clazz,width,height,playMode) {
 Main.addPlayer = function(canvas,player) {
 	Main.players.push(player);
 	canvas.addEventListener("click",$bind(player,player.onClick));
+	window.addEventListener("mousemove",$bind(player,player.onMouseMove));
 };
 var PlayMode = { __ename__ : true, __constructs__ : ["ClickToPlay","Direct"] };
 PlayMode.ClickToPlay = ["ClickToPlay",0];
@@ -752,6 +765,43 @@ MixSample.prototype = $extend(sample_Sprite.prototype,{
 	}
 	,__class__: MixSample
 });
+var MouseSample = function() {
+	sample_Sprite.call(this);
+	this.square = new sample_Square();
+	this.addChild(this.square);
+};
+MouseSample.__name__ = ["MouseSample"];
+MouseSample.__super__ = sample_Sprite;
+MouseSample.prototype = $extend(sample_Sprite.prototype,{
+	update: function() {
+	}
+	,onMouseMove: function(e) {
+		var mouseX = e.clientX;
+		var mouseY = e.clientY;
+		var value = (mouseX - 10) / 790;
+		var rateX = value <= 0?0:1 <= value?1:value;
+		var p = mouseY / 400;
+		var rateY = p - Math.floor(p);
+		var t = rateX;
+		var rate;
+		if(t == 0) {
+			rate = 0;
+		} else if(t == 1) {
+			rate = 1;
+		} else {
+			t *= 2;
+			if(t < 1) {
+				rate = 0.5 * Math.exp(6.931471805599453 * (t - 1));
+			} else {
+				rate = 0.5 * (2 - Math.exp(-6.9314718055994531 * (t - 1)));
+			}
+		}
+		this.square.x = 0 * (1 - rate) + 450 * rate;
+		var rate1 = tweenxcore_Easing.expoInOut((rateY < 0.5?rateY:1 - rateY) * 2);
+		this.square.y = 0 * (1 - rate1) + 120 * rate1;
+	}
+	,__class__: MouseSample
+});
 var OneTwoSample = function() {
 	this.frameCount = 0;
 	sample_Sprite.call(this);
@@ -816,7 +866,7 @@ PolarSample.prototype = $extend(sample_Sprite.prototype,{
 	}
 	,updatePart: function(part) {
 		var t = part.current;
-		var rate = t == 1?1:1 - Math.pow(2,-10 * t);
+		var rate = t == 1?1:1 - Math.exp(-6.9314718055994531 * t);
 		var distance = 1 - rate + 0 * rate;
 		var rate1 = part.current;
 		var polarPoint = new tweenxcore_geom_PolarPoint(distance,0 * (1 - rate1) + -2 * rate1);
@@ -841,7 +891,7 @@ RepeatSample.prototype = $extend(sample_Sprite.prototype,{
 	}
 	,updatePart: function(part) {
 		var t = part.current;
-		var rate = t == 0?0:Math.pow(2,10 * (t - 1));
+		var rate = t == 0?0:Math.exp(6.931471805599453 * (t - 1));
 		this.square.x = 0 * (1 - rate) + 450 * rate;
 	}
 	,__class__: RepeatSample
@@ -860,7 +910,9 @@ SimplestSample.prototype = $extend(sample_Sprite.prototype,{
 		if(rate <= 1) {
 			var t = rate;
 			t = rate - 1;
-			var rate1 = t * t * t * t * t + 1;
+			var tmp = t;
+			t *= t;
+			var rate1 = tmp * t * t + 1;
 			this.square.x = 0 * (1 - rate1) + 450 * rate1;
 		}
 		this.frameCount++;
@@ -1269,7 +1321,8 @@ TimelinePartSample.prototype = $extend(sample_Sprite.prototype,{
 	}
 	,update3: function(part) {
 		var t = part.current;
-		var t1 = t * t * t * t;
+		t *= t;
+		var t1 = t * t;
 		var rate = t1 * t1 * t1;
 		this.square.x = 450 * (1 - rate) + 0 * rate;
 	}
@@ -1752,6 +1805,16 @@ sample_player_ClickToPlaySamplePlayer.prototype = {
 		this.context.lineTo(centerX + size1,height);
 		this.context.fill();
 	}
+	,onMouseMove: function(e) {
+		var _g = this.state;
+		switch(_g[1]) {
+		case 0:case 1:case 3:
+			break;
+		case 2:
+			_g[3].onMouseMove(e);
+			break;
+		}
+	}
 	,__class__: sample_player_ClickToPlaySamplePlayer
 };
 var sample_player__$ClickToPlaySamplePlayer_PlayerState = { __ename__ : true, __constructs__ : ["Stay","Starting","Playing","Finishing"] };
@@ -1845,7 +1908,8 @@ tweenxcore_Easing.cubicOutIn = function(t) {
 	return 0.5 * (t * t * t + 1);
 };
 tweenxcore_Easing.quartIn = function(t) {
-	return t * t * t * t;
+	t *= t;
+	return t * t;
 };
 tweenxcore_Easing.quartOut = function(t) {
 	t = --t * t;
@@ -1854,52 +1918,66 @@ tweenxcore_Easing.quartOut = function(t) {
 tweenxcore_Easing.quartInOut = function(t) {
 	t *= 2;
 	if(t < 1) {
-		return 0.5 * t * t * t * t;
+		t *= t;
+		return 0.5 * t * t;
 	} else {
 		t -= 2;
-		return -0.5 * (t * t * t * t - 2);
+		t = t * t;
+		return -0.5 * (t * t - 2);
 	}
 };
 tweenxcore_Easing.quartOutIn = function(t) {
 	if(t < 0.5) {
 		t = t * 2 - 1;
-		return -0.5 * t * t * t * t + 0.5;
+		t = t * t;
+		return -0.5 * t * t + 0.5;
 	} else {
 		t = t * 2 - 1;
-		return 0.5 * t * t * t * t + 0.5;
+		t = t * t;
+		return 0.5 * t * t + 0.5;
 	}
 };
 tweenxcore_Easing.quintIn = function(t) {
-	return t * t * t * t * t;
+	var tmp = t;
+	t *= t;
+	return tmp * t * t;
 };
 tweenxcore_Easing.quintOut = function(t) {
-	return --t * t * t * t * t + 1;
+	var tmp = --t;
+	t *= t;
+	return tmp * t * t + 1;
 };
 tweenxcore_Easing.quintInOut = function(t) {
 	t *= 2;
 	if(t < 1) {
-		return 0.5 * t * t * t * t * t;
+		var tmp = 0.5 * t;
+		t *= t;
+		return tmp * t * t;
 	} else {
 		t -= 2;
-		return 0.5 * t * t * t * t * t + 1;
+		var tmp1 = 0.5 * t;
+		t *= t;
+		return tmp1 * t * t + 1;
 	}
 };
 tweenxcore_Easing.quintOutIn = function(t) {
 	t = t * 2 - 1;
-	return 0.5 * (t * t * t * t * t + 1);
+	var tmp = t;
+	t *= t;
+	return 0.5 * (tmp * t * t + 1);
 };
 tweenxcore_Easing.expoIn = function(t) {
 	if(t == 0) {
 		return 0;
 	} else {
-		return Math.pow(2,10 * (t - 1));
+		return Math.exp(6.931471805599453 * (t - 1));
 	}
 };
 tweenxcore_Easing.expoOut = function(t) {
 	if(t == 1) {
 		return 1;
 	} else {
-		return 1 - Math.pow(2,-10 * t);
+		return 1 - Math.exp(-6.9314718055994531 * t);
 	}
 };
 tweenxcore_Easing.expoInOut = function(t) {
@@ -1910,19 +1988,19 @@ tweenxcore_Easing.expoInOut = function(t) {
 	} else {
 		t *= 2;
 		if(t < 1) {
-			return 0.5 * Math.pow(2,10 * (t - 1));
+			return 0.5 * Math.exp(6.931471805599453 * (t - 1));
 		} else {
-			return 0.5 * (2 - Math.pow(2,-10 * --t));
+			return 0.5 * (2 - Math.exp(-6.9314718055994531 * (t - 1)));
 		}
 	}
 };
 tweenxcore_Easing.expoOutIn = function(t) {
 	if(t < 0.5) {
-		return 0.5 * (1 - Math.pow(2,-20 * t));
+		return 0.5 * (1 - Math.exp(-13.862943611198906 * t));
 	} else if(t == 0.5) {
 		return 0.5;
 	} else {
-		return 0.5 * (Math.pow(2,20 * (t - 1)) + 1);
+		return 0.5 * (Math.exp(13.862943611198906 * (t - 1)) + 1);
 	}
 };
 tweenxcore_Easing.circIn = function(t) {
@@ -2092,7 +2170,7 @@ tweenxcore_Easing.elasticIn = function(t) {
 	} else if(t == 1) {
 		return 1;
 	} else {
-		return -(Math.pow(2,10 * --t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003));
+		return -(Math.exp(6.931471805599453 * --t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003));
 	}
 };
 tweenxcore_Easing.elasticOut = function(t) {
@@ -2101,7 +2179,7 @@ tweenxcore_Easing.elasticOut = function(t) {
 	} else if(t == 1) {
 		return 1;
 	} else {
-		return Math.pow(2,-10 * t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003) + 1;
+		return Math.exp(-6.9314718055994531 * t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003) + 1;
 	}
 };
 tweenxcore_Easing.elasticInOut = function(t) {
@@ -2112,9 +2190,9 @@ tweenxcore_Easing.elasticInOut = function(t) {
 	} else {
 		t *= 2;
 		if(t < 1) {
-			return -0.5 * (Math.pow(2,10 * --t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003));
+			return -0.5 * (Math.exp(6.931471805599453 * --t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003));
 		} else {
-			return Math.pow(2,-10 * --t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003) * 0.5 + 1;
+			return Math.exp(-6.9314718055994531 * --t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003) * 0.5 + 1;
 		}
 	}
 };
@@ -2124,7 +2202,7 @@ tweenxcore_Easing.elasticOutIn = function(t) {
 		if(t == 0) {
 			return 0;
 		} else {
-			return 0.5 * Math.pow(2,-10 * t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003) + 0.5;
+			return 0.5 * Math.exp(-6.9314718055994531 * t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003) + 0.5;
 		}
 	} else if(t == 0.5) {
 		return 0.5;
@@ -2132,7 +2210,7 @@ tweenxcore_Easing.elasticOutIn = function(t) {
 		return 1;
 	} else {
 		t = t * 2 - 1;
-		return -(0.5 * Math.pow(2,10 * --t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003)) + 0.5;
+		return -(0.5 * Math.exp(6.931471805599453 * --t) * Math.sin((t * 0.001 - 7.5e-005) * 6.2831853071795862 / 0.0003)) + 0.5;
 	}
 };
 tweenxcore_Easing.warpOut = function(t) {
@@ -2201,14 +2279,11 @@ tweenxcore_FloatTools.repeat = function(value,from,to) {
 	var p = (value - from) / (to - from);
 	return p - Math.floor(p);
 };
-tweenxcore_FloatTools.shake = function(rate,center,randomFunc) {
-	if(center == null) {
-		center = 0.0;
-	}
-	if(randomFunc == null) {
-		randomFunc = Math.random;
-	}
-	return center + rate * (1 - 2 * randomFunc());
+tweenxcore_FloatTools.modulo = function(value,divisor) {
+	return value - Math.floor(value / divisor) * divisor;
+};
+tweenxcore_FloatTools.spread = function(rate,scale) {
+	return -scale * (1 - rate) + scale * rate;
 };
 tweenxcore_FloatTools.sinByRate = function(rate) {
 	return Math.sin(rate * 2 * Math.PI);
@@ -3247,6 +3322,7 @@ _$ImageSample_FaceImage.WIDTH = 96;
 _$ImageSample_FaceImage.HEIGHT = 96;
 MatrixSample.TOTAL_FRAME = 40;
 MixSample.TOTAL_FRAME = 40;
+MouseSample.TOTAL_FRAME = 16777215;
 OneTwoSample.TOTAL_FRAME = 40;
 PolarSample.TOTAL_FRAME = 40;
 RepeatSample.TOTAL_FRAME = 140;
@@ -3268,6 +3344,8 @@ js_Boot.__toStr = { }.toString;
 sample_Square.SIZE = 30;
 tweenxcore_Easing.PI = 3.1415926535897932384626433832795;
 tweenxcore_Easing.PI_H = 1.5707963267948966;
+tweenxcore_Easing.LN_2 = 0.6931471805599453;
+tweenxcore_Easing.LN_2_10 = 6.931471805599453;
 tweenxcore_Easing.overshoot = 1.70158;
 tweenxcore_Easing.amplitude = 1;
 tweenxcore_Easing.period = 0.0003;

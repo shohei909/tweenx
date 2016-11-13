@@ -31,6 +31,7 @@ class Main {
         attach(BezierSample,          481, 151, ClickToPlay);
         attach(HsvSample,             481, 151, ClickToPlay);
         attach(ImageSample,           96, 96, ClickToPlay);
+        attach(MouseSample,           481, 151, ClickToPlay);
         attach(EasingVisualizeSample, 800, 500, Direct);
         
         Browser.window.setInterval(onFrame, 16);
@@ -65,6 +66,7 @@ class Main {
     private static function addPlayer(canvas:CanvasElement, player:Player) {
         players.push(player);
         canvas.addEventListener("click", player.onClick);
+        Browser.window.addEventListener("mousemove", player.onMouseMove);
     }
 }
 

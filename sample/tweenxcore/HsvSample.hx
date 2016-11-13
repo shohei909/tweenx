@@ -22,16 +22,17 @@ class HsvSample extends Sprite {
         var prevX = part.previous.expoInOut().lerp(0, 480);
         var currentX = part.current.expoInOut().lerp(0, 480);
 
-        var hsvCurve = part.current.expoInOut();
-        var hue = hsvCurve.lerp(0.0, 1.0);
-        var saturation = hsvCurve.lerp(0.0, 0.8);
+        var curve = part.current.expoInOut();
+        var hue = curve.lerp(0.0, 1.0);
+        var saturation = curve.lerp(0.0, 0.8);
         var value = 0.95;
-        
+        var color = new HsvColor(hue, saturation, value);
+
         var square = new Square();
-        addChild(square);
-        square.color = new HsvColor(hue, saturation, value);
+        square.color = color;
         square.x = prevX;
         square.y = 60;
         square.width = currentX - prevX;
+        addChild(square);
     }
 }
