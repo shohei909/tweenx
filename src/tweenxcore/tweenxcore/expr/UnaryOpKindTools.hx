@@ -35,7 +35,7 @@ class UnaryOpKindTools
                 var func = easing.toFunction();
                 function (rate:Float):Float
                 {
-                    return func(rate.lerp(0, repeat).repeat());
+                    return func(rate.lerp(0, repeat).repeat(0.0, 1.0));
                 }
                 
             case UnaryOpKind.RoundTrip(roundTrip):
@@ -117,7 +117,7 @@ class UnaryOpKindTools
                 
             case UnaryOpKind.Repeat(repeat):
                 var expr = macro tweenxcore.Tools.FloatTools.repeat(
-                    FloatTools.lerp($valueExpr, 0), ${ExprMakeTools.floatToExpr(repeat)}
+                    tweenxcore.Tools.FloatTools.lerp($valueExpr, 0, ${ExprMakeTools.floatToExpr(repeat)}), 0, 1
                 );
                 easing.toExpr(expr);
                 
@@ -134,14 +134,21 @@ class UnaryOpKindTools
         return switch (kind)
         {
             case UnaryOpKind.Clamp(min, max):
-                macro tweenxcore.Tools.FloatTools.clamp.bind(_, ${ExprMakeTools.floatToExpr(min)}, ${ExprMakeTools.floatToExpr(max)});
+                var expr = easing.toExpr(macro rate);
+                macro function (rate:Float) {
+                    return tweenxcore.Tools.FloatTools.clamp($expr, ${ExprMakeTools.floatToExpr(min)}, ${ExprMakeTools.floatToExpr(max)});
+                }
                 
             case UnaryOpKind.Lerp(from, to):
-                macro tweenxcore.Tools.FloatTools.lerp.bind(_, ${ExprMakeTools.floatToExpr(from)}, ${ExprMakeTools.floatToExpr(to)});
+                var expr = easing.toExpr(macro rate);
+                macro function (rate:Float) {
+                    return tweenxcore.Tools.FloatTools.lerp($expr, ${ExprMakeTools.floatToExpr(from)}, ${ExprMakeTools.floatToExpr(to)});
+                }
                 
             case UnaryOpKind.Repeat(repeat):
+                var repeatExpr = ExprMakeTools.floatToExpr(repeat);
                 var arg = macro tweenxcore.Tools.FloatTools.repeat(
-                    tweenxcore.Tools.FloatTools.lerp(rate, 0), ${ExprMakeTools.floatToExpr(repeat)}
+                    tweenxcore.Tools.FloatTools.lerp(rate, 0, $repeatExpr), 0, 1
                 );
                 var expr = easing.toExpr(arg);
                 macro function (rate:Float):Float
