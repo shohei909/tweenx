@@ -1,0 +1,16 @@
+#1. compile
+-main TestMain
+-cs bin/cs
+-lib nanotest
+-cp ../src/tweenxcore
+-cp src
+-debug
+
+#2. exec
+--next
+-cmd ""bin/cs/bin/TestMain-Debug.exe"" 1>bin/report_cs.txt
+
+#3. read
+--next
+-lib nanotest
+--macro nanotest.NanoTestRunner.readResult('bin/report_cs.txt', ['test', 'src'], 'C#')

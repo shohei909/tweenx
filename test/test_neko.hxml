@@ -1,0 +1,16 @@
+#1. compile
+-main TestMain
+-neko bin/test.n
+-lib nanotest
+-cp ../src/tweenxcore
+-cp src
+-debug
+
+#2. execute
+--next
+-cmd neko "bin/test.n" 1>bin/report_neko.txt
+
+#3. read
+--next
+-lib nanotest
+--macro nanotest.NanoTestRunner.readResult('bin/report_neko.txt', ['test', 'src'], 'Neko')
