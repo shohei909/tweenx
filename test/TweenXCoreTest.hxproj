@@ -21,6 +21,8 @@
     <class path="src" />
     <class path="..\src\tweenxcore" />
     <class path="src" />
+    <class path="..\src\tweenxcore" />
+    <class path="src" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -29,10 +31,11 @@
     <option noInlineOnDebug="False" />
     <option mainClass="TestMain" />
     <option enabledebug="False" />
-    <option additional="-debug&#xA;-debug&#xA;-debug&#xA;--times" />
+    <option additional="-debug&#xA;-debug&#xA;-debug&#xA;-debug&#xA;--times" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
+    <library name="nanotest" />
     <library name="nanotest" />
     <library name="nanotest" />
     <library name="nanotest" />
