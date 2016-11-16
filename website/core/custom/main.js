@@ -5463,22 +5463,38 @@ tweenxcore_Easing.expoOutIn = function(t) {
 	}
 };
 tweenxcore_Easing.circIn = function(t) {
-	return 1 - Math.sqrt(1 - t * t);
+	if(t < -1 || 1 < t) {
+		return 0;
+	} else {
+		return 1 - Math.sqrt(1 - t * t);
+	}
 };
 tweenxcore_Easing.circOut = function(t) {
-	return Math.sqrt(t * (2 - t));
+	if(t < 0 || 2 < t) {
+		return 0;
+	} else {
+		return Math.sqrt(t * (2 - t));
+	}
 };
 tweenxcore_Easing.circInOut = function(t) {
-	t *= 2;
-	if(t < 1) {
-		return -0.5 * (Math.sqrt(1 - t * t) - 1);
+	if(t < -0.5 || 1.5 < t) {
+		return 0.5;
 	} else {
-		t -= 2;
-		return 0.5 * (Math.sqrt(1 - t * t) + 1);
+		t *= 2;
+		if(t < 1) {
+			return -0.5 * (Math.sqrt(1 - t * t) - 1);
+		} else {
+			t -= 2;
+			return 0.5 * (Math.sqrt(1 - t * t) + 1);
+		}
 	}
 };
 tweenxcore_Easing.circOutIn = function(t) {
-	if(t < 0.5) {
+	if(t < 0) {
+		return 0;
+	} else if(1 < t) {
+		return 1;
+	} else if(t < 0.5) {
 		t = t * 2 - 1;
 		return 0.5 * Math.sqrt(1 - t * t);
 	} else {
@@ -5739,8 +5755,14 @@ tweenxcore_FloatTools.repeat = function(value,from,to) {
 	var p = (value - from) / (to - from);
 	return p - Math.floor(p);
 };
-tweenxcore_FloatTools.spread = function(rate,scale) {
-	return -scale * (1 - rate) + scale * rate;
+tweenxcore_FloatTools.shake = function(rate,center,randomFunc) {
+	if(center == null) {
+		center = 0.0;
+	}
+	if(randomFunc == null) {
+		randomFunc = Math.random;
+	}
+	return center + rate * (1 - 2 * randomFunc());
 };
 tweenxcore_FloatTools.sinByRate = function(rate) {
 	return Math.sin(rate * 2 * Math.PI);
@@ -5923,6 +5945,138 @@ tweenxcore_FloatTools.beatToMillisecond = function(beat,bpm) {
 var tweenxcore_PointTools = function() { };
 $hxClasses["tweenxcore.PointTools"] = tweenxcore_PointTools;
 tweenxcore_PointTools.__name__ = ["tweenxcore","PointTools"];
+tweenxcore_PointTools.polyline = function(outputPoint,rate,points) {
+	var xs = [];
+	var ys = [];
+	var tmp = $iterator(points)();
+	while(tmp.hasNext()) {
+		var p = tmp.next();
+		xs.push(p.x);
+		ys.push(p.y);
+	}
+	var tmp1;
+	if(xs.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else {
+		var max = xs.length - 1;
+		var scaledRate = rate * max;
+		var max1 = max - 1;
+		var index = Math.floor(scaledRate <= 0?0:max1 <= scaledRate?max1:scaledRate);
+		var innerRate = scaledRate - index;
+		tmp1 = xs[index] * (1 - innerRate) + xs[index + 1] * innerRate;
+	}
+	outputPoint.x = tmp1;
+	var tmp2;
+	if(ys.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else {
+		var max2 = ys.length - 1;
+		var scaledRate1 = rate * max2;
+		var max3 = max2 - 1;
+		var index1 = Math.floor(scaledRate1 <= 0?0:max3 <= scaledRate1?max3:scaledRate1);
+		var innerRate1 = scaledRate1 - index1;
+		tmp2 = ys[index1] * (1 - innerRate1) + ys[index1 + 1] * innerRate1;
+	}
+	outputPoint.y = tmp2;
+};
+tweenxcore_PointTools.bezier2 = function(outputPoint,rate,from,control,to) {
+	var from1 = from.x;
+	var control1 = control.x;
+	outputPoint.x = (from1 * (1 - rate) + control1 * rate) * (1 - rate) + (control1 * (1 - rate) + from.x * rate) * rate;
+	var from2 = from.y;
+	var control2 = control.y;
+	outputPoint.y = (from2 * (1 - rate) + control2 * rate) * (1 - rate) + (control2 * (1 - rate) + from.y * rate) * rate;
+};
+tweenxcore_PointTools.bezier3 = function(outputPoint,rate,from,control1,control2,to) {
+	var from1 = from.x;
+	var control11 = control1.x;
+	var control21 = control2.x;
+	var to1 = from.x;
+	var control = control11 * (1 - rate) + control21 * rate;
+	outputPoint.x = ((from1 * (1 - rate) + control11 * rate) * (1 - rate) + control * rate) * (1 - rate) + (control * (1 - rate) + (control21 * (1 - rate) + to1 * rate) * rate) * rate;
+	var from2 = from.y;
+	var control12 = control1.y;
+	var control22 = control2.y;
+	var to2 = from.y;
+	var control3 = control12 * (1 - rate) + control22 * rate;
+	outputPoint.y = ((from2 * (1 - rate) + control12 * rate) * (1 - rate) + control3 * rate) * (1 - rate) + (control3 * (1 - rate) + (control22 * (1 - rate) + to2 * rate) * rate) * rate;
+};
+tweenxcore_PointTools.bezier = function(outputPoint,rate,points) {
+	var xs = [];
+	var ys = [];
+	var tmp = $iterator(points)();
+	while(tmp.hasNext()) {
+		var p = tmp.next();
+		xs.push(p.x);
+		ys.push(p.y);
+	}
+	var tmp1;
+	if(xs.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else if(xs.length == 2) {
+		tmp1 = xs[0] * (1 - rate) + xs[1] * rate;
+	} else if(xs.length == 3) {
+		var control = xs[1];
+		tmp1 = (xs[0] * (1 - rate) + control * rate) * (1 - rate) + (control * (1 - rate) + xs[2] * rate) * rate;
+	} else {
+		tmp1 = tweenxcore_FloatTools._bezier(rate,xs);
+	}
+	outputPoint.x = tmp1;
+	var tmp2;
+	if(ys.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else if(ys.length == 2) {
+		tmp2 = ys[0] * (1 - rate) + ys[1] * rate;
+	} else if(ys.length == 3) {
+		var control1 = ys[1];
+		tmp2 = (ys[0] * (1 - rate) + control1 * rate) * (1 - rate) + (control1 * (1 - rate) + ys[2] * rate) * rate;
+	} else {
+		tmp2 = tweenxcore_FloatTools._bezier(rate,ys);
+	}
+	outputPoint.y = tmp2;
+};
+tweenxcore_PointTools.uniformQuadraticBSpline = function(outputPoint,rate,points) {
+	var xs = [];
+	var ys = [];
+	var tmp = $iterator(points)();
+	while(tmp.hasNext()) {
+		var p = tmp.next();
+		xs.push(p.x);
+		ys.push(p.y);
+	}
+	var tmp1;
+	if(xs.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else if(xs.length == 2) {
+		tmp1 = xs[0] * (1 - rate) + xs[1] * rate;
+	} else {
+		var max = xs.length - 2;
+		var scaledRate = rate * max;
+		var max1 = max - 1;
+		var index = Math.floor(scaledRate <= 0?0:max1 <= scaledRate?max1:scaledRate);
+		var innerRate = scaledRate - index;
+		var p0 = xs[index];
+		var p1 = xs[index + 1];
+		tmp1 = innerRate * innerRate * (p0 / 2 - p1 + xs[index + 2] / 2) + innerRate * (-p0 + p1) + p0 / 2 + p1 / 2;
+	}
+	outputPoint.x = tmp1;
+	var tmp2;
+	if(ys.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else if(ys.length == 2) {
+		tmp2 = ys[0] * (1 - rate) + ys[1] * rate;
+	} else {
+		var max2 = ys.length - 2;
+		var scaledRate1 = rate * max2;
+		var max3 = max2 - 1;
+		var index1 = Math.floor(scaledRate1 <= 0?0:max3 <= scaledRate1?max3:scaledRate1);
+		var innerRate1 = scaledRate1 - index1;
+		var p01 = ys[index1];
+		var p11 = ys[index1 + 1];
+		tmp2 = innerRate1 * innerRate1 * (p01 / 2 - p11 + ys[index1 + 2] / 2) + innerRate1 * (-p01 + p11) + p01 / 2 + p11 / 2;
+	}
+	outputPoint.y = tmp2;
+};
 var tweenxcore_MatrixTools = function() { };
 $hxClasses["tweenxcore.MatrixTools"] = tweenxcore_MatrixTools;
 tweenxcore_MatrixTools.__name__ = ["tweenxcore","MatrixTools"];
@@ -7495,17 +7649,17 @@ tweenxcore_expr_UnaryOpKindTools.fromJsonable = function(data) {
 tweenxcore_expr_UnaryOpKindTools.toExpr = function(kind,easing,valueExpr) {
 	switch(kind[1]) {
 	case 0:
-		return tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4263, max : 4273}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4263, max : 4279}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4263, max : 4290}},"repeat"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4263, max : 4297}},[{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("FloatTools")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4320, max : 4330}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4320, max : 4335}},[valueExpr,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CInt("0")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4348, max : 4349}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4320, max : 4350}},tweenxcore_expr_ExprMakeTools.floatToExpr(kind[2])]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4263, max : 4407}});
+		return tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4271, max : 4281}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4271, max : 4287}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4271, max : 4298}},"repeat"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4271, max : 4305}},[{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4328, max : 4338}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4328, max : 4344}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4328, max : 4355}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4328, max : 4360}},[valueExpr,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CInt("0")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4373, max : 4374}},tweenxcore_expr_ExprMakeTools.floatToExpr(kind[2])]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4328, max : 4413}},{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CInt("0")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4415, max : 4416}},{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CInt("1")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4418, max : 4419}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4271, max : 4438}});
 	case 1:
 		var to = kind[3];
 		var from = kind[2];
 		var expr = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,valueExpr);
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4054, max : 4064}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4054, max : 4070}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4054, max : 4081}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4054, max : 4086}},[expr,tweenxcore_expr_ExprMakeTools.floatToExpr(from),tweenxcore_expr_ExprMakeTools.floatToExpr(to)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4054, max : 4163}};
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4062, max : 4072}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4062, max : 4078}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4062, max : 4089}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4062, max : 4094}},[expr,tweenxcore_expr_ExprMakeTools.floatToExpr(from),tweenxcore_expr_ExprMakeTools.floatToExpr(to)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4062, max : 4171}};
 	case 2:
 		var max = kind[3];
 		var min = kind[2];
 		var expr1 = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,valueExpr);
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3801, max : 3811}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3801, max : 3817}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3801, max : 3828}},"clamp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3801, max : 3834}},[expr1,tweenxcore_expr_ExprMakeTools.floatToExpr(min),tweenxcore_expr_ExprMakeTools.floatToExpr(max)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3801, max : 3911}};
+		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3809, max : 3819}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3809, max : 3825}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3809, max : 3836}},"clamp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3809, max : 3842}},[expr1,tweenxcore_expr_ExprMakeTools.floatToExpr(min),tweenxcore_expr_ExprMakeTools.floatToExpr(max)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 3809, max : 3919}};
 	case 3:
 		return tweenxcore_expr_RoundTripKindTools.toExpr(kind[2],easing,valueExpr);
 	case 4:
@@ -7515,12 +7669,19 @@ tweenxcore_expr_UnaryOpKindTools.toExpr = function(kind,easing,valueExpr) {
 tweenxcore_expr_UnaryOpKindTools.toFunctionExpr = function(kind,easing) {
 	switch(kind[1]) {
 	case 0:
-		var expr = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5390, max : 5400}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5390, max : 5406}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5390, max : 5417}},"repeat"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5390, max : 5424}},[{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5447, max : 5457}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5447, max : 5463}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5447, max : 5474}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5447, max : 5479}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("rate")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5480, max : 5484}},{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CInt("0")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5486, max : 5487}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5447, max : 5488}},tweenxcore_expr_ExprMakeTools.floatToExpr(kind[2])]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5390, max : 5545}});
-		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "rate", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn(expr), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5686, max : 5698}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5663, max : 5718}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5618, max : 5718}};
+		var repeatExpr = tweenxcore_expr_ExprMakeTools.floatToExpr(kind[2]);
+		var expr = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5740, max : 5750}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5740, max : 5756}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5740, max : 5767}},"repeat"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5740, max : 5774}},[{ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5797, max : 5807}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5797, max : 5813}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5797, max : 5824}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5797, max : 5829}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("rate")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5830, max : 5834}},{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CInt("0")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5836, max : 5837}},repeatExpr]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5797, max : 5851}},{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CInt("0")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5853, max : 5854}},{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CInt("1")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5856, max : 5857}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5740, max : 5876}});
+		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "rate", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn(expr), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 6017, max : 6029}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5994, max : 6049}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5949, max : 6049}};
 	case 1:
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5181, max : 5191}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5181, max : 5197}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5181, max : 5208}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5181, max : 5213}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5181, max : 5218}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5219, max : 5220}},tweenxcore_expr_ExprMakeTools.floatToExpr(kind[2]),tweenxcore_expr_ExprMakeTools.floatToExpr(kind[3])]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5181, max : 5291}};
+		var to = kind[3];
+		var from = kind[2];
+		var expr1 = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("rate")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5362, max : 5366}});
+		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "rate", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : null, expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn({ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5444, max : 5454}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5444, max : 5460}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5444, max : 5471}},"lerp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5444, max : 5476}},[expr1,tweenxcore_expr_ExprMakeTools.floatToExpr(from),tweenxcore_expr_ExprMakeTools.floatToExpr(to)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5444, max : 5553}}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5437, max : 5553}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5414, max : 5573}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5392, max : 5573}};
 	case 2:
-		return { expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4981, max : 4991}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4981, max : 4997}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4981, max : 5008}},"clamp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4981, max : 5014}},"bind"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4981, max : 5019}},[{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("_")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5020, max : 5021}},tweenxcore_expr_ExprMakeTools.floatToExpr(kind[2]),tweenxcore_expr_ExprMakeTools.floatToExpr(kind[3])]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 4981, max : 5092}};
+		var max = kind[3];
+		var min = kind[2];
+		var expr2 = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("rate")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5037, max : 5041}});
+		return { expr : haxe_macro_ExprDef.EFunction(null,{ args : [{ name : "rate", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : null, expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn({ expr : haxe_macro_ExprDef.ECall({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EField({ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("tweenxcore")), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5119, max : 5129}},"Tools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5119, max : 5135}},"FloatTools"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5119, max : 5146}},"clamp"), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5119, max : 5152}},[expr2,tweenxcore_expr_ExprMakeTools.floatToExpr(min),tweenxcore_expr_ExprMakeTools.floatToExpr(max)]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5119, max : 5229}}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5112, max : 5229}}]), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5089, max : 5249}}, params : []}), pos : { file : "../../src/tweenxcore/tweenxcore/expr/UnaryOpKindTools.hx", min : 5067, max : 5249}};
 	case 3:
 		return tweenxcore_expr_RoundTripKindTools.toFunctionExpr(kind[2],easing);
 	case 4:

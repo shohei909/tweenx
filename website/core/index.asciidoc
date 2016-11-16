@@ -1,7 +1,7 @@
 ---
 layout: default
 title: TweenXCore - lightweight motion library for haxe
-logo: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
+tweenxcore: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
 ---
 :showtitle:
 :author: shohei909
@@ -12,9 +12,9 @@ logo: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
 :sourceLink: link:https://github.com/shohei909/tweenx/blob/develop/src/tweenxcore/
 :page-liquid:
 
-= {{page.logo}}
+= {{page.tweenxcore}}
 
-{{page.logo}}は https://haxe.org/[Haxe] で気持ちの良いモーションをより簡単に作成するための、クロスプラットフォームな**トゥイーンライブラリ**です。
+{{page.tweenxcore}}は https://haxe.org/[Haxe] で気持ちの良いモーションをより簡単に作成するための、クロスプラットフォームな**トゥイーンライブラリ**です。
 
 実行速度が速く、開発速度が速く、バグが少なく、学習コストが少なく、そしてモーションが自由で面白くなるように作られています。
 
@@ -23,7 +23,6 @@ logo: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
 ++++
 
 toc::[]
-
 
 == 機能
 
@@ -53,7 +52,7 @@ toc::[]
 MITライセンスですので、商用、非商用、個人、法人を問わず、利用、改変、再配布ができます。
 
 
-== {{page.logo}}を始める
+== {{page.tweenxcore}}を始める
 
 === Haxeバージョン
 
@@ -69,9 +68,9 @@ Haxeのインストール後、コマンドラインから以下のコマンド�
 haxelib install tweenxcore
 ---------
 
-=== Hello {{page.logo}}
+=== Hello {{page.tweenxcore}}
 
-{{page.logo}}の最初のサンプルとして、四角のx座標を0から450まで、動かすコードを見てみます。
+{{page.tweenxcore}}の最初のサンプルとして、四角のx座標を0から450まで、動かすコードを見てみます。
 
 {% include sample.asciidoc id="Simplest" %}
 
@@ -108,7 +107,7 @@ class SimplestSample extends Sprite {
 }
 ---------
 
-{{page.logo}}に関係するコードは、以下の部分です。
+{{page.tweenxcore}}に関係するコードは、以下の部分です。
 
 [source,haxe]
 ---------
@@ -152,16 +151,16 @@ MatrixToolsクラス::
 
 ``quintOut``はイージング関数です。0から1へと変化する``rate``の値を、5次関数をつかって後詰めの値へと変えています
 
-{{page.logo}}が提供するイージング関数はもちろん``quintOut``のみではありません。
+{{page.tweenxcore}}が提供するイージング関数はもちろん``quintOut``のみではありません。
 
 link:http://easings.net/[Robert Pennerのイージング関数]を基本とし、中央で減速して再度加速する``OutIn``のモードと、瞬間的に移動を行うwarpが追加された計44個の関数を提供しています。
-
+   
 {% include sample.asciidoc id="EasingVisualize" %}
 
 
 これらの関数の中身が具体的にどうなっているのか少し見てみます。
 
-{{page.logo}}での、``cubicIn``関数は以下の通りです。
+{{page.tweenxcore}}での、``cubicIn``関数は以下の通りです。
 
 [source,haxe]
 ---------
@@ -193,13 +192,13 @@ square.x = rate.cubicIn().lerp(0, 450);
 
 
 
-== {{page.logo}}の思想
+== {{page.tweenxcore}}の思想
 
 
 
 === 0.0から始まり、1.0で終わる
 
-{{page.logo}}の世界では、始まりの値は0.0であり、終わりの値は1.0です。
+{{page.tweenxcore}}の世界では、始まりの値は0.0であり、終わりの値は1.0です。
 
 つまり、
 
@@ -208,13 +207,13 @@ square.x = rate.cubicIn().lerp(0, 450);
 * 円の1周の場合、0度は0.0であり360度は1.0です。
 * RGBカラーのRed値の場合、0.0が赤みが全くなく1.0が完全な赤です。
 
-{{page.logo}}では、このような0.0から1.0を基準とする値について``rate``という変数名をよく使います。
+{{page.tweenxcore}}では、このような0.0から1.0を基準とする値について``rate``という変数名をよく使います。
 
 
 
 === 脱ブラックボックス
 
-{{page.logo}}は、出発地点や到達地点を指定して自動でオブジェクトを動かすような機能は持ちません。
+{{page.tweenxcore}}は、出発地点や到達地点を指定して自動でオブジェクトを動かすような機能は持ちません。
 
 トゥイーンライブラリが自動的にオブジェクトを動かしてくれる機能はただモーションを再生するだけなら簡単ですが、少し凝ったことをしようとすると途端に難しくなります。
 
@@ -226,7 +225,7 @@ square.x = rate.cubicIn().lerp(0, 450);
 
 多くのトゥイーンライブラリでは、こういった内容の実現はできなかったり、複雑な仕様をおぼえなきゃいけなかったりします。
 
-それに対して、{{page.logo}}の解決策は簡単です。
+それに対して、{{page.tweenxcore}}の解決策は簡単です。
 
 * モーションを止めたければ、止めたい場所の**更新をやめれば止まります**
 * フェードインとフェードアウトは、単純な**``if``文で切り替えることができます**
@@ -234,7 +233,7 @@ square.x = rate.cubicIn().lerp(0, 450);
 
 何も難しいことがありません。
 
-{{page.logo}}が提供するのは、以下の3つです。
+{{page.tweenxcore}}が提供するのは、以下の3つです。
 
 * 0.0から1.0の範囲ではない値を、0.0から1.0の数値に変換する機能。　（``FloatTools.inverseLerp``関数や、``FloatChange``クラス）
 * 0.0から1.0の数値を、別の曲線を描く0.0から1.0の数値に変換する機能。（``Easing``やカスタムイージングの機能）
@@ -246,7 +245,7 @@ square.x = rate.cubicIn().lerp(0, 450);
 
 === どこでも使える
 
-{{page.logo}}は、プラットフォームや、あわせて使うフレームワーク、プログラミングのパラダイムに左右されることなく利用可能です。
+{{page.tweenxcore}}は、プラットフォームや、あわせて使うフレームワーク、プログラミングのパラダイムに左右されることなく利用可能です。
 
 * 目指しているスタイルが、オブジェクト指向でも、手続き型プログラミングでも、関数型プログラミングでもよくマッチします。
 * 使用するフレームワークが、OpenFLであっても、Reactであっても、Unityであっても同じように動作します。
@@ -254,11 +253,11 @@ square.x = rate.cubicIn().lerp(0, 450);
 
 
 
-== {{page.logo}}チュートリアル
+== {{page.tweenxcore}}チュートリアル
 
 === イージングを自作する
 
-{{page.logo}}には44種類のイージングありますがこれらを単に使うだけでは、ありふれたモーションになりがちです。{{page.logo}}ではイージングを組み合わせたり混ぜ合わせたりして自分だけのイージングを作り出すことができます。
+{{page.tweenxcore}}には44種類のイージングありますがこれらを単に使うだけでは、ありふれたモーションになりがちです。{{page.tweenxcore}}ではイージングを組み合わせたり混ぜ合わせたりして自分だけのイージングを作り出すことができます。
 
 
 ==== 多重のイージング（関数合成）
@@ -382,7 +381,7 @@ link:./custom/[イージングエディタ | TweenXCore]
 
 これまでのサンプルは現在の値のみを使うものでしたが、直前の値と現在の値の両方を使うことで、さまざまな動作を作ることができます。
 
-{{page.logo}}では、直前の値と現在の値をあつかう``FloatChange``というクラスを提供しています。
+{{page.tweenxcore}}では、直前の値と現在の値をあつかう``FloatChange``というクラスを提供しています。
 
 ==== 値を横切った瞬間を取得
 
@@ -590,7 +589,7 @@ private function updatePart(part:FloatChangePart):Void {
 
 ==== 極座標
 
-{{page.logo}}は極座標をサポートしています。
+{{page.tweenxcore}}は極座標をサポートしています。
 
 {% include sample.asciidoc id="Polar" %}
 
@@ -627,7 +626,7 @@ private function updatePart(part:FloatChangePart) {
 
 ==== ベジェ曲線
 
-{{page.logo}}はベジェ曲線もサポートしています。
+{{page.tweenxcore}}はベジェ曲線もサポートしています。
 
 {% include sample.asciidoc id="Bezier" %}
 
@@ -648,7 +647,7 @@ square.y = rate.bezier3(0, 200, -50, 120);
 
 ==== RGBカラー、HSVカラー
 
-{{page.logo}}では、RGBカラーとHSVカラーが使えます。
+{{page.tweenxcore}}では、RGBカラーとHSVカラーが使えます。
 
 {% include sample.asciidoc id="Hsv" %}
 

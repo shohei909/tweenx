@@ -2004,22 +2004,38 @@ tweenxcore_Easing.expoOutIn = function(t) {
 	}
 };
 tweenxcore_Easing.circIn = function(t) {
-	return 1 - Math.sqrt(1 - t * t);
+	if(t < -1 || 1 < t) {
+		return 0;
+	} else {
+		return 1 - Math.sqrt(1 - t * t);
+	}
 };
 tweenxcore_Easing.circOut = function(t) {
-	return Math.sqrt(t * (2 - t));
+	if(t < 0 || 2 < t) {
+		return 0;
+	} else {
+		return Math.sqrt(t * (2 - t));
+	}
 };
 tweenxcore_Easing.circInOut = function(t) {
-	t *= 2;
-	if(t < 1) {
-		return -0.5 * (Math.sqrt(1 - t * t) - 1);
+	if(t < -0.5 || 1.5 < t) {
+		return 0.5;
 	} else {
-		t -= 2;
-		return 0.5 * (Math.sqrt(1 - t * t) + 1);
+		t *= 2;
+		if(t < 1) {
+			return -0.5 * (Math.sqrt(1 - t * t) - 1);
+		} else {
+			t -= 2;
+			return 0.5 * (Math.sqrt(1 - t * t) + 1);
+		}
 	}
 };
 tweenxcore_Easing.circOutIn = function(t) {
-	if(t < 0.5) {
+	if(t < 0) {
+		return 0;
+	} else if(1 < t) {
+		return 1;
+	} else if(t < 0.5) {
 		t = t * 2 - 1;
 		return 0.5 * Math.sqrt(1 - t * t);
 	} else {
@@ -2279,11 +2295,14 @@ tweenxcore_FloatTools.repeat = function(value,from,to) {
 	var p = (value - from) / (to - from);
 	return p - Math.floor(p);
 };
-tweenxcore_FloatTools.modulo = function(value,divisor) {
-	return value - Math.floor(value / divisor) * divisor;
-};
-tweenxcore_FloatTools.spread = function(rate,scale) {
-	return -scale * (1 - rate) + scale * rate;
+tweenxcore_FloatTools.shake = function(rate,center,randomFunc) {
+	if(center == null) {
+		center = 0.0;
+	}
+	if(randomFunc == null) {
+		randomFunc = Math.random;
+	}
+	return center + rate * (1 - 2 * randomFunc());
 };
 tweenxcore_FloatTools.sinByRate = function(rate) {
 	return Math.sin(rate * 2 * Math.PI);
@@ -2465,6 +2484,138 @@ tweenxcore_FloatTools.beatToMillisecond = function(beat,bpm) {
 };
 var tweenxcore_PointTools = function() { };
 tweenxcore_PointTools.__name__ = ["tweenxcore","PointTools"];
+tweenxcore_PointTools.polyline = function(outputPoint,rate,points) {
+	var xs = [];
+	var ys = [];
+	var tmp = points.iterator();
+	while(tmp.hasNext()) {
+		var p = tmp.next();
+		xs.push(p.x);
+		ys.push(p.y);
+	}
+	var tmp1;
+	if(xs.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else {
+		var max = xs.length - 1;
+		var scaledRate = rate * max;
+		var max1 = max - 1;
+		var index = Math.floor(scaledRate <= 0?0:max1 <= scaledRate?max1:scaledRate);
+		var innerRate = scaledRate - index;
+		tmp1 = xs[index] * (1 - innerRate) + xs[index + 1] * innerRate;
+	}
+	outputPoint.x = tmp1;
+	var tmp2;
+	if(ys.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else {
+		var max2 = ys.length - 1;
+		var scaledRate1 = rate * max2;
+		var max3 = max2 - 1;
+		var index1 = Math.floor(scaledRate1 <= 0?0:max3 <= scaledRate1?max3:scaledRate1);
+		var innerRate1 = scaledRate1 - index1;
+		tmp2 = ys[index1] * (1 - innerRate1) + ys[index1 + 1] * innerRate1;
+	}
+	outputPoint.y = tmp2;
+};
+tweenxcore_PointTools.bezier2 = function(outputPoint,rate,from,control,to) {
+	var from1 = from.x;
+	var control1 = control.x;
+	outputPoint.x = (from1 * (1 - rate) + control1 * rate) * (1 - rate) + (control1 * (1 - rate) + from.x * rate) * rate;
+	var from2 = from.y;
+	var control2 = control.y;
+	outputPoint.y = (from2 * (1 - rate) + control2 * rate) * (1 - rate) + (control2 * (1 - rate) + from.y * rate) * rate;
+};
+tweenxcore_PointTools.bezier3 = function(outputPoint,rate,from,control1,control2,to) {
+	var from1 = from.x;
+	var control11 = control1.x;
+	var control21 = control2.x;
+	var to1 = from.x;
+	var control = control11 * (1 - rate) + control21 * rate;
+	outputPoint.x = ((from1 * (1 - rate) + control11 * rate) * (1 - rate) + control * rate) * (1 - rate) + (control * (1 - rate) + (control21 * (1 - rate) + to1 * rate) * rate) * rate;
+	var from2 = from.y;
+	var control12 = control1.y;
+	var control22 = control2.y;
+	var to2 = from.y;
+	var control3 = control12 * (1 - rate) + control22 * rate;
+	outputPoint.y = ((from2 * (1 - rate) + control12 * rate) * (1 - rate) + control3 * rate) * (1 - rate) + (control3 * (1 - rate) + (control22 * (1 - rate) + to2 * rate) * rate) * rate;
+};
+tweenxcore_PointTools.bezier = function(outputPoint,rate,points) {
+	var xs = [];
+	var ys = [];
+	var tmp = points.iterator();
+	while(tmp.hasNext()) {
+		var p = tmp.next();
+		xs.push(p.x);
+		ys.push(p.y);
+	}
+	var tmp1;
+	if(xs.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else if(xs.length == 2) {
+		tmp1 = xs[0] * (1 - rate) + xs[1] * rate;
+	} else if(xs.length == 3) {
+		var control = xs[1];
+		tmp1 = (xs[0] * (1 - rate) + control * rate) * (1 - rate) + (control * (1 - rate) + xs[2] * rate) * rate;
+	} else {
+		tmp1 = tweenxcore_FloatTools._bezier(rate,xs);
+	}
+	outputPoint.x = tmp1;
+	var tmp2;
+	if(ys.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else if(ys.length == 2) {
+		tmp2 = ys[0] * (1 - rate) + ys[1] * rate;
+	} else if(ys.length == 3) {
+		var control1 = ys[1];
+		tmp2 = (ys[0] * (1 - rate) + control1 * rate) * (1 - rate) + (control1 * (1 - rate) + ys[2] * rate) * rate;
+	} else {
+		tmp2 = tweenxcore_FloatTools._bezier(rate,ys);
+	}
+	outputPoint.y = tmp2;
+};
+tweenxcore_PointTools.uniformQuadraticBSpline = function(outputPoint,rate,points) {
+	var xs = [];
+	var ys = [];
+	var tmp = points.iterator();
+	while(tmp.hasNext()) {
+		var p = tmp.next();
+		xs.push(p.x);
+		ys.push(p.y);
+	}
+	var tmp1;
+	if(xs.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else if(xs.length == 2) {
+		tmp1 = xs[0] * (1 - rate) + xs[1] * rate;
+	} else {
+		var max = xs.length - 2;
+		var scaledRate = rate * max;
+		var max1 = max - 1;
+		var index = Math.floor(scaledRate <= 0?0:max1 <= scaledRate?max1:scaledRate);
+		var innerRate = scaledRate - index;
+		var p0 = xs[index];
+		var p1 = xs[index + 1];
+		tmp1 = innerRate * innerRate * (p0 / 2 - p1 + xs[index + 2] / 2) + innerRate * (-p0 + p1) + p0 / 2 + p1 / 2;
+	}
+	outputPoint.x = tmp1;
+	var tmp2;
+	if(ys.length < 2) {
+		throw new js__$Boot_HaxeError("points length must be more than 2");
+	} else if(ys.length == 2) {
+		tmp2 = ys[0] * (1 - rate) + ys[1] * rate;
+	} else {
+		var max2 = ys.length - 2;
+		var scaledRate1 = rate * max2;
+		var max3 = max2 - 1;
+		var index1 = Math.floor(scaledRate1 <= 0?0:max3 <= scaledRate1?max3:scaledRate1);
+		var innerRate1 = scaledRate1 - index1;
+		var p01 = ys[index1];
+		var p11 = ys[index1 + 1];
+		tmp2 = innerRate1 * innerRate1 * (p01 / 2 - p11 + ys[index1 + 2] / 2) + innerRate1 * (-p01 + p11) + p01 / 2 + p11 / 2;
+	}
+	outputPoint.y = tmp2;
+};
 var tweenxcore_MatrixTools = function() { };
 tweenxcore_MatrixTools.__name__ = ["tweenxcore","MatrixTools"];
 tweenxcore_MatrixTools.createSimilarityTransform = function(outputMatrix,fromX,fromY,toX,toY) {

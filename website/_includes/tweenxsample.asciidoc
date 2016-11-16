@@ -1,0 +1,1 @@
++++<a href="sample/swf/{{include.id}}.swf?width={% if include.width == null %}401{% else %}{{include.width}}{% endif %}&height={% if include.height == null %}401{% else %}{{include.height}}{% endif %}" rel="prettyPhoto" title="{{include.id}}">[サンプルを再生]</a>+++
