@@ -554,7 +554,6 @@ class FloatTools
     // =================================================
     // Bernstein Polynomial
     // =================================================
-
     public static inline function bezier2(rate:Float, from:Float, control:Float, to:Float):Float
     {
         return lerp(rate, lerp(rate, from, control), lerp(rate, control, to));
@@ -642,20 +641,35 @@ class FloatTools
 
 
 class PointTools {
-    @:generic
-    public static inline function bezier2<T:Point>(outputPoint:T, rate:Float, from:T, control:T, to:T):Void {
+    // =================================================
+    // Polyline
+    // =================================================
+    public static inline function polyline(outputPoint:Point, rate:Float, points:Iterable<Point>):Void {
+        var xs = [];
+        var ys = [];
+        for (p in points) {
+            xs.push(p.x);
+            ys.push(p.y);
+        }
+        outputPoint.x = rate.polyline(xs);
+        outputPoint.y = rate.polyline(ys);
+    }
+    
+
+    // =================================================
+    // Bézier Curve
+    // =================================================
+    public static inline function bezier2(outputPoint:Point, rate:Float, from:Point, control:Point, to:Point):Void {
         outputPoint.x = rate.bezier2(from.x, control.x, from.x);
         outputPoint.y = rate.bezier2(from.y, control.y, from.y);
     }
 
-    @:generic
-    public static inline function bezier3<T:Point>(outputPoint:T, rate:Float, from:T, control1:T, control2:T, to:T):Void {
+    public static inline function bezier3(outputPoint:Point, rate:Float, from:Point, control1:Point, control2:Point, to:Point):Void {
         outputPoint.x = rate.bezier3(from.x, control1.x, control2.x, from.x);
         outputPoint.y = rate.bezier3(from.y, control1.y, control2.y, from.y);
     }
 
-    @:generic
-    public static inline function bezier<T:Point>(outputPoint:T, rate:Float, points:Iterable<T>):Void {
+    public static inline function bezier(outputPoint:Point, rate:Float, points:Iterable<Point>):Void {
         var xs = [];
         var ys = [];
         for (p in points) {
@@ -665,12 +679,27 @@ class PointTools {
         outputPoint.x = rate.bezier(xs);
         outputPoint.y = rate.bezier(ys);
     }
+    
+    // =================================================
+    // B-spline Curve
+    // =================================================
+    /** Uniform Quadratic B-spline */
+    public static inline function uniformQuadraticBSpline(outputPoint:Point, rate:Float, points:Iterable<Point>):Void {
+        var xs = [];
+        var ys = [];
+        for (p in points) {
+            xs.push(p.x);
+            ys.push(p.y);
+        }
+        outputPoint.x = rate.uniformQuadraticBSpline(xs);
+        outputPoint.y = rate.uniformQuadraticBSpline(ys);
+    }
 }
 
 
 
 class MatrixTools {
-    public static inline function createSimilarityTransform<T:Matrix>(outputMatrix:T, fromX:Float, fromY:Float, toX:Float, toY:Float) {
+    public static inline function createSimilarityTransform(outputMatrix:Matrix, fromX:Float, fromY:Float, toX:Float, toY:Float) {
         var dx = toX - fromX;
         var dy = toY - fromY;
         var rot = Math.atan2(dy, dx);
