@@ -45,7 +45,7 @@ class TweenXBench extends Sprite {
 
         points = new Vector<Point>(LENGTH);
         for(i in 0...LENGTH){
-            var p = points[i] = new Point(WIDTH * Math.random(), HEIGHT);
+            var p = points[i] = new Point(i % WIDTH, HEIGHT);
 
             var t = TweenX.to(p)
                 .y(0)

@@ -45,7 +45,7 @@ class TweensyBench extends Sprite {
 
         points = new Vector<Point>(LENGTH);
         for(i in 0...LENGTH){
-            var p = points[i] = new Point(WIDTH * Math.random(), HEIGHT);
+            var p = points[i] = new Point(i % WIDTH, HEIGHT);
 
             var t = Tweensy.to(p, { "y":0 }, 0.2 + 10 * Math.random(), Exponential.easeIn);
             t.repeatType = TweensyTimeline.REPLAY;
@@ -68,7 +68,7 @@ class TweensyBench extends Sprite {
         b.colorTransform(b.rect, colorTransform);
         for (i in 0...LENGTH) {
             var p = points[i];
-            b.setPixel(i % 456, Std.int(p.y), COLOR);
+            b.setPixel(Std.int(p.x), Std.int(p.y), COLOR);
         }
         b.unlock();
 

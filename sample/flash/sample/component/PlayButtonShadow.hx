@@ -2,6 +2,7 @@ package sample.component;
 import flash.display.Sprite;
 import sample.component.SamplePlayer;
 import tweenxcore.color.HsvColor;
+using tweenxcore.Tools;
 
 class PlayButtonShadow extends Sprite
 {
@@ -12,7 +13,7 @@ class PlayButtonShadow extends Sprite
         color.s = color.s.sineOut();
         color.v = color.v.lerp(0.1, 0.3);
 
-        graphics.beginFill(color.toInt(), 0.4);
+        graphics.beginFill(color.toRgbInt(), 0.4);
         var size = PlayButton.SIZE * 1.1;
 
         graphics.moveTo(0, -2);

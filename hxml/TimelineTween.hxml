@@ -1,0 +1,7 @@
+-swf-header 401:401:60:FFFFFF
+-cp sample/tweenx/014_TimelineTween
+-cp src/tweenx
+-cp src/tweenxcore
+-cp sample/flash
+-main sample.main.DirectMain
+-D grid_background

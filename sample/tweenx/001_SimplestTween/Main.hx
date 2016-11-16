@@ -25,7 +25,7 @@ class Main extends Sprite {
         //Make square
         var square = new Square(CELL_SIZE * 2);
         addChild(square);
-        square.y = ;
+        square.y = CELL_SIZE * 9;
 
         //Tween!!
         TweenX.to(square, {"x":360});

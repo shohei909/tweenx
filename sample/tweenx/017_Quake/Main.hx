@@ -1,9 +1,9 @@
 import flash.display.Sprite;
 import flash.display.Shape;
 import flash.geom.Matrix;
+import tweenx909.rule.QuakeX;
 
 import tweenx909.rule.QuakeRuleX;
-import tweenxcore.structure.Quake;
 import tweenx909.TweenX;
 import tweenx909.EaseX;
 using tweenx909.ChainX;
@@ -32,8 +32,8 @@ class Main extends Sprite {
         //Tween!!
         TweenX.from(square, { x:180, y:180 });
         TweenX.to(square, {
-                            x:new Quake(180, 80, EaseX.linear),
-                            y:new Quake(180, 80, EaseX.linear)
+                            x:new QuakeX(180, 80, EaseX.linear),
+                            y:new QuakeX(180, 80, EaseX.linear)
                         }).time(2);
     }
 }

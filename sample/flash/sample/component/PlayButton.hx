@@ -1,4 +1,6 @@
 package sample.component;
+import flash.display.BlendMode;
+import flash.display.Shape;
 import flash.display.Sprite;
 
 class PlayButton extends Sprite 

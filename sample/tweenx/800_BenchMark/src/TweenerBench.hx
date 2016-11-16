@@ -43,7 +43,7 @@ class TweenerBench extends Sprite {
 
         points = new Vector<Point>(LENGTH);
         for(i in 0...LENGTH){
-            var p = points[i] = new Point(WIDTH * Math.random(), HEIGHT);
+            var p = points[i] = new Point(i % WIDTH, HEIGHT);
             addTween(p);
         }
 

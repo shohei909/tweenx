@@ -1,0 +1,36 @@
+= Chrome
+Tweensy
+* 4.71
+* 4.69
+
+TweenX
+* 6.98
+* 6.70
+
+Actuate
+* 15.36
+* 16.25
+
+BetweenAS3
+* 31.95
+* 31.94
+
+TweenXCore
+* 58.44
+* 58.08
+
+= Firefox
+Tweensy
+* 5.12
+
+TweenX
+* 7.14
+
+Actuate
+* 15.76
+
+BetweenAS3
+* 23.25
+
+TweenXCore
+* 36.40

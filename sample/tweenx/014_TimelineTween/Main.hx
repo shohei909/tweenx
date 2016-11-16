@@ -39,7 +39,7 @@ class Main extends Sprite {
         bitmap.x = CELL_SIZE * 9 + 7;
 
         //Tween!!
-    TweenX.to(bitmap, {bitmapData: new Timeline([walk0,walk1,walk2,walk1])}).time(1).repeat(0);
+        TweenX.to(bitmap, {bitmapData: new Timeline([walk0,walk1,walk2,walk1])}).time(1).repeat(0);
     }
 }
 

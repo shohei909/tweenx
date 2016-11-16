@@ -4,10 +4,10 @@
   <output>
     <movie outputType="CustomBuild" />
     <movie input="" />
-    <movie path="build.hxml" />
+    <movie path="buildAll.hxml" />
     <movie fps="60" />
-    <movie width="451" />
-    <movie height="151" />
+    <movie width="401" />
+    <movie height="401" />
     <movie version="0" />
     <movie minorVersion="0" />
     <movie platform="hxml" />
@@ -15,17 +15,17 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="sample\tweenxcore\301_Simplest" />
+    <class path="sample\tweenx\001_SimplestTween" />
     <class path="src\tweenx" />
     <class path="src\tweenxcore" />
-    <class path="sample\common" />
+    <class path="sample\flash" />
   </classpaths>
   <!-- Build options -->
   <build>
     <option directives="grid_background" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="sample.main.RepeatableMain" />
+    <option mainClass="sample.main.DirectMain" />
     <option enabledebug="False" />
     <option additional="" />
   </build>

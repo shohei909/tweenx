@@ -18,7 +18,7 @@ class TweenXCoreBench extends Sprite {
     static inline var WIDTH      = 465;
     static inline var HEIGHT     = 465;
     static inline var COLOR      = 0xFFFFFFFF;
-    static inline var TIME_LIMIT = 3000;
+    static inline var TIME_LIMIT = 30000;
 
     static var colorTransform     = new ColorTransform(0.9, 0.7, 0.8);
 

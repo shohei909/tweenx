@@ -21,27 +21,7 @@ class Project
             width : 750,
             height : 500,
             kind: Repatable(true, false),
-        },
-        318 => {
-            width : 151,
-            height : 151,
-            kind: Repatable(true, false),
-        },
-        400 => {
-            width : 750,
-            height : 500,
-            kind: Repatable(true, false),
-        },
-        401 => {
-            width : 720,
-            height : 512,
-            kind: Direct,
-        },
-        900 => {
-            width : 720,
-            height : 512,
-            kind: Repatable(true, false),
-        },
+        }
     ];
 
     public static function sampleSetting(num:Int):Setting {
@@ -49,8 +29,8 @@ class Project
             windows[num];
         } else {
             {
-                width : 451,
-                height : 151,
+                width : 401,
+                height : 401,
                 kind: Repatable(false, true)
             }
         }
@@ -64,9 +44,10 @@ class Project
 
         forEachSample(function (dir, num:Int) {
             var samplePrefix = ("000" + num).substr(-3);
+            var sampleName = sampleName(dir, num);
             var str = "";
-            str += ("hxml/" + samplePrefix + ".hxml\n");
-            str += ("-swf website/sample/swf/" + samplePrefix + ".swf\n");
+            str += ("hxml/" + sampleName + ".hxml\n");
+            str += ("-swf website/sample/swf/" + sampleName + ".swf\n");
             str += ("--connect 6000\n");
             arr.push(str);
         });
@@ -77,30 +58,20 @@ class Project
 
     static function forEachSample(func:String->Int->Void)
     {
-        // TweenX
-        for (dir in FileSystem.readDirectory("sample")) {
-            var keys:Array<Int> = [];
-
-            // Temporary
-            if (dir == "tweenx")
-            {
-                continue;
-            }
-
-            for (file in FileSystem.readDirectory("sample/" + dir)) {
-                if (FileSystem.isDirectory("sample/" + dir + "/" + file)) {
-                    var segs = file.split("_");
-                    if (segs.length == 2 && Std.parseInt(segs[0]) != null) {
-                        keys.push(Std.parseInt(segs[0]));
-                    }
+        var keys:Array<Int> = [];
+        for (file in FileSystem.readDirectory("sample/tweenx")) {
+            if (FileSystem.isDirectory("sample/tweenx/" + file)) {
+                var segs = file.split("_");
+                if (segs.length == 2 && Std.parseInt(segs[0]) != null) {
+                    keys.push(Std.parseInt(segs[0]));
                 }
             }
+        }
 
-            keys.sort(function (a, b) return a - b);
+        keys.sort(function (a, b) return a - b);
 
-            for (key in keys) {
-                func(dir, key);
-            }
+        for (key in keys) {
+            func("tweenx", key);
         }
     }
 
@@ -109,7 +80,7 @@ class Project
         var samplePrefix = ("000" + num).substr(-3);
         var sampleName = sampleName(dir, num);
         var setting = sampleSetting(num);
-        var file = File.write("hxml/" + samplePrefix + ".hxml", true);
+        var file = File.write("hxml/" + sampleName + ".hxml", true);
 
         file.writeString('-swf-header ${setting.width}:${setting.height}:60:FFFFFF\n');
 
@@ -117,12 +88,12 @@ class Project
         file.writeString("-cp sample/" + dir + "/" + samplePrefix + "_" + sampleName + "\n");
         file.writeString("-cp src/tweenx\n");
         file.writeString("-cp src/tweenxcore\n");
-        file.writeString("-cp sample/common\n");
+        file.writeString("-cp sample/flash\n");
 
         switch (setting.kind)
         {
             case Repatable(endless, grid):
-                file.writeString('-main sample.main.RepeatableMain\n');
+                file.writeString('-main sample.main.DirectMain\n');
                 if (endless)
                 {
                     file.writeString("-D endless\n");
