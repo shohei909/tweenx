@@ -34,13 +34,13 @@ toc::[]
 * 極座標
 *　ベジェ曲線
 *　``lerp``、``inverseLerp``、``clamp``など、``Float``の機能の拡張
-
+* link:./custom/[イージング作成ツール]との連携
 
 == 速度
 
 余計な処理やインスタンス生成を行わないため、非常に高速に動作します。
 
-以下は、Flashプラットフォームでの各トゥイーンライブラリとの比較です。250000個のオブジェクトを同時にトゥイーンさせた場合のFPSを測定しました。
+以下は、Flashプラットフォームでの各トゥイーンライブラリとの比較です。250,000個のオブジェクトを同時にトゥイーンさせた場合のFPSを測定しました。
 
 image::/images/benchmark1.png[ベンチマーク結果]
 
@@ -194,7 +194,7 @@ square.x = rate.cubicIn().lerp(0, 450);
 
 ``lerp`` は線形補間の関数で、``tweenxcore.Tools.FloatTools``が持つ関数です。
 
-さきほどのサンプルでは、0.0から1.0の値を指定した範囲の値を、0から450までの値に変換しています。これにより``rate``が0.0から1.0まで変化する間に、``square.x``は0から450へと移動します。
+さきほどのサンプルでは、0.0から1.0の指定した範囲の値を、0から450までの値に変換しています。これにより``rate``が0.0から1.0まで変化する間に、``square.x``は0から450へと移動します。
 
 
 
@@ -279,9 +279,9 @@ square.x = rate.cubicIn().bounceOut().lerp(0, 450);
 ``cubicIn``を使ってから``bounceOut``を使ってことで、加速していくバウンドのイージングを作っています。
 
 
-==== ミックス
+==== Mix
 
-``mixEasing``は2つのイージングの中間的なイージングです。
+``mixEasing`` is intermediate easing between the two easings.
 
 {% include sample.asciidoc id="Mix" %}
 
@@ -290,7 +290,6 @@ square.x = rate.mixEasing(Easing.expoOutIn, Easing.linear, 0.18).lerp(0, 450);
 ```
 
 サンプルはゲームのカットイン演出にありそうな動きです。``expoOutIn``に``linear``関数を``0.18``ミックスすることで、``OutIn``のイージングの真ん中での静止を無くしています。
-
 
 ==== クロスフェード
 
@@ -306,12 +305,12 @@ square.x = rate.crossfadeEasing(
 ).lerp(0, 450);
 ```
 
-サンプルは``quintOut``として始まって、徐々に``Easing.bounceOut``に変わっていくイージングです。変化の仕方の曲線として``Easing.sineInOut``を使っています。
+サンプルは``quintOut``として始まって、徐々に``Easing.bounceOut``に変わっていくイージングです。変化の仕方の曲線として``Easing.sineInOut``を使っていました。
 
 
 ==== ヨーヨー
 
-ヨーヨーは0.0から1.0に行って、逆再生の動きで0.0に帰ってくるようなモーションです。
+ヨーヨーは0.0から1.0に行って、逆再生の動きで0.0に帰ってくるモーションです。
 
 {% include sample.asciidoc id="Yoyo" %}
 
@@ -414,7 +413,7 @@ public function update():Void {
 
 この例の場合は``previous \<= 30.0 && 30.0 < current``または``current \<= 30.0 && 30.0 < previous``の条件で判定されます。
 
-``FloatChange``は時間ベースでモーションをさせる場合に特に役に立ちます。例えば、``new FloatChange(previousTime, currentTime)``としたときに、**``previousTime``と``currentTime``がたまたま同一の値になったとしても、``isCrossOver``で判定した処理が2重に呼び出されることはありません。**
+``FloatChange``は例えば時間ベースでモーションをさせる場合に役に立ちます。``new FloatChange(previousTime, currentTime)``としたときに、**``previousTime``と``currentTime``がたまたま同一の値になったとしても、``isCrossOver``で判定した処理が2重に呼び出されることはありません。**
 
 {sourceLink}tweenxcore/structure/FloatChange.hx[[ソースを見る(tweenxcore.structure.FloatChange)\]]
 
@@ -540,7 +539,7 @@ private function update3(part:FloatChangeTimelinePart):Void {
 
 ``FloatChangeTimelinePart``は``FloatChangePart``を継承しており、現在タイムラインのどの位置にいるかなどの情報が追加で取得できます。
 
-{sourceLink}tweenxcore/structure/Timeline.hx[[ソースを見る(tweenxcore.structure.Timeline)\]]
+{sourceLink}tweenxcore/structure/Timeline.hx[[ソースを見る(tweenxcore.structure.Timeline)\]] +
 {sourceLink}tweenxcore/structure/FloatChangeTimelinePart.hx[[ソースを見る(tweenxcore.structure.FloatChangeTimelinePart)\]]
 
 
@@ -591,7 +590,7 @@ private function updatePart(part:FloatChangePart):Void {
 }
 ```
 
-``createSimilarityTransform(fromX, fromY, toX, toY)``関数は、X方向の0.0から1.0までの移動を、X方向に``fromX``から``toX``Y方向に``fromY``から``toY``の移動に相似変換するような行列を作成します。
+``createSimilarityTransform(fromX, fromY, toX, toY)``関数は、X方向の0.0から1.0までの移動を、X方向に``fromX``から``toX``、Y方向に``fromY``から``toY``の移動に相似変換するような行列を作成します。
 
 ==== 極座標
 
