@@ -1,4 +1,4 @@
 ++++
 <div><canvas class="movie" id="{{include.id}}Sample" /></canvas></div>
 ++++
-{sampleLink}tweenxcore/{{include.id}}Sample.hx[[サンプルコードを見る({{include.id}}Sample)\]]
+{sampleLink}tweenxcore/{{include.id}}Sample.hx[[{% if include.lang == "en" %}View sample code {% else %}サンプルコードを見る{% endif %}({{include.id}}Sample)\]]

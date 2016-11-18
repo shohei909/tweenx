@@ -14,9 +14,9 @@ tweenxcore: +++<span class="tweenxcore">TweenX<span class="core">Core</span></sp
 
 = {{page.tweenxcore}}
 
-{{page.tweenxcore}}は https://haxe.org/[Haxe] で気持ちの良いモーションをより簡単に作成するための、クロスプラットフォームな**トゥイーンライブラリ**です。
+{{page.tweenxcore}} is a cross-platform tween library for easier creation of pleasant motion with https://haxe.org/[Haxe].
 
-実行速度が速く、開発速度が速く、バグが少なく、学習コストが少なく、そしてモーションが自由で面白くなるように作られています。
+It is designed to make execution speed faster, development speed faster, less buggy, less learning cost, and motion interesting.
 
 ++++
 <div><canvas class="movie" id="CustomEasingSample" /></canvas></div>
@@ -24,25 +24,24 @@ tweenxcore: +++<span class="tweenxcore">TweenX<span class="core">Core</span></sp
 
 toc::[]
 
-== 機能
+== Feature
 
-* 44種類のイージング関数
-* 繰り返し
-* ヨーヨー、ジグザグ運動
-* イージングのミックス、クロスフェード、連結などのカスタム機能
-* HSVカラー、RGBカラー
-* 極座標
-*　ベジェ曲線
-*　``lerp``、``inverseLerp``、``clamp``など、``Float``の機能の拡張
+* 44 kinds of easing function
+* Yoyo, zigzag movement
+* Custom functions such as easing mix, crossfade, concatenation
+* HSV color, RGB color
+* Polar coordinates
+* Bezier curve
+* Static extension of `` Float``, such as `` lerp``, `` inverseLerp``, `` clamp``
+* Cooperation with link:./custom/[custom easing tool]
 
+== Benchmark
 
-== 速度
+{{page.tweenxcore}} does not do any extra processing or instance creation, so it works very fast.
 
-余計な処理やインスタンス生成を行わないため、非常に高速に動作します。
+The following is a comparison with each tween library on the Flash platform. We measured the FPS when tweeding 250000 objects at the same time.
 
-以下は、Flashプラットフォームでの各トゥイーンライブラリとの比較です。250000個のオブジェクトを同時にトゥイーンさせた場合のFPSを測定しました。
-
-image::/images/benchmark1.png[ベンチマーク結果]
+image::/images/benchmark1.png[Result of benchmark]
 
 link:/sample/bench1/TweensyBench.swf?width=401&height=401[[Tweensy\]] +
 link:/sample/bench1/TweenXBench.swf?width=401&height=401[[TweenX\]] +
@@ -50,24 +49,24 @@ link:/sample/bench1/ActuateBench.swf?width=401&height=401[[Actuate\]] +
 link:/sample/bench1/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]] +
 link:/sample/bench1/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
 
-{sampleLink}tweenx/800_BenchMark/src[[コードを見る(Github)\]]
+{sampleLink}tweenx/800_BenchMark/src[[View source(Github)\]]
 
 
-== ライセンス
+== License
 
-MITライセンスですので、商用、非商用、個人、法人を問わず、利用、改変、再配布ができます。
-
-
-== {{page.tweenxcore}}を始める
-
-=== Haxeバージョン
-
-http://haxe.org/[Haxe]の3.1.3以降をサポートしています。
+MIT License
 
 
-=== インストール
+== Start {{page.tweenxcore}}
 
-Haxeのインストール後、コマンドラインから以下のコマンドを入力してください。
+=== Haxe version
+
+http://haxe.org/[Haxe] 3.1.3 or later is supported.
+
+
+=== Installation
+
+After installing Haxe, enter the following command on the command line interface.
 
 [source, shell]
 ---------
@@ -76,9 +75,9 @@ haxelib install tweenxcore
 
 === Hello {{page.tweenxcore}}
 
-{{page.tweenxcore}}の最初のサンプルとして、四角のx座標を0から450まで、動かすコードを見てみます。
+As the first sample of {{page.tweenxcore}}, let's look at the code to move the rectangular x coordinate from 0 to 450.
 
-{% include sample.asciidoc id="Simplest" %}
+{% include sample.asciidoc lang="en" id="Simplest" %}
 
 [source,haxe,linenums]
 ---------
@@ -94,18 +93,18 @@ class SimplestSample extends Sprite {
     public function new() {
         super();
         
-        // 正方形を初期位置に配置
+        // Place a square in the initial position
         addChild(square = new Square());
         square.y = Square.SIZE * 2.0;
     }
 
-    // 毎フレーム、この関数を呼び出す
+    // Call this function every frame
     public function update():Void {
         var rate = frameCount / TOTAL_FRAME;
         
-        // rateが0から1のとき、アニメーション。
+        // An animation when rate is 0 to 1.
         if (rate <= 1) {
-            // rateの値に応じて、xを0から450まで動かす。
+            // Move x from 0 to 450 according to the value of rate.
             square.x = rate.quintOut().lerp(0, 450);
         }
         frameCount++;
@@ -113,7 +112,7 @@ class SimplestSample extends Sprite {
 }
 ---------
 
-{{page.tweenxcore}}に関係するコードは、以下の部分です。
+The code related to {{page.tweenxcore}} is the following part.
 
 [source,haxe]
 ---------
@@ -127,46 +126,45 @@ square.x = rate.quintOut().lerp(0, 450);
 
 
 
-それでは1つずつ要素を見ていきます。
+Let's look at each one one by one.
 
 
 ==== using tweenxcore.Tools
 
-ここで読み込んでいる``tweenxcore.Tools``モジュールは4種類のクラスを持っています。
+The `` tweenxcore.Tools`` module that we load here has four classes.
 
-Easingクラス::
-  モーションの曲線として使われる、イージング関数を持ちます
+Easing class ::
+   It has easing functions used as a curve of motion
 
-FloatToolsクラス::
-  Floatの機能を拡張します。
+FloatTools class ::
+   Static extension of Float.
 
-PointToolsクラス::
-  XY座標上の点の拡張です。ベジェ曲線の機能を付け加えます。Flashの``Point``クラスに対してだけではなく、様々なライブラリの``Point``型に対して使えます。
+PointTools class ::
+   Static extension of point on XY coordinates. For example, Bezier curve. It can be used not only for the `` Point`` class in Flash, but also for `` Point`` types in various libraries.
 
-MatrixToolsクラス::
-  XY座標のアフィン変換の行列の拡張です。2次元的な動きを相似変換するための機能を付け加えます。Flashの``Matrix``クラスに対してだけではなく、{sourceLink}tweenxcore/geom/Matrix.hx[似たインターフェース]を持つその他のライブラリの``Matrix``型に対して使えます。
+MatrixTools class ::
+   Extension of matrix of affine transformation of XY coordinates. It adds a function for similarity transformation of two-dimensional motion. It can be used not only for the Flash `` Matrix`` class but also for the `` Matrix`` type of other library with {sourceLink}tweenxcore/geom/Matrix.hx[similar interface].
 
-``using tweenxcore.Tools;``でこのすべてを拡張として読みこみます。
+``using tweenxcore.Tools;`` will read this all as an extension.
 
-チュートリアルで紹介する関数の多くはこの``Tools``のモジュールにありますから、そのソースを参照しながら読み進めると理解がしやすいかと思います。
+Many of the functions introduced in the tutorial are in the module of this ``Tools``, so I think whether it is easier to understand by reading the source.
 
-{sourceLink}tweenxcore/Tools.hx[[ソースを見る(tweenxcore.Tools)\]]
-
-
-==== イージング関数
-
-``quintOut``はイージング関数です。0から1へと変化する``rate``の値を、5次関数をつかって後詰めの値へと変えています
-
-{{page.tweenxcore}}が提供するイージング関数はもちろん``quintOut``のみではありません。
-
-link:http://easings.net/[Robert Pennerのイージング関数]を基本とし、中央で減速して再度加速する``OutIn``のモードと、瞬間的に移動を行うwarpが追加された計44個の関数を提供しています。
-   
-{% include sample.asciidoc id="EasingVisualize" %}
+{sourceLink}tweenxcore/Tools.hx[[View source(tweenxcore.Tools)\]]
 
 
-これらの関数の中身が具体的にどうなっているのか少し見てみます。
+==== Easing function
 
-{{page.tweenxcore}}での、``cubicIn``関数は以下の通りです。
+``quintOut`` is an easing function. It changes the value of ``rate`` which changes from 0 to 1 to the value after the quintic function.
+
+Of course not only ``quintOut`` is the easing function provided by {{page.tweenxcore}}.
+
+Based on the link:http://easings.net/[Robert Penner's easing function], {{page.tweenxcore}} provides a total of 44 functions include ``OutIn`` mode which decelerates at the center and accelerates again, and ``warp`` which instantaneously moves.
+    
+{% include sample.asciidoc lang="en" id="EasingVisualize" %}
+
+Let's see a bit of the implementation of these functions.
+
+The `` cubicIn`` function in {{page.tweenxcore}} is as follows.
 
 [source,haxe]
 ---------
@@ -175,102 +173,92 @@ function cubicIn(t:Float):Float {
 }
 ---------
 
-ただ単にFloatを受け取ってFloatを返す、シンプルな関数です。
+It is a simple function that receives a Float and returns Float.
 
-
-この関数に先ほどのサンプルコードのイージングを差し替えてみます。たった1行、以下のように変更を加えます。
+Let's replace the easing of the previous sample code with this function. Just one line, make the changes as follows.
 
 [source,haxe]
 ---------
 square.x = rate.cubicIn().lerp(0, 450);
 ---------
 
-{% include sample.asciidoc id="Easing" %}
+{% include sample.asciidoc lang="en" id="Easing" %}
 
-動きが、もとの``quintOut``から変わっているのがわかると思います。
+You can see that the movement has changed from the ``quintOut``.
 
 
 ==== lerp
 
-``lerp`` は線形補間の関数で、``tweenxcore.Tools.FloatTools``が持つ関数です。
+``lerp`` is a function of linear interpolation, which is included in `` tweenxcore.Tools.FloatTools``.
 
-さきほどのサンプルでは、0.0から1.0の値を指定した範囲の値を、0から450までの値に変換しています。これにより``rate``が0.0から1.0まで変化する間に、``square.x``は0から450へと移動します。
-
-
-
-== {{page.tweenxcore}}の思想
+In the example above, it converts values in the specified range from 0.0 to 1.0 to values from 0 to 450. This will cause `` square.x`` to move from 0 to 450 while `` rate`` changes from 0.0 to 1.0.
 
 
+== Principle of {{page.tweenxcore}}
 
-=== 0.0から始まり、1.0で終わる
+=== Starting from 0.0 and ending with 1.0
 
-{{page.tweenxcore}}の世界では、始まりの値は0.0であり、終わりの値は1.0です。
+In the {{page.tweenxcore}} world, the starting value is 0.0 and the ending value is 1.0.
 
-つまり、
+That is,
 
-* モーションの時刻の場合、開始時刻は0.0で表し終了時刻は1.0を使います。
-* アルファ値の場合、完全な透明は0.0で完全な不透明は1.0です。
-* 円の1周の場合、0度は0.0であり360度は1.0です。
-* RGBカラーのRed値の場合、0.0が赤みが全くなく1.0が完全な赤です。
+* For time of motion, start time is expressed as 0.0 and end time is used as 1.0.
+* For alpha, the complete transparency is 0.0 and the complete opacity is 1.0.
+* For circle 1 turn, 0 degree is 0.0 and 360 degree is 1.0.
+* For red values of RGB color, 0.0 is no redness and 1.0 is completely red.
 
-{{page.tweenxcore}}では、このような0.0から1.0を基準とする値について``rate``という変数名をよく使います。
+In {{page.tweenxcore}}, we often use the variable name ``rate`` for such values that are based on 0.0 to 1.0.
 
+=== No black box
 
+{{page.tweenxcore}} does not have such a function as to automatically move objects by designating a departure point or a reaching point.
 
-=== 脱ブラックボックス
+The function that the tween library automatically moves the object is easy if you just play the motion, but it will be difficult when you try to do somewhat elaborate things.
 
-{{page.tweenxcore}}は、出発地点や到達地点を指定して自動でオブジェクトを動かすような機能は持ちません。
+For example, it is as follows
 
-トゥイーンライブラリが自動的にオブジェクトを動かしてくれる機能はただモーションを再生するだけなら簡単ですが、少し凝ったことをしようとすると途端に難しくなります。
+* You want to **pause the animation** in the game when the pause button is pressed and **display the popup with animation**.
+* You want to **switch to fade out immediately** after communication is finished **while the indicator is fading in**
+* For some motion, You want to **play slow motion** only while mouse is down
 
-例えば、以下のようなことです
+With many tween libraries, you can not realize these behaviors or you have to remember complicated specifications.
 
-* 一時停止ボタンが押されたときにゲーム内の**アニメーションを一時停止した上で、さらにアニメーション付きでポップアップを表示させたい**
-* インジケータが**フェードインしている途中に**通信が終わったら、**すぐにフェードアウトに切り替えをしたい**
-* あるモーションについて、マウスダウン中だけ**スロー再生にしたい**
+In contrast, the solution for {{page.tweenxcore}} is straightforward.
 
-多くのトゥイーンライブラリでは、こういった内容の実現はできなかったり、複雑な仕様をおぼえなきゃいけなかったりします。
+* If you want to stop motion, **stop updating the place** you want to stop.
+* Fade in and fade out can be **switched with a simple ``if`` statement**.
+* If you **increment the `` frameCount`` by 0.5**, the playback speed of motion will be 0.5 times.
 
-それに対して、{{page.tweenxcore}}の解決策は簡単です。
+Nothing is difficult.
 
-* モーションを止めたければ、止めたい場所の**更新をやめれば止まります**
-* フェードインとフェードアウトは、単純な**``if``文で切り替えることができます**
-* フレームカウント(``frameCount``)の上昇を1づつから、**0.5づつにすれば、モーションは0.5倍速再生になります**
+{{page.tweenxcore}} offers three things:
+    
+* Function to convert values not in the range of 0.0 to 1.0 from 0.0 to 1.0. (e.g. `` FloatTools.inverseLerp`` function, `` FloatChange`` class)
+* Function to convert a number between 0.0 and 1.0 to a number between 0.0 and 1.0 with another curve. (e.g. `` Easing`` and custom easing functions)
+* Function to convert a number between 0.0 and 1.0 to various values. (e.g. `` FloatTools.lerp`` and `` Timeline`` class)
 
-何も難しいことがありません。
-
-{{page.tweenxcore}}が提供するのは、以下の3つです。
-
-* 0.0から1.0の範囲ではない値を、0.0から1.0の数値に変換する機能。　（``FloatTools.inverseLerp``関数や、``FloatChange``クラス）
-* 0.0から1.0の数値を、別の曲線を描く0.0から1.0の数値に変換する機能。（``Easing``やカスタムイージングの機能）
-* 0.0から1.0の数値を、様々な値へと変換する機能。（``FloatTools.lerp``や、``Timeline``クラス）
-
-たったこれだけの機能があれば、自由に思いのままのモーションを作ることができます。その方法については、チュートリアルで解説していきます。
-
+If tween library has only these functions, you can freely create your own motions. The method will be explained in the tutorial.
 
 
-=== どこでも使える
+=== Can be used anywhere
 
-{{page.tweenxcore}}は、プラットフォームや、あわせて使うフレームワーク、プログラミングのパラダイムに左右されることなく利用可能です。
+{{page.tweenxcore}} can be used without being interfering with the platform, the framework used together, and the programming paradigm.
 
-* 目指しているスタイルが、オブジェクト指向でも、手続き型プログラミングでも、関数型プログラミングでもよくマッチします。
-* 使用するフレームワークが、OpenFLであっても、Reactであっても、Unityであっても同じように動作します。
-* クライアントサイドでも、サーバーサイドでも、コンパイル時でも動作します。
+* The style that you are aiming is well matched with {{page.tweenxcore}} whether it is object oriented, procedural programming, or functional programming.
+* Whether the framework you use is OpenFL, React or Unity, it will work the same way.
+* It works on client side, server side, even at compile time.
 
 
+== {{page.tweenxcore}} Tutorial
 
-== {{page.tweenxcore}}チュートリアル
-
-=== イージングを自作する
-
-{{page.tweenxcore}}には44種類のイージングありますがこれらを単に使うだけでは、ありふれたモーションになりがちです。{{page.tweenxcore}}ではイージングを組み合わせたり混ぜ合わせたりして自分だけのイージングを作り出すことができます。
-
+=== Create your own easing
+There are 44 kinds of easing in TweenXCore, but using these simply tends to be mediocre motion. In TweenXCore you can combine and mix easing to create your own easing.
 
 ==== 多重のイージング（関数合成）
 
 イージングを2重、3重に使うと、新しい動きを作ることができます。
 
-{% include sample.asciidoc id="Composite" %}
+{% include sample.asciidoc lang="en" id="Composite" %}
 
 ```haxe
 square.x = rate.cubicIn().bounceOut().lerp(0, 450);
@@ -283,7 +271,7 @@ square.x = rate.cubicIn().bounceOut().lerp(0, 450);
 
 ``mixEasing``は2つのイージングの中間的なイージングです。
 
-{% include sample.asciidoc id="Mix" %}
+{% include sample.asciidoc lang="en" id="Mix" %}
 
 ```haxe
 square.x = rate.mixEasing(Easing.expoOutIn, Easing.linear, 0.18).lerp(0, 450);
@@ -296,7 +284,7 @@ square.x = rate.mixEasing(Easing.expoOutIn, Easing.linear, 0.18).lerp(0, 450);
 
 ``crossfadeEasing``は、始まりと終わりで別のイージングに徐々に変わっていくようなイージングです。
 
-{% include sample.asciidoc id="Crossfade" %}
+{% include sample.asciidoc lang="en" id="Crossfade" %}
 
 ```haxe
 square.x = rate.crossfadeEasing(
@@ -313,7 +301,7 @@ square.x = rate.crossfadeEasing(
 
 ヨーヨーは0.0から1.0に行って、逆再生の動きで0.0に帰ってくるようなモーションです。
 
-{% include sample.asciidoc id="Yoyo" %}
+{% include sample.asciidoc lang="en" id="Yoyo" %}
 
 ```haxe
 // ヨーヨー
@@ -324,7 +312,7 @@ square.x = rate.yoyo(Easing.quintOut).lerp(0, 450);
 
 ジグザグは0.0から1.0に行って、移動方向を反転させた動きで0.0に帰ってくるようなモーションです。
 
-{% include sample.asciidoc id="Zigzag" %}
+{% include sample.asciidoc lang="en" id="Zigzag" %}
 
 ```
 // ジグザグ
@@ -336,7 +324,7 @@ square.x = rate.zigzag(Easing.quintOut).lerp(0, 450);
 
 ``connectEasing``は、2つのイージングをつなげて再生する機能です。
 
-{% include sample.asciidoc id="Connect" %}
+{% include sample.asciidoc lang="en" id="Connect" %}
 
 ```haxe
 square.x = rate.connectEasing(Easing.backOut, Easing.linear, 0.9, 0.4).lerp(0, 450);
@@ -349,7 +337,7 @@ square.x = rate.connectEasing(Easing.backOut, Easing.linear, 0.9, 0.4).lerp(0, 4
 
 ``oneTwoEasing``は、別々のイージングで2回移動を行うイージングです。
 
-{% include sample.asciidoc id="OneTwo" %}
+{% include sample.asciidoc lang="en" id="OneTwo" %}
 
 ```haxe
 square1.x = rate.oneTwoEasing(Easing.backIn, Easing.linear, 0.7).lerp(30, 420);
@@ -393,7 +381,7 @@ link:./custom/[イージングエディタ | TweenXCore]
 
 ``FloatChange``を使用する例として、フレームカウントが特定の値を横切った瞬間の判定があります。
 
-{% include sample.asciidoc id="CrossOver" %}
+{% include sample.asciidoc lang="en" id="CrossOver" %}
 
 ```haxe
 public function update():Void {
@@ -423,7 +411,7 @@ public function update():Void {
 
 フレームが特定の区間にある時のモーションです。
 
-{% include sample.asciidoc id="FloatChangePart" %}
+{% include sample.asciidoc lang="en" id="FloatChangePart" %}
 
 ```haxe
 public function update():Void {
@@ -455,7 +443,7 @@ private function updatePart(part:FloatChangePart):Void {
 
 ``FloatChangePart``には、モーションの開始タイミングや、終了タイミングを取得するための関数が用意されています。
 
-{% include sample.asciidoc id="EntranceExit" %}
+{% include sample.asciidoc lang="en" id="EntranceExit" %}
 
 ```haxe
 private function updatePart(part:FloatChangePart) {
@@ -480,7 +468,7 @@ private function updatePart(part:FloatChangePart) {
 
 1つのパートを、複数回繰り返したい場合、``handlePart``の代わりに``handleRepeatPart``を使います。
 
-{% include sample.asciidoc id="Repeat" %}
+{% include sample.asciidoc lang="en" id="Repeat" %}
 
 [source,haxe]
 ---------
@@ -498,7 +486,7 @@ change.handleRepeatPart(20, 40, 3, updatePart);
 
 連続したモーションをあつかうには、``FloatChange``の``handleTimelinePart``が使えます。
 
-{% include sample.asciidoc id="TimelinePart" %}
+{% include sample.asciidoc lang="en" id="TimelinePart" %}
 
 右、下、左の三つの移動を行いました。
 
@@ -549,7 +537,7 @@ private function update3(part:FloatChangeTimelinePart):Void {
 ==== 単純な動き
 いままでのモーションはすべてX方向の動きをあつかってきましたが、Y方向の動きも入れてみます。
 
-{% include sample.asciidoc id="Xy" %}
+{% include sample.asciidoc lang="en" id="Xy" %}
 
 ```haxe
 square.x = part.current.lerp(0, 450);
@@ -565,7 +553,7 @@ square.y = part.current.sinByRate().lerp(60, 105);
 
 そういった場合は、``MatrixTools.createSimilarityTransform``を使います。
 
-{% include sample.asciidoc id="Matrix" %}
+{% include sample.asciidoc lang="en" id="Matrix" %}
 
 ```haxe
 private var matrix:MatrixImpl;
@@ -597,7 +585,7 @@ private function updatePart(part:FloatChangePart):Void {
 
 {{page.tweenxcore}}は極座標をサポートしています。
 
-{% include sample.asciidoc id="Polar" %}
+{% include sample.asciidoc lang="en" id="Polar" %}
 
 ```haxe
 public function new() {
@@ -634,7 +622,7 @@ private function updatePart(part:FloatChangePart) {
 
 {{page.tweenxcore}}はベジェ曲線もサポートしています。
 
-{% include sample.asciidoc id="Bezier" %}
+{% include sample.asciidoc lang="en" id="Bezier" %}
 
 ```haxe
 square.x = rate.bezier3(0, 50, 400, 450);
@@ -655,7 +643,7 @@ square.y = rate.bezier3(0, 200, -50, 120);
 
 {{page.tweenxcore}}では、RGBカラーとHSVカラーが使えます。
 
-{% include sample.asciidoc id="Hsv" %}
+{% include sample.asciidoc lang="en" id="Hsv" %}
 
 ```haxe
 var curve = part.current.expoInOut();
@@ -677,7 +665,7 @@ var color = new HsvColor(hue, saturation, value);
 
 つまり、例えば画像のパラパラアニメーションを作るのにも使えます。
 
-{% include sample.asciidoc id="Image"%}
+{% include sample.asciidoc lang="en" id="Image"%}
 
 
 
@@ -687,7 +675,7 @@ var color = new HsvColor(hue, saturation, value);
 
 0.0から1.0の値に変換可能であればトゥイーンのもとになる値は、時間でなくても構いません。以下のサンプルでは、マウス座標を元に四角の位置を動かしています。
 
-{% include sample.asciidoc id="Mouse"%}
+{% include sample.asciidoc lang="en" id="Mouse"%}
 
 ```haxe
 var rateX = mouseX.inverseLerp(10, 800).clamp(0, 1);
