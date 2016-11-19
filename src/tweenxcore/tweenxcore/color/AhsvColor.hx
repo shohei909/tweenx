@@ -2,6 +2,7 @@ package tweenxcore.color;
 using tweenxcore.Tools;
 
 class AhsvColor extends HsvColor implements ITransparentColor {
+    /** alpha */
     public var a:Float;
 
     public function new(alpha:Float, hue:Float, saturation:Float, value:Float) {

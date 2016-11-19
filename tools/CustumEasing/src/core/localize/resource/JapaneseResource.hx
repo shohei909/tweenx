@@ -94,4 +94,8 @@ class JapaneseResource implements LocalizeResource
             case DropToDuplicate: "複製";
         }
     }
+    
+    public function getCode():String {
+        return "ja";
+    }
 }

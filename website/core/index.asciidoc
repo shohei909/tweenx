@@ -2,6 +2,7 @@
 layout: default
 title: TweenXCore - lightweight motion library for haxe
 tweenxcore: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
+lang: ja
 ---
 :showtitle:
 :author: shohei909
@@ -13,6 +14,8 @@ tweenxcore: +++<span class="tweenxcore">TweenX<span class="core">Core</span></sp
 :page-liquid:
 
 = {{page.tweenxcore}}
+
+link:.[[日本語\]]|link:en.html[[English\]]
 
 {{page.tweenxcore}}は https://haxe.org/[Haxe] で気持ちの良いモーションをより簡単に作成するための、クロスプラットフォームな**トゥイーンライブラリ**です。
 

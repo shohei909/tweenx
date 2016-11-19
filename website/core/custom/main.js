@@ -3333,6 +3333,18 @@ core_localize_LocalizeManager.prototype = {
 			break;
 		}
 		this.resource = tmp;
+		var code = this.resource.getCode();
+		var _g1 = 0;
+		var _g2 = window.document.getElementById("header").children;
+		while(_g1 < _g2.length) {
+			var child = _g2[_g1];
+			++_g1;
+			if(child.className == code) {
+				child.hidden = false;
+			} else {
+				child.hidden = true;
+			}
+		}
 	}
 	,changeLocale: function(newLocale,result) {
 		this.locale = newLocale;
@@ -3444,6 +3456,9 @@ core_localize_resource_EnglishResource.prototype = {
 		case 13:
 			return "Duplicate";
 		}
+	}
+	,getCode: function() {
+		return "en";
 	}
 	,__class__: core_localize_resource_EnglishResource
 };
@@ -3590,6 +3605,9 @@ core_localize_resource_JapaneseResource.prototype = {
 		case 13:
 			return "複製";
 		}
+	}
+	,getCode: function() {
+		return "ja";
 	}
 	,__class__: core_localize_resource_JapaneseResource
 };

@@ -2,6 +2,7 @@ package tweenxcore.color;
 using tweenxcore.Tools;
 
 class ArgbColor extends RgbColor implements ITransparentColor {
+    /** alpha */
     public var a:Float;
 
     public function new(alpha:Float, red:Float, green:Float, blue:Float) {

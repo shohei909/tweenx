@@ -3,8 +3,11 @@ import tweenxcore.color.RgbColor;
 using tweenxcore.Tools;
 
 class HsvColor implements IColor {
+    /** hue */
     public var h:Float;
+    /** saturation */
     public var s:Float;
+    /** value (brightness) */
     public var v:Float;
 
     public inline function new(hue:Float, saturation:Float, value:Float) {

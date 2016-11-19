@@ -4,8 +4,8 @@
 --macro include('tweenx909')
 --macro include('tweenxcore')
 --no-output
--xml website/api/xml/flash.xml
+-xml xml/flash.xml
 -swf dummy.swf
 
 --next
--cmd haxelib run dox -i website/api/xml -o website/api/pages -in tweenx --title "TweenX API"
+-cmd haxelib run dox -i xml -o website/api/ -in tweenx --title "TweenX API" -D source-path https://github.com/shohei909/tweenx/src/ -D themeColor "0x8C0327" -D textColor 0xFFFFFF  -D website "http://tweenx.spheresofa.net/core/" -D version "1.0.0"

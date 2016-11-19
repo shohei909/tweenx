@@ -15,8 +15,8 @@ body{
 	color: #454545;
 	background-color: #FFFFFF;
 	margin:0px;
-	padding:10px;
-    padding-bottom:300px;
+	padding:0px;
+    padding-bottom:50px;
 }
 
 h1, h1 a:link, h1 a:hover, h1 a:visited, h1 a:active, h2, h3, h4, h5, h6, .toc>.title{
@@ -93,7 +93,7 @@ ul, ol {
 }
 
 
-#article, .sentence, .sectionbody, .sect2, .sect3 {
+#article, .sentence, .sectionbody, .sect2, .sect3, #tool {
 	margin: 5px 5px 40px 30px;
 }
 
@@ -194,5 +194,17 @@ a.image
         margin: 3px;
         padding: 1px;
         border: dashed #0074BC 1px;
+    }
+}
+
+div#header {
+    width: 100%;
+    margin: 0px;
+    background-color: #FAFAFA;
+    padding: 12px;
+    line-height: 1.5em;
+    
+    a:link, a:visited, a:hover {
+        text-decoration: none;
     }
 }

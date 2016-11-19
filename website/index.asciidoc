@@ -2,7 +2,7 @@
 layout: default
 title: TweenX - tween library for haxe
 tweenxcore: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
-meta: <link rel="stylesheet" href="css/prettyPhoto.css" type="text/css"><script src="js/jquery-1.6.1.min.js" type="text/javascript"></script><!--script src="js/jquery.lint.js" type="text/javascript" charset="utf-8"></script--><script src="js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+lang: ja
 ---
 
 :showtitle:
@@ -14,10 +14,15 @@ meta: <link rel="stylesheet" href="css/prettyPhoto.css" type="text/css"><script 
 :sourceLink: link:https://github.com/shohei909/tweenx/blob/develop/src/tweenxcore/
 :page-liquid:
 
-
 = TweenX
 
-link:ja.html[[日本語\]]|link:.[[English\]]
++++
+<script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
+<!--script src="js/jquery.lint.js" type="text/javascript" charset="utf-8"></script-->
+<script src="js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
++++
+
+link:.[[日本語\]]|link:en.html[[English\]]
 
 TweenXは**クロスプラットフォーム**で動作する、Haxe向けのトゥイーンライブラリです。オブジェクトの移動先を指定して、モーションさせることを可能にします。
 
@@ -27,7 +32,7 @@ link:sample/TweenXDemoHaxe3[[HTML5版デモ\]]
 
 == バージョン1.0について
 
-バージョン0.0から1.0での最大の変更点は、イージング関数などのコア機能について、{{page.tweenxcore}}への分離を行ったことです。
+バージョン0.0から1.0での最大の変更点は、モーションを作る上で必要な機能について、{{page.tweenxcore}}への分離を行ったことです。
 
 TweenXは{{page.tweenxcore}}があれば不必要なライブラリですが、Tweenerを初めとする従来のトゥイーンライブラリに近い書き方をするために使用できます。
 
@@ -39,15 +44,15 @@ toc::[]
 
 Flashプラットフォーム上で、250000個のオブジェクトを同時にトゥイーンさせた場合のFPSを測定しました。
 
-image::images/benchmark1.png[ベンチマーク結果]
+![](images/benchmark1.png)
 
-link:sample/bench1/TweensyBench.swf?width=401&height=401[[Tweensy\]] +
-link:sample/bench1/TweenXBench.swf?width=401&height=401[[TweenX\]] +
-link:sample/bench1/ActuateBench.swf?width=401&height=401[[Actuate\]] +
-link:sample/bench1/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]] +
-link:sample/bench1/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
+* link:sample/bench/TweensyBench.swf?width=401&height=401[[Tweensy\]]
+* link:sample/bench/TweenXBench.swf?width=401&height=401[[TweenX\]]
+* link:sample/bench/ActuateBench.swf?width=401&height=401[[Actuate\]]
+* link:sample/bench/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]]
+* link:sample/bench/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
 
-https://github.com/shohei909/tweenx/blob/master/sample/800_BenchMark/src?at=master[[ソースコード\]]
+https://github.com/shohei909/tweenx/blob/master/sample/800_BenchMark/src?at=master[[ソース\]]
 
 
 == インストール
@@ -85,7 +90,7 @@ class Main extends Sprite {
 }
 ```
 
-{% include tweenxsample.asciidoc id="SimplestTween" %}
+[[デモを再生]](sample/swf/SimplestTween.swf?width=401&height=401 "通常トゥイーン")
 
 to関数は配列を渡すことで複数のオブジェクトを同時に移動させることができます。
 

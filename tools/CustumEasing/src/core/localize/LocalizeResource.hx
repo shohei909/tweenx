@@ -9,4 +9,5 @@ interface LocalizeResource
     public function easingItem(item:ComplexEasingSelectItemId):String;
     public function outputMode(mode:OutputMode):String;
     public function inOut(kind:InOutKind):String;
+    public function getCode():String;
 }

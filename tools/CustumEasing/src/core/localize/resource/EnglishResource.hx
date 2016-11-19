@@ -46,4 +46,8 @@ class EnglishResource implements LocalizeResource
             case DropToDuplicate: "Duplicate";
         }
     }
+    
+    public function getCode():String {
+        return "en";
+    }
 }

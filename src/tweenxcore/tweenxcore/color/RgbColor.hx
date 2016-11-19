@@ -5,8 +5,11 @@ import tweenxcore.color.RgbColor;
 using tweenxcore.Tools.FloatTools;
 
 class RgbColor implements IColor {
+    /** red */
     public var r:Float;
+    /** green */
     public var g:Float;
+    /** blue */
     public var b:Float;
 
     public inline function new(red:Float, green:Float, blue:Float) {

@@ -4,6 +4,7 @@ import core.localize.resource.EnglishResource;
 import core.localize.resource.JapaneseResource;
 import core.storage.StorageKey;
 import haxe.ds.Option;
+import js.Browser;
 
 class LocalizeManager 
 {
@@ -34,6 +35,21 @@ class LocalizeManager
             case LocaleKind.Japanese:
                 new JapaneseResource();
         }
+        
+        var code = resource.getCode();
+        var element = Browser.document.getElementById("header");
+        for (child in element.children)
+        {
+            if (child.className == code)
+            {
+                child.hidden = false;
+            }
+            else
+            {
+                child.hidden = true;
+            }
+        }
+        
     }
     
     
