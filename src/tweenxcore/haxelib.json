@@ -1,0 +1,11 @@
+{
+  "name": "tweenxcore",
+  "url" : "https://github.com/shohei909/tweenx",
+  "license": "MIT",
+  "tags": ["flash", "js", "neko", "cs", "java", "cross", "tween", "motion"],
+  "description": "lightweight motion library for haxe",
+  "version": "1.0.0-beta",
+  "releasenote": "optimization, polyline, b-spline and tool support",
+  "contributors": ["shohei909"],
+  "dependencies": {}
+}

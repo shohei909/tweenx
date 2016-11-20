@@ -1,0 +1,108 @@
+hxml/SimplestTween.hxml
+-swf website/sample/swf/SimplestTween.swf
+--connect 6000
+--next
+
+hxml/GroupTween.hxml
+-swf website/sample/swf/GroupTween.swf
+--connect 6000
+--next
+
+hxml/MethodChain.hxml
+-swf website/sample/swf/MethodChain.swf
+--connect 6000
+--next
+
+hxml/Easing.hxml
+-swf website/sample/swf/Easing.swf
+--connect 6000
+--next
+
+hxml/SerialTween.hxml
+-swf website/sample/swf/SerialTween.swf
+--connect 6000
+--next
+
+hxml/ParallelTween.hxml
+-swf website/sample/swf/ParallelTween.swf
+--connect 6000
+--next
+
+hxml/LagTween.hxml
+-swf website/sample/swf/LagTween.swf
+--connect 6000
+--next
+
+hxml/WaitAndSkip.hxml
+-swf website/sample/swf/WaitAndSkip.swf
+--connect 6000
+--next
+
+hxml/RepeatTween.hxml
+-swf website/sample/swf/RepeatTween.swf
+--connect 6000
+--next
+
+hxml/Default.hxml
+-swf website/sample/swf/Default.swf
+--connect 6000
+--next
+
+hxml/AutoFrom.hxml
+-swf website/sample/swf/AutoFrom.swf
+--connect 6000
+--next
+
+hxml/TweenFunction.hxml
+-swf website/sample/swf/TweenFunction.swf
+--connect 6000
+--next
+
+hxml/ColorTween.hxml
+-swf website/sample/swf/ColorTween.swf
+--connect 6000
+--next
+
+hxml/TimelineTween.hxml
+-swf website/sample/swf/TimelineTween.swf
+--connect 6000
+--next
+
+hxml/ArrayTween.hxml
+-swf website/sample/swf/ArrayTween.swf
+--connect 6000
+--next
+
+hxml/EventHandle.hxml
+-swf website/sample/swf/EventHandle.swf
+--connect 6000
+--next
+
+hxml/Quake.hxml
+-swf website/sample/swf/Quake.swf
+--connect 6000
+--next
+
+hxml/RelativeTween.hxml
+-swf website/sample/swf/RelativeTween.swf
+--connect 6000
+--next
+
+hxml/GroupEase.hxml
+-swf website/sample/swf/GroupEase.swf
+--connect 6000
+--next
+
+hxml/Bezier.hxml
+-swf website/sample/swf/Bezier.swf
+--connect 6000
+--next
+
+hxml/BenchMark.hxml
+-swf website/sample/swf/BenchMark.swf
+--connect 6000
+--next
+
+hxml/TweenXDemo.hxml
+-swf website/sample/swf/TweenXDemo.swf
+--connect 6000

@@ -1,18 +1,20 @@
-TweenX
+TweenXCore / TweenX
 ======
-version: 0.0
+
+version: 1.0
 
 Cross platform tween library for Haxe
 
-Documentation 
-[http://tweenx.spheresofa.net/en.html](http://tweenx.spheresofa.net/en.html)
-
+Documentation
+[http://tweenx.spheresofa.net/en.html](http://tweenx.spheresofa.net/core/en.html)
 
 ##License
 
+### TweenX/TweenXCore Source Code, Document, Image, Font:
+
 The MIT License (MIT)
 
-Copyright (c) 2014 shohei909 and other tweenx contributors(https://github.com/shohei909/tweenx/graphs/contributors)
+Copyright (c) 2014-2016 shohei909 and other tweenx contributors(https://github.com/shohei909/tweenx/graphs/contributors)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,0 +1,713 @@
+---
+layout: default
+title: TweenXCore - lightweight motion library for haxe
+tweenxcore: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
+lang: ja
+---
+:showtitle:
+:author: shohei909
+:toc: macro
+:toc-title: 目次
+:toclevels: 4
+:sampleLink: link:https://github.com/shohei909/tweenx/blob/develop/sample/
+:sourceLink: link:https://github.com/shohei909/tweenx/blob/develop/src/tweenxcore/
+:page-liquid:
+
+= {{page.tweenxcore}}
+
+link:.[[日本語\]]|link:en.html[[English\]]
+
+{{page.tweenxcore}}は https://haxe.org/[Haxe] で気持ちの良いモーションをより簡単に作成するための、クロスプラットフォームな**トゥイーンライブラリ**です。
+
+実行速度が速く、開発速度が速く、バグが少なく、学習コストが少なく、そしてモーションが自由で面白くなるように作られています。
+
+++++
+<div><canvas class="movie" id="CustomEasingSample" /></canvas></div>
+++++
+
+toc::[]
+
+== 機能
+
+* 44種類のイージング関数
+* 繰り返し
+* ヨーヨー、ジグザグ運動
+* イージングのミックス、クロスフェード、連結などのカスタム機能
+* HSVカラー、RGBカラー
+* 極座標
+*　ベジェ曲線
+*　``lerp``、``inverseLerp``、``clamp``など、``Float``の機能の拡張
+* link:./custom/[イージング作成ツール]との連携
+
+== 速度
+
+余計な処理やインスタンス生成を行わないため、非常に高速に動作します。
+
+以下は、Flashプラットフォームでの各トゥイーンライブラリとの比較です。250,000個のオブジェクトを同時にトゥイーンさせた場合のFPSを測定しました。
+
+image::/images/benchmark1.png[ベンチマーク結果]
+
+link:/sample/bench1/TweensyBench.swf?width=401&height=401[[Tweensy\]] +
+link:/sample/bench1/TweenXBench.swf?width=401&height=401[[TweenX\]] +
+link:/sample/bench1/ActuateBench.swf?width=401&height=401[[Actuate\]] +
+link:/sample/bench1/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]] +
+link:/sample/bench1/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
+
+{sampleLink}tweenx/800_BenchMark/src[[コードを見る(Github)\]]
+
+
+== ライセンス
+
+MITライセンスですので、商用、非商用、個人、法人を問わず、利用、改変、再配布ができます。
+
+
+== {{page.tweenxcore}}を始める
+
+=== Haxeバージョン
+
+http://haxe.org/[Haxe]の3.1.3以降をサポートしています。
+
+
+=== インストール
+
+Haxeのインストール後、コマンドラインから以下のコマンドを入力してください。
+
+[source, shell]
+---------
+haxelib install tweenxcore
+---------
+
+=== Hello {{page.tweenxcore}}
+
+{{page.tweenxcore}}の最初のサンプルとして、四角のx座標を0から450まで、動かすコードを見てみます。
+
+{% include sample.asciidoc id="Simplest" %}
+
+[source,haxe,linenums]
+---------
+import sample.Sprite;
+import sample.Square;
+using tweenxcore.Tools;
+
+class SimplestSample extends Sprite {
+    public static var TOTAL_FRAME:Int = 20;
+    private var square:Square;
+    private var frameCount = 0;
+
+    public function new() {
+        super();
+        
+        // 正方形を初期位置に配置
+        addChild(square = new Square());
+        square.y = Square.SIZE * 2.0;
+    }
+
+    // 毎フレーム、この関数を呼び出す
+    public function update():Void {
+        var rate = frameCount / TOTAL_FRAME;
+        
+        // rateが0から1のとき、アニメーション。
+        if (rate <= 1) {
+            // rateの値に応じて、xを0から450まで動かす。
+            square.x = rate.quintOut().lerp(0, 450);
+        }
+        frameCount++;
+    }
+}
+---------
+
+{{page.tweenxcore}}に関係するコードは、以下の部分です。
+
+[source,haxe]
+---------
+using tweenxcore.Tools;
+---------
+
+[source,haxe]
+---------
+square.x = rate.quintOut().lerp(0, 450);
+---------
+
+
+
+それでは1つずつ要素を見ていきます。
+
+
+==== using tweenxcore.Tools
+
+ここで読み込んでいる``tweenxcore.Tools``モジュールは4種類のクラスを持っています。
+
+Easingクラス::
+  モーションの曲線として使われる、イージング関数を持ちます
+
+FloatToolsクラス::
+  Floatの機能を拡張します。
+
+PointToolsクラス::
+  XY座標上の点の拡張です。ベジェ曲線の機能を付け加えます。Flashの``Point``クラスに対してだけではなく、様々なライブラリの``Point``型に対して使えます。
+
+MatrixToolsクラス::
+  XY座標のアフィン変換の行列の拡張です。2次元的な動きを相似変換するための機能を付け加えます。Flashの``Matrix``クラスに対してだけではなく、{sourceLink}tweenxcore/geom/Matrix.hx[似たインターフェース]を持つその他のライブラリの``Matrix``型に対して使えます。
+
+``using tweenxcore.Tools;``でこのすべてを拡張として読みこみます。
+
+チュートリアルで紹介する関数の多くはこの``Tools``のモジュールにありますから、そのソースを参照しながら読み進めると理解がしやすいかと思います。
+
+{sourceLink}tweenxcore/Tools.hx[[ソースを見る(tweenxcore.Tools)\]]
+
+
+==== イージング関数
+
+``quintOut``はイージング関数です。0から1へと変化する``rate``の値を、5次関数をつかって後詰めの値へと変えています
+
+{{page.tweenxcore}}が提供するイージング関数はもちろん``quintOut``のみではありません。
+
+link:http://easings.net/[Robert Pennerのイージング関数]を基本とし、中央で減速して再度加速する``OutIn``のモードと、瞬間的に移動を行うwarpが追加された計44個の関数を提供しています。
+   
+{% include sample.asciidoc id="EasingVisualize" %}
+
+
+これらの関数の中身が具体的にどうなっているのか少し見てみます。
+
+{{page.tweenxcore}}での、``cubicIn``関数は以下の通りです。
+
+[source,haxe]
+---------
+function cubicIn(t:Float):Float {
+    return t * t * t;
+}
+---------
+
+ただ単にFloatを受け取ってFloatを返す、シンプルな関数です。
+
+
+この関数に先ほどのサンプルコードのイージングを差し替えてみます。たった1行、以下のように変更を加えます。
+
+[source,haxe]
+---------
+square.x = rate.cubicIn().lerp(0, 450);
+---------
+
+{% include sample.asciidoc id="Easing" %}
+
+動きが、もとの``quintOut``から変わっているのがわかると思います。
+
+
+==== lerp
+
+``lerp`` は線形補間の関数で、``tweenxcore.Tools.FloatTools``が持つ関数です。
+
+さきほどのサンプルでは、0.0から1.0の指定した範囲の値を、0から450までの値に変換しています。これにより``rate``が0.0から1.0まで変化する間に、``square.x``は0から450へと移動します。
+
+
+
+== {{page.tweenxcore}}の思想
+
+
+
+=== 0.0から始まり、1.0で終わる
+
+{{page.tweenxcore}}の世界では、始まりの値は0.0であり、終わりの値は1.0です。
+
+つまり、
+
+* モーションの時刻の場合、開始時刻は0.0で表し終了時刻は1.0を使います。
+* アルファ値の場合、完全な透明は0.0で完全な不透明は1.0です。
+* 円の1周の場合、0度は0.0であり360度は1.0です。
+* RGBカラーのRed値の場合、0.0が赤みが全くなく1.0が完全な赤です。
+
+{{page.tweenxcore}}では、このような0.0から1.0を基準とする値について``rate``という変数名をよく使います。
+
+
+
+=== 脱ブラックボックス
+
+{{page.tweenxcore}}は、出発地点や到達地点を指定して自動でオブジェクトを動かすような機能は持ちません。
+
+トゥイーンライブラリが自動的にオブジェクトを動かしてくれる機能はただモーションを再生するだけなら簡単ですが、少し凝ったことをしようとすると途端に難しくなります。
+
+例えば、以下のようなことです
+
+* 一時停止ボタンが押されたときにゲーム内の**アニメーションを一時停止した上で、さらにアニメーション付きでポップアップを表示させたい**
+* インジケータが**フェードインしている途中に**通信が終わったら、**すぐにフェードアウトに切り替えをしたい**
+* あるモーションについて、マウスダウン中だけ**スロー再生にしたい**
+
+多くのトゥイーンライブラリでは、こういった内容の実現はできなかったり、複雑な仕様をおぼえなきゃいけなかったりします。
+
+それに対して、{{page.tweenxcore}}の解決策は簡単です。
+
+* モーションを止めたければ、止めたい場所の**更新をやめれば止まります**
+* フェードインとフェードアウトは、単純な**``if``文で切り替えることができます**
+* フレームカウント(``frameCount``)の上昇を1づつから、**0.5づつにすれば、モーションは0.5倍速再生になります**
+
+何も難しいことがありません。
+
+{{page.tweenxcore}}が提供するのは、以下の3つです。
+
+* 0.0から1.0の範囲ではない値を、0.0から1.0の数値に変換する機能。　（``FloatTools.inverseLerp``関数や、``FloatChange``クラス）
+* 0.0から1.0の数値を、別の曲線を描く0.0から1.0の数値に変換する機能。（``Easing``やカスタムイージングの機能）
+* 0.0から1.0の数値を、様々な値へと変換する機能。（``FloatTools.lerp``や、``Timeline``クラス）
+
+たったこれだけの機能があれば、自由に思いのままのモーションを作ることができます。その方法については、チュートリアルで解説していきます。
+
+
+
+=== どこでも使える
+
+{{page.tweenxcore}}は、プラットフォームや、あわせて使うフレームワーク、プログラミングのパラダイムに左右されることなく利用可能です。
+
+* 目指しているスタイルが、オブジェクト指向でも、手続き型プログラミングでも、関数型プログラミングでもよくマッチします。
+* 使用するフレームワークが、OpenFLであっても、Reactであっても、Unityであっても同じように動作します。
+* クライアントサイドでも、サーバーサイドでも、コンパイル時でも動作します。
+
+
+
+== {{page.tweenxcore}}チュートリアル
+
+=== イージングを自作する
+
+{{page.tweenxcore}}には44種類のイージングありますがこれらを単に使うだけでは、ありふれたモーションになりがちです。{{page.tweenxcore}}ではイージングを組み合わせたり混ぜ合わせたりして自分だけのイージングを作り出すことができます。
+
+
+==== 多重のイージング（関数合成）
+
+イージングを2重、3重に使うと、新しい動きを作ることができます。
+
+{% include sample.asciidoc id="Composite" %}
+
+```haxe
+square.x = rate.cubicIn().bounceOut().lerp(0, 450);
+```
+
+``cubicIn``を使ってから``bounceOut``を使ってことで、加速していくバウンドのイージングを作っています。
+
+
+==== Mix
+
+``mixEasing`` is intermediate easing between the two easings.
+
+{% include sample.asciidoc id="Mix" %}
+
+```haxe
+square.x = rate.mixEasing(Easing.expoOutIn, Easing.linear, 0.18).lerp(0, 450);
+```
+
+サンプルはゲームのカットイン演出にありそうな動きです。``expoOutIn``に``linear``関数を``0.18``ミックスすることで、``OutIn``のイージングの真ん中での静止を無くしています。
+
+==== クロスフェード
+
+``crossfadeEasing``は、始まりと終わりで別のイージングに徐々に変わっていくようなイージングです。
+
+{% include sample.asciidoc id="Crossfade" %}
+
+```haxe
+square.x = rate.crossfadeEasing(
+    Easing.quintOut,
+    Easing.bounceOut,
+    Easing.sineInOut
+).lerp(0, 450);
+```
+
+サンプルは``quintOut``として始まって、徐々に``Easing.bounceOut``に変わっていくイージングです。変化の仕方の曲線として``Easing.sineInOut``を使っていました。
+
+
+==== ヨーヨー
+
+ヨーヨーは0.0から1.0に行って、逆再生の動きで0.0に帰ってくるモーションです。
+
+{% include sample.asciidoc id="Yoyo" %}
+
+```haxe
+// ヨーヨー
+square.x = rate.yoyo(Easing.quintOut).lerp(0, 450);
+```
+
+==== ジグザグ
+
+ジグザグは0.0から1.0に行って、移動方向を反転させた動きで0.0に帰ってくるようなモーションです。
+
+{% include sample.asciidoc id="Zigzag" %}
+
+```
+// ジグザグ
+square.x = rate.zigzag(Easing.quintOut).lerp(0, 450);
+```
+
+
+==== コネクト
+
+``connectEasing``は、2つのイージングをつなげて再生する機能です。
+
+{% include sample.asciidoc id="Connect" %}
+
+```haxe
+square.x = rate.connectEasing(Easing.backOut, Easing.linear, 0.9, 0.4).lerp(0, 450);
+```
+
+サンプルでは、最初の``0.9``の時間で``0.4``の位置まで``backOut``で移動した後、残りを``linear``で移動しています。
+
+
+==== ワンツー
+
+``oneTwoEasing``は、別々のイージングで2回移動を行うイージングです。
+
+{% include sample.asciidoc id="OneTwo" %}
+
+```haxe
+square1.x = rate.oneTwoEasing(Easing.backIn, Easing.linear, 0.7).lerp(30, 420);
+```
+
+``backIn``で1回目の移動を、``linear``で2回目の移動を行っています。
+
+
+==== CustomEasingクラス
+
+このようなイージングのカスタム機能を何度も使う場合、自作のイージングをまとめたCustomEasingクラスを作っておくと便利です。
+
+```haxe
+using tweenxcore.Tools;
+
+class CustomEasing {
+    public static inline function quintQuintInOut(rate:Float) {
+       return rate.quintInOut().quintInOut();
+    }
+}
+```
+
+このように``CustomEasing``クラスを定義しておけば、自分の作ったイージングを``using packageName.CustomEasing;``して簡単に利用できるようになります。
+
+
+==== イージングエディタ
+
+イージングエディタは、イージングを自作するためのツールです。イージングを組み合わせをブラウザ上で実際に試しながら作ることができます。
+
+image::/images/easing_editor_ja.png[alt="イージングエディタ" class="large" link="./custom/"]
+link:./custom/[イージングエディタ | TweenXCore]
+
+
+=== 値の変化をあつかう（FloatChange）
+
+これまでのサンプルは現在の値のみを使うものでしたが、直前の値と現在の値の両方を使うことで、さまざまな動作を作ることができます。
+
+{{page.tweenxcore}}では、直前の値と現在の値をあつかう``FloatChange``というクラスを提供しています。
+
+==== 値を横切った瞬間を取得
+
+``FloatChange``を使用する例として、フレームカウントが特定の値を横切った瞬間の判定があります。
+
+{% include sample.asciidoc id="CrossOver" %}
+
+```haxe
+public function update():Void {
+    var floatChange = new FloatChange(frameCount, frameCount += 1);
+    
+    // フレームカウントが30.0を横切った瞬間に、画面全体に四角を表示
+    if (floatChange.isCrossOver(30.0)) {
+        addChild(square = new Square());
+        square.width = 481;
+        square.height = 151;
+    }
+}
+```
+
+``new FloatChange``の第1引数は直前の値``previous``、第2引数は現在の値``current``で、``FloatChange``はこの2つの値をあつかうための便利関数を提供します。
+
+``isCrossOver``関数は、この``previous``と``current``が指定した値を横切った瞬間のみ``true``になります。
+
+この例の場合は``previous \<= 30.0 && 30.0 < current``または``current \<= 30.0 && 30.0 < previous``の条件で判定されます。
+
+``FloatChange``は例えば時間ベースでモーションをさせる場合に役に立ちます。``new FloatChange(previousTime, currentTime)``としたときに、**``previousTime``と``currentTime``がたまたま同一の値になったとしても、``isCrossOver``で判定した処理が2重に呼び出されることはありません。**
+
+{sourceLink}tweenxcore/structure/FloatChange.hx[[ソースを見る(tweenxcore.structure.FloatChange)\]]
+
+
+==== 値がある区間にいる間を取得
+
+フレームが特定の区間にある時のモーションです。
+
+{% include sample.asciidoc id="FloatChangePart" %}
+
+```haxe
+public function update():Void {
+    var floatChange = new FloatChange(frameCount, frameCount += 1);
+    floatChange.handlePart(20.0, 50.5, updatePart);
+}
+
+private function updatePart(part:FloatChangePart):Void {
+    var left  = part.previous.expoOutIn().lerp(0, 480);
+    var right = part.current.expoOutIn().lerp(0, 480);
+    
+    square.x = left;
+    square.width = right - left; 
+}
+```
+
+``handlePart``関数は、``FloatChange``が指定した区間を移動しているときに、すぐに（同期処理で）第3引数であたえた関数を呼び出します。
+
+この例では``20.0``から``50.5``の区間を通過しているときに、``updatePart``関数を呼び出します。
+
+``updatePart``の第1引数の``FloatChangePart``は、開始値が``0.0``、終了値が``1.0``であるような``FloatChange``です。この場合、元の``FloatChange``値が``20.0``のとき``0.0``、``50.5``のとき``1.0``になるように対応させて渡されます。
+
+この時、``FloatChangePart``の``current``と``previous``の値が``0.0``より低い値や、``1.0``より高い値で、``updatePart``が呼び出されることはありません。
+
+{sourceLink}tweenxcore/structure/FloatChangePart.hx[[ソースを見る(tweenxcore.structure.FloatChangePart)\]]
+
+
+==== 区間の開始と、終了を取得する
+
+``FloatChangePart``には、モーションの開始タイミングや、終了タイミングを取得するための関数が用意されています。
+
+{% include sample.asciidoc id="EntranceExit" %}
+
+```haxe
+private function updatePart(part:FloatChangePart) {
+    if (part.isEntrance()) {
+        var topBar = new Square();
+        addChild(topBar);
+        topBar.width = 481;
+    }
+
+    square.x = part.current.expoIn().lerp(0, 450);
+
+    if (part.isExit()) {
+        var bottomBar = new Square();
+        addChild(bottomBar);
+        bottomBar.y = 120;
+        bottomBar.width = 481;
+    }
+}
+```
+
+==== 繰り返し
+
+1つのパートを、複数回繰り返したい場合、``handlePart``の代わりに``handleRepeatPart``を使います。
+
+{% include sample.asciidoc id="Repeat" %}
+
+[source,haxe]
+---------
+change.handleRepeatPart(20, 40, 3, updatePart);
+---------
+
+このサンプルでは、20フレーム目から80フレーム目までの60フレームの間に``FloatChangePart``の0.0から1.0の移動が3回繰り返されています。
+
+``handleRepeatPart``が``updateSquare``に引数として渡す``FloatChangePart``は``FloatChangeRepeatPart``として拡張したもので、現在が何回目の繰り返しかなどの追加の情報にアクセスができます。
+
+{sourceLink}tweenxcore/structure/FloatChangeRepeatPart.hx[[ソースを見る(tweenxcore.structure.FloatChangeRepeatPart)\]]
+
+
+====　連続したモーションをあつかう
+
+連続したモーションをあつかうには、``FloatChange``の``handleTimelinePart``が使えます。
+
+{% include sample.asciidoc id="TimelinePart" %}
+
+右、下、左の三つの移動を行いました。
+
+```haxe
+var timeline:Timeline<FloatChangeTimelinePart->Void>;
+
+public function new() {
+    // (中略)
+
+    // 重み付きのupdate関数の配列を作成。
+    timeline = new Timeline().add(update1, 1).add(update2, 2).add(update3, 5);
+}
+
+public function update():Void {
+    var floatChange = new FloatChange(frameCount, frameCount += 1);
+
+    floatChange.handleTimelinePart(0, 80, timeline);
+}
+
+private function update1(part:FloatChangeTimelinePart):Void {
+    // 右へ移動
+    square.x = part.current.lerp(0, 450);
+}
+
+private function update2(part:FloatChangeTimelinePart):Void {
+    // 下へ移動
+    square.y = part.current.cubicInOut().lerp(0, 120);
+}
+
+private function update3(part:FloatChangeTimelinePart):Void {
+    // 左へ移動
+    square.x = part.current.quartIn().cubicIn().lerp(450, 0);
+}
+```
+
+``Timeline``は重み付きの配列です。配列の各要素に``Float``で重みがつけられています。サンプルでは``update1, update2, update3``に``1:2:5``の重みを付けています。
+
+``handleTimelinePart``は、この重みに従ってupdate関数を呼び出します。サンプルでは、10フレームかけて``update1``を、20フレームかけて``update2``を、50フレームかけて``update3``を呼び出しています。
+
+``FloatChangeTimelinePart``は``FloatChangePart``を継承しており、現在タイムラインのどの位置にいるかなどの情報が追加で取得できます。
+
+{sourceLink}tweenxcore/structure/Timeline.hx[[ソースを見る(tweenxcore.structure.Timeline)\]] +
+{sourceLink}tweenxcore/structure/FloatChangeTimelinePart.hx[[ソースを見る(tweenxcore.structure.FloatChangeTimelinePart)\]]
+
+
+=== 2次元の動き
+
+==== 単純な動き
+いままでのモーションはすべてX方向の動きをあつかってきましたが、Y方向の動きも入れてみます。
+
+{% include sample.asciidoc id="Xy" %}
+
+```haxe
+square.x = part.current.lerp(0, 450);
+square.y = part.current.sinByRate().lerp(60, 105);
+```
+
+四角をY方向に揺らしてみました。ここで使っている``sinByRate``は円の一周を1.0としてあつかう``sin``関数です。
+
+このサンプルはそれほど目新しくはありません。問題は同じようなモーションを斜め方向に行う場合です。
+
+==== 相似変換
+これまで0.0から1.0の値を実際の``x``座標に変換するのには``lerp``関数を使ってきましたが、回転が加わる場合``lerp``関数では表現できません。
+
+そういった場合は、``MatrixTools.createSimilarityTransform``を使います。
+
+{% include sample.asciidoc id="Matrix" %}
+
+```haxe
+private var matrix:MatrixImpl;
+
+public function new() {
+    // (中略)
+
+    // Flashプラットフォームなら、flash.geom.Matrixを使える。
+    // pixi.jsや、OpenFLのなど場合、それぞれのフレームワークで定義されているMatrixが使える。
+    // 実際のサンプルコードでは、自前でサンプル用に定義したクラスを使っている。
+    matrix = new MatrixImpl();
+    
+    // (0, 0)から(1, 0)への移動を、(100, 0)から(350, 120)への移動に相似変換する行列を作成。
+    matrix.createSimilarityTransform(100, 0, 350, 120);
+}
+
+private function updatePart(part:FloatChangePart):Void {
+    var x = part.current;
+    var y = part.current.sinByRate().lerp(0, 0.1);
+
+    square.x = matrix.a * x + matrix.c * y + matrix.tx;
+    square.y = matrix.b * x + matrix.d * y + matrix.ty;
+}
+```
+
+``createSimilarityTransform(fromX, fromY, toX, toY)``関数は、X方向の0.0から1.0までの移動を、X方向に``fromX``から``toX``、Y方向に``fromY``から``toY``の移動に相似変換するような行列を作成します。
+
+==== 極座標
+
+{{page.tweenxcore}}は極座標をサポートしています。
+
+{% include sample.asciidoc id="Polar" %}
+
+```haxe
+public function new() {
+    // (中略)
+
+    // 相似変換を作成
+    matrix = new MatrixImpl();
+    matrix.createSimilarityTransform(210, 60, 0, 0);
+}
+
+private function updatePart(part:FloatChangePart) {
+    // 原点に近づいていく
+    var distance = part.current.expoOut().lerp(1, 0);
+    // 反時計回りに2周する。
+    var angle = part.current.lerp(0, -2);
+    
+    // 極座標からXY座標へ変換
+    var polarPoint = new PolarPoint(distance, angle);
+    var x = polarPoint.x;
+    var y = polarPoint.y;
+
+    // 実際の座標へ変換
+    square.x = matrix.a * x + matrix.c * y + matrix.tx;
+    square.y = matrix.b * x + matrix.d * y + matrix.ty;
+}
+```
+
+サンプルは、``(210, 60)``を極座標の中心として、そこに``(0, 0)``の位置から回転しながら近づいていくモーションです。
+
+{sourceLink}tweenxcore/geom/PolarPoint.hx[[ソースを見る(tweenxcore.geom.PolarPoint)\]]
+
+
+==== ベジェ曲線
+
+{{page.tweenxcore}}はベジェ曲線もサポートしています。
+
+{% include sample.asciidoc id="Bezier" %}
+
+```haxe
+square.x = rate.bezier3(0, 50, 400, 450);
+square.y = rate.bezier3(0, 200, -50, 120);
+```
+
+サンプルは、始点が``(0, 0)``、制御点が``(50, 200)``と``(400, -50)``、終点が``(450, 120)``の3次ベジェ曲線です。
+
+ベジェ曲線は3次だけでなく任意の次数ののベジェ曲線が使えます。詳しくは``tweenxcore.Tools``モジュールを確認してください。
+
+{sourceLink}tweenxcore/Tools.hx[[ソースを見る(tweenxcore.Tools)\]]
+
+
+
+=== いろんなものを動かす
+
+==== RGBカラー、HSVカラー
+
+{{page.tweenxcore}}では、RGBカラーとHSVカラーが使えます。
+
+{% include sample.asciidoc id="Hsv" %}
+
+```haxe
+var curve = part.current.expoInOut();
+var hue = hsvCurve.lerp(0.0, 1.0);        // 色相を1周させる
+var saturation = hsvCurve.lerp(0.0, 0.8); // 彩度を上げていく
+var value = 0.95;                         // 明度は固定 
+var color = new HsvColor(hue, saturation, value);
+```
+
+サンプルはHSVのそれぞれの値を動かしながら帯を描いています。
+
+{sourceLink}tweenxcore/color[[ソースを見る(tweenxcore.color)\]]
+
+
+
+==== 画像
+
+連続したモーションをあつかうのに重み付き配列の``Timeline``を紹介しましたが、この``Timeline``は連続でない値を動かすのにも使えます。
+
+つまり、例えば画像のパラパラアニメーションを作るのにも使えます。
+
+{% include sample.asciidoc id="Image"%}
+
+
+
+=== 時間以外に基づくトゥイーン
+
+==== マウス座標を元にトゥイーンさせる
+
+0.0から1.0の値に変換可能であればトゥイーンのもとになる値は、時間でなくても構いません。以下のサンプルでは、マウス座標を元に四角の位置を動かしています。
+
+{% include sample.asciidoc id="Mouse"%}
+
+```haxe
+var rateX = mouseX.inverseLerp(10, 800).clamp(0, 1);
+var rateY = mouseY.repeat(0, 400);
+
+square.x = rateX.expoInOut().lerp(0, 450);
+square.y = rateY.yoyo(Easing.expoInOut).lerp(0, 120);
+```
+
+``inverseLerp``は、``lerp``とは逆向きの線形補間で、例では10から800までの値を0から1に変換しています。
+
+``clamp``は下限と上限を設定する関数で、例では0より小さい値を0に、1より大きい値を1に変換しています。
+
+``repeat``は繰り返しを行う関数で、まず0から400の値を0から1に変換するところまでは``inverseLerp``と同じですが、0より小さい値や400より大きい値など、指定した間隔の外側での挙動が違います。
+つまり、``repeat``では-400から0、0から400、400から800、800から1200といった各値で0から1への変換がされます。
+
+
+
+++++
+<script src="/js/Sample.js"></script>
+++++

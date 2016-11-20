@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+
+gem 'jekyll', '3.2.1'
+gem 'asciidoctor'
+gem 'redcarpet'
+gem 'pygments.rb'
+
+group :jekyll_plugins do
+  gem 'jekyll-asciidoc'
+end
+
+gem 'wdm', '~> 0.1.0' if Gem.win_platform?

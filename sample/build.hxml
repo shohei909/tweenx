@@ -1,0 +1,6 @@
+-js ../website/js/Sample.js
+-cp tweenxcore
+-cp ../src/tweenxcore
+-cp js
+-cp common
+-main Main

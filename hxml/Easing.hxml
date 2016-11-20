@@ -1,0 +1,7 @@
+-swf-header 750:500:60:FFFFFF
+-cp sample/tweenx/004_Easing
+-cp src/tweenx
+-cp src/tweenxcore
+-cp sample/flash
+-main sample.main.DirectMain
+-D endless

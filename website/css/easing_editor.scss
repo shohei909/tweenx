@@ -1,0 +1,166 @@
+---
+# this ensures Jekyll reads the file to be transformed into CSS later
+# only Main files contain this front matter, not partials.
+---
+
+.complex-easing
+{
+    margin-top: 12px;
+    padding-left: 0px;
+    margin-left: 22px;
+	border-left: dashed 1px #E0E0E0;
+	
+	.complex-easing-head
+	{
+		display: table;
+		
+		> div
+		{
+			display: table-cell;
+			vertical-align: top;
+            padding-left: 2px;
+            padding-right: 5px;
+		}
+        background: #FFFFFF;
+	}
+	
+    .from
+    {
+        background: #FAFCFF;
+        border-top: dashed 1px #E0E0FF;
+        border-bottom: dashed 1px #E0E0FF;
+        border-right: dashed 1px #E0E0FF;
+    }
+    
+    .to
+    {
+        background: #F0F2FF;
+        border-top: dashed 1px #E0E0FF;
+        border-bottom: dashed 1px #E0E0FF;
+        border-right: dashed 1px #E0E0FF;
+    }
+    
+	.preview
+	{
+		display: table;
+			
+		> div
+		{
+			padding: 2px;
+			display: table-cell;
+		}
+	}
+	
+	.param-group
+	{
+		margin: 4px;
+		
+		> div
+		{
+			margin: 2px;
+		}
+		
+		.input-group-addon
+		{
+			width: 130px;
+		}
+	}
+	
+	.dropdown-content
+	{
+		margin: 10px;
+		margin-top: 2px;
+		
+		.dropdown-content-row
+		{
+			margin-left: 2px;
+			
+			.select-group
+			{
+				margin: 1px;
+			}
+		}
+	}
+	
+	.control-point
+	{
+		display: table;
+		
+		>div, >button
+		{
+			display: table-cell;
+			margin-left: 2px;
+			vertical-align: top;
+		}
+	}
+    
+}
+
+.select-group
+{
+	margin-left: 1px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+.menu
+{
+	display: table;
+		
+	> .menu-item
+	{
+		display: table-cell;
+		vertical-align: middle;
+		padding-left: 2px;
+		padding-right: 5px;
+		
+		> div
+		{
+			margin: 0px;
+			padding: 0px;
+		}
+	}
+}
+
+	
+.number-input
+{
+	display: table;
+	
+	>div, >canvas
+	{
+		display: table-cell;
+		vertical-align: middle;
+		margin: 0px;
+		padding: 0px;
+		padding-left: 2px;
+	}
+	
+	>canvas
+	{
+		user-select: none;
+		cursor: pointer;
+	}
+}
+
+.output
+{
+	border-top: dashed 2px #EEEEEE;
+	margin-top: 50px;
+	padding: 10px;
+	padding-top: 50px;
+}
+
+h2
+{
+	a:link, a:active, a:visited
+	{
+		text-decoration: none;
+		color: #030303;
+	}
+	a:hover
+	{
+		text-decoration: none;
+		color: #666666;
+	}
+}

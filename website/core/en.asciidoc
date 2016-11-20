@@ -1,0 +1,696 @@
+---
+layout: default
+title: TweenXCore - lightweight motion library for haxe
+tweenxcore: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
+lang: en
+---
+:showtitle:
+:author: shohei909
+:toc: macro
+:toc-title: 目次
+:toclevels: 4
+:sampleLink: link:https://github.com/shohei909/tweenx/blob/develop/sample/
+:sourceLink: link:https://github.com/shohei909/tweenx/blob/develop/src/tweenxcore/
+:page-liquid:
+
+= {{page.tweenxcore}}
+
+link:.[[日本語\]]|link:en.html[[English\]]
+
+{{page.tweenxcore}} is a cross-platform tween library for easier creation of pleasant motion with https://haxe.org/[Haxe].
+
+It is designed to make execution speed faster, development speed faster, less buggy, less learning cost, and make motion more fun.
+
+++++
+<div><canvas class="movie" id="CustomEasingSample" /></canvas></div>
+++++
+
+toc::[]
+
+== Feature
+
+* 44 kinds of easing function
+* Yoyo, zigzag movement
+* Custom functions such as easing mix, crossfade, concatenation
+* HSV color, RGB color
+* Polar coordinates
+* Bezier curve
+* Static extension of `` Float``, such as `` lerp``, `` inverseLerp``, `` clamp``
+* Cooperation with link:./custom/[custom easing tool]
+
+== Benchmark
+
+{{page.tweenxcore}} does not do any extra processing or instance creation, so it works very fast.
+
+The following is a comparison with each tween library on the Flash platform. I measured the FPS when tweening 250,000 objects at the same time.
+
+image::/images/benchmark1.png[Result of benchmark]
+
+link:/sample/bench1/TweensyBench.swf?width=401&height=401[[Tweensy\]] +
+link:/sample/bench1/TweenXBench.swf?width=401&height=401[[TweenX\]] +
+link:/sample/bench1/ActuateBench.swf?width=401&height=401[[Actuate\]] +
+link:/sample/bench1/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]] +
+link:/sample/bench1/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
+
+{sampleLink}tweenx/800_BenchMark/src[[View source(Github)\]]
+
+
+== License
+
+MIT License
+
+
+== Start {{page.tweenxcore}}
+
+=== Haxe version
+
+http://haxe.org/[Haxe] 3.1.3 or later is supported.
+
+
+=== Installation
+
+After installing Haxe, enter the following command on the command line interface.
+
+[source, shell]
+---------
+haxelib install tweenxcore
+---------
+
+=== Hello {{page.tweenxcore}}
+
+As the first sample of {{page.tweenxcore}}, let's look at the code to move the rectangular x coordinate from 0 to 450.
+
+{% include sample.asciidoc lang="en" id="Simplest" %}
+
+[source,haxe,linenums]
+---------
+import sample.Sprite;
+import sample.Square;
+using tweenxcore.Tools;
+
+class SimplestSample extends Sprite {
+    public static var TOTAL_FRAME:Int = 20;
+    private var square:Square;
+    private var frameCount = 0;
+
+    public function new() {
+        super();
+        
+        // Place a square in the initial position
+        addChild(square = new Square());
+        square.y = Square.SIZE * 2.0;
+    }
+
+    // Call this function every frame
+    public function update():Void {
+        var rate = frameCount / TOTAL_FRAME;
+        
+        // An animation when rate is 0 to 1.
+        if (rate <= 1) {
+            // Move x from 0 to 450 according to the value of rate.
+            square.x = rate.quintOut().lerp(0, 450);
+        }
+        frameCount++;
+    }
+}
+---------
+
+The code related to {{page.tweenxcore}} is the following part.
+
+[source,haxe]
+---------
+using tweenxcore.Tools;
+---------
+
+[source,haxe]
+---------
+square.x = rate.quintOut().lerp(0, 450);
+---------
+
+
+Let's see each one one by one.
+
+
+==== using tweenxcore.Tools
+
+The `` tweenxcore.Tools`` module that we load here has four classes.
+
+Easing class ::
+   It has easing functions used as a curve of motion
+
+FloatTools class ::
+   Static extension of Float.
+
+PointTools class ::
+   Static extension of point on XY coordinates. For example, Bezier curve. It can be used not only for the `` Point`` class in Flash, but also for `` Point`` types in various libraries.
+
+MatrixTools class ::
+   Extension of matrix of affine transformation of XY coordinates. It adds a function for similarity transformation of two-dimensional motion. It can be used not only for the Flash `` Matrix`` class but also for the `` Matrix`` type of other library with {sourceLink}tweenxcore/geom/Matrix.hx[similar interface].
+
+``using tweenxcore.Tools;`` will read this all as an extension.
+
+Many of the functions introduced in the tutorial are in the module of this ``Tools``, so I think whether it is easier to understand by reading the source.
+
+{sourceLink}tweenxcore/Tools.hx[[View source(tweenxcore.Tools)\]]
+
+
+==== Easing function
+
+``quintOut`` is an easing function. It changes the value of ``rate`` which changes from 0 to 1 to the value after the quintic function.
+
+Of course not only ``quintOut`` is the easing function provided by {{page.tweenxcore}}.
+
+Based on the link:http://easings.net/[Robert Penner's easing function], {{page.tweenxcore}} provides a total of 44 functions include ``OutIn`` mode which decelerates at the center and accelerates again, and ``warp`` which instantaneously moves.
+    
+{% include sample.asciidoc lang="en" id="EasingVisualize" %}
+
+Let's see a bit of the implementation of these functions.
+
+The `` cubicIn`` function in {{page.tweenxcore}} is as follows.
+
+[source,haxe]
+---------
+function cubicIn(t:Float):Float {
+    return t * t * t;
+}
+---------
+
+It is a simple function that receives a Float and returns Float.
+
+Let's replace the easing of the previous sample code with this function. Just one line, make the changes as follows.
+
+[source,haxe]
+---------
+square.x = rate.cubicIn().lerp(0, 450);
+---------
+
+{% include sample.asciidoc lang="en" id="Easing" %}
+
+You can see that the movement has changed from the ``quintOut``.
+
+
+==== lerp
+
+``lerp`` is a function of linear interpolation, which is included in `` tweenxcore.Tools.FloatTools``.
+
+In the example above, it converts values in the specified range from 0.0 to 1.0 to values from 0 to 450. This will cause `` square.x`` to move from 0 to 450 while `` rate`` changes from 0.0 to 1.0.
+
+
+== Principle of {{page.tweenxcore}}
+
+=== Starting from 0.0 and ending with 1.0
+
+In the {{page.tweenxcore}} world, the starting value is 0.0 and the ending value is 1.0.
+
+That is,
+
+* For time of motion, start time is expressed as 0.0 and end time is used as 1.0.
+* For alpha, the complete transparency is 0.0 and the complete opacity is 1.0.
+* For circle 1 turn, 0 degree is 0.0 and 360 degree is 1.0.
+* For red values of RGB color, 0.0 is no redness and 1.0 is completely red.
+
+In {{page.tweenxcore}}, we often use the variable name ``rate`` for such values that are based on 0.0 to 1.0.
+
+=== No black box
+
+{{page.tweenxcore}} does not have such a function as to automatically move objects by designating a departure point or a reaching point.
+
+The function that the tween library automatically moves the object is easy if you just play the motion, but it will be difficult when you try to do somewhat elaborate things.
+
+For example, it is as follows
+
+* You want to **pause animations** in the game when the pause button is pressed and **display the popup with animation**.
+* You want to **switch a indicator to fade out immediately** after process is finished **while it is fading in**
+* For some motion, You want to **play slow motion** only while mouse is down
+
+With many tween libraries, you can not realize these behaviors or you have to remember complicated specifications.
+
+In contrast, the solution for {{page.tweenxcore}} is straightforward.
+
+* If you want to stop motion, **stop updating the place** you want to stop.
+* Fade in and fade out can be **switched with a simple ``if`` statement**.
+* If you **increment the `` frameCount`` by 0.5**, the playback speed of motion will be 0.5 times.
+
+Nothing is difficult.
+
+{{page.tweenxcore}} offers three things:
+    
+* Function to convert values not in the range of 0.0 to 1.0 from 0.0 to 1.0. (e.g. `` FloatTools.inverseLerp`` function, `` FloatChange`` class)
+* Function to convert a number between 0.0 and 1.0 to a number between 0.0 and 1.0 with another curve. (e.g. `` Easing`` and custom easing functions)
+* Function to convert a number between 0.0 and 1.0 to various values. (e.g. `` FloatTools.lerp`` and `` Timeline`` class)
+
+If tween library has only these functions, you can freely create your own motions. The method will be explained in the tutorial.
+
+
+=== Can be used anywhere
+
+{{page.tweenxcore}} can be used without being interfering with the platform, the framework used together, and the programming paradigm.
+
+* The style that you are aiming is well matched with {{page.tweenxcore}} whether it is object oriented, procedural programming, or functional programming.
+* Whether the framework you use is OpenFL, React or Unity, it will work the same way.
+* It works on client side, server side, even at compile time.
+
+
+== {{page.tweenxcore}} Tutorial
+
+=== Create your own easing
+There are 44 kinds of easing in TweenXCore, but using these simply tends to be mediocre motion. In TweenXCore you can combine and mix easing to create your own easing.
+
+==== Composition
+
+By combining two or more easings, you can create new movements.
+
+{% include sample.asciidoc lang="en" id="Composite" %}
+
+```haxe
+square.x = rate.cubicIn().bounceOut().lerp(0, 450);
+```
+
+By using ``cubicIn`` and using ``bounceOut``, we are making an easing of accelerating bounds.
+
+
+==== Mix
+
+``mixEasing`` is intermediate easing between the two easings.
+
+{% include sample.asciidoc lang="en" id="Mix" %}
+
+```haxe
+square.x = rate.mixEasing(Easing.expoOutIn, Easing.linear, 0.18).lerp(0, 450);
+```
+
+The sample is likely to be in the cut-in animation of the game. Mixing the ``linear`` function to ``expoOutIn`` 0.18 eliminates stillness in the middle of ``OutIn`` easing.
+
+
+==== Crossfade
+
+``crossfadeEasing`` is easing that gradually changes to another easing at the beginning and at the end.
+
+{% include sample.asciidoc lang="en" id="Crossfade" %}
+
+```haxe
+square.x = rate.crossfadeEasing(
+    Easing.quintOut,
+    Easing.bounceOut,
+    Easing.sineInOut
+).lerp(0, 450);
+```
+
+The sample begins as ``quintOut`` and gradually changes to ``Easing.bounceOut`` in easing. I used ``Easing.sineInOut`` as a curve of how to change.
+
+
+==== Yoyo
+
+``yoyo`` is a motion that goes from 0.0 to 1.0 and returns to 0.0 in the reverse playback movement.
+
+{% include sample.asciidoc lang="en" id="Yoyo" %}
+
+```haxe
+square.x = rate.yoyo(Easing.quintOut).lerp(0, 450);
+```
+
+==== Zigzag
+
+``zigzag`` is a motion that goes from 0.0 to 1.0 and returns to 0.0 with the movement in which the moving direction is reversed.
+
+{% include sample.asciidoc lang="en" id="Zigzag" %}
+
+```
+square.x = rate.zigzag(Easing.quintOut).lerp(0, 450);
+```
+
+
+==== Connect
+
+``connectEasing`` is a function that connects two easings.
+
+{% include sample.asciidoc lang="en" id="Connect" %}
+
+```haxe
+square.x = rate.connectEasing(Easing.backOut, Easing.linear, 0.9, 0.4).lerp(0, 450);
+```
+
+In the sample, it moves ``backOut`` to ``0.4`` in the first ``0.9`` time and then moves the rest in ``linear``.
+
+==== One two
+
+``oneTwoEasing`` is easing to move twice in different easing.
+
+{% include sample.asciidoc lang="en" id="OneTwo" %}
+
+```haxe
+square1.x = rate.oneTwoEasing(Easing.backIn, Easing.linear, 0.7).lerp(30, 420);
+```
+
+``backIn`` makes the first move, ``linear`` makes the second move.
+
+
+==== CustomEasing class
+
+If you use such easing custom functions more than once, it is useful to create a CustomEasing class that collects your own easing.
+
+```haxe
+using tweenxcore.Tools;
+
+class CustomEasing {
+    public static inline function quintQuintInOut(rate:Float) {
+       return rate.quintInOut().quintInOut();
+    }
+}
+```
+
+If you define the ``CustomEasing`` class like this, you can easily use it by ``using packageName.CustomEasing;``, for your own easing.
+
+
+
+==== Easing Editor
+
+The easing editor is a tool for making Easing yourself. You can make easing while actually trying combinations on a browser.
+
+image::/images/easing_editor.png[alt="Easing editor" class="large" link="./custom/"]
+link:./custom/[Easing Editor | TweenXCore]
+
+
+=== Handle changes in Float (FloatChange)
+
+Previous samples used only the current value, but you can make various actions by using both the previous value and the current value.
+
+{{page.tweenxcore}} provides ``FloatChange`` class that handles the previous and current values.
+
+==== Get the moment across the value
+
+An example using `` FloatChange`` is the resolution of the moment the frame count crosses a particular value.
+
+{% include sample.asciidoc lang="en" id="CrossOver" %}
+
+```haxe
+public function update():Void {
+    var floatChange = new FloatChange(frameCount, frameCount += 1);
+    
+    // At the moment the frame count crosses 30.0, a rectangle is displayed
+    if (floatChange.isCrossOver(30.0)) {
+        addChild(square = new Square());
+        square.width = 481;
+        square.height = 151;
+    }
+}
+```
+
+The first argument of ``new FloatChange`` is the ``previous`` value, the second argument is the ``current`` value, ``FloatChange`` provides convenience functions to handle these two values.
+
+The ``isCrossOver`` function is ``true`` only at the moment when this ``previous`` and ``current`` crossed the specified value.
+
+In this example, it is solved by the condition of ``previous \<= 30.0 && 30.0 < current`` or ``current \<= 30.0 && 30.0 < previous``
+
+``FloatChange`` is useful, for example, to make time-base motion. Even if ``previousTime`` and ``currentTime`` happen to have the same value when ``new FloatChange (previousTime, currentTime)`` is set, the processing judged by ``isCrossOver`` will not be called twice.
+
+{sourceLink}tweenxcore/structure/FloatChange.hx[[View source(tweenxcore.structure.FloatChange)\]]
+
+
+==== Get while a value is in a section
+
+The motion when the frame is in a specific section.
+
+{% include sample.asciidoc lang="en" id="FloatChangePart" %}
+
+```haxe
+public function update():Void {
+    var floatChange = new FloatChange(frameCount, frameCount += 1);
+    floatChange.handlePart(20.0, 50.5, updatePart);
+}
+
+private function updatePart(part:FloatChangePart):Void {
+    var left  = part.previous.expoOutIn().lerp(0, 480);
+    var right = part.current.expoOutIn().lerp(0, 480);
+    
+    square.x = left;
+    square.width = right - left; 
+}
+```
+
+The ``handlePart`` function calls the function given as the third argument in synchronization when moving in the section specified by ``FloatChange``.
+
+In this example, when passing through the section `20.0` to` 50.5`, call the `updatePart` function.
+
+`FloatChangePart` of the first argument of `updatePart` is `FloatChange` whose start value is `0.0` and whose exit value is `1.0`. In this case, it is passed in correspondence so that it becomes `0.0` when the original `FloatChange` value is `20.0` and `1.0` when it is `50.5`.
+
+At this time, `updatePart` will not be called with `current` and `previous` of `FloatChangePart` lower than `0.0` or higher than` 1.0`.
+
+{sourceLink}tweenxcore/structure/FloatChangePart.hx[[View source(tweenxcore.structure.FloatChangePart)\]]
+
+
+==== Acquire the start and end of the section
+
+In `FloatChangePart`, functions are provided to acquire the start timing and end timing of motion.
+
+{% include sample.asciidoc lang="en" id="EntranceExit" %}
+
+```haxe
+private function updatePart(part:FloatChangePart) {
+    if (part.isEntrance()) {
+        var topBar = new Square();
+        addChild(topBar);
+        topBar.width = 481;
+    }
+
+    square.x = part.current.expoIn().lerp(0, 450);
+
+    if (part.isExit()) {
+        var bottomBar = new Square();
+        addChild(bottomBar);
+        bottomBar.y = 120;
+        bottomBar.width = 481;
+    }
+}
+```
+
+==== Repeat
+
+If you want to repeat a part more than once, use `handleRepeatPart` instead of `handlePart`.
+
+{% include sample.asciidoc lang="en" id="Repeat" %}
+
+[source,haxe]
+---------
+change.handleRepeatPart(20, 40, 3, updatePart);
+---------
+
+In this sample, `FloatChangePart` movement of 0.0 to 1.0 has been repeated three times during the 60 frames from the 20th frame to the 80th frame.
+
+"handleRepeatPart" passes "FloatChangeRepeatPart" which extends "FloatChangePart" as an argument to "updateSquare", from which you can get additional information such as how many times the current iteration is.
+
+{sourceLink}tweenxcore/structure/FloatChangeRepeatPart.hx[[View source(tweenxcore.structure.FloatChangeRepeatPart)\]]
+
+
+==== Handle consecutive motions
+
+To handle consecutive motions, you can use `handleTimelinePart` of `FloatChange`.
+
+{% include sample.asciidoc lang="en" id="TimelinePart" %}
+
+We made three movements, right, down, left.
+
+```haxe
+var timeline:Timeline<FloatChangeTimelinePart->Void>;
+
+public function new() {
+    // (Abbreviation)
+
+    // Create an array of weighted update functions.
+    timeline = new Timeline().add(update1, 1).add(update2, 2).add(update3, 5);
+}
+
+public function update():Void {
+    var floatChange = new FloatChange(frameCount, frameCount += 1);
+
+    floatChange.handleTimelinePart(0, 80, timeline);
+}
+
+private function update1(part:FloatChangeTimelinePart):Void {
+    // right
+    square.x = part.current.lerp(0, 450);
+}
+
+private function update2(part:FloatChangeTimelinePart):Void {
+    // down
+    square.y = part.current.cubicInOut().lerp(0, 120);
+}
+
+private function update3(part:FloatChangeTimelinePart):Void {
+    // left
+    square.x = part.current.quartIn().cubicIn().lerp(450, 0);
+}
+```
+`Timeline` is a weighted array. Each element of the array is weighted with `Float`. In the sample, `update1, update2, update3` is weighted by `1: 2: 5`.
+
+`handleTimelinePart` calls the update function according to this weight. In the sample, it calls `update1` over 10 frames, `update2` over 20 frames, and `update3` over 50 frames.
+
+`FloatChangeTimelinePart` inherits from `FloatChangePart` and you can get additional information such as where you are currently on the timeline.
+
+{sourceLink}tweenxcore/structure/Timeline.hx[[View source(tweenxcore.structure.Timeline)\]] +
+{sourceLink}tweenxcore/structure/FloatChangeTimelinePart.hx[[View source(tweenxcore.structure.FloatChangeTimelinePart)\]]
+
+
+=== 2-dimensional motion
+
+==== Simple motion
+All of the motion up to now has been compensated for movement in the X direction, but I will also add motion in the Y direction.
+
+{% include sample.asciidoc lang="en" id="Xy" %}
+
+```haxe
+square.x = part.current.lerp(0, 450);
+square.y = part.current.sinByRate().lerp(60, 105);
+```
+
+I swung the square in the Y direction. The `sinByRate` used here is a `sin` function which treats circumference of a circle as 1.0.
+
+This sample is not very new. The problem is when doing similar motion diagonally.
+
+==== Similarity transformation
+
+We have used the `lerp` function to convert a value between 0.0 and 1.0 to the actual `x` coordinates, but it can not be expressed by the `lerp` function when rotation is added.
+
+In that case, use `MatrixTools.createSimilarityTransform`.
+
+{% include sample.asciidoc lang="en" id="Matrix" %}
+
+```haxe
+private var matrix:MatrixImpl;
+
+public function new() {
+    // (Abbreviation)
+
+    // For the Flash platform, you can use flash.geom.Matrix.
+    // In the case of pixi.js, OpenFL, etc., you can use Matrix defined in each framework.
+    // In actual sample code, I use classes I defined for my own sample.
+    matrix = new MatrixImpl();
+    
+    // Make a matrix that similarly transforms the movement from (0, 0) to (1, 0) to the movement from (100, 0) to (350, 120).
+    matrix.createSimilarityTransform(100, 0, 350, 120);
+}
+
+private function updatePart(part:FloatChangePart):Void {
+    var x = part.current;
+    var y = part.current.sinByRate().lerp(0, 0.1);
+
+    square.x = matrix.a * x + matrix.c * y + matrix.tx;
+    square.y = matrix.b * x + matrix.d * y + matrix.ty;
+}
+```
+
+The `createSimilarityTransform(fromX, fromY, toX, toY)` function creates a matrix that similarly transforms "the movement in the X direction from 0.0 to 1.0" to "the movement `fromX` to `toX` in the X direction and `fromY` to `toY` in the Y direction".
+
+==== Polar coordinates
+
+{{page.tweenxcore}} supports polar coordinates.
+
+{% include sample.asciidoc lang="en" id="Polar" %}
+
+```haxe
+public function new() {
+    // (Abbreviation)
+
+    // Make a similarly transform
+    matrix = new MatrixImpl();
+    matrix.createSimilarityTransform(210, 60, 0, 0);
+}
+
+private function updatePart(part:FloatChangePart) {
+    // approaching the origin
+    var distance = part.current.expoOut().lerp(1, 0);
+    // Make two rounds counterclockwise.
+    var angle = part.current.lerp(0, -2);
+    
+    // Convert from polar coordinates to XY coordinates
+    var polarPoint = new PolarPoint(distance, angle);
+    var x = polarPoint.x;
+    var y = polarPoint.y;
+
+    // Convert to actual coordinates
+    square.x = matrix.a * x + matrix.c * y + matrix.tx;
+    square.y = matrix.b * x + matrix.d * y + matrix.ty;
+}
+```
+
+The sample is a motion that rotates from `(0, 0)` position with `(210, 60)` as the center of polar coordinates and approaches there.
+
+{sourceLink}tweenxcore/geom/PolarPoint.hx[[View source(tweenxcore.geom.PolarPoint)\]]
+
+
+====  Bezier curve
+
+{{page.tweenxcore}} also supports Bezier curves.
+
+{% include sample.asciidoc lang="en" id="Bezier" %}
+
+```haxe
+square.x = rate.bezier3(0, 50, 400, 450);
+square.y = rate.bezier3(0, 200, -50, 120);
+```
+
+The sample is a cubic Bezier curve whose starting point is `(0, 0)`, the control points are `(50, 200)` and `(400, -50)`, and the end point is `(450, 120)`.
+
+Bezier curves can be used for Bezier curves of arbitrary order as well as third order. Please check the `tweenxcore.Tools` module for details.
+
+{sourceLink}tweenxcore/Tools.hx[[View source(tweenxcore.Tools)\]]
+
+=== Move various things
+
+==== RGB color, HSV color
+
+In {{page.tweenxcore}} you can use RGB color and HSV color.
+
+{% include sample.asciidoc lang="en" id="Hsv" %}
+
+```haxe
+var curve = part.current.expoInOut();
+var hue = hsvCurve.lerp(0.0, 1.0);        // Make one round of hue
+var saturation = hsvCurve.lerp(0.0, 0.8); // Increase saturation
+var value = 0.95;                         // Lightness fixed
+var color = new HsvColor(hue, saturation, value);
+```
+
+The sample draws a band while moving each value of HSV.
+
+{sourceLink}tweenxcore/color[[View source(tweenxcore.color)\]]
+
+
+
+==== Image
+
+I introduced a weighted array ``Timeline`` to deal with consecutive motions, but this ``Timeline`` can also be used to move non-contiguous values.
+
+In other words, it can be used to create a frame animation of images, for example.
+
+{% include sample.asciidoc lang="en" id="Image"%}
+
+
+=== Tween with other than time
+
+==== Tweening based on mouse coordinates
+
+If it is possible to convert from 0.0 to 1.0, the value that is the source of the tween does not have to be time. In the following sample, we move the position of the square using the mouse coordinates.
+
+{% include sample.asciidoc lang="en" id="Mouse"%}
+
+```haxe
+var rateX = mouseX.inverseLerp(10, 800).clamp(0, 1);
+var rateY = mouseY.repeat(0, 400);
+
+square.x = rateX.expoInOut().lerp(0, 450);
+square.y = rateY.yoyo(Easing.expoInOut).lerp(0, 120);
+```
+
+`inverseLerp` is a linear interpolation in the opposite direction to `lerp`, in our example it converts "values from 10 to 800" "from 0 to 1".
+
+`clamp` is a function to set the lower and upper limits, in our example we convert a value less than 0 to 0 and a value greater than 1 to 1.
+
+`repeat` is a repeating function, which is the same as `inverseLerp` until converting a value from 0 to 400 from 0 to 1, but outside the specified interval such as a value less than 0 or a value greater than 400 Behavior is different.
+For example, `repeat` converts from 0 to 1 with values such as -400 to 0, 0 to 400, 400 to 800, 800 to 1200.
+
+
+
+++++
+<script src="/js/Sample.js"></script>
+++++

@@ -1,0 +1,4 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On 
+RewriteRule ^en\.html$ index\.html [R=302,L] 
+</IfModule>

@@ -1,0 +1,210 @@
+---
+# this ensures Jekyll reads the file to be transformed into CSS later
+# only Main files contain this front matter, not partials.
+---
+
+@charset "utf-8";
+$theme_color: 	#8C0327;
+$title_font: 	"Arial", "Meiryo", "MS PGothic", sans-serif;
+$title_font2: 	"Arial", "MS PGothic", "Meiryo", sans-serif;
+$font: 			"Meiryo";
+
+body{
+	font-family: $font;
+	font-size: 15px;
+	color: #454545;
+	background-color: #FFFFFF;
+	margin:0px;
+	padding:0px;
+    padding-bottom:50px;
+}
+
+h1, h1 a:link, h1 a:hover, h1 a:visited, h1 a:active, h2, h3, h4, h5, h6, .toc>.title{
+	font-family: $title_font;
+	color: #222222;
+    font-weight: bold;
+    text-decoration: none;
+    
+    span.tweenxcore {
+        color: #0C1126;
+
+        span.core {
+            color: #F20C49;
+        }
+    }
+}
+
+h1 {
+	margin: 48px 2px 10px 0px ;
+	font-size:96px;
+}
+h2{
+	margin: 72px 2px 10px 0px ;
+	font-size: 48px;
+}
+h3 {
+	margin: 32px 2px 10px 0px ;
+	font-family: $title_font2;
+	font-size: 24px;
+}
+
+h4{
+	margin: 24px 2px 10px 0px;
+	font-family: $title_font2;
+	font-size: 16px;
+}
+
+#main{
+	margin: 10px 10px 5px 5px;
+}
+
+p {
+    margin-left: 0px;
+    margin-bottom: 1em;
+    margin-right: 20px;
+    line-height: 1.4em
+}
+
+li {
+    line-height: 1.4em;
+
+    > p {
+        text-indent: 0;
+        margin-bottom: 0;
+    }
+}
+
+ul {
+    list-style-type: square;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+ul, ol {
+    margin-bottom: 1em;
+    margin-left: 2em;
+    margin-right: 20px;
+}
+
+#article {
+    width: 1200px;
+}
+
+
+#article, .sentence, .sectionbody, .sect2, .sect3, #tool {
+	margin: 5px 5px 40px 30px;
+}
+
+.paragraph {
+    margin: 0px;
+    padding: 0px;
+}
+
+strong{
+	color: $theme_color;
+	font-weight: bold;
+}
+
+code {
+    font-family: 'Source Han Code JP', Consolas, 'Courier New', Courier, Monaco, monospace;
+    border: solid 1px #F5F1D0;
+    background-color: #FCFCF0;
+    margin: 0px 2px;
+    padding: 0px 1px;
+    font-size: 13px;
+}
+
+pre>code {
+    display: block;
+    width:900px;
+    border: solid 1px #E5E1C0;
+    background-color: #FCFCF0;
+    margin-bottom: 1em;
+    margin-right: 20px;
+    padding: 5px;
+    line-height: 1.4em;
+    font-size: 13px;
+
+    td.linenos {
+        width:3em;
+        text-align:right;
+        padding-right:1em;
+    }
+}
+
+.toc>.title {
+	margin: 5px 5px 10px 5px;
+    font-family: $title_font2;
+	font-size: 24px;
+}
+
+div.toc {
+    display: block;
+    border: solid 1px #E5E1C0;
+    background-color: #FCFCF0;
+    margin-top: 30px;
+    margin-bottom: 1em;
+    padding: 5px;
+    width: 500px;
+}
+
+
+dl{
+    padding-left: 1em;
+}
+dt {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+dd {
+    padding-left: 1em;
+}
+
+a:link {
+  color: #0074BC;
+}
+a:visited {
+  color: #2C3E8F;
+}
+a:hover {
+  color: #FFD251;
+}
+object {
+    margin-bottom: 1em;
+}
+
+.tweenxcore {
+    color: #0C1126;
+
+    .core {
+        color: #F20C49;
+    }
+}
+
+a:hover span.tweenxcore, a:hover span.core {
+  color: #FFD251;
+}
+
+a.image
+{
+    > img
+    {
+        margin: 3px;
+        padding: 1px;
+        border: dashed #0074BC 1px;
+    }
+}
+
+div#header {
+    width: 100%;
+    margin: 0px;
+    border-bottom: solid #F2F2F2 1px;
+    padding: 12px;
+    line-height: 1.5em;
+    
+    a:link, a:visited, a:hover {
+        text-decoration: none;
+    }
+}
