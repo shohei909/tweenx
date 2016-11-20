@@ -42,7 +42,7 @@ toc::[]
 
 {{page.tweenxcore}} does not do any extra processing or instance creation, so it works very fast.
 
-The following is a comparison with each tween library on the Flash platform. I measured the FPS when tweeding 250,000 objects at the same time.
+The following is a comparison with each tween library on the Flash platform. I measured the FPS when tweening 250,000 objects at the same time.
 
 image::/images/benchmark1.png[Result of benchmark]
 
@@ -219,8 +219,8 @@ The function that the tween library automatically moves the object is easy if yo
 
 For example, it is as follows
 
-* You want to **pause the animation** in the game when the pause button is pressed and **display the popup with animation**.
-* You want to **switch to fade out immediately** after communication is finished **while the indicator is fading in**
+* You want to **pause animations** in the game when the pause button is pressed and **display the popup with animation**.
+* You want to **switch a indicator to fade out immediately** after process is finished **while it is fading in**
 * For some motion, You want to **play slow motion** only while mouse is down
 
 With many tween libraries, you can not realize these behaviors or you have to remember complicated specifications.

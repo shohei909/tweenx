@@ -2,7 +2,7 @@
 layout: default
 title: TweenX - tween library for haxe
 tweenxcore: +++<span class="tweenxcore">TweenX<span class="core">Core</span></span>+++
-meta: <link rel="stylesheet" href="css/prettyPhoto.css" type="text/css"><script src="js/jquery-1.6.1.min.js" type="text/javascript"></script><!--script src="js/jquery.lint.js" type="text/javascript" charset="utf-8"></script--><script src="js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+meta: <link rel="stylesheet" href="css/prettyPhoto.css" 	type="text/css" /><script src="js/jquery-1.6.1.min.js" type="text/javascript"></script><!--script src="js/jquery.lint.js" type="text/javascript" charset="utf-8"></script--><script src="js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
 lang: en
 ---
 
@@ -15,20 +15,27 @@ lang: en
 :sourceLink: link:https://github.com/shohei909/tweenx/blob/develop/src/tweenxcore/
 :page-liquid:
 
-
 = TweenX
+
++++
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function(){
+    $("a[rel^='prettyPhoto']").prettyPhoto({social_tools:false, allow_expand:false});
+});
+</script>
++++
 
 link:.[[日本語\]]|link:en.html[[English\]]
 
 TweenXは**クロスプラットフォーム**で動作する、Haxe向けのトゥイーンライブラリです。オブジェクトの移動先を指定して、モーションさせることを可能にします。
 
-link:sample/TweenXDemoHaxe3.swf?width=720&height=512[[Flash版デモ\]] +
+link:sample/swf/TweenXDemoHaxe3.swf?width=720&height=512[[Flash版デモ\]] +
 link:sample/TweenXDemoHaxe3[[HTML5版デモ\]]
 
 
 == バージョン1.0について
 
-バージョン0.0から1.0での最大の変更点は、イージング関数などのコア機能について、{{page.tweenxcore}}への分離を行ったことです。
+バージョン0.0から1.0での最大の変更点は、モーションを作る上で必要な機能について、{{page.tweenxcore}}への分離を行ったことです。
 
 TweenXは{{page.tweenxcore}}があれば不必要なライブラリですが、Tweenerを初めとする従来のトゥイーンライブラリに近い書き方をするために使用できます。
 
@@ -40,15 +47,15 @@ toc::[]
 
 Flashプラットフォーム上で、250000個のオブジェクトを同時にトゥイーンさせた場合のFPSを測定しました。
 
-image::images/benchmark1.png[ベンチマーク結果]
+image::/images/benchmark1.png[ベンチマーク結果]
 
-link:sample/bench1/TweensyBench.swf?width=401&height=401[[Tweensy\]] +
-link:sample/bench1/TweenXBench.swf?width=401&height=401[[TweenX\]] +
-link:sample/bench1/ActuateBench.swf?width=401&height=401[[Actuate\]] +
-link:sample/bench1/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]] +
-link:sample/bench1/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
+* link:sample/bench/TweensyBench.swf?width=401&height=401[[Tweensy\]]
+* link:sample/bench/TweenXBench.swf?width=401&height=401[[TweenX\]]
+* link:sample/bench/ActuateBench.swf?width=401&height=401[[Actuate\]]
+* link:sample/bench/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]]
+* link:sample/bench/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
 
-https://github.com/shohei909/tweenx/blob/master/sample/800_BenchMark/src?at=master[[ソースコード\]]
+https://github.com/shohei909/tweenx/blob/master/sample/800_BenchMark/src?at=master[[ソース\]]
 
 
 == インストール
@@ -95,7 +102,7 @@ to関数は配列を渡すことで複数のオブジェクトを同時に移動
 TweenX.to([square1, square2, square3], {x:360});
 ```
 
-[[デモを再生]](sample/swf/GroupTween.swf?width=401&height=401 "グループトゥイーン")
+{% include tweenxsample.asciidoc id="GroupTween" %}
 
 === メソッドチェーン
 
@@ -119,7 +126,7 @@ class Main extends Sprite {
 
 トゥイーンライブラリの特徴は、イージングを指定することで簡単にオブジェクトの速度変化を指定することが出来ることです。TweenXで用意している41種類のイージングは以下のサンプルで確認できます。
 
-[[イージングのサンプル]](sample/swf/Easing.swf?width=750&height=520)
+{% include tweenxsample.asciidoc id="Easing" width=750 height=520 %}
 
 ==== using tweenx909.ChainX
 
@@ -142,7 +149,7 @@ class Main extends Sprite {
 }
 ```
 
-[[デモを再生]](sample/swf/MethodChain.swf?width=401&height=401 "using ChainX")
+{% include tweenxsample.asciidoc id="MethodChain" %}
 
 例えば、Pointに対するトゥイーンでは座標(x、y)のみを変化させる関数しか補完されないのにも関わらず、Spriteに対するトゥイーンではそれらに加えて、拡大率(scaleXなど)、透明度など、その他の値に対する関数まで補完されるようになります。
 
@@ -158,7 +165,7 @@ TweenX.serial([
 ]);
 ```
 
-[[デモを再生]](sample/swf/SerialTween.swf?width=401&height=401 "直列トゥイーン")
+{% include tweenxsample.asciidoc id="SerialTween" %}
 
 === 並列トゥイーン(parallel)
 
@@ -172,7 +179,7 @@ TweenX.parallel([
 ]);
 ```
 
-[[デモを再生]](sample/swf/ParallelTween.swf?width=401&height=401 "並列トゥイーン")
+{% include tweenxsample.asciidoc id="ParallelTween" %}
 
 === 時間差トゥイーン(lag)
 
@@ -186,7 +193,7 @@ TweenX.lag([
 ], 0.1);
 ```
 
-[[デモを再生]](sample/swf/LagTween.swf?width=401&height=401 "時間差トゥイーン")
+{% include tweenxsample.asciidoc id="LagTween" %}
 
 === タイミング調節(waitとskip)
 
@@ -202,7 +209,7 @@ TweenX.serial([
 ]);
 ```
 
-[[デモを再生]](sample/swf/WaitAndSkip.swf?width=401&height=401 "waitとskip")
+{% include tweenxsample.asciidoc id="WaitAndSkip" %}
 
 === 繰り返し、ヨーヨー、ジグザグ
 
@@ -216,7 +223,7 @@ TweenX.serial([
 ]).repeat().interval(0.4); //0.4秒の間隔をあけて、無限リピート。
 ```
 
-[[デモを再生]](sample/swf/RepeatTween.swf?width=401&height=401 "繰り返し、ヨーヨー、ジグザグ")
+{% include tweenxsample.asciidoc id="RepeatTween" %}
 
 === デフォルト値
 
@@ -252,7 +259,7 @@ TweenX.serial([
 ], defaults);
 ```
 
-[[デモを再生]](sample/swf/Default.swf?width=401&height=401 "デフォルト値")
+{% include tweenxsample.asciidoc id="Default" %}
 
 === イベントの取得
 
@@ -320,7 +327,7 @@ tween.timeScale = -1;
 TweenX.topLevelTimeScale = 0.5;
 ```
 
-[[デモを再生]](sample/swf/TweenControl.swf?width=401&height=401 "トゥイーン制御")
+{% include tweenxsample.asciidoc id="TweenControl" %}
 
 === 相対値トゥイーン
 
@@ -358,7 +365,7 @@ TweenX.serial([
 ]).delay(0.5);
 ```
 
-[[デモを再生]](sample/swf/RelativeTween.swf?width=401&height=401 "相対値トゥイーン")
+{% include tweenxsample.asciidoc id="RelativeTween" %}
 
 === 関数トゥイーン
 
@@ -373,7 +380,7 @@ function draw(x:Float, size:Float) {
 TweenX.tweenFunc2(draw, 10, 10, 300, 100).time(0.5).ease(Easing.quadIn);
 ```
 
-[[デモを再生]](sample/swf/TweenFunction.swf?width=401&height=401 "関数トゥイーン")
+{% include tweenxsample.asciidoc id="TweenFunction" %}
 
 1、2、3、4の数字は変化させるFloatの数に対応しています。Float以外の値をトゥイーンさせたい場合や、トゥイーンさせたい値の数が4つを超える場合にはtweenFunc()関数を使用します。
 
@@ -398,7 +405,7 @@ TweenX.serial([
 ]);
 ```
 
-[[デモを再生]](sample/swf/HSVTween.swf?width=401&height=401 "色トゥイーン")
+{% include tweenxsample.asciidoc id="HSVTween" %}
 
 RgbColor、ArgbColor、HsvColor、AhsvColor型の値を元にしたトゥイーンでは、0x(AA)RRGGBB形式の整数値(Int)が出力されます。
 
@@ -425,7 +432,7 @@ TweenX.to(
 ).time(2).ease(Easing.expoInOut).onUpdate(square.update);
 ```
 
-[[デモを再生]](sample/swf/ArrayTween.swf?width=401&height=401 "色トゥイーン")
+{% include tweenxsample.asciidoc id="ArrayTween" %}
 
 ==== Boolean値のトゥイーン
 
@@ -447,7 +454,7 @@ TweenX.to(
 ).time(2);
 ```
 
-[[デモを再生]](sample/swf/Quake.swf?width=401&height=401 "アニメーション")
+{% include tweenxsample.asciidoc id="Quake" %}
 
 ==== トゥイーンによるアニメーション
 
@@ -457,7 +464,7 @@ TimelineXをトゥイーンさせる値として設定することで、連続�
 TweenX.to(bitmap, {bitmapData: new TimelineX([walk0,walk1,walk2,walk1])}).time(1).repeat(0);
 ```
 
-[[デモを再生]](sample/swf/TimelineTween.swf?width=401&height=401 "アニメーション")
+{% include tweenxsample.asciidoc id="TimelineTween" %}
 
 TimelineXの第1引数は、BitmapDataに限らずあらゆる値の配列が設定できます。第2引数では各要素に割り当てる時間を指定します。
 
@@ -544,7 +551,7 @@ TweenX.serial([
 ], defaults).repeat();
 ```
 
-[[デモを再生]](sample/swf/AutoFrom.swf?width=401&height=401 "開始位置")
+{% include tweenxsample.asciidoc id="AutoFrom" %}
 
 この際に注意すべき点は、開始位置は前述のトゥイーン初期化時に決定するということです。トゥイーン開始位置の決定はあくまでトゥイーンを定義した順序に基づいて行われるので、以下のように再生の順序と定義の順序を逆にすると連続でないトゥイーンが生成されます。
 
@@ -553,7 +560,7 @@ TweenX.to(square).x(180).delay(2);
 TweenX.to(square).x(360).delay(1);
 ```
 
-[[デモを再生]](sample/swf/BadSample.swf?width=401&height=401 "良くない例")
+{% include tweenxsample.asciidoc id="BadSample" %}
 
 また開始位置は、TweenX.from()関数を使って明示的に指定することもできます。
 
@@ -611,6 +618,6 @@ TweenX.serial([
 ]).ease(Easing.bounceInOut);
 ```
 
-[[デモを再生]](sample/swf/GroupEase.swf?width=401&height=401 "グループのイージング")
+{% include tweenxsample.asciidoc id="GroupEase" %}
 
 グループのイージングは明示的に指定しないかぎりEasing.linearです。重複してイージングが指定されてしまうことを避けるため、デフォルト値の影響は受けません。
