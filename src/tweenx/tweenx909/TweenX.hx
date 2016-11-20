@@ -29,47 +29,47 @@ class TweenX extends CommandX {
     /*
      * 全体情報
      */
-    static private var _tweens:Array<TweenX>                        = new Array<TweenX>();
-    static private var _addedTweens:Array<TweenX>                    = new Array<TweenX>();
+    private static var _tweens:Array<TweenX>                        = new Array<TweenX>();
+    private static var _addedTweens:Array<TweenX>                    = new Array<TweenX>();
     public static var tweens(#if haxe3 get #else get_tweens #end, never):Iterable<TweenX>;
-    static private function get_tweens():Iterable<TweenX> { return _tweens; }
+    private static function get_tweens():Iterable<TweenX> { return _tweens; }
 
     /*
      * マネージャ基本値
      */
-    static private var prevTime:Float;
-    static private var managerInited     = false;
+    private static var prevTime:Float;
+    private static var managerInited     = false;
 
     /*
      * 基本パラメータデフォルト値
      */
     public static var DEFAULT_EASE(default,null):Float->Float = EaseX.linear;
-    public static inline     var DEFAULT_TIME:Float        = 0.3;
-    public static inline     var DEFAULT_DELAY:Float        = 0;
-    public static inline     var DEFAULT_REPEAT:Int        = 1;
-    public static inline     var DEFAULT_INTERVAL:Int    = 0;
-    public static inline     var DEFAULT_YOYO:Bool        = false;
-    public static inline     var DEFAULT_ZIGZAG:Bool        = false;
-    public static inline     var DEFAULT_AUTO_PLAY:Bool    = true;
-    static private inline     var DEFAULT_AUTO_FROM:Bool    = true;
+    public static inline var DEFAULT_TIME:Float        = 0.3;
+    public static inline var DEFAULT_DELAY:Float        = 0;
+    public static inline var DEFAULT_REPEAT:Int        = 1;
+    public static inline var DEFAULT_INTERVAL:Int    = 0;
+    public static inline var DEFAULT_YOYO:Bool        = false;
+    public static inline var DEFAULT_ZIGZAG:Bool        = false;
+    public static inline var DEFAULT_AUTO_PLAY:Bool    = true;
+    private static inline var DEFAULT_AUTO_FROM:Bool    = true;
 
-    public static var     defaultEase:Float->Float    = TweenX.DEFAULT_EASE;
-    public static var     defaultTime:Float             = TweenX.DEFAULT_TIME;
-    public static var     defaultDelay:Float            = TweenX.DEFAULT_DELAY;
-    public static var     defaultInterval:Float        = TweenX.DEFAULT_INTERVAL;
-    public static var     defaultRepeat:Int            = TweenX.DEFAULT_REPEAT;
-    public static var     defaultYoyo:Bool             = TweenX.DEFAULT_YOYO;
-    public static var     defaultZigZag:Bool             = TweenX.DEFAULT_ZIGZAG;
-    public static var     defaultAutoPlay:Bool        = TweenX.DEFAULT_AUTO_PLAY;
-    static private var     defaultAutoFrom:Bool        = TweenX.DEFAULT_AUTO_FROM;
+    public static var defaultEase:Float->Float    = TweenX.DEFAULT_EASE;
+    public static var defaultTime:Float             = TweenX.DEFAULT_TIME;
+    public static var defaultDelay:Float            = TweenX.DEFAULT_DELAY;
+    public static var defaultInterval:Float        = TweenX.DEFAULT_INTERVAL;
+    public static var defaultRepeat:Int            = TweenX.DEFAULT_REPEAT;
+    public static var defaultYoyo:Bool             = TweenX.DEFAULT_YOYO;
+    public static var defaultZigZag:Bool             = TweenX.DEFAULT_ZIGZAG;
+    public static var defaultAutoPlay:Bool        = TweenX.DEFAULT_AUTO_PLAY;
+    private static var defaultAutoFrom:Bool        = TweenX.DEFAULT_AUTO_FROM;
 
-    static private    var _rules:Array<RuleX<Dynamic,Dynamic>>             = [BoolRuleX, ArrayRuleX, TimelineRuleX, ArgbRuleX, AhsvRuleX, RgbRuleX, HsvRuleX, QuakeRuleX];
-    public static     var rules(#if haxe3 get #else get_rules #end, never):Iterable<RuleX<Dynamic,Dynamic>>;
-    static private function get_rules():Iterable<RuleX<Dynamic,Dynamic>> { return _rules; }
+    private static var _rules:Array<RuleX<Dynamic,Dynamic>>             = [BoolRuleX, ArrayRuleX, TimelineRuleX, ArgbRuleX, AhsvRuleX, RgbRuleX, HsvRuleX, QuakeRuleX];
+    public static var rules(#if haxe3 get #else get_rules #end, never):Iterable<RuleX<Dynamic,Dynamic>>;
+    private static function get_rules():Iterable<RuleX<Dynamic,Dynamic>> { return _rules; }
 
 
-    static public    var topLevelTimeScale:Float                            = 1;
-    static private     var _groupDefaults:Bool                                 = false;
+    static public var topLevelTimeScale:Float                            = 1;
+    private static var _groupDefaults:Bool                                 = false;
 
     public static function dumpDefaults() {
         return new DefaultsX().dump();
@@ -81,7 +81,7 @@ class TweenX extends CommandX {
         new DefaultsX().apply();
     }
 
-    public static     var updateMode(default, #if haxe3 set #else set_updateMode #end):UpdateModeX
+    public static var updateMode(default, #if haxe3 set #else set_updateMode #end):UpdateModeX
         = #if (flash) UpdateModeX.FRAME; #else UpdateModeX.TIME(60); #end
 
     static function set_updateMode(value) {
@@ -93,7 +93,7 @@ class TweenX extends CommandX {
     /*
      * マネージャ関数
      */
-    static private inline function initManager() {
+    private static inline function initManager() {
         managerInited = true;
         stopUpdater();
         switch(updateMode) {
@@ -107,7 +107,7 @@ class TweenX extends CommandX {
         case MANUAL:
         }
     }
-    static private function mainLoop() {
+    private static function mainLoop() {
         switch(updateMode) {
         #if flash
         case FRAME:
@@ -120,7 +120,7 @@ class TweenX extends CommandX {
             throw "invalid auto update";
         }
     }
-    static private function stopUpdater() {
+    private static function stopUpdater() {
         if (_timer != null) {
             _timer.stop();
             _timer = null;
@@ -144,7 +144,7 @@ class TweenX extends CommandX {
         }
         _resetLog();
     }
-    static private function initTweens() {
+    private static function initTweens() {
         for (t in _addedTweens) { t._init(); }
         _addedTweens.splice(0, _addedTweens.length);
     }
@@ -220,7 +220,9 @@ class TweenX extends CommandX {
                     o.stop();
             }
     }
-    public static function gotoAll(tweens:Iterable<TweenX>, time:Float = 0, andPlay:Bool = false #if (tweenx_debug) ,?posInfo:PosInfos #end){
+    public static function gotoAll(tweens:Iterable<TweenX>, time:Float = 0, andPlay:Bool = false 
+        #if (tweenx_debug), ?posInfo:PosInfos #end
+    ){
         for (t in tweens)
             switch(t.command) {
                 case WAIT(_):
@@ -252,7 +254,7 @@ class TweenX extends CommandX {
         return _group(tweens, LAG(0), defaults, posInfos);
     }
     public static function wait(?delay:Float = 0.1, ?posInfos:PosInfos) { return new CommandX(WAIT(delay), posInfos); }
-    static private inline function _group(tweens:Iterable<CommandX>, type, defaults, posInfos:PosInfos) {
+    private static inline function _group(tweens:Iterable<CommandX>, type, defaults, posInfos:PosInfos) {
         var parent = new TweenX(GROUP(new GroupX(tweens, type, defaults)), null, null, null, null, null, null, null, null, posInfos);
         for (t in tweens) {
             if (t == null) continue;
@@ -265,7 +267,7 @@ class TweenX extends CommandX {
         }
         return parent;
     }
-    static private inline function _lock(o:TweenX) {
+    private static inline function _lock(o:TweenX) {
         if (o._inited) throw o.error("Can't serialize initialized TweenCommandX");
         o._autoPlay = false;
     }
@@ -273,15 +275,15 @@ class TweenX extends CommandX {
     /*
      * 静的ユーティリティ
      */
-    static private inline function getTime():Float {
+    private static inline function getTime():Float {
         #if (neko || php || cpp || cs || java)
         return Sys.time() * 1000;
         #else
         return Date.now().getTime();
         #end
     }
-    static private var _timer:Timer;
-    static private inline function setInterval(f:Void->Void, t:Int) {
+    private static var _timer:Timer;
+    private static inline function setInterval(f:Void->Void, t:Int) {
         if (_timer != null) _timer.stop();
         _timer         = new Timer(t);
         _timer.run     = f;
@@ -290,14 +292,14 @@ class TweenX extends CommandX {
     #if (flash9)
     static var _engine:flash.display.Sprite;
     static var _frameHandler:Dynamic->Void;
-    static private inline function addFrameListener(f:Void->Void){
+    private static inline function addFrameListener(f:Void->Void){
         _engine = new flash.display.Sprite();
         function f2(e) { f(); }
         _engine.addEventListener("exitFrame", _frameHandler = f2);
     }
     #end
 
-    static private inline function fields(t:Dynamic) {
+    private static inline function fields(t:Dynamic) {
         return Reflect.fields(t);
     }
 
@@ -307,8 +309,8 @@ class TweenX extends CommandX {
     #elseif flash9
     private static    var dictionary:flash.utils.Dictionary = untyped new flash.utils.Dictionary(true);
     #end
-    static private var _objCounter:Int = 0;
-    static private inline function hashObject(o:Dynamic) {
+    private static var _objCounter:Int = 0;
+    private static inline function hashObject(o:Dynamic) {
         #if haxe3
         if (dictionary.get(o) != null) return dictionary.get(o);
         else {
@@ -335,7 +337,7 @@ class TweenX extends CommandX {
         }
         #end
     }
-    static private function _resetLog() {
+    private static function _resetLog() {
         _initLog = [];
         #if haxe3
         dictionary = new haxe.ds.ObjectMap();
@@ -344,7 +346,7 @@ class TweenX extends CommandX {
         #end
     }
 
-    static private inline function field(o:Dynamic, key:String) {
+    private static inline function field(o:Dynamic, key:String) {
         #if (flash)
         return untyped o[key ];
         #elseif (js)
@@ -355,7 +357,7 @@ class TweenX extends CommandX {
         #end
     }
 
-    static private inline function setField(o:Dynamic, key:String, value:Dynamic) {
+    private static inline function setField(o:Dynamic, key:String, value:Dynamic) {
         #if (flash)
         untyped o[key ] = value;
         #elseif (js)
@@ -366,28 +368,28 @@ class TweenX extends CommandX {
         #end
     }
 
-    static private function isIterable(d:Dynamic) {
+    private static function isIterable(d:Dynamic) {
         return (d != null && (Std.is(d, Array) || Reflect.hasField(d, "iterator") && Reflect.isFunction(d.iterator) && d.iterator() != null));
     }
 
     /*
      * 定数
      */
-    static private inline var _MIN        = 1 / 0x3FFFFFF;
+    private static inline var _MIN = 1 / 0x3FFFFFF;
     static public function eventIndex(type:String) {
         return EVENT_ARRAY.indexOf(type);
     }
-    static private var EVENT_ARRAY = ["play","delay","head","update","foot","interval","repeat","rest","finish","stop"];
-    static private inline var _PLAY     = 0;
-    static private inline var _DELAY     = 1;
-    static private inline var _HEAD     = 2;
-    static private inline var _UPDATE     = 3;
-    static private inline var _FOOT     = 4;
-    static private inline var _INTERVAL = 5;
-    static private inline var _REPEAT     = 6;
-    static private inline var _REST     = 7;
-    static private inline var _FINISH     = 8;
-    static private inline var _STOP     = 9;
+    private static var EVENT_ARRAY = ["play","delay","head","update","foot","interval","repeat","rest","finish","stop"];
+    private static inline var _PLAY     = 0;
+    private static inline var _DELAY    = 1;
+    private static inline var _HEAD     = 2;
+    private static inline var _UPDATE   = 3;
+    private static inline var _FOOT     = 4;
+    private static inline var _INTERVAL = 5;
+    private static inline var _REPEAT   = 6;
+    private static inline var _REST     = 7;
+    private static inline var _FINISH   = 8;
+    private static inline var _STOP     = 9;
 
 
     /*
@@ -395,7 +397,7 @@ class TweenX extends CommandX {
      */
     function new(type:TweenTypeX, ?time:Float, ?ease:Float->Float, ?delay:Float, ?repeat:Int, ?yoyo:Bool, ?zigzag:Bool, ?interval:Float, ?autoPlay:Bool, ?posInfos:PosInfos) {
         super(TWEEN(this), posInfos);
-        this._type         = type;
+        this._type = type;
 
         _currentTime        = 0;
         switch(type) {
@@ -405,13 +407,13 @@ class TweenX extends CommandX {
             default: _ease = (_easeIsDefault = ease == null) ? defaultEase : ease;
         }
 
-        _time        = (_timeIsDefault         = time         == null) ? defaultTime        : time;
-        _delay         = (_delayIsDefault         = delay     == null) ? defaultDelay        : delay;
-        _interval     = (_intervalIsDefault     = interval     == null) ? defaultInterval    : interval;
-        _repeat     = (_repeatIsDefault     = repeat     == null) ? defaultRepeat    : repeat;
-        _yoyo         = (_yoyoIsDefault         = yoyo         == null) ? defaultYoyo        : yoyo;
-        _zigzag     = (_zigzagIsDefault     = zigzag     == null) ? defaultZigZag    : zigzag;
-        _autoPlay     = (_autoPlayIsDefault     = autoPlay     == null) ? defaultAutoPlay    : autoPlay;
+        _time     = (_timeIsDefault       = time     == null) ? defaultTime      : time;
+        _delay    = (_delayIsDefault      = delay    == null) ? defaultDelay     : delay;
+        _interval = (_intervalIsDefault   = interval == null) ? defaultInterval  : interval;
+        _repeat   = (_repeatIsDefault     = repeat   == null) ? defaultRepeat    : repeat;
+        _yoyo     = (_yoyoIsDefault       = yoyo     == null) ? defaultYoyo      : yoyo;
+        _zigzag   = (_zigzagIsDefault     = zigzag   == null) ? defaultZigZag    : zigzag;
+        _autoPlay = (_autoPlayIsDefault   = autoPlay == null) ? defaultAutoPlay  : autoPlay;
 
         _rest        = 0;
         _eventListeners = [];
@@ -424,8 +426,8 @@ class TweenX extends CommandX {
     /*
      * 状態情報
      */
-    public     var playing(default, null):Bool;
-    public     var backward(default, null):Bool;
+    public var playing(default, null):Bool;
+    public var backward(default, null):Bool;
     private var _currentTime:Float = 0;
     private var _singleTime:Float;
     private var _skip:Null<Float> = null;
@@ -588,14 +590,14 @@ class TweenX extends CommandX {
         _inited = true;
 
         if (_groupDefaults){
-            if (_easeIsDefault)         _ease        = defaultEase;
-            if (_timeIsDefault)         _time         = defaultTime;
-            if (_delayIsDefault)         _delay         = defaultDelay;
-            if (_intervalIsDefault)     _interval     = defaultInterval;
-            if (_repeatIsDefault)         _repeat     = defaultRepeat;
-            if (_yoyoIsDefault)         _yoyo         = defaultYoyo;
-            if (_zigzagIsDefault)         _zigzag     = defaultZigZag;
-            if (_autoPlayIsDefault)     _autoPlay     = defaultAutoPlay;
+            if (_easeIsDefault)         _ease       = defaultEase;
+            if (_timeIsDefault)         _time       = defaultTime;
+            if (_delayIsDefault)        _delay      = defaultDelay;
+            if (_intervalIsDefault)     _interval   = defaultInterval;
+            if (_repeatIsDefault)       _repeat     = defaultRepeat;
+            if (_yoyoIsDefault)         _yoyo       = defaultYoyo;
+            if (_zigzagIsDefault)       _zigzag     = defaultZigZag;
+            if (_autoPlayIsDefault)     _autoPlay   = defaultAutoPlay;
         }
 
         if (_repeat == 0) _repeat = #if (neko && !haxe3) 0x3FFFFFFE #else 0x7FFFFFFE #end ;
@@ -1019,9 +1021,9 @@ class TweenX extends CommandX {
             TweenX.defaultAutoPlay = false;
         }
 
-        var delay                 = 0.0;
-        var max                    = 0.0;
-        var result                 = [];
+        var delay  = 0.0;
+        var max    = 0.0;
+        var result = [];
 
         switch(g.type) {
         case SERIAL:
