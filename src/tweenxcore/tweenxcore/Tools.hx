@@ -429,6 +429,12 @@ class FloatTools
         var p = inverseLerp(value, from, to);
         return p - Math.floor(p);
     }
+    
+    public static inline function shake(rate:Float, center:Float = 0.0, ?randomFunc:Void->Float):Float
+    {
+        if (randomFunc == null) randomFunc = Math.random;
+        return center + spread(randomFunc(), rate);
+    }
 
     /** same as `FloatTools.lerp(rate, -scale, scale)` */
     public static inline function spread(rate:Float, scale:Float):Float
