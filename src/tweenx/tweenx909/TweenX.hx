@@ -525,6 +525,22 @@ class TweenX extends CommandX {
         return msg + "(Tween_" + id + " was generated at " + p.className + "/" + p.methodName + "() [" + p.fileName + ":" + p.lineNumber + "])";
     }
 
+    public var vars(get, null):Dynamic;
+    private function get_vars():Dynamic
+    {
+        var result:Dynamic = null;
+        switch(this._type)
+        {
+            case FROM_TO(target, _from, _to):
+                result = _to;
+
+            case FUNC(func, _from, _to):
+                result = _to;
+            default:
+        }
+        return result;
+    }
+
     /* 個別制御     */
     public function play(#if (tweenx_debug) ?posInfo:PosInfos #end) {
         if (_parent != null) throw error("Can't play serialized object directly");
