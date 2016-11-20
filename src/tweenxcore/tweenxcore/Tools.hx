@@ -4,6 +4,9 @@ import tweenxcore.geom.Point;
 import tweenxcore.structure.BoundaryMode;
 using tweenxcore.Tools;
 
+/**
+ * It has easing functions used as a curve of motion
+ */
 class Easing {
     static inline var PI       = 3.1415926535897932384626433832795;
     static inline var PI_H     = PI / 2;
@@ -12,6 +15,7 @@ class Easing {
     /*
      * LINEAR
      */
+    /** 1-order */
     public static inline function linear(t:Float):Float{
         return t;
     }
@@ -62,15 +66,19 @@ class Easing {
     /*
      * QUAD EASING
      */
+    /** 2-order */
     public static inline inline function quadIn(t:Float):Float {
         return t * t;
     }
+    /** 2-order */
     public static inline inline function quadOut(t:Float):Float {
         return -t * (t - 2);
     }
+    /** 2-order */
     public static inline inline function quadInOut(t:Float):Float {
         return (t < 0.5) ? 2 * t * t : -2 * ((t -= 1) * t) + 1;
     }
+    /** 2-order */
     public static inline function quadOutIn(t:Float):Float {
         return (t < 0.5) ? -0.5 * (t = (t * 2)) * (t - 2) : 0.5 * (t = (t * 2 - 1)) * t + 0.5;
     }
@@ -79,17 +87,21 @@ class Easing {
     /*
      * CUBIC EASING
      */
+    /** 3-order */
     public static inline function cubicIn(t:Float):Float {
         return t * t * t;
     }
+    /** 3-order */
     public static inline function cubicOut(t:Float):Float {
         return (t = t - 1) * t * t + 1;
     }
+    /** 3-order */
     public static inline function cubicInOut(t:Float):Float {
         return ((t *= 2) < 1) ?
             0.5 * t * t * t :
             0.5 * ((t -= 2) * t * t + 2);
     }
+    /** 3-order */
     public static inline function cubicOutIn(t:Float):Float {
         return 0.5 * ((t = t * 2 - 1) * t * t + 1);
     }
@@ -98,15 +110,19 @@ class Easing {
     /*
      * QUART EASING
      */
+    /** 4-order */
     public static inline function quartIn(t:Float):Float {
         return (t *= t) * t;
     }
+    /** 4-order */
     public static inline function quartOut(t:Float):Float {
         return 1 - (t = (t = t - 1) * t) * t;
     }
+    /** 4-order */
     public static inline function quartInOut(t:Float):Float {
         return ((t *= 2) < 1) ? 0.5 * (t *= t) * t : -0.5 * ((t = (t -= 2) * t) * t - 2);
     }
+    /** 4-order */
     public static inline function quartOutIn(t:Float):Float {
         return (t < 0.5) ? -0.5 * (t = (t = t * 2 - 1) * t) * t + 0.5 : 0.5 * (t = (t = t * 2 - 1) * t) * t + 0.5;
     }
@@ -115,15 +131,19 @@ class Easing {
     /*
      * QUINT EASING
      */
+    /** 5-order */
     public static inline function quintIn(t:Float):Float {
         return t * (t *= t) * t;
     }
+    /** 5-order */
     public static inline function quintOut(t:Float):Float {
         return (t = t - 1) * (t *= t) * t + 1;
     }
+    /** 5-order */
     public static inline function quintInOut(t:Float):Float {
         return ((t *= 2) < 1) ? 0.5 * t * (t *= t) * t : 0.5 * (t -= 2) * (t *= t) * t + 1;
     }
+    /** 5-order */
     public static inline function quintOutIn(t:Float):Float {
         return 0.5 * ((t = t * 2 - 1) * (t *= t) * t + 1);
     }
@@ -375,24 +395,30 @@ class Easing {
 }
 
 
-
+/**
+ * Static extension of Float.
+ */
 class FloatTools
 {
+    /** same as `1 - rate` */
     public static inline function revert(rate:Float):Float
     {
         return 1 - rate;
     }
 
+    /* Clamps a `value` between `min` and `max`. */
     public static inline function clamp(value:Float, min:Float = 0.0, max:Float = 1.0):Float
     {
         return if (value <= min) min else if (max <= value) max else value;
     }
 
+    /** Linear interpolation between `from` and `to` by `rate` */
     public static inline function lerp(rate:Float, from:Float, to:Float):Float
     {
         return from * (1 - rate) + to * rate;
     }
 
+    /** Normalizes a `value` within the range between `from` and `to` into a value between 0 and 1 */
     public static inline function inverseLerp(value:Float, from:Float, to:Float):Float
     {
         return (value - from) / (to - from);
@@ -404,10 +430,10 @@ class FloatTools
         return p - Math.floor(p);
     }
 
-    public static inline function shake(rate:Float, center:Float = 0.0, ?randomFunc:Void->Float):Float
+    /** same as `FloatTools.lerp(rate, -scale, scale)` */
+    public static inline function spread(rate:Float, scale:Float):Float
     {
-        if (randomFunc == null) randomFunc = Math.random;
-        return center + rate * (1 - 2 * randomFunc());
+        return lerp(rate, -scale, scale);
     }
 
     public static inline function sinByRate(rate:Float) {
@@ -423,13 +449,12 @@ class FloatTools
     // =================================================
     // Round Trip
     // =================================================
-
-
+    /** Round trip motion that goes from 0.0 to 1.0 and returns to 0.0 in the reverse playback movement.  */
     public static inline function yoyo(rate:Float, easing:Float->Float):Float
     {
         return easing((if (rate < 0.5) rate else (1 - rate)) * 2);
     }
-
+    /** Round trip motion that goes from 0.0 to 1.0 and returns to 0.0 with the movement in which the moving direction is reversed. */
     public static inline function zigzag(rate:Float, easing:Float->Float):Float
     {
         return if (rate < 0.5) easing(rate * 2) else 1 - easing((rate - 0.5) * 2);
@@ -439,7 +464,7 @@ class FloatTools
     // =================================================
     // Complex Easing
     // =================================================
-
+    /** Intermediate easing between the two easings */
     public static inline function mixEasing(
         rate:Float,
         easing1:Float->Float,
@@ -451,7 +476,7 @@ class FloatTools
             easing2(rate)
         );
     }
-
+    /** Gradually changes to another easing at the beginning and at the end */
     public static inline function crossfadeEasing(
         rate:Float,
         easing1:Float->Float,
@@ -502,6 +527,12 @@ class FloatTools
     // Float Array
     // =================================================
 
+    /**
+     * @param sortedValues must be sorted
+     * @param value
+     * @param boundaryMode
+     * @return 0 to sortedValues.length integer
+     */
     public static inline function binarySearch(sortedValues:Array<Float>, value:Float, boundaryMode:BoundaryMode = BoundaryMode.Low):Int
     {
         var min = 0;
@@ -536,7 +567,6 @@ class FloatTools
     // =================================================
     // Polyline
     // =================================================
-
     public static inline function polyline(rate:Float, values:Array<Float>):Float
     {
         return if (values.length < 2) {
@@ -554,16 +584,17 @@ class FloatTools
     // =================================================
     // Bernstein Polynomial
     // =================================================
+    /** Quadratic Bernstein polynomial  */
     public static inline function bezier2(rate:Float, from:Float, control:Float, to:Float):Float
     {
         return lerp(rate, lerp(rate, from, control), lerp(rate, control, to));
     }
-
+    /** Cubic Bernstein polynomial  */
     public static inline function bezier3(rate:Float, from:Float, control1:Float, control2:Float, to:Float):Float
     {
         return bezier2(rate, lerp(rate, from, control1), lerp(rate, control1, control2), lerp(rate, control2, to));
     }
-
+    /** Bernstein polynomial, which is the mathematical basis for Bézier curve */
     public static inline function bezier(rate:Float, values:Array<Float>):Float
     {
         return if (values.length < 2) {
@@ -639,7 +670,9 @@ class FloatTools
     }
 }
 
-
+/**
+ * Static extension of point on XY coordinates. For example, Bezier curve. It can be used not only for the Point class in Flash, but also for Point types in various libraries.
+ */
 class PointTools {
     // =================================================
     // Polyline
@@ -659,16 +692,18 @@ class PointTools {
     // =================================================
     // Bézier Curve
     // =================================================
+    /** Quadratic Bernstein polynomial  */
     public static inline function bezier2(outputPoint:Point, rate:Float, from:Point, control:Point, to:Point):Void {
         outputPoint.x = rate.bezier2(from.x, control.x, from.x);
         outputPoint.y = rate.bezier2(from.y, control.y, from.y);
     }
 
+    /** Cubic Bernstein polynomial  */
     public static inline function bezier3(outputPoint:Point, rate:Float, from:Point, control1:Point, control2:Point, to:Point):Void {
         outputPoint.x = rate.bezier3(from.x, control1.x, control2.x, from.x);
         outputPoint.y = rate.bezier3(from.y, control1.y, control2.y, from.y);
     }
-
+    /** Bernstein polynomial, which is the mathematical basis for Bézier curve */
     public static inline function bezier(outputPoint:Point, rate:Float, points:Iterable<Point>):Void {
         var xs = [];
         var ys = [];
@@ -697,7 +732,9 @@ class PointTools {
 }
 
 
-
+/**
+ * Extension of matrix of affine transformation of XY coordinates. It adds a function for similarity transformation of two-dimensional motion. It can be used not only for the Flash Matrix class but also for the Matrix type of other library with similar interface.
+ */
 class MatrixTools {
     public static inline function createSimilarityTransform(outputMatrix:Matrix, fromX:Float, fromY:Float, toX:Float, toY:Float) {
         var dx = toX - fromX;
