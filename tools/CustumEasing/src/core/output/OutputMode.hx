@@ -4,4 +4,5 @@ enum OutputMode
 {
     Json;
     Haxe;
+    Array;
 }

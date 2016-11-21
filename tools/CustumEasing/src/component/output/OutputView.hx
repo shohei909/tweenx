@@ -24,7 +24,6 @@ class OutputView extends ReactComponentOfProps<OutputProps>
                 OutputModeSelectView.createElement(
                     {
                         context: props.context,
-                        mode: output.mode,
                     }
                 ),
                 "pre".createElement(

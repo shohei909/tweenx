@@ -11,6 +11,7 @@ class OutputManager
 {
     public var mode(default, null):OutputMode;
     private var context:RootContext;
+    private var arrayLength:Int = 101;
     
     public function new(context:RootContext) 
     {
@@ -45,6 +46,10 @@ class OutputManager
                         return $bodyExpr;
                     }
                 );
+                
+            case OutputMode.Array:
+                var func = ComplexEasingKindTools.toFunction(easing);
+                Json.stringify([for (i in 0...arrayLength) func(i / (arrayLength - 1))]);
         }
     }
     

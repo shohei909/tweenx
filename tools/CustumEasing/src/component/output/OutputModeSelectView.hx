@@ -20,12 +20,13 @@ class OutputModeSelectView extends ReactComponentOfProps<OutputModeSelectProps>
     
     override public function render():ReactComponent 
     {
+        var output = props.context.output;
         return "div".createElement(
             { className: "output-mode-select" },
             OutputModeView.createElement(
                 {
                     {
-                        current: Option.Some(props.mode),
+                        current: Option.Some(output.mode),
                         data: [for(c in EnumTools.getConstructors(OutputMode)) EnumTools.createByName(OutputMode, c)],
                         onSelect: onSelect,
                         getName: props.context.localize.resource.outputMode,
@@ -51,7 +52,6 @@ class OutputModeSelectView extends ReactComponentOfProps<OutputModeSelectProps>
 typedef OutputModeSelectProps =
 {
     context: RootContext,
-    mode: OutputMode,
 }
 
 private typedef OutputModeView = SelectGroupView<OutputMode>;

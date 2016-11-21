@@ -2296,7 +2296,7 @@ component_output_OutputModeSelectView.getIcon = function(mode) {
 component_output_OutputModeSelectView.__super__ = React.Component;
 component_output_OutputModeSelectView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		var tmp = haxe_ds_Option.Some(this.props.mode);
+		var tmp = haxe_ds_Option.Some(this.props.context.output.mode);
 		var _g = [];
 		var _g1 = 0;
 		var _g2 = core_output_OutputMode.__constructs__.slice();
@@ -2320,8 +2320,7 @@ component_output_OutputView.__name__ = ["component","output","OutputView"];
 component_output_OutputView.__super__ = React.Component;
 component_output_OutputView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		var output = this.props.context.output;
-		return react_ReactStringTools.createElement("div",{ className : "output"},[react_ReactTools.createElement(component_output_OutputModeSelectView,{ context : this.props.context, mode : output.mode}),react_ReactStringTools.createElement("pre",{ },output.getString())]);
+		return react_ReactStringTools.createElement("div",{ className : "output"},[react_ReactTools.createElement(component_output_OutputModeSelectView,{ context : this.props.context}),react_ReactStringTools.createElement("pre",{ },this.props.context.output.getString())]);
 	}
 	,__class__: component_output_OutputView
 });
@@ -3612,6 +3611,7 @@ core_localize_resource_JapaneseResource.prototype = {
 	,__class__: core_localize_resource_JapaneseResource
 };
 var core_output_OutputManager = function(context) {
+	this.arrayLength = 101;
 	this.context = context;
 	var _g = context.storage.get(core_storage_StorageKey.Output);
 	var tmp;
@@ -3637,8 +3637,359 @@ core_output_OutputManager.prototype = {
 			return JSON.stringify(tweenxcore_expr_ComplexEasingKindTools.toJsonable(easing),null);
 		case 1:
 			var print = new haxe_macro_Printer();
-			var bodyExpr = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("rate")), pos : { file : "src/core/output/OutputManager.hx", min : 1200, max : 1204}});
-			return print.printExpr({ expr : haxe_macro_ExprDef.EFunction("customEase",{ args : [{ name : "rate", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn(bodyExpr), pos : { file : "src/core/output/OutputManager.hx", min : 1354, max : 1370}}]), pos : { file : "src/core/output/OutputManager.hx", min : 1327, max : 1394}}, params : []}), pos : { file : "src/core/output/OutputManager.hx", min : 1268, max : 1394}});
+			var bodyExpr = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("rate")), pos : { file : "src/core/output/OutputManager.hx", min : 1240, max : 1244}});
+			return print.printExpr({ expr : haxe_macro_ExprDef.EFunction("customEase",{ args : [{ name : "rate", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn(bodyExpr), pos : { file : "src/core/output/OutputManager.hx", min : 1394, max : 1410}}]), pos : { file : "src/core/output/OutputManager.hx", min : 1367, max : 1434}}, params : []}), pos : { file : "src/core/output/OutputManager.hx", min : 1308, max : 1434}});
+		case 2:
+			var func;
+			switch(easing[1]) {
+			case 0:
+				var kind = easing[2];
+				switch(kind[1]) {
+				case 0:
+					func = tweenxcore_Easing.linear;
+					break;
+				case 1:
+					var inOut = kind[3];
+					switch(kind[2][1]) {
+					case 0:
+						switch(inOut[1]) {
+						case 0:
+							func = tweenxcore_Easing.quadIn;
+							break;
+						case 1:
+							func = tweenxcore_Easing.quadOut;
+							break;
+						case 2:
+							func = tweenxcore_Easing.quadInOut;
+							break;
+						case 3:
+							func = tweenxcore_Easing.quadOutIn;
+							break;
+						}
+						break;
+					case 1:
+						switch(inOut[1]) {
+						case 0:
+							func = tweenxcore_Easing.cubicIn;
+							break;
+						case 1:
+							func = tweenxcore_Easing.cubicOut;
+							break;
+						case 2:
+							func = tweenxcore_Easing.cubicInOut;
+							break;
+						case 3:
+							func = tweenxcore_Easing.cubicOutIn;
+							break;
+						}
+						break;
+					case 2:
+						switch(inOut[1]) {
+						case 0:
+							func = tweenxcore_Easing.quartIn;
+							break;
+						case 1:
+							func = tweenxcore_Easing.quartOut;
+							break;
+						case 2:
+							func = tweenxcore_Easing.quartInOut;
+							break;
+						case 3:
+							func = tweenxcore_Easing.quartOutIn;
+							break;
+						}
+						break;
+					case 3:
+						switch(inOut[1]) {
+						case 0:
+							func = tweenxcore_Easing.quintIn;
+							break;
+						case 1:
+							func = tweenxcore_Easing.quintOut;
+							break;
+						case 2:
+							func = tweenxcore_Easing.quintInOut;
+							break;
+						case 3:
+							func = tweenxcore_Easing.quintOutIn;
+							break;
+						}
+						break;
+					case 4:
+						switch(inOut[1]) {
+						case 0:
+							func = tweenxcore_Easing.sineIn;
+							break;
+						case 1:
+							func = tweenxcore_Easing.sineOut;
+							break;
+						case 2:
+							func = tweenxcore_Easing.sineInOut;
+							break;
+						case 3:
+							func = tweenxcore_Easing.sineOutIn;
+							break;
+						}
+						break;
+					case 5:
+						switch(inOut[1]) {
+						case 0:
+							func = tweenxcore_Easing.circIn;
+							break;
+						case 1:
+							func = tweenxcore_Easing.circOut;
+							break;
+						case 2:
+							func = tweenxcore_Easing.circInOut;
+							break;
+						case 3:
+							func = tweenxcore_Easing.circOutIn;
+							break;
+						}
+						break;
+					case 6:
+						switch(inOut[1]) {
+						case 0:
+							func = tweenxcore_Easing.expoIn;
+							break;
+						case 1:
+							func = tweenxcore_Easing.expoOut;
+							break;
+						case 2:
+							func = tweenxcore_Easing.expoInOut;
+							break;
+						case 3:
+							func = tweenxcore_Easing.expoOutIn;
+							break;
+						}
+						break;
+					case 7:
+						switch(inOut[1]) {
+						case 0:
+							func = tweenxcore_Easing.backIn;
+							break;
+						case 1:
+							func = tweenxcore_Easing.backOut;
+							break;
+						case 2:
+							func = tweenxcore_Easing.backInOut;
+							break;
+						case 3:
+							func = tweenxcore_Easing.backOutIn;
+							break;
+						}
+						break;
+					case 8:
+						switch(inOut[1]) {
+						case 0:
+							func = tweenxcore_Easing.bounceIn;
+							break;
+						case 1:
+							func = tweenxcore_Easing.bounceOut;
+							break;
+						case 2:
+							func = tweenxcore_Easing.bounceInOut;
+							break;
+						case 3:
+							func = tweenxcore_Easing.bounceOutIn;
+							break;
+						}
+						break;
+					case 9:
+						switch(inOut[1]) {
+						case 0:
+							func = tweenxcore_Easing.elasticIn;
+							break;
+						case 1:
+							func = tweenxcore_Easing.elasticOut;
+							break;
+						case 2:
+							func = tweenxcore_Easing.elasticInOut;
+							break;
+						case 3:
+							func = tweenxcore_Easing.elasticOutIn;
+							break;
+						}
+						break;
+					case 10:
+						switch(inOut[1]) {
+						case 0:
+							func = tweenxcore_Easing.warpIn;
+							break;
+						case 1:
+							func = tweenxcore_Easing.warpOut;
+							break;
+						case 2:
+							func = tweenxcore_Easing.warpInOut;
+							break;
+						case 3:
+							func = tweenxcore_Easing.warpOutIn;
+							break;
+						}
+						break;
+					}
+					break;
+				case 2:
+					var controls = kind[3];
+					switch(kind[2][1]) {
+					case 0:
+						var a2 = controls;
+						func = function(a1) {
+							return tweenxcore_FloatTools.bezier(a1,a2);
+						};
+						break;
+					case 1:
+						var a21 = controls;
+						func = function(a11) {
+							return tweenxcore_FloatTools.polyline(a11,a21);
+						};
+						break;
+					case 2:
+						var a22 = controls;
+						func = function(a12) {
+							return tweenxcore_FloatTools.uniformQuadraticBSpline(a12,a22);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			case 1:
+				var op = easing[3];
+				var easing1 = easing[2];
+				switch(op[1]) {
+				case 0:
+					var repeat = op[2];
+					var func1 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					func = function(rate) {
+						var p = (0 * (1 - rate) + repeat * rate) / 1.0;
+						return func1(p - Math.floor(p));
+					};
+					break;
+				case 1:
+					var to = op[3];
+					var from = op[2];
+					var func2 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					func = function(rate1) {
+						var rate2 = func2(rate1);
+						return from * (1 - rate2) + to * rate2;
+					};
+					break;
+				case 2:
+					var max = op[3];
+					var min = op[2];
+					var func3 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					func = function(rate3) {
+						var value = func3(rate3);
+						if(value <= min) {
+							return min;
+						} else if(max <= value) {
+							return max;
+						} else {
+							return value;
+						}
+					};
+					break;
+				case 3:
+					switch(op[2][1]) {
+					case 0:
+						var func4 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						func = function(value1) {
+							return func4((value1 < 0.5?value1:1 - value1) * 2);
+						};
+						break;
+					case 1:
+						var func5 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						func = function(value2) {
+							if(value2 < 0.5) {
+								return func5(value2 * 2);
+							} else {
+								return 1 - func5((value2 - 0.5) * 2);
+							}
+						};
+						break;
+					}
+					break;
+				case 4:
+					var op1 = op[3];
+					var easing2 = op[2];
+					switch(op1[1]) {
+					case 0:
+						var func11 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func21 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						func = function(rate4) {
+							return func11(func21(rate4));
+						};
+						break;
+					case 1:
+						var func12 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func22 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						func = function(rate5) {
+							return func12(rate5) * func22(rate5);
+						};
+						break;
+					case 2:
+						var strength = op1[2];
+						var func13 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func23 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var a23 = func13;
+						var a3 = func23;
+						var a4 = strength;
+						func = function(a13) {
+							return tweenxcore_FloatTools.mixEasing(a13,a23,a3,a4);
+						};
+						break;
+					case 3:
+						var switchValue = op1[3];
+						var switchTime = op1[2];
+						var func14 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func24 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var a24 = func14;
+						var a31 = func24;
+						var a41 = switchTime;
+						var a5 = switchValue;
+						func = function(a14) {
+							return tweenxcore_FloatTools.connectEasing(a14,a24,a31,a41,a5);
+						};
+						break;
+					case 4:
+						var switchTime1 = op1[2];
+						var func15 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func25 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var a25 = func15;
+						var a32 = func25;
+						var a42 = switchTime1;
+						func = function(a15) {
+							return tweenxcore_FloatTools.oneTwoEasing(a15,a25,a32,a42);
+						};
+						break;
+					case 5:
+						var op2 = op1[3];
+						var easing3 = op1[2];
+						var end = op2[3];
+						var start = op2[2];
+						var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func26 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var func31 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
+						var a26 = func16;
+						var a33 = func26;
+						var a43 = func31;
+						var a51 = start;
+						var a6 = end;
+						func = function(a16) {
+							return tweenxcore_FloatTools.crossfadeEasing(a16,a26,a33,a43,a51,a6);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			}
+			var _g = [];
+			var _g2 = 0;
+			var _g1 = this.arrayLength;
+			while(_g2 < _g1) _g.push(func(_g2++ / (this.arrayLength - 1)));
+			return JSON.stringify(_g);
 		}
 	}
 	,changeMode: function(newMode,result) {
@@ -3647,13 +3998,16 @@ core_output_OutputManager.prototype = {
 	}
 	,__class__: core_output_OutputManager
 };
-var core_output_OutputMode = $hxClasses["core.output.OutputMode"] = { __ename__ : ["core","output","OutputMode"], __constructs__ : ["Json","Haxe"] };
+var core_output_OutputMode = $hxClasses["core.output.OutputMode"] = { __ename__ : ["core","output","OutputMode"], __constructs__ : ["Json","Haxe","Array"] };
 core_output_OutputMode.Json = ["Json",0];
 core_output_OutputMode.Json.toString = $estr;
 core_output_OutputMode.Json.__enum__ = core_output_OutputMode;
 core_output_OutputMode.Haxe = ["Haxe",1];
 core_output_OutputMode.Haxe.toString = $estr;
 core_output_OutputMode.Haxe.__enum__ = core_output_OutputMode;
+core_output_OutputMode.Array = ["Array",2];
+core_output_OutputMode.Array.toString = $estr;
+core_output_OutputMode.Array.__enum__ = core_output_OutputMode;
 var core_storage_StorageKey = $hxClasses["core.storage.StorageKey"] = { __ename__ : ["core","storage","StorageKey"], __constructs__ : ["Locale","Output"] };
 core_storage_StorageKey.Locale = ["Locale",0];
 core_storage_StorageKey.Locale.toString = $estr;
@@ -5780,7 +6134,11 @@ tweenxcore_FloatTools.shake = function(rate,center,randomFunc) {
 	if(randomFunc == null) {
 		randomFunc = Math.random;
 	}
-	return center + rate * (1 - 2 * randomFunc());
+	var rate1 = randomFunc();
+	return center + (-rate * (1 - rate1) + rate * rate1);
+};
+tweenxcore_FloatTools.spread = function(rate,scale) {
+	return -scale * (1 - rate) + scale * rate;
 };
 tweenxcore_FloatTools.sinByRate = function(rate) {
 	return Math.sin(rate * 2 * Math.PI);
