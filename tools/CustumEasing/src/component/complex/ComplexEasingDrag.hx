@@ -39,20 +39,26 @@ class ComplexEasingDrag implements DragState
     
     public function enter(id:ComplexEasingId):Void
     {
+        trace("enter0", toId);
         toId = id;
+        trace("enter1", toId);
+        
         drag.context.update();
     }
     
     public function leave():Void
     {
+        trace("leave0", toId);
         if (!toId.isEmpty())
         {
-            toId = toId.child();
+            toId = toId.parent();
         }
         else
         {
             toId = fromId;
         }
+        
+        trace("leave1", toId);
         
         drag.context.update();
     }

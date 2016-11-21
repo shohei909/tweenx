@@ -1689,15 +1689,19 @@ component_complex_ComplexEasingDrag.prototype = {
 		}
 	}
 	,enter: function(id) {
+		haxe_Log.trace("enter0",{ fileName : "ComplexEasingDrag.hx", lineNumber : 42, className : "component.complex.ComplexEasingDrag", methodName : "enter", customParams : [component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(this.toId)]});
 		this.toId = id;
+		haxe_Log.trace("enter1",{ fileName : "ComplexEasingDrag.hx", lineNumber : 44, className : "component.complex.ComplexEasingDrag", methodName : "enter", customParams : [component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(this.toId)]});
 		this.drag.context.update();
 	}
 	,leave: function() {
+		haxe_Log.trace("leave0",{ fileName : "ComplexEasingDrag.hx", lineNumber : 51, className : "component.complex.ComplexEasingDrag", methodName : "leave", customParams : [component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(this.toId)]});
 		if(!component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.isEmpty(this.toId)) {
-			this.toId = component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child(this.toId);
+			this.toId = component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.parent(this.toId);
 		} else {
 			this.toId = this.fromId;
 		}
+		haxe_Log.trace("leave1",{ fileName : "ComplexEasingDrag.hx", lineNumber : 61, className : "component.complex.ComplexEasingDrag", methodName : "leave", customParams : [component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toString(this.toId)]});
 		this.drag.context.update();
 	}
 	,__class__: component_complex_ComplexEasingDrag
@@ -1719,6 +1723,9 @@ component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.current = function(t
 };
 component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.child = function(this1) {
 	return component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$._new(this1.slice(1));
+};
+component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.parent = function(this1) {
+	return component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$._new(this1.slice(0,this1.length - 1));
 };
 component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.concat = function(this1,id) {
 	return component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$._new(this1.concat([id]));
@@ -1752,7 +1759,7 @@ component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toArray = function(t
 component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.contains = function(this1,fromId) {
 	var fromArr = component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.toArray(fromId);
 	if(this1.length > fromArr.length) {
-		haxe_Log.trace(this1.length,{ fileName : "ComplexEasingId.hx", lineNumber : 74, className : "component.complex._ComplexEasingId.ComplexEasingId_Impl_", methodName : "contains", customParams : [fromArr.length]});
+		haxe_Log.trace(this1.length,{ fileName : "ComplexEasingId.hx", lineNumber : 79, className : "component.complex._ComplexEasingId.ComplexEasingId_Impl_", methodName : "contains", customParams : [fromArr.length]});
 		return false;
 	}
 	var _g1 = 0;
@@ -1760,11 +1767,11 @@ component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.contains = function(
 	while(_g1 < _g) {
 		var i = _g1++;
 		if(this1[i] != fromArr[i]) {
-			haxe_Log.trace(this1[i],{ fileName : "ComplexEasingId.hx", lineNumber : 82, className : "component.complex._ComplexEasingId.ComplexEasingId_Impl_", methodName : "contains", customParams : [fromArr[i]]});
+			haxe_Log.trace(this1[i],{ fileName : "ComplexEasingId.hx", lineNumber : 87, className : "component.complex._ComplexEasingId.ComplexEasingId_Impl_", methodName : "contains", customParams : [fromArr[i]]});
 			return false;
 		}
 	}
-	haxe_Log.trace(true,{ fileName : "ComplexEasingId.hx", lineNumber : 87, className : "component.complex._ComplexEasingId.ComplexEasingId_Impl_", methodName : "contains"});
+	haxe_Log.trace(true,{ fileName : "ComplexEasingId.hx", lineNumber : 92, className : "component.complex._ComplexEasingId.ComplexEasingId_Impl_", methodName : "contains"});
 	return true;
 };
 var component_complex_ComplexEasingSelectFocus = function(focus,id) {

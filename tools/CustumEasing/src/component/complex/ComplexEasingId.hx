@@ -29,6 +29,11 @@ abstract ComplexEasingId(Array<Int>)
     {
         return new ComplexEasingId(this.slice(1));
     }
+        
+    public function parent():ComplexEasingId
+    {
+        return new ComplexEasingId(this.slice(0, this.length - 1));
+    }
     
     public function concat(id:Int):ComplexEasingId
     {
