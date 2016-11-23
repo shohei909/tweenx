@@ -5,8 +5,10 @@ version: 1.0
 
 Cross platform tween library for Haxe
 
-Documentation
-[http://tweenx.spheresofa.net/en.html](http://tweenx.spheresofa.net/core/en.html)
+## Documentation
+
+[TweenXCore](http://tweenx.spheresofa.net/core/en.html)
+[TweenX](http://tweenx.spheresofa.netcore/en.html)
 
 ##License
 
