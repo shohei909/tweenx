@@ -468,6 +468,8 @@ timeline.add(walk1);
 TweenX.to(bitmap, {bitmapData: timeline}).time(1).repeat(0);
 ```
 
+{% include tweenxsample.asciidoc id="TimelineTween" %}
+
 Timelineの各要素には、BitmapDataに限らずあらゆる値の配列が設定できます。第2引数では各要素に割り当てる時間を指定します。
 
 

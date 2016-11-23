@@ -716,8 +716,7 @@ square.y = rateY.yoyo(Easing.expoInOut).lerp(0, 120);
 {% include sample.asciidoc id="Shake"%}
 
 ```haxe
-public function update():Void 
-{
+public function update():Void {
     var scale = 3;
     square1.x = scale.shake( 90);
     square1.y = scale.shake( 60);
@@ -729,14 +728,12 @@ public function update():Void
     square3.y = scale.shake( 60, random3);
 }
 
-private static function random2():Float
-{
+private static function random2():Float {
     // 0と1によせる
     return Math.random().quintInOut();
 }
 
-private static function random3():Float
-{
+private static function random3():Float {
     // 0.5によせる
     return Math.random().quintOutIn();
 }

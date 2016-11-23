@@ -1,5 +1,5 @@
-import flash.Assets;
 import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.display.Shape;
 import flash.display.StageScaleMode;
@@ -29,17 +29,24 @@ class Main extends Sprite {
         }
 
         //Make square
-        var walk0 = Assets.getBitmapData("assets/walk0.png");
-        var walk1 = Assets.getBitmapData("assets/walk1.png");
-        var walk2 = Assets.getBitmapData("assets/walk2.png");
+        var walk0 = new Walk0BitmapData();
+        var walk1 = new Walk1BitmapData();
+        var walk2 = new Walk2BitmapData();
+        
 
         var bitmap = new Bitmap();
         addChild(bitmap);
         bitmap.y = CELL_SIZE * 9 + 7;
         bitmap.x = CELL_SIZE * 9 + 7;
-
+        
+        var timeline = new Timeline<BitmapData>();
+        timeline.add(walk0);
+        timeline.add(walk1);
+        timeline.add(walk2);
+        timeline.add(walk1);
+        
         //Tween!!
-        TweenX.to(bitmap, {bitmapData: new Timeline([walk0,walk1,walk2,walk1])}).time(1).repeat(0);
+        TweenX.to(bitmap, {bitmapData: timeline}).time(1).repeat(0);
     }
 }
 
@@ -50,4 +57,22 @@ private class Square extends Shape {
         graphics.beginFill(0x335F73);
         graphics.drawRect(0, 0, size, size);
     }
+}
+
+@:bitmap("assets/walk0.png")
+class Walk0BitmapData extends BitmapData
+{
+    public function new () { super(0, 0); }
+}
+
+@:bitmap("assets/walk1.png")
+class Walk1BitmapData extends BitmapData
+{
+    public function new () { super(0, 0); }
+}
+
+@:bitmap("assets/walk2.png")
+class Walk2BitmapData extends BitmapData
+{
+    public function new () { super(0, 0); }
 }

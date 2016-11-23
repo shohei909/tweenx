@@ -698,8 +698,7 @@ For example, `repeat` converts from 0 to 1 with values such as -400 to 0, 0 to 4
 {% include sample.asciidoc id="Shake"%}
 
 ```haxe
-public function update():Void 
-{
+public function update():Void {
     var scale = 3;
     square1.x = scale.shake( 90);
     square1.y = scale.shake( 60);
@@ -711,15 +710,13 @@ public function update():Void
     square3.y = scale.shake( 60, random3);
 }
 
-private static function random2():Float
-{
-    // 0と1によせる
+private static function random2():Float {
+    // Make closer to 0 or 1
     return Math.random().quintInOut();
 }
 
-private static function random3():Float
-{
-    // 0.5によせる
+private static function random3():Float {
+    // Make closer to 0.5
     return Math.random().quintOutIn();
 }
 ```

@@ -453,7 +453,6 @@ TweenX.to(
 ==== Timeline tween
 
 By setting it as a value to tween the Timeline, you can achieve a tween with a non-continuous value. For example, it can be used to realize animation by replacing multiple bitmap data.
-合に使用出来ます。
 
 ```haxe
 var timeline = new Timeline();
@@ -463,6 +462,9 @@ timeline.add(walk2);
 timeline.add(walk1);
 TweenX.to(bitmap, {bitmapData: timeline}).time(1).repeat(0);
 ```
+
+{% include tweenxsample.asciidoc id="TimelineTween" %}
+
 For each element of Timeline, not only BitmapData but also an various values can be set. The second argument specifies the weight to assign to each element.
 
 ==== Other tween
