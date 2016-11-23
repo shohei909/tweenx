@@ -668,7 +668,7 @@ In other words, it can be used to create a frame animation of images, for exampl
 
 === Tween with other than time
 
-==== Tweening based on mouse coordinates
+==== Tween using mouse
 
 If it is possible to convert from 0.0 to 1.0, the value that is the source of the tween does not have to be time. In the following sample, we move the position of the square using the mouse coordinates.
 

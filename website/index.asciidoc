@@ -32,11 +32,13 @@ TweenXは**クロスプラットフォーム**で動作する、Haxe向けのト
 
 == バージョン1.0について
 
-バージョン0.0から1.0での最大の変更点は、モーションを作る上で必要な機能について、{{page.tweenxcore}}への分離を行ったことです。
+バージョン0.0から1.0での最大の変更点は、イージングなどのコア機能について{{page.tweenxcore}}への分離を行ったことです。
 
-TweenXは{{page.tweenxcore}}があれば不必要なライブラリですが、Tweenerを初めとする従来のトゥイーンライブラリに近い書き方をするために使用できます。
+{{page.tweenxcore}}さえあれば、より自由度が高く、実行速度が速く、フレームワークを選ばない方法でモーションを記述することができます。
 
-ただし従来の方法は問題が多く、TweenXを使わずにlink:core[{{page.tweenxcore}}のページ]で解説する書き方をした方が自由度が高く、実行速度が速く、プラットフォームを選びません。特別な事情がない場合は{{page.tweenxcore}}のみの使用を推奨しています。
+TweenXは{{page.tweenxcore}}を拡張して、Tweenerを初めとする旧来のライブラリに近い方法でトゥイーンをあつかえるようにするライブラリという位置づけになりました。
+
+ただし従来の方法は問題が多く、TweenXを使わないlink:core[{{page.tweenxcore}}の使用法]を推奨しています。
 
 toc::[]
 
@@ -455,17 +457,23 @@ TweenX.to(
 
 ==== トゥイーンによるアニメーション
 
-TimelineXをトゥイーンさせる値として設定することで、連続でない値のトゥイーンが実現できます。例えば、複数のビットマップデータを差し替えることでアニメーションを実現したい場合に使用出来ます。
+Timelineをトゥイーンさせる値として設定することで、連続でない値のトゥイーンが実現できます。例えば、複数のビットマップデータを差し替えることでアニメーションを実現したい場合に使用出来ます。
 
 ```haxe
-TweenX.to(bitmap, {bitmapData: new TimelineX([walk0,walk1,walk2,walk1])}).time(1).repeat(0);
+var timeline = new Timeline();
+timeline.add(walk0);
+timeline.add(walk1);
+timeline.add(walk2);
+timeline.add(walk1);
+TweenX.to(bitmap, {bitmapData: timeline}).time(1).repeat(0);
 ```
 
-TimelineXの第1引数は、BitmapDataに限らずあらゆる値の配列が設定できます。第2引数では各要素に割り当てる時間を指定します。
+Timelineの各要素には、BitmapDataに限らずあらゆる値の配列が設定できます。第2引数では各要素に割り当てる時間を指定します。
+
 
 ==== 変則トゥイーンの自作
 
-上記以外のオブジェクトに対するトゥイーンも自作することができます。まず、他の変則トゥイーン(link:https://github.com/shohei909/tweenx/blob/master/tweenx909/rule/QuakeX.hx?at=master[QuakeXクラス]など)を参考にlink:https://github.com/shohei909/tweenx/blob/master/tweenx909/rule/RuleX.hx?at=master[RuleX]型の条件を満たす、自作のクラスを作成し、TweenX.addRule関数を使って新しいルールを追加します。
+上記以外のオブジェクトに対するトゥイーンも自作することができます。まず、他の変則トゥイーン(link:https://github.com/shohei909/tweenx/blob/master/src/tweenx/tweenx909/rule/QuakeX.hx[QuakeXクラス]など)を参考にlink:https://github.com/shohei909/tweenx/blob/master/src/tweenx/tweenx909/rule/RuleX.hx?at=master[RuleX]型の条件を満たす、自作のクラスを作成し、TweenX.addRule関数を使って新しいルールを追加します。
 
 ```haxe
 TweenX.addRule(CustomRule);
@@ -589,10 +597,10 @@ Main.hx:171: Tween_21(generated at TweenXPlayer/change()[TweenXPlayer.hx:98]) FI
 ...
 ```
 
-各トゥイーンのupdateに関する情報が要らない場合、以下のように指定します。
+各トゥイーンのupdateに関する情報が要らない場合、以下を追加します。
 
 ```
--D tweenx_debug -D tweenx_debug_hide_update
+-D tweenx_debug_hide_update
 ```
 
 === グループ化時の注意点

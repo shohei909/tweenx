@@ -2302,7 +2302,11 @@ tweenxcore_FloatTools.shake = function(rate,center,randomFunc) {
 	if(randomFunc == null) {
 		randomFunc = Math.random;
 	}
-	return center + rate * (1 - 2 * randomFunc());
+	var rate1 = randomFunc();
+	return center + (-rate * (1 - rate1) + rate * rate1);
+};
+tweenxcore_FloatTools.spread = function(rate,scale) {
+	return -scale * (1 - rate) + scale * rate;
 };
 tweenxcore_FloatTools.sinByRate = function(rate) {
 	return Math.sin(rate * 2 * Math.PI);

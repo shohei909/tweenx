@@ -27,27 +27,27 @@ $(document).ready(function(){
 
 link:.[[日本語\]]|link:en.html[[English\]]
 
-TweenXは**クロスプラットフォーム**で動作する、Haxe向けのトゥイーンライブラリです。オブジェクトの移動先を指定して、モーションさせることを可能にします。
+TweenX is a **cross-platform** tween library for Haxe. It enables you to specify the movement destination of the object and make it motion.
 
-link:sample/swf/TweenXDemoHaxe3.swf?width=720&height=512[[Flash版デモ\]] +
-link:sample/TweenXDemoHaxe3[[HTML5版デモ\]]
+== About version 1.0
 
+The biggest change between version 0.0 and 1.0 is the separation of {{page.tweenxcore}} for core functions such as easing.
 
-== バージョン1.0について
+Using {{page.tweenxcore}}, you can write motion in a way that is more flexible, faster to run, and more platform-independent.
 
-バージョン0.0から1.0での最大の変更点は、モーションを作る上で必要な機能について、{{page.tweenxcore}}への分離を行ったことです。
+TweenX is now a library that extends {{page.tweenxcore}} and handles tweening in a way similar to traditional libraries, including Tweener.
 
-TweenXは{{page.tweenxcore}}があれば不必要なライブラリですが、Tweenerを初めとする従来のトゥイーンライブラリに近い書き方をするために使用できます。
-
-ただし従来の方法は問題が多く、TweenXを使わずにlink:core[{{page.tweenxcore}}のページ]で解説する書き方をした方が自由度が高く、実行速度が速く、プラットフォームを選びません。特別な事情がない場合は{{page.tweenxcore}}のみの使用を推奨しています。
+However, the traditional way has many problems, and I recommend link:core/en.html[using {{page.tweenxcore}}] without TweenX.
 
 toc::[]
 
-== 速度
+== Benchmark
 
-Flashプラットフォーム上で、250000個のオブジェクトを同時にトゥイーンさせた場合のFPSを測定しました。
+I measured the FPS when tweening 250,000 objects on Flash platform.
 
-image::/images/benchmark1.png[ベンチマーク結果]
+image::/images/benchmark1.png[result]
+
+It is faster to operate the object with {{page.tweenxcore}} alone than with TweenX.
 
 * link:sample/bench/TweensyBench.swf?width=401&height=401[[Tweensy\]]
 * link:sample/bench/TweenXBench.swf?width=401&height=401[[TweenX\]]
@@ -55,28 +55,28 @@ image::/images/benchmark1.png[ベンチマーク結果]
 * link:sample/bench/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]]
 * link:sample/bench/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
 
-https://github.com/shohei909/tweenx/blob/master/sample/800_BenchMark/src?at=master[[ソース\]]
+https://github.com/shohei909/tweenx/blob/master/sample/800_BenchMark/src?at=master[[Source\]]
 
 
-== インストール
+== Installation
 
-haxelibを使うことで簡単にTweenXをインストールできます。コンソール上で以下のコマンドを打つだけです。
+You can easily install TweenX by using haxelib. Just type the following command on the console.
 
 ```haxe
 haxelib install tweenx
 ```
 
-インストールしたライブラリは、コンパイル時に-lib tweenxフラグを付けることで利用可能になります。
+The installed libraries can be used by compiling with flags of `-lib tweenx` and `-lib tweenxcore`.
 
-== Haxeバージョン
+== Haxe version
 
-TweenXの最新バージョン(1.0)でのサポート対象Haxe 3.1.3以降です。
+The version 1.0 of TweenX supports Haxe 3.1.3 or later.
 
-== チュートリアル
+== Tutorial
 
-=== 通常トゥイーン
+=== Normal tween
 
-TweenXを使うことで、オブジェクトの移動をとても簡単に表現することができます。
+By using TweenX, you can easily express the movement of an object.
 
 ```haxe
 //...
@@ -86,7 +86,7 @@ class Main extends Sprite {
     //...
     public function new() {
         //...
-        //squareのx座標を360に移動
+        //　Move the x coordinate of square to 360
         TweenX.to(square, {x:360});
         //...
     }
@@ -95,18 +95,18 @@ class Main extends Sprite {
 
 {% include tweenxsample.asciidoc id="SimplestTween" %}
 
-to関数は配列を渡すことで複数のオブジェクトを同時に移動させることができます。
+The `to` function can move multiple objects simultaneously by passing an array.
 
 ```haxe
-//3つのsquareのx座標を360に移動
+// Move x coordinates of 3 squares to 360
 TweenX.to([square1, square2, square3], {x:360});
 ```
 
 {% include tweenxsample.asciidoc id="GroupTween" %}
 
-=== メソッドチェーン
+=== Method chain
 
-TweenXでは、イージング(ease)、再生時間(time)、遅延時間(delay)などの値をメソッドチェーンよって指定することができます。
+In TweenX, you can specify values such as `easing`, playback ``time``, ``delay`` time, and so on by method chain.
 
 ```haxe
 //...
@@ -117,27 +117,27 @@ class Main extends Sprite {
     //...
     public function new() {
         //...
-        //0.5秒後に、1.2秒かけて、指数的に減速するイージングで、squareのx座標を360に移動
+        // After 0.5 seconds, in the easing decelerating exponentially over 1.2 seconds, move the square x coordinate to 360
         TweenX.to(square, {x:360}).delay(0.5).time(1.2).ease(Easing.expoInOut);
         //...
     }
 }
 ```
 
-トゥイーンライブラリの特徴は、イージングを指定することで簡単にオブジェクトの速度変化を指定することが出来ることです。TweenXで用意している41種類のイージングは以下のサンプルで確認できます。
+The feature of the tween library is easy selection of the object speed change by specifying easing. TweenX's 44 kinds of easing can be confirmed with the following sample.
 
 {% include tweenxsample.asciidoc id="Easing" width=750 height=520 %}
 
 ==== using tweenx909.ChainX
 
-トゥイーンの設定をメソッドチェーンで指定できることのメリットは、**強力な入力補完**を受けられるということです。TweenXでメソッドチェーンが使えるのは時間やイージングの指定だけではありません。using tweenx909.ChainX;を宣言することで、トゥイーンの移動先をメソッドチェーンを使って指定できるようになります。
+A advantage of specifying the tween settings in the method chain is the *powerful input completion*. The method chain can be used not only for specifying `time` or `easing`. By declaring `using tweenx909.ChainX;`, you can set the various parameters of the tween using method chains.
 
 ```haxe
 //...
 import tweenx909.TweenX;
 import tweenxcore.Easing;
 
-using tweenx909.ChainX;    //トゥイーンの行き先をメソッドチェーンで指定できるようにする。
+using tweenx909.ChainX;
 
 class Main extends Sprite {
     //...
@@ -151,11 +151,11 @@ class Main extends Sprite {
 
 {% include tweenxsample.asciidoc id="MethodChain" %}
 
-例えば、Pointに対するトゥイーンでは座標(x、y)のみを変化させる関数しか補完されないのにも関わらず、Spriteに対するトゥイーンではそれらに加えて、拡大率(scaleXなど)、透明度など、その他の値に対する関数まで補完されるようになります。
+For example, on tween for `Point`, only `x` and `y` are autocompleted. On the other hand on tween for `Sprite`, in addition to them, other fields including `scaleX`, `scaleY`, and `alpha` are autocompleted. 
 
-=== 直列トゥイーン(serial)
+=== Serial tween
 
-TweenX.serial()を使うことで、連続したトゥイーンを簡単に表現できます。
+By using `TweenX.serial()` you can easily express a continuous tween.
 
 ```haxe
 TweenX.serial([
@@ -167,9 +167,9 @@ TweenX.serial([
 
 {% include tweenxsample.asciidoc id="SerialTween" %}
 
-=== 並列トゥイーン(parallel)
+=== Parallel tween
 
-複数のトゥイーンを同時に再生させるには、TweenX.parallel()を使います。
+To play multiple tweens at the same time, use `TweenX.parallel()`.
 
 ```haxe
 TweenX.parallel([
@@ -181,9 +181,9 @@ TweenX.parallel([
 
 {% include tweenxsample.asciidoc id="ParallelTween" %}
 
-=== 時間差トゥイーン(lag)
+=== Lag tween
 
-複数のトゥイーンを時間差で再生させるには、TweenX.lag()を使います。
+To play multiple tweens with time difference, use `TweenX.lag()`.
 
 ```haxe
 TweenX.lag([
@@ -195,64 +195,66 @@ TweenX.lag([
 
 {% include tweenxsample.asciidoc id="LagTween" %}
 
-=== タイミング調節(waitとskip)
+=== Wait and Skip
 
-グループ化の際にタイミング調節を行いたい場合は、TweenX.wait()とskip()を使います。
+To adjust the timing when grouping, use `TweenX.wait()` and `skip()`.
 
 ```haxe
 TweenX.serial([
     TweenX.to(square1).x(360).ease(Easing.expoOut),
     TweenX.to(square2).x(360).ease(Easing.expoOut),
-    TweenX.wait(0.3), //0.3秒待機
-    TweenX.to(square3).x(360).ease(Easing.expoOut).skip(), //このトゥイーンを待たずに次のトゥイーンを開始。
+    TweenX.wait(0.3), //　Wait 0.3 seconds.
+    TweenX.to(square3).x(360).ease(Easing.expoOut).skip(), // Start the next tween without waiting for this tween.
     TweenX.to(square4).x(360).ease(Easing.expoOut),
 ]);
 ```
 
 {% include tweenxsample.asciidoc id="WaitAndSkip" %}
 
-=== 繰り返し、ヨーヨー、ジグザグ
+=== Repetition, yo-yo, zigzag
 
-同じ動きを何度も繰り返したい場合は、repeat()を使います。さらにzigzag()、yoyo()、interval()の関数によって繰り返しを行った時の挙動を制御することが出来ます。
+If you want to repeat the same motion, use `repeat()`. Furthermore, it is possible to control the behavior when repeating by `zigzag()`, `yoyo()`, `interval()` functions.
 
 ```haxe
 TweenX.serial([
-    TweenX.to(square1).x(360).time(0.4).ease(Easing.quartOut).repeat(3), //同じ動きを3回繰り返し
-    TweenX.to(square2).x(360).time(0.4).ease(Easing.quartOut).repeat(5).yoyo(), //跳ねるようなトゥイーン
-    TweenX.to(square3).x(360).time(0.4).ease(Easing.quartOut).repeat(5).zigzag(), //往復するようなトゥイーン
-]).repeat().interval(0.4); //0.4秒の間隔をあけて、無限リピート。
+    TweenX.to(square1).x(360).time(0.4).ease(Easing.quartOut).repeat(3),
+    TweenX.to(square2).x(360).time(0.4).ease(Easing.quartOut).repeat(5).yoyo(),
+    TweenX.to(square3).x(360).time(0.4).ease(Easing.quartOut).repeat(5).zigzag(),
+]).repeat().interval(0.4);
 ```
 
 {% include tweenxsample.asciidoc id="RepeatTween" %}
 
-=== デフォルト値
+=== Default value
 
-timeやeaseなどの各設定にはそれぞれのデフォルト値が用意されています。これらは、TweenX.dumpDefaults()で好きなタイミングでデフォルト値を取り出して保存したり、TweenX.setDefaults()でデフォルト値の差し戻しを行ったりが簡単に出来ます。取り出したデフォルト値は、メソッドチェーンで値を変更したり、serial、parallel、lag関数に引数として渡してグループ内のみでのデフォルト値を指定したりできます。
+Default values are provided for each setting such as `time` and `ease`. You can easily retrieve default values from `TweenX.dumpDefaults()` at any time, save them, and `TweenX.setDefaults()` to pass back.
+
+The retrieved default values can be changed by method chains, or it can be passed as an argument to the serial, parallel, lag functions as default values only within the group
 
 ```haxe
-//各動作設定のデフォルト値は以下のとおり
+//　Default values of each operation setting are as follows.
 TweenX.defaultTime      = 0.3;
 TweenX.defaultEase      = Easing.linear;
 TweenX.defaultDelay     = 0;
 TweenX.defaultRepeat    = 1;
 TweenX.defaultYoyo      = false;
 TweenX.defaultZigZag    = false;
-TweenX.defaultInterval  = 0; //各繰り返しの間隔。
-TweenX.defaultAutoPlay  = true; //トゥイーンの自動開始
+TweenX.defaultInterval  = 0; // interval between each repetition
+TweenX.defaultAutoPlay  = true; // Automatic start of tween
 
-//現在のデフォルトを取得
+// Get current defaults
 var defaults:DefaultsX = TweenX.dumpDefaults();
 
-//取得した値の内容を変更する
+//　Change contents of acquired value
 defaults.ease(Easing.bounceOut).time(1);
 
-//デフォルトを変更
+// Set defaults
 TweenX.setDefaults(defaults);
 
-//デフォルト値を初期状態に戻す。
+//　Reset the default value to the initial.
 TweenX.initDefaults();
 
-//直列化したグループにデフォルト値を適用する。
+// Apply default values to serialize group.
 TweenX.serial([
     TweenX.to(square).x(360),
     TweenX.to(square).alpha(0),
@@ -261,83 +263,76 @@ TweenX.serial([
 
 {% include tweenxsample.asciidoc id="Default" %}
 
-=== イベントの取得
+=== Event handling
 
-TweenXでは2種類のイベントの取得方法があります。1つは手軽に関数を指定できるon～関数を使う方法です。ただし、on～で指定できるイベントハンドラは1つです。複数のイベントハンドラを指定したい場合には、addEventListenerを使用します。
+TweenX has two ways to handle events. One is to use `on-` functions. However, you can set one event handler with each `on-` functions. If you want to set multiple event handlers, use `addEventListener`.
 
 ```haxe
-//on～の関数に、Void->Voidの関数を渡すことで各種イベントを取得出来ます。
+// on- handlers are Void->Void
 TweenX.to(square).x(360)
-    .onDelay(_delay);         //遅延により値を更新しなかった場合に呼び出される
-    .onHead(_head);            //各リピートの頭で呼び出される
-    .onUpdate(_update);        //値を更新した直後に呼び出される
-    .onFoot(_foot);            //各リピートの末尾に呼び出される
-    .onInterval(_interval);    //リピート間のインターバルにより値が更新しなかった場合に呼び出される
-    .onRepeat(_repeat);        //インターバルが終了して次のリピートが開始される直前に呼び出される
-    .onRest(_rest);            //長さ調節時間により値が更新しなかった場合に呼び出される
-    .onFinish(_finish);        //トゥイーンが正常に終了した場合に呼び出される
-    .onProgress(_progress);    //トゥイーンの再生が進行した時に呼び出される
-    .onPlay(_play);            //再生開始時に呼び出される
-    .onStop(_stop);            //停止時に呼び出される
+    .onDelay(_delay);          // Called when the value is not updated by the delay
+    .onHead(_head);            // Called at the beginning of each repeat
+    .onUpdate(_update);        // Called after updating the value
+    .onFoot(_foot);            // Called at the end of each repeat
+    .onInterval(_interval);    // Called when the value is not updated due to the interval
+    .onRepeat(_repeat);        // Called before the next repeat starts
+    .onRest(_rest);            // Called when the value is not updated due to the adjustment time
+    .onFinish(_finish);        // Called when the tween finishes normally
+    .onProgress(_progress);    // Called when tween playback has progressed
+    .onPlay(_play);            // Called at the start of playback
+    .onStop(_stop);            // Called when stopped
 
-    //複数のイベントハンドラを指定したい場合addEventListenerを使います
-    //この場合にイベントハンドラとして渡す関数はTweenX->Voidです
-    .addEventListener(EventX.DELAY,     delay);
-    .addEventListener(EventX.HEAD,     head);
-    .addEventListener(EventX.REPEAT,     repeat);
-    .addEventListener(EventX.FOOT,     foot);
-    .addEventListener(EventX.UPDATE,     update);
+    // addEventListener's handlers are TweenX->Void
+    .addEventListener(EventX.DELAY, delay);
+    .addEventListener(EventX.HEAD, head);
+    .addEventListener(EventX.REPEAT, repeat);
+    .addEventListener(EventX.FOOT, foot);
+    .addEventListener(EventX.UPDATE, update);
     .addEventListener(EventX.INTERVAL, interval);
-    .addEventListener(EventX.REST,     rest);
-    .addEventListener(EventX.FINISH,     finish);
-    .addEventListener(EventX.PLAY,     play);
-    .addEventListener(EventX.STOP,     stop);
+    .addEventListener(EventX.REST, rest);
+    .addEventListener(EventX.FINISH, finish);
+    .addEventListener(EventX.PLAY, play);
+    .addEventListener(EventX.STOP, stop);
 ```
 
-=== トゥイーン制御(再生、停止、早送り、逆再生)
+=== Play, Stop, Fast Forward, Reverse Play
 
-TweenXでは動画を操作するような感覚で、トゥイーンを停止させたり、途中から再生したり、早送りしたり、巻き戻ししたり、自由に操ることが出来ます。 またTweenXでは、何度の再生をしても同じ開始位置と終了位置で動作が再生されます。つまり、トゥイーンを繰り返し再生することで表示が崩れることはありません。
+With TweenX, you can stop the tween, play from the middle, fast forward, rewind, and freely control it as if you were manipulating the video. Motions are played at the same start and end positions regardless of how many times playback is done. In other words, the display will not be disturbed by repeatedly playing the tween.
 
 ```haxe
-//停止
 tween.stop();
 
-//再生
 tween.play();
 
-//指定した再生時間に移動
 tween.goto(0.1);
 
-//トゥイーンを頭から再生
 tween.goto(0, true);
 
-//現在の再生時間を取得
+// Get current playing time
 tween.currentTime;
 
-//トゥイーンを最初から最後まで再生するのにかかる時間を取得
+// Get the time it takes to play the tween from beginning to end
 tween.totalTime;
 
-//再生速度を変更(早送り)
+// Fast forward
 tween.timeScale = 8;
 
-//再生速度を変更(逆再生)
+// Reverse play
 tween.timeScale = -1;
 
-//TweenX全体の再生速度を変更する
+// Change the playback speed of the whole TweenX
 TweenX.topLevelTimeScale = 0.5;
 ```
 
-{% include tweenxsample.asciidoc id="TweenControl" %}
+=== Relative value tween
 
-=== 相対値トゥイーン
-
-移動先を現在地からの相対値で指定する場合は、_～()関数を使います。また、開始位置からの相対値で指定する場合は、__～()関数を使います。
+To set the destination as a relative value from the current location, use the `_-` functions. To set it as a relative value from the start position, use the `__-` functions.
 
 ```haxe
 TweenX.serial([
-    //以下の3つのトゥイーンはすべて同じ挙動になります。
+    // The following three tweens all behave identically.
 
-    //絶対値によるトゥイーン。
+    // Tween by absolute value.
     TweenX.serial([
         TweenX.to(square).xy(360,   0),
         TweenX.to(square).xy(360, 360),
@@ -346,7 +341,7 @@ TweenX.serial([
     ]),
     TweenX.wait(0.5),
 
-    //現在地からの相対値によるトゥイーン
+    // Tween with relative value from current position.
     TweenX.serial([
         TweenX.to(square)._xy(360,   0),
         TweenX.to(square)._xy(360, 360),
@@ -355,7 +350,7 @@ TweenX.serial([
     ]),
     TweenX.wait(0.5),
 
-    //開始位置からの相対値によるトゥイーン
+    // Tween with relative value from start position.
     TweenX.serial([
         TweenX.to(square).__xy( 360,    0),
         TweenX.to(square).__xy(   0,  360),
@@ -367,9 +362,9 @@ TweenX.serial([
 
 {% include tweenxsample.asciidoc id="RelativeTween" %}
 
-=== 関数トゥイーン
+=== Function tween
 
-トゥイーンをさせながら関数を実行する場合、tweenFunc1()、tweenFunc2()、tweenFunc3()、tweenFunc4()、tweenFunc()のいずれかを使用します。
+To execute a function while making tweening, use `tweenFunc1()`, `tweenFunc2()`, `tweenFunc3()`, `tweenFunc4()` or `tweenFunc()`.
 
 ```haxe
 function draw(x:Float, size:Float) {
@@ -382,15 +377,15 @@ TweenX.tweenFunc2(draw, 10, 10, 300, 100).time(0.5).ease(Easing.quadIn);
 
 {% include tweenxsample.asciidoc id="TweenFunction" %}
 
-1、2、3、4の数字は変化させるFloatの数に対応しています。Float以外の値をトゥイーンさせたい場合や、トゥイーンさせたい値の数が4つを超える場合にはtweenFunc()関数を使用します。
+The numbers 1, 2, 3, 4 correspond to the number of Floats to be changed. If you want to tween values other than Float, or if the number of values you want to tween exceeds 4, use the `tweenFunc()` function.
 
-=== 変則トゥイーン
+=== not Float tween
 
-TweenXでは、Float型の値のトゥイーンの他に、Boolean、Array、RgbColor、ArgbColor、HsvColor、AhsvColor、Quake、Timelineの8つの型のトゥイーンをサポートしています。
+TweenX supports eight types of tweening besides tweening of Float type values. They are Boolean, Array, RgbColor, ArgbColor, HsvColor, AhsvColor, Quake and Timeline.
 
-==== 色(RGB,HSV)トゥイーン
+==== RgbColor, HsvColor tween
 
-色のトゥイーンはRGB、ARGB、HSV、AHSVに基づくものがあります
+Color tweens are based on RGB, ARGB, HSV or AHSV.
 
 ```haxe
 function draw(x:Float, y:Float, color:Int) {
@@ -399,19 +394,19 @@ function draw(x:Float, y:Float, color:Int) {
 }
 
 TweenX.serial([
-    TweenX.tweenFunc(draw, [0, 100, RgbColor.of(0x3373EE)     ], [380, 100, RgbColor.of(0xEE7333)     ]),
-    TweenX.tweenFunc(draw, [0, 180, HsvColor.of(0x3373EE)     ], [380, 180, HsvColor.of(0xEE7333)     ]),
-    TweenX.tweenFunc(draw, [0, 260, new HsvColor(0,0.7,0.9)     ], [380, 260, new HsvColor(2,0.7,0.9)    ]),
+    TweenX.tweenFunc(draw, [0, 100, RgbColor.of(0x3373EE)  ], [380, 100, RgbColor.of(0xEE7333)  ]),
+    TweenX.tweenFunc(draw, [0, 180, HsvColor.of(0x3373EE)  ], [380, 180, HsvColor.of(0xEE7333)  ]),
+    TweenX.tweenFunc(draw, [0, 260, new HsvColor(0,0.7,0.9)], [380, 260, new HsvColor(2,0.7,0.9)]),
 ]);
 ```
 
 {% include tweenxsample.asciidoc id="HSVTween" %}
 
-RgbColor、ArgbColor、HsvColor、AhsvColor型の値を元にしたトゥイーンでは、0x(AA)RRGGBB形式の整数値(Int)が出力されます。
+For tweening based on values of type RgbColor, ArgbColor, HsvColor, or AhsvColor, an integer value of 0x(AA)RRGGBB format is output.
 
-==== 配列トゥイーン
+==== Array tween
 
-配列をトゥイーンさせることで、要素それぞれを動かすことができます。ただし、配列はトゥイーン可能な値によって構成されていることが必要です。
+Each element can be moved by tweening the array. However, the array must consist of tweenable values.
 
 ```haxe
 var square = new GradientSquare(
@@ -434,20 +429,19 @@ TweenX.to(
 
 {% include tweenxsample.asciidoc id="ArrayTween" %}
 
-==== Boolean値のトゥイーン
+==== Boolean tween
 
-Booleanのトゥイーンではfalseを0、trueを1とみなしてトゥイーンを行い、0以下をfalse、0を超える値をtrueとみなしてBooleanへの再変換がされて出力されます。
+For Boolean tweens, `false` is assumed to be 0 and `true` is assumed to be 1, tweening is performed. 0 or less is regarded as false, and a value exceeding 0 is regarded as true and reconverted to Boolean and output.
 
-==== 振動させる
+==== Quake
 
-QuakeX型の値でトゥイーンを行うことで振動させながら値を動かすことが出来ます。
+By tweening with QuakeX type value you can move the value while oscillating it.
 
 ```haxe
 TweenX.from(square, { x:180, y:180 });
 TweenX.to(
     square, 
     {
-        //new QuakeX(目的地, 振動の大きさ, 振動に使うイージング)
         x:new QuakeX(180, 80, Easing.linear),
         y:new QuakeX(180, 80, Easing.linear)
     }
@@ -456,37 +450,39 @@ TweenX.to(
 
 {% include tweenxsample.asciidoc id="Quake" %}
 
-==== トゥイーンによるアニメーション
+==== Timeline tween
 
-TimelineXをトゥイーンさせる値として設定することで、連続でない値のトゥイーンが実現できます。例えば、複数のビットマップデータを差し替えることでアニメーションを実現したい場合に使用出来ます。
+By setting it as a value to tween the Timeline, you can achieve a tween with a non-continuous value. For example, it can be used to realize animation by replacing multiple bitmap data.
+合に使用出来ます。
 
 ```haxe
-TweenX.to(bitmap, {bitmapData: new TimelineX([walk0,walk1,walk2,walk1])}).time(1).repeat(0);
+var timeline = new Timeline();
+timeline.add(walk0);
+timeline.add(walk1);
+timeline.add(walk2);
+timeline.add(walk1);
+TweenX.to(bitmap, {bitmapData: timeline}).time(1).repeat(0);
 ```
+For each element of Timeline, not only BitmapData but also an various values can be set. The second argument specifies the weight to assign to each element.
 
-{% include tweenxsample.asciidoc id="TimelineTween" %}
+==== Other tween
 
-TimelineXの第1引数は、BitmapDataに限らずあらゆる値の配列が設定できます。第2引数では各要素に割り当てる時間を指定します。
+You can also make your own tweening for objects other than the above. 
 
-==== 変則トゥイーンの自作
-
-上記以外のオブジェクトに対するトゥイーンも自作することができます。まず、他の変則トゥイーン([QuakeXクラス](https://github.com/shohei909/tweenx/blob/master/tweenx909/rule/QuakeX.hx?at=master)など)を参考に[RuleX](https://github.com/shohei909/tweenx/blob/master/tweenx909/rule/RuleX.hx?at=master)型の条件を満たす、自作のクラスを作成し、TweenX.addRule関数を使って新しいルールを追加します。
+First, with reference to link:https://github.com/shohei909/tweenx/blob/master/src/tweenx/tweenx909/rule/QuakeX.hx[other not Float tween], create your own class that satisfies the condition of link:https://github.com/shohei909/tweenx/blob/master/src/tweenx/tweenx909/rule/RuleX.hx[RuleX] type and add a new rule using `TweenX.addRule` function.
 
 ```haxe
 TweenX.addRule(CustomRule);
 ```
 
 
+== Advanced content
 
-== 発展した内容
+It is not necessary to know the contents after this, but if you want to use TweenX more safely, more accurately, more conveniently it will be useful to read.
 
+=== Manual update
 
-
-これ以降の内容は必ずしも知っている必要は無い内容ですが、より安全に、より正確に、より便利にTweenXを使いたい場合には一読しておくと良いでしょう。
-
-=== 手動更新モード
-
-updateModeをMANUALに設定してフレーム毎にmanualUpdateを呼び出しを行うことで、トゥイーンの更新のタイミングを自分で制御することができます。
+By setting `updateMode` to `MANUAL` and calling `manualUpdate` for each frame you can control the timing of tween update by yourself.
 
 ```haxe
 //...
@@ -504,56 +500,57 @@ class Main extends Sprite {
     }
 
     function onFrame(e){
-        TweenX.manualUpdate(1/60); //全トゥイーンを1/60秒更新。
+        TweenX.manualUpdate(1/60); // update all tween for 1/60 of a second.
     }
 }
 ```
 
-=== トゥイーンの初期化
+=== Initialization of tween
 
-TweenXでは、再生中に値が変更されることによる再現性の低いバグの発生や、プログラマが意図していない挙動をなくすために、トゥイーンが初期化された後に目的位置や設定を変更することを禁止しています。
+TweenX prohibits changing the target position and setting after the tween has been initialized in order to eliminate the occurrence of bugs with low repeatability and unintended behaviors.
 
-トゥイーンの初期化は次のいづれかの内、最も早いタイミングで行われます。
+Initialization of the tween will be done at the earliest timing of the following.
 
-*   play、goto、updateの呼び出し時
-*   トゥイーンが定義された直後のアップデート時
+*   Calling play, goto or update
+*   First update after tween is defined
 
-そして、トゥイーンの初期化では以下のことが行われます。
+In the initialization of tween, the following is done.
 
-*   トゥイーンの開始位置の決定
-*   目的位置と各設定値(ease,time,repeat,yoyo,zigzag,intarval,delay)の固定
-*   autoPlayがtrueに設定されたトゥイーンの開始
+*   Determining the start position of a tween
+*   Fixing target position and each set value (ease, time, repeat, yoyo, zigzag, intarval, delay)
+*   Starting tweens of which ``autoPlay`` set to `true`
 
-トゥイーンが初期化された後に設定や目的位置を変更しようとすれば、実行エラーが発生します。一見、設定や目的位置が変更不能なことはデメリットのようですが、一度定義したトゥイーンが不変であることは大きなメリットをもたらします。TweenXによって定義されたトゥイーンはまるで**動画のように**振る舞います。つまり、トゥイーンを途中から再生したり、逆再生したり、早送りしたり、時間をおいてからもう一度再生したとしても、トゥイーンが崩れることはありません。
+If you try to change the setting or target position after the tween has been initialized, an execution error will occur. At first glance, it seems to be disadvantageous that setting and destination position can not be changed, but once the tween defined is unchanged, it brings great advantage. The tween defined by TweenX behaves like ** a movie **. In other words, even if you play a tween from the middle, reverse play, fast forward, or play back again after a while, the tween will not collapse.
 
-そしてトゥイーンが不変であることのもう一つのメリットが、トゥイーン開始位置の記述です。
+And another advantage of having tweening unchanged is the description of the tween start position.
 
-==== 開始位置
+==== Start position
 
-トゥイーンの開始位置は、基本的には初期化が行われた時のターゲットの値になります。ただし、同一のフレーム内ですでにターゲットが同じトゥイーンが定義されていた場合、そのトゥイーンの続きとして開始位置が設定されます。このため、TweenXでは同じ値を2度記述する必要はありません。もちろんトゥイーンがターゲットの再生時の状態から影響を受けることも無いので、ターゲットの移動について余計な配慮をする必要もありません。
+The start position of the tween is basically the target value when the initialization was done. However, if the same tween has already been defined in the same frame, the start position will be set as the continuation of that tween. For this reason TweenX does not need to write the same value twice. Of course the tween will not be affected by the target's playback state, so you do not need to take extra care about moving the target.
 
 ```haxe
 var defaults = TweenX.dumpDefaults();
 defaults.time(1).ease(Easing.quartOut);
 
 TweenX.serial([
-    //前回のアップデートから現在までに定義されたトゥイーンが存在しないので、トゥイーンが初期化されたときの座標から開始
+    // Since there is no tween defined from the last update, 
+    // starting with the coordinates when the tween was initialized
     TweenX.to(square).x(360).y(  0),
 
-    //次のトゥイーンはx:360、y:0から
+    // The next tween is from x: 360, y: 0
     TweenX.to(square).x(360).y(360).yoyo().repeat(2),
 
-    //ヨーヨーにより戻ってくるので、次のトゥイーンはx:360、y:0から
+    // As it comes back by yoyo, the next tween is from x: 360, y: 0
     TweenX.to(square).x(  0).y(360).zigzag().repeat(3),
 
-    //次のトゥイーンはx:0、y:360から
+    // The next tween is from x: 0, y: 360
     TweenX.to(square).x(  0).y(  0),
 ], defaults).repeat();
 ```
 
 {% include tweenxsample.asciidoc id="AutoFrom" %}
 
-この際に注意すべき点は、開始位置は前述のトゥイーン初期化時に決定するということです。トゥイーン開始位置の決定はあくまでトゥイーンを定義した順序に基づいて行われるので、以下のように再生の順序と定義の順序を逆にすると連続でないトゥイーンが生成されます。
+The point to note here is that the starting position is determined at the time of tween initialization. Since the determination of the tween start position is done based on the defined order, if you reverse the order of playback and definition, non-continuous tweening is generated as follows.
 
 ```haxe
 TweenX.to(square).x(180).delay(2);
@@ -562,23 +559,23 @@ TweenX.to(square).x(360).delay(1);
 
 {% include tweenxsample.asciidoc id="BadSample" %}
 
-また開始位置は、TweenX.from()関数を使って明示的に指定することもできます。
+The starting position can also be explicitly specified using the `TweenX.from()` function.
 
-=== メモリの解放
+=== Free memory
 
-トゥイーンライブラリの扱う上で、どうすればメモリリークを起こさないかは非常に重要です。TweenXでメモリリークを起こさない方法は簡単です。**使わなくなったトゥイーンを停止**してください。stopにより停止したトゥイーンは、TweenXのライブラリ内からの参照がないため、ガーベジコレクションの対象になりえます。再生時間の短いトゥイーンであれば、再生終了と同時にstopされます。ただしrepeatを0に指定した無制限の繰り返しトゥイーンや再生時間の長いトゥイーンは、必要が無くなると同時にstopを行ってください。
+How to prevent memory leaks when dealing with tweening libraries is very important. The method in TweenX is simple. ** Please stop the unnecessary tweens**. Stopped tween can be subject to garbage collection because there is no reference from TweenX's library. If it is a tween with a short playing time, it stops at the same time as playback ends. However, please stop explicitly when an unrestricted repeating tween with `repeat` set to 0 or a tween with long playing time becomes unnecessary.
 
-もうひとつ、メモリリークを起こす要因となるのがupdateModeをMANUALに設定したにも関わらずmanualUpdate呼び出しを行っていない場合です。manualUpdateでは、先述のトゥイーンの初期化が行われるので、manualUpdate呼び出しを行わないと初期化待ちのトゥイーンが大量にたまってしまいメモリリークを引き起こす場合があります。**updateModeをMANUALに設定した場合、必ず定期的にmanualUpdateを呼び出してください**。
+Another reason that causes memory leak is when `manualUpdate` is not called even though `updateMode` is set to `MANUAL`. If `manualUpdate` is not called, a large amount of tween waiting for initialization may accumulate, causing memory leak. **When `updateMode` is set to `MANUAL`, please call `manualUpdate` on a regular basis**.
 
-=== デバッグモード
+=== Debug mode
 
-以下のコンパイラフラグを指定することで、TweenXに関する情報が出力されます。
+By adding the following compiler flags, information on TweenX is output.
 
 ```bash
 -D tweenx_debug
 ```
 
-出力される内容は以下のような全トゥイーンの動作に関する情報です。
+The content is information on the operation of all tweens as follows.
 
 ```bash
 ...
@@ -596,19 +593,19 @@ Main.hx:171: Tween_21(generated at TweenXPlayer/change()[TweenXPlayer.hx:98]) FI
 ...
 ```
 
-各トゥイーンのupdateに関する情報が要らない場合、以下のように指定します。
+If you do not need information on update of each tween, add it as follows.
 
 ```
--D tweenx_debug -D tweenx_debug_hide_update
+-D tweenx_debug_hide_update
 ```
 
-=== グループ化時の注意点
+=== Notes on grouping
 
-serial、parallel、lag関数は、グループ化の際に内部のトゥイーンのdelayとrestの時間を調節して、すべてのトゥイーンの長さを単一に揃えることで連続的なトゥイーンを実現します。このため、特定のトゥイーンが開始するタイミングを取得したい場合、イベントハンドラを設定するよりも、TweenX.func()関数を使うことが推奨されます。
+The `serial`, `parallel`, `lag` function adjusts the internal tween delay and rest time during grouping to achieve continuous tweens by aligning the lengths of all the tweens. For this reason, it is recommended to use the `TweenX.func()` function rather than setting an event handler when you want to process at the timing when a specific tween starts.
 
-=== グループ全体に対するイージングの設定
+=== Easing setting for the group
 
-TweenXでは個別のトゥイーンのみではなく、serial、parallel、lag関数によってグループ化したトゥイーンの全体に対してもイージングを指定することができます。
+In TweenX, easing can be set not only for individual tweens but also for the tween grouped by serial, parallel, lag functions.
 
 ```haxe
 TweenX.serial([
@@ -620,4 +617,4 @@ TweenX.serial([
 
 {% include tweenxsample.asciidoc id="GroupEase" %}
 
-グループのイージングは明示的に指定しないかぎりEasing.linearです。重複してイージングが指定されてしまうことを避けるため、デフォルト値の影響は受けません。
+Group easing is `Easing.linear` unless you explicitly change it. It is not influenced by the default value to avoid duplicate easing being specified.

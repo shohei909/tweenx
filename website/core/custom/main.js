@@ -226,6 +226,20 @@ StringTools.__name__ = ["StringTools"];
 StringTools.replace = function(s,sub,by) {
 	return s.split(sub).join(by);
 };
+StringTools.hex = function(n,digits) {
+	var s = "";
+	while(true) {
+		s = "0123456789ABCDEF".charAt(n & 15) + s;
+		n >>>= 4;
+		if(!(n > 0)) {
+			break;
+		}
+	}
+	if(digits != null) {
+		while(s.length < digits) s = "0" + s;
+	}
+	return s;
+};
 var ValueType = $hxClasses["ValueType"] = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] };
 ValueType.TNull = ["TNull",0];
 ValueType.TNull.toString = $estr;
@@ -371,6 +385,12 @@ component_basic_DropdownButtonView.prototype = $extend(React.Component.prototype
 	}
 	,__class__: component_basic_DropdownButtonView
 });
+var component_basic__$GraphColor_GraphColor_$Impl_$ = {};
+$hxClasses["component.basic._GraphColor.GraphColor_Impl_"] = component_basic__$GraphColor_GraphColor_$Impl_$;
+component_basic__$GraphColor_GraphColor_$Impl_$.__name__ = ["component","basic","_GraphColor","GraphColor_Impl_"];
+component_basic__$GraphColor_GraphColor_$Impl_$.toColorString = function(this1) {
+	return "#" + StringTools.hex(this1,6);
+};
 var component_basic_GraphView = function(props) {
 	React.Component.call(this,props);
 };
@@ -386,427 +406,85 @@ component_basic_GraphView.prototype = $extend(React.Component.prototype,{
 	}
 	,draw: function() {
 		var ctx = this.refs.canvas.getContext("2d",null);
-		var top = component_basic_GraphView.MARGIN;
-		var right = component_basic_GraphView.WIDTH;
-		var bottom = component_basic_GraphView.HEIGHT - component_basic_GraphView.MARGIN;
-		ctx.clearRect(0,0,component_basic_GraphView.WIDTH,component_basic_GraphView.HEIGHT);
-		ctx.strokeStyle = "#BBB";
-		ctx.beginPath();
-		ctx.moveTo(0,0);
-		ctx.lineTo(0,component_basic_GraphView.HEIGHT);
-		ctx.stroke();
-		ctx.beginPath();
-		ctx.moveTo(right,0);
-		ctx.lineTo(right,component_basic_GraphView.HEIGHT);
-		ctx.stroke();
-		ctx.beginPath();
-		ctx.moveTo(0,top);
-		ctx.lineTo(component_basic_GraphView.WIDTH,top);
-		ctx.stroke();
-		ctx.beginPath();
-		ctx.moveTo(0,bottom);
-		ctx.lineTo(component_basic_GraphView.WIDTH,bottom);
-		ctx.stroke();
+		var w = component_basic_GraphView.WIDTH * this.props.scale;
+		var h = component_basic_GraphView.HEIGHT * this.props.scale;
+		var len = Math.floor(w);
+		var min = 0.0;
+		var max = 1.0;
 		var _g = 0;
 		var _g1 = this.props.lines;
 		while(_g < _g1.length) {
 			var line = _g1[_g];
 			++_g;
-			var _g2 = line.color;
-			var tmp;
-			switch(_g2[1]) {
-			case 0:
-				tmp = "#11B";
-				break;
-			case 1:
-				tmp = "#B11";
-				break;
-			}
-			ctx.strokeStyle = tmp;
-			var easing = line.easing;
-			var func;
-			switch(easing[1]) {
-			case 0:
-				var kind = easing[2];
-				switch(kind[1]) {
-				case 0:
-					func = tweenxcore_Easing.linear;
-					break;
-				case 1:
-					var inOut = kind[3];
-					switch(kind[2][1]) {
-					case 0:
-						switch(inOut[1]) {
-						case 0:
-							func = tweenxcore_Easing.quadIn;
-							break;
-						case 1:
-							func = tweenxcore_Easing.quadOut;
-							break;
-						case 2:
-							func = tweenxcore_Easing.quadInOut;
-							break;
-						case 3:
-							func = tweenxcore_Easing.quadOutIn;
-							break;
-						}
-						break;
-					case 1:
-						switch(inOut[1]) {
-						case 0:
-							func = tweenxcore_Easing.cubicIn;
-							break;
-						case 1:
-							func = tweenxcore_Easing.cubicOut;
-							break;
-						case 2:
-							func = tweenxcore_Easing.cubicInOut;
-							break;
-						case 3:
-							func = tweenxcore_Easing.cubicOutIn;
-							break;
-						}
-						break;
-					case 2:
-						switch(inOut[1]) {
-						case 0:
-							func = tweenxcore_Easing.quartIn;
-							break;
-						case 1:
-							func = tweenxcore_Easing.quartOut;
-							break;
-						case 2:
-							func = tweenxcore_Easing.quartInOut;
-							break;
-						case 3:
-							func = tweenxcore_Easing.quartOutIn;
-							break;
-						}
-						break;
-					case 3:
-						switch(inOut[1]) {
-						case 0:
-							func = tweenxcore_Easing.quintIn;
-							break;
-						case 1:
-							func = tweenxcore_Easing.quintOut;
-							break;
-						case 2:
-							func = tweenxcore_Easing.quintInOut;
-							break;
-						case 3:
-							func = tweenxcore_Easing.quintOutIn;
-							break;
-						}
-						break;
-					case 4:
-						switch(inOut[1]) {
-						case 0:
-							func = tweenxcore_Easing.sineIn;
-							break;
-						case 1:
-							func = tweenxcore_Easing.sineOut;
-							break;
-						case 2:
-							func = tweenxcore_Easing.sineInOut;
-							break;
-						case 3:
-							func = tweenxcore_Easing.sineOutIn;
-							break;
-						}
-						break;
-					case 5:
-						switch(inOut[1]) {
-						case 0:
-							func = tweenxcore_Easing.circIn;
-							break;
-						case 1:
-							func = tweenxcore_Easing.circOut;
-							break;
-						case 2:
-							func = tweenxcore_Easing.circInOut;
-							break;
-						case 3:
-							func = tweenxcore_Easing.circOutIn;
-							break;
-						}
-						break;
-					case 6:
-						switch(inOut[1]) {
-						case 0:
-							func = tweenxcore_Easing.expoIn;
-							break;
-						case 1:
-							func = tweenxcore_Easing.expoOut;
-							break;
-						case 2:
-							func = tweenxcore_Easing.expoInOut;
-							break;
-						case 3:
-							func = tweenxcore_Easing.expoOutIn;
-							break;
-						}
-						break;
-					case 7:
-						switch(inOut[1]) {
-						case 0:
-							func = tweenxcore_Easing.backIn;
-							break;
-						case 1:
-							func = tweenxcore_Easing.backOut;
-							break;
-						case 2:
-							func = tweenxcore_Easing.backInOut;
-							break;
-						case 3:
-							func = tweenxcore_Easing.backOutIn;
-							break;
-						}
-						break;
-					case 8:
-						switch(inOut[1]) {
-						case 0:
-							func = tweenxcore_Easing.bounceIn;
-							break;
-						case 1:
-							func = tweenxcore_Easing.bounceOut;
-							break;
-						case 2:
-							func = tweenxcore_Easing.bounceInOut;
-							break;
-						case 3:
-							func = tweenxcore_Easing.bounceOutIn;
-							break;
-						}
-						break;
-					case 9:
-						switch(inOut[1]) {
-						case 0:
-							func = tweenxcore_Easing.elasticIn;
-							break;
-						case 1:
-							func = tweenxcore_Easing.elasticOut;
-							break;
-						case 2:
-							func = tweenxcore_Easing.elasticInOut;
-							break;
-						case 3:
-							func = tweenxcore_Easing.elasticOutIn;
-							break;
-						}
-						break;
-					case 10:
-						switch(inOut[1]) {
-						case 0:
-							func = tweenxcore_Easing.warpIn;
-							break;
-						case 1:
-							func = tweenxcore_Easing.warpOut;
-							break;
-						case 2:
-							func = tweenxcore_Easing.warpInOut;
-							break;
-						case 3:
-							func = tweenxcore_Easing.warpOutIn;
-							break;
-						}
-						break;
-					}
-					break;
-				case 2:
-					var controls = kind[3];
-					switch(kind[2][1]) {
-					case 0:
-						func = (function(a2) {
-							return function(a1) {
-								return tweenxcore_FloatTools.bezier(a1,a2[0]);
-							};
-						})([controls]);
-						break;
-					case 1:
-						func = (function(a21) {
-							return function(a11) {
-								return tweenxcore_FloatTools.polyline(a11,a21[0]);
-							};
-						})([controls]);
-						break;
-					case 2:
-						func = (function(a22) {
-							return function(a12) {
-								return tweenxcore_FloatTools.uniformQuadraticBSpline(a12,a22[0]);
-							};
-						})([controls]);
-						break;
-					}
-					break;
+			var func = line.easing;
+			var _g3 = 1;
+			var _g2 = len + 1;
+			while(_g3 < _g2) {
+				var value = 1 - func(_g3++ / len);
+				if(value < min) {
+					min = value;
+				} else if(max < value) {
+					max = value;
 				}
-				break;
-			case 1:
-				var op = easing[3];
-				var easing1 = easing[2];
-				switch(op[1]) {
-				case 0:
-					var repeat = [op[2]];
-					var func1 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1)];
-					func = (function(func2,repeat1) {
-						return function(rate) {
-							var tmp1 = func2[0];
-							var p = (0 * (1 - rate) + repeat1[0] * rate) / 1.0;
-							return tmp1(p - Math.floor(p));
-						};
-					})(func1,repeat);
-					break;
-				case 1:
-					var to = [op[3]];
-					var from = [op[2]];
-					var func3 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1)];
-					func = (function(func4,from1,to1) {
-						return function(rate1) {
-							var rate2 = func4[0](rate1);
-							return from1[0] * (1 - rate2) + to1[0] * rate2;
-						};
-					})(func3,from,to);
-					break;
-				case 2:
-					var max = [op[3]];
-					var min = [op[2]];
-					var func5 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1)];
-					func = (function(func6,min1,max1) {
-						return function(rate3) {
-							var value = func6[0](rate3);
-							if(value <= min1[0]) {
-								return min1[0];
-							} else if(max1[0] <= value) {
-								return max1[0];
-							} else {
-								return value;
-							}
-						};
-					})(func5,min,max);
-					break;
-				case 3:
-					switch(op[2][1]) {
-					case 0:
-						var func7 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1)];
-						func = (function(func8) {
-							return function(value1) {
-								return func8[0]((value1 < 0.5?value1:1 - value1) * 2);
-							};
-						})(func7);
-						break;
-					case 1:
-						var func9 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1)];
-						func = (function(func10) {
-							return function(value2) {
-								if(value2 < 0.5) {
-									return func10[0](value2 * 2);
-								} else {
-									return 1 - func10[0]((value2 - 0.5) * 2);
-								}
-							};
-						})(func9);
-						break;
-					}
-					break;
-				case 4:
-					var op1 = op[3];
-					var easing2 = op[2];
-					switch(op1[1]) {
-					case 0:
-						var func11 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1)];
-						var func21 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2)];
-						func = (function(func22,func12) {
-							return function(rate4) {
-								return func12[0](func22[0](rate4));
-							};
-						})(func21,func11);
-						break;
-					case 1:
-						var func13 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1)];
-						var func23 = [tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2)];
-						func = (function(func24,func14) {
-							return function(rate5) {
-								return func14[0](rate5) * func24[0](rate5);
-							};
-						})(func23,func13);
-						break;
-					case 2:
-						var strength = op1[2];
-						var func15 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
-						var func25 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-						func = (function(a4,a3,a23) {
-							return function(a13) {
-								return tweenxcore_FloatTools.mixEasing(a13,a23[0],a3[0],a4[0]);
-							};
-						})([strength],[func25],[func15]);
-						break;
-					case 3:
-						var switchValue = op1[3];
-						var switchTime = op1[2];
-						var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
-						var func26 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-						func = (function(a5,a41,a31,a24) {
-							return function(a14) {
-								return tweenxcore_FloatTools.connectEasing(a14,a24[0],a31[0],a41[0],a5[0]);
-							};
-						})([switchValue],[switchTime],[func26],[func16]);
-						break;
-					case 4:
-						var switchTime1 = op1[2];
-						var func17 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
-						var func27 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-						func = (function(a42,a32,a25) {
-							return function(a15) {
-								return tweenxcore_FloatTools.oneTwoEasing(a15,a25[0],a32[0],a42[0]);
-							};
-						})([switchTime1],[func27],[func17]);
-						break;
-					case 5:
-						var op2 = op1[3];
-						var easing3 = op1[2];
-						var end = op2[3];
-						var start = op2[2];
-						var func18 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
-						var func28 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
-						var func31 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
-						func = (function(a6,a51,a43,a33,a26) {
-							return function(a16) {
-								return tweenxcore_FloatTools.crossfadeEasing(a16,a26[0],a33[0],a43[0],a51[0],a6[0]);
-							};
-						})([end],[start],[func31],[func28],[func18]);
-						break;
-					}
-					break;
-				}
-				break;
 			}
+		}
+		var top = h * -min / (max - min);
+		var bottom = h * (1 - min) / (max - min);
+		ctx.clearRect(0,0,w,h);
+		ctx.strokeStyle = "#BBB";
+		ctx.beginPath();
+		ctx.moveTo(0,0);
+		ctx.lineTo(0,h);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(w,0);
+		ctx.lineTo(w,h);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(0,top);
+		ctx.lineTo(w,top);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(0,bottom);
+		ctx.lineTo(w,bottom);
+		ctx.stroke();
+		var _g4 = 0;
+		var _g11 = this.props.lines;
+		while(_g4 < _g11.length) {
+			var line1 = _g11[_g4];
+			++_g4;
+			ctx.strokeStyle = component_basic__$GraphColor_GraphColor_$Impl_$.toColorString(line1.color);
+			var func1 = line1.easing;
 			ctx.beginPath();
-			var rate6 = func(0);
-			ctx.moveTo(0,bottom * (1 - rate6) + top * rate6);
-			var len = Math.floor(component_basic_GraphView.WIDTH - component_basic_GraphView.MARGIN * 2);
-			var _g4 = 1;
-			var _g3 = len + 1;
-			while(_g4 < _g3) {
-				var rate7 = _g4++ / len;
-				var tmp2 = 0 * (1 - rate7) + right * rate7;
-				var rate8 = func(rate7);
-				ctx.lineTo(tmp2,bottom * (1 - rate8) + top * rate8);
+			var rate = func1(0);
+			ctx.moveTo(0,bottom * (1 - rate) + top * rate);
+			var _g31 = 1;
+			var _g21 = len + 1;
+			while(_g31 < _g21) {
+				var rate1 = _g31++ / len;
+				var tmp = 0 * (1 - rate1) + w * rate1;
+				var rate2 = func1(rate1);
+				ctx.lineTo(tmp,bottom * (1 - rate2) + top * rate2);
 			}
+			ctx.stroke();
+		}
+		var _g5 = 0;
+		var _g12 = this.props.partations;
+		while(_g5 < _g12.length) {
+			var partation = _g12[_g5];
+			++_g5;
+			ctx.strokeStyle = component_basic__$GraphColor_GraphColor_$Impl_$.toColorString(16737457);
+			ctx.beginPath();
+			ctx.moveTo(partation * w,top);
+			ctx.lineTo(partation * w,bottom);
 			ctx.stroke();
 		}
 	}
 	,render: function() {
-		return React.createElement("div",{ class_name : "graph"},React.createElement("canvas",{ ref : "canvas", width : component_basic_GraphView.WIDTH, height : component_basic_GraphView.HEIGHT}));
+		return React.createElement("div",{ class_name : "graph"},React.createElement("canvas",{ ref : "canvas", width : component_basic_GraphView.WIDTH * this.props.scale, height : component_basic_GraphView.HEIGHT * this.props.scale}));
 	}
 	,__class__: component_basic_GraphView
 });
-var component_basic_GraphColor = $hxClasses["component.basic.GraphColor"] = { __ename__ : ["component","basic","GraphColor"], __constructs__ : ["Theme","Sub"] };
-component_basic_GraphColor.Theme = ["Theme",0];
-component_basic_GraphColor.Theme.toString = $estr;
-component_basic_GraphColor.Theme.__enum__ = component_basic_GraphColor;
-component_basic_GraphColor.Sub = ["Sub",1];
-component_basic_GraphColor.Sub.toString = $estr;
-component_basic_GraphColor.Sub.__enum__ = component_basic_GraphColor;
 var component_basic_NumberInputFocus = function(focus,id,text) {
 	this.text = text;
 	this.focus = focus;
@@ -1586,7 +1264,27 @@ component_binary_ConnectView.__name__ = ["component","binary","ConnectView"];
 component_binary_ConnectView.__super__ = React.Component;
 component_binary_ConnectView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return react_ReactStringTools.createElement("div",{ className : "param-group"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.SwitchTime), value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.SwitchValue), value : this.props.switchValue, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context})]);
+		var _gthis = this;
+		var tmp = react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.SwitchTime), value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context});
+		var tmp1 = react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.SwitchValue), value : this.props.switchValue, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context});
+		var kind = tweenxcore_expr_BinaryOpKind.Connect(this.props.switchTime,this.props.switchValue);
+		var easing1 = this.props.easing1;
+		var easing2 = this.props.easing2;
+		var tmp2;
+		var switchValue = kind[3];
+		var switchTime = kind[2];
+		var func1 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+		var func2 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+		var a2 = func1;
+		var a3 = func2;
+		var a4 = switchTime;
+		var a5 = switchValue;
+		tmp2 = function(a1) {
+			return tweenxcore_FloatTools.connectEasing(a1,a2,a3,a4,a5);
+		};
+		return react_ReactStringTools.createElement("div",{ className : "param-group"},[tmp,tmp1,react_ReactTools.createElement(component_basic_GraphView,{ lines : [{ easing : function(r) {
+			return _gthis.props.switchValue;
+		}, color : 16737457},{ easing : tmp2, color : 940731}], partations : [this.props.switchTime], scale : 0.45})]);
 	}
 	,__class__: component_binary_ConnectView
 });
@@ -1598,7 +1296,708 @@ component_binary_MixView.__name__ = ["component","binary","MixView"];
 component_binary_MixView.__super__ = React.Component;
 component_binary_MixView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Weight), value : this.props.strength, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
+		var _gthis = this;
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Weight), value : this.props.strength, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_GraphView,{ lines : [{ easing : function(r) {
+			return _gthis.props.strength;
+		}, color : 16737457},{ easing : function(r1) {
+			var easing = _gthis.props.easing1;
+			var tmp;
+			switch(easing[1]) {
+			case 0:
+				var kind = easing[2];
+				switch(kind[1]) {
+				case 0:
+					tmp = tweenxcore_Easing.linear;
+					break;
+				case 1:
+					var inOut = kind[3];
+					switch(kind[2][1]) {
+					case 0:
+						switch(inOut[1]) {
+						case 0:
+							tmp = tweenxcore_Easing.quadIn;
+							break;
+						case 1:
+							tmp = tweenxcore_Easing.quadOut;
+							break;
+						case 2:
+							tmp = tweenxcore_Easing.quadInOut;
+							break;
+						case 3:
+							tmp = tweenxcore_Easing.quadOutIn;
+							break;
+						}
+						break;
+					case 1:
+						switch(inOut[1]) {
+						case 0:
+							tmp = tweenxcore_Easing.cubicIn;
+							break;
+						case 1:
+							tmp = tweenxcore_Easing.cubicOut;
+							break;
+						case 2:
+							tmp = tweenxcore_Easing.cubicInOut;
+							break;
+						case 3:
+							tmp = tweenxcore_Easing.cubicOutIn;
+							break;
+						}
+						break;
+					case 2:
+						switch(inOut[1]) {
+						case 0:
+							tmp = tweenxcore_Easing.quartIn;
+							break;
+						case 1:
+							tmp = tweenxcore_Easing.quartOut;
+							break;
+						case 2:
+							tmp = tweenxcore_Easing.quartInOut;
+							break;
+						case 3:
+							tmp = tweenxcore_Easing.quartOutIn;
+							break;
+						}
+						break;
+					case 3:
+						switch(inOut[1]) {
+						case 0:
+							tmp = tweenxcore_Easing.quintIn;
+							break;
+						case 1:
+							tmp = tweenxcore_Easing.quintOut;
+							break;
+						case 2:
+							tmp = tweenxcore_Easing.quintInOut;
+							break;
+						case 3:
+							tmp = tweenxcore_Easing.quintOutIn;
+							break;
+						}
+						break;
+					case 4:
+						switch(inOut[1]) {
+						case 0:
+							tmp = tweenxcore_Easing.sineIn;
+							break;
+						case 1:
+							tmp = tweenxcore_Easing.sineOut;
+							break;
+						case 2:
+							tmp = tweenxcore_Easing.sineInOut;
+							break;
+						case 3:
+							tmp = tweenxcore_Easing.sineOutIn;
+							break;
+						}
+						break;
+					case 5:
+						switch(inOut[1]) {
+						case 0:
+							tmp = tweenxcore_Easing.circIn;
+							break;
+						case 1:
+							tmp = tweenxcore_Easing.circOut;
+							break;
+						case 2:
+							tmp = tweenxcore_Easing.circInOut;
+							break;
+						case 3:
+							tmp = tweenxcore_Easing.circOutIn;
+							break;
+						}
+						break;
+					case 6:
+						switch(inOut[1]) {
+						case 0:
+							tmp = tweenxcore_Easing.expoIn;
+							break;
+						case 1:
+							tmp = tweenxcore_Easing.expoOut;
+							break;
+						case 2:
+							tmp = tweenxcore_Easing.expoInOut;
+							break;
+						case 3:
+							tmp = tweenxcore_Easing.expoOutIn;
+							break;
+						}
+						break;
+					case 7:
+						switch(inOut[1]) {
+						case 0:
+							tmp = tweenxcore_Easing.backIn;
+							break;
+						case 1:
+							tmp = tweenxcore_Easing.backOut;
+							break;
+						case 2:
+							tmp = tweenxcore_Easing.backInOut;
+							break;
+						case 3:
+							tmp = tweenxcore_Easing.backOutIn;
+							break;
+						}
+						break;
+					case 8:
+						switch(inOut[1]) {
+						case 0:
+							tmp = tweenxcore_Easing.bounceIn;
+							break;
+						case 1:
+							tmp = tweenxcore_Easing.bounceOut;
+							break;
+						case 2:
+							tmp = tweenxcore_Easing.bounceInOut;
+							break;
+						case 3:
+							tmp = tweenxcore_Easing.bounceOutIn;
+							break;
+						}
+						break;
+					case 9:
+						switch(inOut[1]) {
+						case 0:
+							tmp = tweenxcore_Easing.elasticIn;
+							break;
+						case 1:
+							tmp = tweenxcore_Easing.elasticOut;
+							break;
+						case 2:
+							tmp = tweenxcore_Easing.elasticInOut;
+							break;
+						case 3:
+							tmp = tweenxcore_Easing.elasticOutIn;
+							break;
+						}
+						break;
+					case 10:
+						switch(inOut[1]) {
+						case 0:
+							tmp = tweenxcore_Easing.warpIn;
+							break;
+						case 1:
+							tmp = tweenxcore_Easing.warpOut;
+							break;
+						case 2:
+							tmp = tweenxcore_Easing.warpInOut;
+							break;
+						case 3:
+							tmp = tweenxcore_Easing.warpOutIn;
+							break;
+						}
+						break;
+					}
+					break;
+				case 2:
+					var controls = kind[3];
+					switch(kind[2][1]) {
+					case 0:
+						var a2 = controls;
+						tmp = function(a1) {
+							return tweenxcore_FloatTools.bezier(a1,a2);
+						};
+						break;
+					case 1:
+						var a21 = controls;
+						tmp = function(a11) {
+							return tweenxcore_FloatTools.polyline(a11,a21);
+						};
+						break;
+					case 2:
+						var a22 = controls;
+						tmp = function(a12) {
+							return tweenxcore_FloatTools.uniformQuadraticBSpline(a12,a22);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			case 1:
+				var op = easing[3];
+				var easing1 = easing[2];
+				switch(op[1]) {
+				case 0:
+					var repeat = op[2];
+					var func = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					tmp = function(rate) {
+						var p = (0 * (1 - rate) + repeat * rate) / 1.0;
+						return func(p - Math.floor(p));
+					};
+					break;
+				case 1:
+					var to = op[3];
+					var from = op[2];
+					var func1 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					tmp = function(rate1) {
+						var rate2 = func1(rate1);
+						return from * (1 - rate2) + to * rate2;
+					};
+					break;
+				case 2:
+					var max = op[3];
+					var min = op[2];
+					var func2 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					tmp = function(rate3) {
+						var value = func2(rate3);
+						if(value <= min) {
+							return min;
+						} else if(max <= value) {
+							return max;
+						} else {
+							return value;
+						}
+					};
+					break;
+				case 3:
+					switch(op[2][1]) {
+					case 0:
+						var func3 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						tmp = function(value1) {
+							return func3((value1 < 0.5?value1:1 - value1) * 2);
+						};
+						break;
+					case 1:
+						var func4 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						tmp = function(value2) {
+							if(value2 < 0.5) {
+								return func4(value2 * 2);
+							} else {
+								return 1 - func4((value2 - 0.5) * 2);
+							}
+						};
+						break;
+					}
+					break;
+				case 4:
+					var op1 = op[3];
+					var easing2 = op[2];
+					switch(op1[1]) {
+					case 0:
+						var func11 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func21 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						tmp = function(rate4) {
+							return func11(func21(rate4));
+						};
+						break;
+					case 1:
+						var func12 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func22 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						tmp = function(rate5) {
+							return func12(rate5) * func22(rate5);
+						};
+						break;
+					case 2:
+						var strength = op1[2];
+						var func13 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func23 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var a23 = func13;
+						var a3 = func23;
+						var a4 = strength;
+						tmp = function(a13) {
+							return tweenxcore_FloatTools.mixEasing(a13,a23,a3,a4);
+						};
+						break;
+					case 3:
+						var switchValue = op1[3];
+						var switchTime = op1[2];
+						var func14 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func24 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var a24 = func14;
+						var a31 = func24;
+						var a41 = switchTime;
+						var a5 = switchValue;
+						tmp = function(a14) {
+							return tweenxcore_FloatTools.connectEasing(a14,a24,a31,a41,a5);
+						};
+						break;
+					case 4:
+						var switchTime1 = op1[2];
+						var func15 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func25 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var a25 = func15;
+						var a32 = func25;
+						var a42 = switchTime1;
+						tmp = function(a15) {
+							return tweenxcore_FloatTools.oneTwoEasing(a15,a25,a32,a42);
+						};
+						break;
+					case 5:
+						var op2 = op1[3];
+						var easing3 = op1[2];
+						var end = op2[3];
+						var start = op2[2];
+						var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func26 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var func31 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
+						var a26 = func16;
+						var a33 = func26;
+						var a43 = func31;
+						var a51 = start;
+						var a6 = end;
+						tmp = function(a16) {
+							return tweenxcore_FloatTools.crossfadeEasing(a16,a26,a33,a43,a51,a6);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			}
+			var rate6 = tmp(r1);
+			return _gthis.props.strength * (1 - rate6) + rate6;
+		}, color : 940731},{ easing : function(r2) {
+			var easing4 = _gthis.props.easing2;
+			var tmp1;
+			switch(easing4[1]) {
+			case 0:
+				var kind1 = easing4[2];
+				switch(kind1[1]) {
+				case 0:
+					tmp1 = tweenxcore_Easing.linear;
+					break;
+				case 1:
+					var inOut1 = kind1[3];
+					switch(kind1[2][1]) {
+					case 0:
+						switch(inOut1[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.quadIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.quadOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.quadInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.quadOutIn;
+							break;
+						}
+						break;
+					case 1:
+						switch(inOut1[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.cubicIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.cubicOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.cubicInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.cubicOutIn;
+							break;
+						}
+						break;
+					case 2:
+						switch(inOut1[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.quartIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.quartOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.quartInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.quartOutIn;
+							break;
+						}
+						break;
+					case 3:
+						switch(inOut1[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.quintIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.quintOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.quintInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.quintOutIn;
+							break;
+						}
+						break;
+					case 4:
+						switch(inOut1[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.sineIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.sineOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.sineInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.sineOutIn;
+							break;
+						}
+						break;
+					case 5:
+						switch(inOut1[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.circIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.circOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.circInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.circOutIn;
+							break;
+						}
+						break;
+					case 6:
+						switch(inOut1[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.expoIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.expoOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.expoInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.expoOutIn;
+							break;
+						}
+						break;
+					case 7:
+						switch(inOut1[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.backIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.backOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.backInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.backOutIn;
+							break;
+						}
+						break;
+					case 8:
+						switch(inOut1[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.bounceIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.bounceOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.bounceInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.bounceOutIn;
+							break;
+						}
+						break;
+					case 9:
+						switch(inOut1[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.elasticIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.elasticOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.elasticInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.elasticOutIn;
+							break;
+						}
+						break;
+					case 10:
+						switch(inOut1[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.warpIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.warpOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.warpInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.warpOutIn;
+							break;
+						}
+						break;
+					}
+					break;
+				case 2:
+					var controls1 = kind1[3];
+					switch(kind1[2][1]) {
+					case 0:
+						var a27 = controls1;
+						tmp1 = function(a17) {
+							return tweenxcore_FloatTools.bezier(a17,a27);
+						};
+						break;
+					case 1:
+						var a28 = controls1;
+						tmp1 = function(a18) {
+							return tweenxcore_FloatTools.polyline(a18,a28);
+						};
+						break;
+					case 2:
+						var a29 = controls1;
+						tmp1 = function(a19) {
+							return tweenxcore_FloatTools.uniformQuadraticBSpline(a19,a29);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			case 1:
+				var op3 = easing4[3];
+				var easing5 = easing4[2];
+				switch(op3[1]) {
+				case 0:
+					var repeat1 = op3[2];
+					var func5 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+					tmp1 = function(rate7) {
+						var p1 = (0 * (1 - rate7) + repeat1 * rate7) / 1.0;
+						return func5(p1 - Math.floor(p1));
+					};
+					break;
+				case 1:
+					var to1 = op3[3];
+					var from1 = op3[2];
+					var func6 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+					tmp1 = function(rate8) {
+						var rate9 = func6(rate8);
+						return from1 * (1 - rate9) + to1 * rate9;
+					};
+					break;
+				case 2:
+					var max1 = op3[3];
+					var min1 = op3[2];
+					var func7 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+					tmp1 = function(rate10) {
+						var value3 = func7(rate10);
+						if(value3 <= min1) {
+							return min1;
+						} else if(max1 <= value3) {
+							return max1;
+						} else {
+							return value3;
+						}
+					};
+					break;
+				case 3:
+					switch(op3[2][1]) {
+					case 0:
+						var func8 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						tmp1 = function(value4) {
+							return func8((value4 < 0.5?value4:1 - value4) * 2);
+						};
+						break;
+					case 1:
+						var func9 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						tmp1 = function(value5) {
+							if(value5 < 0.5) {
+								return func9(value5 * 2);
+							} else {
+								return 1 - func9((value5 - 0.5) * 2);
+							}
+						};
+						break;
+					}
+					break;
+				case 4:
+					var op4 = op3[3];
+					var easing21 = op3[2];
+					switch(op4[1]) {
+					case 0:
+						var func17 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func27 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						tmp1 = function(rate11) {
+							return func17(func27(rate11));
+						};
+						break;
+					case 1:
+						var func18 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func28 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						tmp1 = function(rate12) {
+							return func18(rate12) * func28(rate12);
+						};
+						break;
+					case 2:
+						var strength1 = op4[2];
+						var func19 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func29 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						var a210 = func19;
+						var a34 = func29;
+						var a44 = strength1;
+						tmp1 = function(a110) {
+							return tweenxcore_FloatTools.mixEasing(a110,a210,a34,a44);
+						};
+						break;
+					case 3:
+						var switchValue1 = op4[3];
+						var switchTime2 = op4[2];
+						var func110 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func210 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						var a211 = func110;
+						var a35 = func210;
+						var a45 = switchTime2;
+						var a52 = switchValue1;
+						tmp1 = function(a111) {
+							return tweenxcore_FloatTools.connectEasing(a111,a211,a35,a45,a52);
+						};
+						break;
+					case 4:
+						var switchTime3 = op4[2];
+						var func111 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func211 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						var a212 = func111;
+						var a36 = func211;
+						var a46 = switchTime3;
+						tmp1 = function(a112) {
+							return tweenxcore_FloatTools.oneTwoEasing(a112,a212,a36,a46);
+						};
+						break;
+					case 5:
+						var op5 = op4[3];
+						var easing31 = op4[2];
+						var end1 = op5[3];
+						var start1 = op5[2];
+						var func112 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func212 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						var func32 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing31);
+						var a213 = func112;
+						var a37 = func212;
+						var a47 = func32;
+						var a53 = start1;
+						var a61 = end1;
+						tmp1 = function(a113) {
+							return tweenxcore_FloatTools.crossfadeEasing(a113,a213,a37,a47,a53,a61);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			}
+			var rate13 = tmp1(r2);
+			return 0 * (1 - rate13) + _gthis.props.strength * rate13;
+		}, color : 940731}], partations : [], scale : 0.45}));
 	}
 	,__class__: component_binary_MixView
 });
@@ -1622,7 +2021,21 @@ component_binary_OneTwoView.__name__ = ["component","binary","OneTwoView"];
 component_binary_OneTwoView.__super__ = React.Component;
 component_binary_OneTwoView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.SwitchTime), value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
+		var tmp = react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.SwitchTime), value : this.props.switchTime, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context});
+		var kind = tweenxcore_expr_BinaryOpKind.OneTwo(this.props.switchTime);
+		var easing1 = this.props.easing1;
+		var easing2 = this.props.easing2;
+		var tmp1;
+		var switchTime = kind[2];
+		var func1 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+		var func2 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+		var a2 = func1;
+		var a3 = func2;
+		var a4 = switchTime;
+		tmp1 = function(a1) {
+			return tweenxcore_FloatTools.oneTwoEasing(a1,a2,a3,a4);
+		};
+		return React.createElement("div",{ className : "param-group"},tmp,react_ReactTools.createElement(component_basic_GraphView,{ lines : [{ easing : tmp1, color : 940731}], partations : [this.props.switchTime], scale : 0.45}));
 	}
 	,__class__: component_binary_OneTwoView
 });
@@ -2181,20 +2594,366 @@ component_complex_ComplexEasingView.prototype = $extend(React.Component.prototyp
 		}
 		var tmp = "complex-easing-head " + background;
 		var tmp1 = react_ReactTools.createElement(component_complex_DragButtonView,this.props);
-		var tmp2 = react_ReactTools.createElement(component_basic_GraphView,{ lines : [{ easing : this.props.easing, color : component_basic_GraphColor.Theme}]});
-		var tmp3 = react_ReactTools.createElement(component_basic_PreviewView,this.props);
-		var tmp4 = react_ReactTools.createElement(component_complex_ComplexEasingSelectView,this.props);
-		var _g1 = this.props.easing;
-		var tmp5;
-		switch(_g1[1]) {
+		var easing = this.props.easing;
+		var tmp2;
+		switch(easing[1]) {
 		case 0:
-			tmp5 = react_ReactTools.createElement(component_simple_SimpleEasingView,{ kind : _g1[2], id : this.props.id, context : this.props.context});
+			var kind = easing[2];
+			switch(kind[1]) {
+			case 0:
+				tmp2 = tweenxcore_Easing.linear;
+				break;
+			case 1:
+				var inOut = kind[3];
+				switch(kind[2][1]) {
+				case 0:
+					switch(inOut[1]) {
+					case 0:
+						tmp2 = tweenxcore_Easing.quadIn;
+						break;
+					case 1:
+						tmp2 = tweenxcore_Easing.quadOut;
+						break;
+					case 2:
+						tmp2 = tweenxcore_Easing.quadInOut;
+						break;
+					case 3:
+						tmp2 = tweenxcore_Easing.quadOutIn;
+						break;
+					}
+					break;
+				case 1:
+					switch(inOut[1]) {
+					case 0:
+						tmp2 = tweenxcore_Easing.cubicIn;
+						break;
+					case 1:
+						tmp2 = tweenxcore_Easing.cubicOut;
+						break;
+					case 2:
+						tmp2 = tweenxcore_Easing.cubicInOut;
+						break;
+					case 3:
+						tmp2 = tweenxcore_Easing.cubicOutIn;
+						break;
+					}
+					break;
+				case 2:
+					switch(inOut[1]) {
+					case 0:
+						tmp2 = tweenxcore_Easing.quartIn;
+						break;
+					case 1:
+						tmp2 = tweenxcore_Easing.quartOut;
+						break;
+					case 2:
+						tmp2 = tweenxcore_Easing.quartInOut;
+						break;
+					case 3:
+						tmp2 = tweenxcore_Easing.quartOutIn;
+						break;
+					}
+					break;
+				case 3:
+					switch(inOut[1]) {
+					case 0:
+						tmp2 = tweenxcore_Easing.quintIn;
+						break;
+					case 1:
+						tmp2 = tweenxcore_Easing.quintOut;
+						break;
+					case 2:
+						tmp2 = tweenxcore_Easing.quintInOut;
+						break;
+					case 3:
+						tmp2 = tweenxcore_Easing.quintOutIn;
+						break;
+					}
+					break;
+				case 4:
+					switch(inOut[1]) {
+					case 0:
+						tmp2 = tweenxcore_Easing.sineIn;
+						break;
+					case 1:
+						tmp2 = tweenxcore_Easing.sineOut;
+						break;
+					case 2:
+						tmp2 = tweenxcore_Easing.sineInOut;
+						break;
+					case 3:
+						tmp2 = tweenxcore_Easing.sineOutIn;
+						break;
+					}
+					break;
+				case 5:
+					switch(inOut[1]) {
+					case 0:
+						tmp2 = tweenxcore_Easing.circIn;
+						break;
+					case 1:
+						tmp2 = tweenxcore_Easing.circOut;
+						break;
+					case 2:
+						tmp2 = tweenxcore_Easing.circInOut;
+						break;
+					case 3:
+						tmp2 = tweenxcore_Easing.circOutIn;
+						break;
+					}
+					break;
+				case 6:
+					switch(inOut[1]) {
+					case 0:
+						tmp2 = tweenxcore_Easing.expoIn;
+						break;
+					case 1:
+						tmp2 = tweenxcore_Easing.expoOut;
+						break;
+					case 2:
+						tmp2 = tweenxcore_Easing.expoInOut;
+						break;
+					case 3:
+						tmp2 = tweenxcore_Easing.expoOutIn;
+						break;
+					}
+					break;
+				case 7:
+					switch(inOut[1]) {
+					case 0:
+						tmp2 = tweenxcore_Easing.backIn;
+						break;
+					case 1:
+						tmp2 = tweenxcore_Easing.backOut;
+						break;
+					case 2:
+						tmp2 = tweenxcore_Easing.backInOut;
+						break;
+					case 3:
+						tmp2 = tweenxcore_Easing.backOutIn;
+						break;
+					}
+					break;
+				case 8:
+					switch(inOut[1]) {
+					case 0:
+						tmp2 = tweenxcore_Easing.bounceIn;
+						break;
+					case 1:
+						tmp2 = tweenxcore_Easing.bounceOut;
+						break;
+					case 2:
+						tmp2 = tweenxcore_Easing.bounceInOut;
+						break;
+					case 3:
+						tmp2 = tweenxcore_Easing.bounceOutIn;
+						break;
+					}
+					break;
+				case 9:
+					switch(inOut[1]) {
+					case 0:
+						tmp2 = tweenxcore_Easing.elasticIn;
+						break;
+					case 1:
+						tmp2 = tweenxcore_Easing.elasticOut;
+						break;
+					case 2:
+						tmp2 = tweenxcore_Easing.elasticInOut;
+						break;
+					case 3:
+						tmp2 = tweenxcore_Easing.elasticOutIn;
+						break;
+					}
+					break;
+				case 10:
+					switch(inOut[1]) {
+					case 0:
+						tmp2 = tweenxcore_Easing.warpIn;
+						break;
+					case 1:
+						tmp2 = tweenxcore_Easing.warpOut;
+						break;
+					case 2:
+						tmp2 = tweenxcore_Easing.warpInOut;
+						break;
+					case 3:
+						tmp2 = tweenxcore_Easing.warpOutIn;
+						break;
+					}
+					break;
+				}
+				break;
+			case 2:
+				var controls = kind[3];
+				switch(kind[2][1]) {
+				case 0:
+					var a2 = controls;
+					tmp2 = function(a1) {
+						return tweenxcore_FloatTools.bezier(a1,a2);
+					};
+					break;
+				case 1:
+					var a21 = controls;
+					tmp2 = function(a11) {
+						return tweenxcore_FloatTools.polyline(a11,a21);
+					};
+					break;
+				case 2:
+					var a22 = controls;
+					tmp2 = function(a12) {
+						return tweenxcore_FloatTools.uniformQuadraticBSpline(a12,a22);
+					};
+					break;
+				}
+				break;
+			}
 			break;
 		case 1:
-			tmp5 = react_ReactTools.createElement(component_unary_UnaryOpView,{ easing : _g1[2], op : _g1[3], id : this.props.id, context : this.props.context});
+			var op = easing[3];
+			var easing1 = easing[2];
+			switch(op[1]) {
+			case 0:
+				var repeat = op[2];
+				var func = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+				tmp2 = function(rate) {
+					var p = (0 * (1 - rate) + repeat * rate) / 1.0;
+					return func(p - Math.floor(p));
+				};
+				break;
+			case 1:
+				var to = op[3];
+				var from = op[2];
+				var func1 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+				tmp2 = function(rate1) {
+					var rate2 = func1(rate1);
+					return from * (1 - rate2) + to * rate2;
+				};
+				break;
+			case 2:
+				var max = op[3];
+				var min = op[2];
+				var func2 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+				tmp2 = function(rate3) {
+					var value = func2(rate3);
+					if(value <= min) {
+						return min;
+					} else if(max <= value) {
+						return max;
+					} else {
+						return value;
+					}
+				};
+				break;
+			case 3:
+				switch(op[2][1]) {
+				case 0:
+					var func3 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					tmp2 = function(value1) {
+						return func3((value1 < 0.5?value1:1 - value1) * 2);
+					};
+					break;
+				case 1:
+					var func4 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					tmp2 = function(value2) {
+						if(value2 < 0.5) {
+							return func4(value2 * 2);
+						} else {
+							return 1 - func4((value2 - 0.5) * 2);
+						}
+					};
+					break;
+				}
+				break;
+			case 4:
+				var op1 = op[3];
+				var easing2 = op[2];
+				switch(op1[1]) {
+				case 0:
+					var func11 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					var func21 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+					tmp2 = function(rate4) {
+						return func11(func21(rate4));
+					};
+					break;
+				case 1:
+					var func12 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					var func22 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+					tmp2 = function(rate5) {
+						return func12(rate5) * func22(rate5);
+					};
+					break;
+				case 2:
+					var strength = op1[2];
+					var func13 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					var func23 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+					var a23 = func13;
+					var a3 = func23;
+					var a4 = strength;
+					tmp2 = function(a13) {
+						return tweenxcore_FloatTools.mixEasing(a13,a23,a3,a4);
+					};
+					break;
+				case 3:
+					var switchValue = op1[3];
+					var switchTime = op1[2];
+					var func14 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					var func24 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+					var a24 = func14;
+					var a31 = func24;
+					var a41 = switchTime;
+					var a5 = switchValue;
+					tmp2 = function(a14) {
+						return tweenxcore_FloatTools.connectEasing(a14,a24,a31,a41,a5);
+					};
+					break;
+				case 4:
+					var switchTime1 = op1[2];
+					var func15 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					var func25 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+					var a25 = func15;
+					var a32 = func25;
+					var a42 = switchTime1;
+					tmp2 = function(a15) {
+						return tweenxcore_FloatTools.oneTwoEasing(a15,a25,a32,a42);
+					};
+					break;
+				case 5:
+					var op2 = op1[3];
+					var easing3 = op1[2];
+					var end = op2[3];
+					var start = op2[2];
+					var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					var func26 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+					var func31 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
+					var a26 = func16;
+					var a33 = func26;
+					var a43 = func31;
+					var a51 = start;
+					var a6 = end;
+					tmp2 = function(a16) {
+						return tweenxcore_FloatTools.crossfadeEasing(a16,a26,a33,a43,a51,a6);
+					};
+					break;
+				}
+				break;
+			}
 			break;
 		}
-		return React.createElement("div",{ className : "complex-easing"},React.createElement("div",{ ref : "head", className : tmp, onMouseEnter : $bind(this,this.onMouseEnter), onMouseLeave : $bind(this,this.onMouseLeave)},tmp1,tmp2,React.createElement("div",{ className : "complex-easing-child"},tmp3,tmp4,tmp5)));
+		var tmp3 = react_ReactTools.createElement(component_basic_GraphView,{ lines : [{ easing : tmp2, color : 940731}], partations : [], scale : 1});
+		var tmp4 = react_ReactTools.createElement(component_basic_PreviewView,this.props);
+		var tmp5 = react_ReactTools.createElement(component_complex_ComplexEasingSelectView,this.props);
+		var _g1 = this.props.easing;
+		var tmp6;
+		switch(_g1[1]) {
+		case 0:
+			tmp6 = react_ReactTools.createElement(component_simple_SimpleEasingView,{ kind : _g1[2], id : this.props.id, context : this.props.context});
+			break;
+		case 1:
+			tmp6 = react_ReactTools.createElement(component_unary_UnaryOpView,{ easing : _g1[2], op : _g1[3], id : this.props.id, context : this.props.context});
+			break;
+		}
+		return React.createElement("div",{ className : "complex-easing"},React.createElement("div",{ ref : "head", className : tmp, onMouseEnter : $bind(this,this.onMouseEnter), onMouseLeave : $bind(this,this.onMouseLeave)},tmp1,tmp3,React.createElement("div",{ className : "complex-easing-child"},tmp4,tmp5,tmp6)));
 	}
 	,onMouseEnter: function(e) {
 		var _g = this.props.context.drag.get_stateKind();
@@ -2339,22 +3098,54 @@ component_simple_PolylineView.__name__ = ["component","simple","PolylineView"];
 component_simple_PolylineView.__super__ = React.Component;
 component_simple_PolylineView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		var _g = [];
-		var _g2 = 0;
-		var _g1 = this.props.controls.length;
-		while(_g2 < _g1) {
-			var i = _g2++;
-			_g.push(react_ReactStringTools.createElement("div",{ className : "control-point"},[react_ReactStringTools.createElement("div",{ },react_ReactTools.createElement(component_basic_NumberInputView,{ name : i == null?"null":"" + i, value : this.props.controls[i], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,i), context : this.props.context})),react_ReactStringTools.createElement("button",{ className : "btn btn-primary btn-sm", onClick : (function(a1,f) {
+		var controls = this.props.controls;
+		var tmp;
+		switch(this.props.polyline[1]) {
+		case 0:
+			var a2 = controls;
+			tmp = function(a1) {
+				return tweenxcore_FloatTools.bezier(a1,a2);
+			};
+			break;
+		case 1:
+			var a21 = controls;
+			tmp = function(a11) {
+				return tweenxcore_FloatTools.polyline(a11,a21);
+			};
+			break;
+		case 2:
+			var a22 = controls;
+			tmp = function(a12) {
+				return tweenxcore_FloatTools.uniformQuadraticBSpline(a12,a22);
+			};
+			break;
+		}
+		var lines = [{ easing : tmp, color : 940731}];
+		if(this.props.polyline[1] != 1) {
+			var controls1 = this.props.controls;
+			var tmp1;
+			var a23 = controls1;
+			tmp1 = function(a13) {
+				return tweenxcore_FloatTools.polyline(a13,a23);
+			};
+			lines.unshift({ easing : tmp1, color : 16737457});
+		}
+		var _g1 = [];
+		var _g3 = 0;
+		var _g2 = this.props.controls.length;
+		while(_g3 < _g2) {
+			var i = _g3++;
+			_g1.push(react_ReactStringTools.createElement("div",{ className : "control-point"},[react_ReactStringTools.createElement("div",{ },react_ReactTools.createElement(component_basic_NumberInputView,{ name : i == null?"null":"" + i, value : this.props.controls[i], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,i), context : this.props.context})),react_ReactStringTools.createElement("button",{ className : "btn btn-primary btn-sm", onClick : (function(a14,f) {
 				return function() {
-					f[0](a1[0]);
+					f[0](a14[0]);
 				};
-			})([i],[$bind(this,this.add)])},react_ReactStringTools.createElement("span",{ className : "glyphicon glyphicon-plus"})),0 < i && i < this.props.controls.length - 1?react_ReactStringTools.createElement("button",{ className : "btn btn-primary btn-sm", onClick : (function(a11,f1) {
+			})([i],[$bind(this,this.add)])},react_ReactStringTools.createElement("span",{ className : "glyphicon glyphicon-plus"})),0 < i && i < this.props.controls.length - 1?react_ReactStringTools.createElement("button",{ className : "btn btn-primary btn-sm", onClick : (function(a15,f1) {
 				return function() {
-					f1[0](a11[0]);
+					f1[0](a15[0]);
 				};
 			})([i],[$bind(this,this.remove)])},react_ReactStringTools.createElement("span",{ className : "glyphicon glyphicon-minus"})):null]));
 		}
-		return react_ReactStringTools.createElement("div",{ className : "param-group"},_g);
+		return React.createElement("div",{ className : "param-group"},_g1,react_ReactTools.createElement(component_basic_GraphView,{ lines : lines, partations : [], scale : 0.45}));
 	}
 	,add: function(index) {
 		this.apply(core_easing_EasingCommand.AddRate(index));
@@ -2422,9 +3213,1060 @@ component_ternaryOp_TernaryOpView.__name__ = ["component","ternaryOp","TernaryOp
 component_ternaryOp_TernaryOpView.__super__ = React.Component;
 component_ternaryOp_TernaryOpView.prototype = $extend(React.Component.prototype,{
 	render: function() {
+		var _gthis = this;
 		var tmp = react_ReactTools.createElement(component_complex_ComplexEasingView,{ easing : this.props.easing3, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.concat(this.props.id,2), context : this.props.context});
 		var _g = this.props.op;
-		return React.createElement("div",{ },tmp,react_ReactStringTools.createElement("div",{ className : "param-group"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.From), value : _g[2], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.To), value : _g[3], id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context})]));
+		var max = _g[3];
+		var min = _g[2];
+		var easingFunc = function(r) {
+			var easing = _gthis.props.easing3;
+			var tmp1;
+			switch(easing[1]) {
+			case 0:
+				var kind = easing[2];
+				switch(kind[1]) {
+				case 0:
+					tmp1 = tweenxcore_Easing.linear;
+					break;
+				case 1:
+					var inOut = kind[3];
+					switch(kind[2][1]) {
+					case 0:
+						switch(inOut[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.quadIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.quadOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.quadInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.quadOutIn;
+							break;
+						}
+						break;
+					case 1:
+						switch(inOut[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.cubicIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.cubicOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.cubicInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.cubicOutIn;
+							break;
+						}
+						break;
+					case 2:
+						switch(inOut[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.quartIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.quartOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.quartInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.quartOutIn;
+							break;
+						}
+						break;
+					case 3:
+						switch(inOut[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.quintIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.quintOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.quintInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.quintOutIn;
+							break;
+						}
+						break;
+					case 4:
+						switch(inOut[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.sineIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.sineOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.sineInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.sineOutIn;
+							break;
+						}
+						break;
+					case 5:
+						switch(inOut[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.circIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.circOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.circInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.circOutIn;
+							break;
+						}
+						break;
+					case 6:
+						switch(inOut[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.expoIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.expoOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.expoInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.expoOutIn;
+							break;
+						}
+						break;
+					case 7:
+						switch(inOut[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.backIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.backOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.backInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.backOutIn;
+							break;
+						}
+						break;
+					case 8:
+						switch(inOut[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.bounceIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.bounceOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.bounceInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.bounceOutIn;
+							break;
+						}
+						break;
+					case 9:
+						switch(inOut[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.elasticIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.elasticOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.elasticInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.elasticOutIn;
+							break;
+						}
+						break;
+					case 10:
+						switch(inOut[1]) {
+						case 0:
+							tmp1 = tweenxcore_Easing.warpIn;
+							break;
+						case 1:
+							tmp1 = tweenxcore_Easing.warpOut;
+							break;
+						case 2:
+							tmp1 = tweenxcore_Easing.warpInOut;
+							break;
+						case 3:
+							tmp1 = tweenxcore_Easing.warpOutIn;
+							break;
+						}
+						break;
+					}
+					break;
+				case 2:
+					var controls = kind[3];
+					switch(kind[2][1]) {
+					case 0:
+						var a2 = controls;
+						tmp1 = function(a1) {
+							return tweenxcore_FloatTools.bezier(a1,a2);
+						};
+						break;
+					case 1:
+						var a21 = controls;
+						tmp1 = function(a11) {
+							return tweenxcore_FloatTools.polyline(a11,a21);
+						};
+						break;
+					case 2:
+						var a22 = controls;
+						tmp1 = function(a12) {
+							return tweenxcore_FloatTools.uniformQuadraticBSpline(a12,a22);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			case 1:
+				var op = easing[3];
+				var easing1 = easing[2];
+				switch(op[1]) {
+				case 0:
+					var repeat = op[2];
+					var func = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					tmp1 = function(rate) {
+						var p = (0 * (1 - rate) + repeat * rate) / 1.0;
+						return func(p - Math.floor(p));
+					};
+					break;
+				case 1:
+					var to = op[3];
+					var from = op[2];
+					var func1 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					tmp1 = function(rate1) {
+						var rate2 = func1(rate1);
+						return from * (1 - rate2) + to * rate2;
+					};
+					break;
+				case 2:
+					var max1 = op[3];
+					var min1 = op[2];
+					var func2 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+					tmp1 = function(rate3) {
+						var value = func2(rate3);
+						if(value <= min1) {
+							return min1;
+						} else if(max1 <= value) {
+							return max1;
+						} else {
+							return value;
+						}
+					};
+					break;
+				case 3:
+					switch(op[2][1]) {
+					case 0:
+						var func3 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						tmp1 = function(value1) {
+							return func3((value1 < 0.5?value1:1 - value1) * 2);
+						};
+						break;
+					case 1:
+						var func4 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						tmp1 = function(value2) {
+							if(value2 < 0.5) {
+								return func4(value2 * 2);
+							} else {
+								return 1 - func4((value2 - 0.5) * 2);
+							}
+						};
+						break;
+					}
+					break;
+				case 4:
+					var op1 = op[3];
+					var easing2 = op[2];
+					switch(op1[1]) {
+					case 0:
+						var func11 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func21 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						tmp1 = function(rate4) {
+							return func11(func21(rate4));
+						};
+						break;
+					case 1:
+						var func12 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func22 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						tmp1 = function(rate5) {
+							return func12(rate5) * func22(rate5);
+						};
+						break;
+					case 2:
+						var strength = op1[2];
+						var func13 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func23 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var a23 = func13;
+						var a3 = func23;
+						var a4 = strength;
+						tmp1 = function(a13) {
+							return tweenxcore_FloatTools.mixEasing(a13,a23,a3,a4);
+						};
+						break;
+					case 3:
+						var switchValue = op1[3];
+						var switchTime = op1[2];
+						var func14 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func24 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var a24 = func14;
+						var a31 = func24;
+						var a41 = switchTime;
+						var a5 = switchValue;
+						tmp1 = function(a14) {
+							return tweenxcore_FloatTools.connectEasing(a14,a24,a31,a41,a5);
+						};
+						break;
+					case 4:
+						var switchTime1 = op1[2];
+						var func15 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func25 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var a25 = func15;
+						var a32 = func25;
+						var a42 = switchTime1;
+						tmp1 = function(a15) {
+							return tweenxcore_FloatTools.oneTwoEasing(a15,a25,a32,a42);
+						};
+						break;
+					case 5:
+						var op2 = op1[3];
+						var easing3 = op1[2];
+						var end = op2[3];
+						var start = op2[2];
+						var func16 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing1);
+						var func26 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing2);
+						var func31 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing3);
+						var a26 = func16;
+						var a33 = func26;
+						var a43 = func31;
+						var a51 = start;
+						var a6 = end;
+						tmp1 = function(a16) {
+							return tweenxcore_FloatTools.crossfadeEasing(a16,a26,a33,a43,a51,a6);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			}
+			var rate6 = tmp1(r);
+			return min * (1 - rate6) + max * rate6;
+		};
+		return React.createElement("div",{ },tmp,react_ReactStringTools.createElement("div",{ className : "param-group"},[react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.From), value : min, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.To), value : max, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context}),react_ReactTools.createElement(component_basic_GraphView,{ lines : [{ easing : easingFunc, color : 16737457},{ easing : function(r1) {
+			var easing4 = _gthis.props.easing1;
+			var tmp2;
+			switch(easing4[1]) {
+			case 0:
+				var kind1 = easing4[2];
+				switch(kind1[1]) {
+				case 0:
+					tmp2 = tweenxcore_Easing.linear;
+					break;
+				case 1:
+					var inOut1 = kind1[3];
+					switch(kind1[2][1]) {
+					case 0:
+						switch(inOut1[1]) {
+						case 0:
+							tmp2 = tweenxcore_Easing.quadIn;
+							break;
+						case 1:
+							tmp2 = tweenxcore_Easing.quadOut;
+							break;
+						case 2:
+							tmp2 = tweenxcore_Easing.quadInOut;
+							break;
+						case 3:
+							tmp2 = tweenxcore_Easing.quadOutIn;
+							break;
+						}
+						break;
+					case 1:
+						switch(inOut1[1]) {
+						case 0:
+							tmp2 = tweenxcore_Easing.cubicIn;
+							break;
+						case 1:
+							tmp2 = tweenxcore_Easing.cubicOut;
+							break;
+						case 2:
+							tmp2 = tweenxcore_Easing.cubicInOut;
+							break;
+						case 3:
+							tmp2 = tweenxcore_Easing.cubicOutIn;
+							break;
+						}
+						break;
+					case 2:
+						switch(inOut1[1]) {
+						case 0:
+							tmp2 = tweenxcore_Easing.quartIn;
+							break;
+						case 1:
+							tmp2 = tweenxcore_Easing.quartOut;
+							break;
+						case 2:
+							tmp2 = tweenxcore_Easing.quartInOut;
+							break;
+						case 3:
+							tmp2 = tweenxcore_Easing.quartOutIn;
+							break;
+						}
+						break;
+					case 3:
+						switch(inOut1[1]) {
+						case 0:
+							tmp2 = tweenxcore_Easing.quintIn;
+							break;
+						case 1:
+							tmp2 = tweenxcore_Easing.quintOut;
+							break;
+						case 2:
+							tmp2 = tweenxcore_Easing.quintInOut;
+							break;
+						case 3:
+							tmp2 = tweenxcore_Easing.quintOutIn;
+							break;
+						}
+						break;
+					case 4:
+						switch(inOut1[1]) {
+						case 0:
+							tmp2 = tweenxcore_Easing.sineIn;
+							break;
+						case 1:
+							tmp2 = tweenxcore_Easing.sineOut;
+							break;
+						case 2:
+							tmp2 = tweenxcore_Easing.sineInOut;
+							break;
+						case 3:
+							tmp2 = tweenxcore_Easing.sineOutIn;
+							break;
+						}
+						break;
+					case 5:
+						switch(inOut1[1]) {
+						case 0:
+							tmp2 = tweenxcore_Easing.circIn;
+							break;
+						case 1:
+							tmp2 = tweenxcore_Easing.circOut;
+							break;
+						case 2:
+							tmp2 = tweenxcore_Easing.circInOut;
+							break;
+						case 3:
+							tmp2 = tweenxcore_Easing.circOutIn;
+							break;
+						}
+						break;
+					case 6:
+						switch(inOut1[1]) {
+						case 0:
+							tmp2 = tweenxcore_Easing.expoIn;
+							break;
+						case 1:
+							tmp2 = tweenxcore_Easing.expoOut;
+							break;
+						case 2:
+							tmp2 = tweenxcore_Easing.expoInOut;
+							break;
+						case 3:
+							tmp2 = tweenxcore_Easing.expoOutIn;
+							break;
+						}
+						break;
+					case 7:
+						switch(inOut1[1]) {
+						case 0:
+							tmp2 = tweenxcore_Easing.backIn;
+							break;
+						case 1:
+							tmp2 = tweenxcore_Easing.backOut;
+							break;
+						case 2:
+							tmp2 = tweenxcore_Easing.backInOut;
+							break;
+						case 3:
+							tmp2 = tweenxcore_Easing.backOutIn;
+							break;
+						}
+						break;
+					case 8:
+						switch(inOut1[1]) {
+						case 0:
+							tmp2 = tweenxcore_Easing.bounceIn;
+							break;
+						case 1:
+							tmp2 = tweenxcore_Easing.bounceOut;
+							break;
+						case 2:
+							tmp2 = tweenxcore_Easing.bounceInOut;
+							break;
+						case 3:
+							tmp2 = tweenxcore_Easing.bounceOutIn;
+							break;
+						}
+						break;
+					case 9:
+						switch(inOut1[1]) {
+						case 0:
+							tmp2 = tweenxcore_Easing.elasticIn;
+							break;
+						case 1:
+							tmp2 = tweenxcore_Easing.elasticOut;
+							break;
+						case 2:
+							tmp2 = tweenxcore_Easing.elasticInOut;
+							break;
+						case 3:
+							tmp2 = tweenxcore_Easing.elasticOutIn;
+							break;
+						}
+						break;
+					case 10:
+						switch(inOut1[1]) {
+						case 0:
+							tmp2 = tweenxcore_Easing.warpIn;
+							break;
+						case 1:
+							tmp2 = tweenxcore_Easing.warpOut;
+							break;
+						case 2:
+							tmp2 = tweenxcore_Easing.warpInOut;
+							break;
+						case 3:
+							tmp2 = tweenxcore_Easing.warpOutIn;
+							break;
+						}
+						break;
+					}
+					break;
+				case 2:
+					var controls1 = kind1[3];
+					switch(kind1[2][1]) {
+					case 0:
+						var a27 = controls1;
+						tmp2 = function(a17) {
+							return tweenxcore_FloatTools.bezier(a17,a27);
+						};
+						break;
+					case 1:
+						var a28 = controls1;
+						tmp2 = function(a18) {
+							return tweenxcore_FloatTools.polyline(a18,a28);
+						};
+						break;
+					case 2:
+						var a29 = controls1;
+						tmp2 = function(a19) {
+							return tweenxcore_FloatTools.uniformQuadraticBSpline(a19,a29);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			case 1:
+				var op3 = easing4[3];
+				var easing5 = easing4[2];
+				switch(op3[1]) {
+				case 0:
+					var repeat1 = op3[2];
+					var func5 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+					tmp2 = function(rate7) {
+						var p1 = (0 * (1 - rate7) + repeat1 * rate7) / 1.0;
+						return func5(p1 - Math.floor(p1));
+					};
+					break;
+				case 1:
+					var to1 = op3[3];
+					var from1 = op3[2];
+					var func6 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+					tmp2 = function(rate8) {
+						var rate9 = func6(rate8);
+						return from1 * (1 - rate9) + to1 * rate9;
+					};
+					break;
+				case 2:
+					var max2 = op3[3];
+					var min2 = op3[2];
+					var func7 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+					tmp2 = function(rate10) {
+						var value3 = func7(rate10);
+						if(value3 <= min2) {
+							return min2;
+						} else if(max2 <= value3) {
+							return max2;
+						} else {
+							return value3;
+						}
+					};
+					break;
+				case 3:
+					switch(op3[2][1]) {
+					case 0:
+						var func8 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						tmp2 = function(value4) {
+							return func8((value4 < 0.5?value4:1 - value4) * 2);
+						};
+						break;
+					case 1:
+						var func9 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						tmp2 = function(value5) {
+							if(value5 < 0.5) {
+								return func9(value5 * 2);
+							} else {
+								return 1 - func9((value5 - 0.5) * 2);
+							}
+						};
+						break;
+					}
+					break;
+				case 4:
+					var op4 = op3[3];
+					var easing21 = op3[2];
+					switch(op4[1]) {
+					case 0:
+						var func17 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func27 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						tmp2 = function(rate11) {
+							return func17(func27(rate11));
+						};
+						break;
+					case 1:
+						var func18 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func28 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						tmp2 = function(rate12) {
+							return func18(rate12) * func28(rate12);
+						};
+						break;
+					case 2:
+						var strength1 = op4[2];
+						var func19 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func29 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						var a210 = func19;
+						var a34 = func29;
+						var a44 = strength1;
+						tmp2 = function(a110) {
+							return tweenxcore_FloatTools.mixEasing(a110,a210,a34,a44);
+						};
+						break;
+					case 3:
+						var switchValue1 = op4[3];
+						var switchTime2 = op4[2];
+						var func110 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func210 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						var a211 = func110;
+						var a35 = func210;
+						var a45 = switchTime2;
+						var a52 = switchValue1;
+						tmp2 = function(a111) {
+							return tweenxcore_FloatTools.connectEasing(a111,a211,a35,a45,a52);
+						};
+						break;
+					case 4:
+						var switchTime3 = op4[2];
+						var func111 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func211 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						var a212 = func111;
+						var a36 = func211;
+						var a46 = switchTime3;
+						tmp2 = function(a112) {
+							return tweenxcore_FloatTools.oneTwoEasing(a112,a212,a36,a46);
+						};
+						break;
+					case 5:
+						var op5 = op4[3];
+						var easing31 = op4[2];
+						var end1 = op5[3];
+						var start1 = op5[2];
+						var func112 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing5);
+						var func212 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing21);
+						var func32 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing31);
+						var a213 = func112;
+						var a37 = func212;
+						var a47 = func32;
+						var a53 = start1;
+						var a61 = end1;
+						tmp2 = function(a113) {
+							return tweenxcore_FloatTools.crossfadeEasing(a113,a213,a37,a47,a53,a61);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			}
+			var rate13 = tmp2(r1);
+			return easingFunc(r1) * (1 - rate13) + rate13;
+		}, color : 940731},{ easing : function(r2) {
+			var easing6 = _gthis.props.easing2;
+			var tmp3;
+			switch(easing6[1]) {
+			case 0:
+				var kind2 = easing6[2];
+				switch(kind2[1]) {
+				case 0:
+					tmp3 = tweenxcore_Easing.linear;
+					break;
+				case 1:
+					var inOut2 = kind2[3];
+					switch(kind2[2][1]) {
+					case 0:
+						switch(inOut2[1]) {
+						case 0:
+							tmp3 = tweenxcore_Easing.quadIn;
+							break;
+						case 1:
+							tmp3 = tweenxcore_Easing.quadOut;
+							break;
+						case 2:
+							tmp3 = tweenxcore_Easing.quadInOut;
+							break;
+						case 3:
+							tmp3 = tweenxcore_Easing.quadOutIn;
+							break;
+						}
+						break;
+					case 1:
+						switch(inOut2[1]) {
+						case 0:
+							tmp3 = tweenxcore_Easing.cubicIn;
+							break;
+						case 1:
+							tmp3 = tweenxcore_Easing.cubicOut;
+							break;
+						case 2:
+							tmp3 = tweenxcore_Easing.cubicInOut;
+							break;
+						case 3:
+							tmp3 = tweenxcore_Easing.cubicOutIn;
+							break;
+						}
+						break;
+					case 2:
+						switch(inOut2[1]) {
+						case 0:
+							tmp3 = tweenxcore_Easing.quartIn;
+							break;
+						case 1:
+							tmp3 = tweenxcore_Easing.quartOut;
+							break;
+						case 2:
+							tmp3 = tweenxcore_Easing.quartInOut;
+							break;
+						case 3:
+							tmp3 = tweenxcore_Easing.quartOutIn;
+							break;
+						}
+						break;
+					case 3:
+						switch(inOut2[1]) {
+						case 0:
+							tmp3 = tweenxcore_Easing.quintIn;
+							break;
+						case 1:
+							tmp3 = tweenxcore_Easing.quintOut;
+							break;
+						case 2:
+							tmp3 = tweenxcore_Easing.quintInOut;
+							break;
+						case 3:
+							tmp3 = tweenxcore_Easing.quintOutIn;
+							break;
+						}
+						break;
+					case 4:
+						switch(inOut2[1]) {
+						case 0:
+							tmp3 = tweenxcore_Easing.sineIn;
+							break;
+						case 1:
+							tmp3 = tweenxcore_Easing.sineOut;
+							break;
+						case 2:
+							tmp3 = tweenxcore_Easing.sineInOut;
+							break;
+						case 3:
+							tmp3 = tweenxcore_Easing.sineOutIn;
+							break;
+						}
+						break;
+					case 5:
+						switch(inOut2[1]) {
+						case 0:
+							tmp3 = tweenxcore_Easing.circIn;
+							break;
+						case 1:
+							tmp3 = tweenxcore_Easing.circOut;
+							break;
+						case 2:
+							tmp3 = tweenxcore_Easing.circInOut;
+							break;
+						case 3:
+							tmp3 = tweenxcore_Easing.circOutIn;
+							break;
+						}
+						break;
+					case 6:
+						switch(inOut2[1]) {
+						case 0:
+							tmp3 = tweenxcore_Easing.expoIn;
+							break;
+						case 1:
+							tmp3 = tweenxcore_Easing.expoOut;
+							break;
+						case 2:
+							tmp3 = tweenxcore_Easing.expoInOut;
+							break;
+						case 3:
+							tmp3 = tweenxcore_Easing.expoOutIn;
+							break;
+						}
+						break;
+					case 7:
+						switch(inOut2[1]) {
+						case 0:
+							tmp3 = tweenxcore_Easing.backIn;
+							break;
+						case 1:
+							tmp3 = tweenxcore_Easing.backOut;
+							break;
+						case 2:
+							tmp3 = tweenxcore_Easing.backInOut;
+							break;
+						case 3:
+							tmp3 = tweenxcore_Easing.backOutIn;
+							break;
+						}
+						break;
+					case 8:
+						switch(inOut2[1]) {
+						case 0:
+							tmp3 = tweenxcore_Easing.bounceIn;
+							break;
+						case 1:
+							tmp3 = tweenxcore_Easing.bounceOut;
+							break;
+						case 2:
+							tmp3 = tweenxcore_Easing.bounceInOut;
+							break;
+						case 3:
+							tmp3 = tweenxcore_Easing.bounceOutIn;
+							break;
+						}
+						break;
+					case 9:
+						switch(inOut2[1]) {
+						case 0:
+							tmp3 = tweenxcore_Easing.elasticIn;
+							break;
+						case 1:
+							tmp3 = tweenxcore_Easing.elasticOut;
+							break;
+						case 2:
+							tmp3 = tweenxcore_Easing.elasticInOut;
+							break;
+						case 3:
+							tmp3 = tweenxcore_Easing.elasticOutIn;
+							break;
+						}
+						break;
+					case 10:
+						switch(inOut2[1]) {
+						case 0:
+							tmp3 = tweenxcore_Easing.warpIn;
+							break;
+						case 1:
+							tmp3 = tweenxcore_Easing.warpOut;
+							break;
+						case 2:
+							tmp3 = tweenxcore_Easing.warpInOut;
+							break;
+						case 3:
+							tmp3 = tweenxcore_Easing.warpOutIn;
+							break;
+						}
+						break;
+					}
+					break;
+				case 2:
+					var controls2 = kind2[3];
+					switch(kind2[2][1]) {
+					case 0:
+						var a214 = controls2;
+						tmp3 = function(a114) {
+							return tweenxcore_FloatTools.bezier(a114,a214);
+						};
+						break;
+					case 1:
+						var a215 = controls2;
+						tmp3 = function(a115) {
+							return tweenxcore_FloatTools.polyline(a115,a215);
+						};
+						break;
+					case 2:
+						var a216 = controls2;
+						tmp3 = function(a116) {
+							return tweenxcore_FloatTools.uniformQuadraticBSpline(a116,a216);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			case 1:
+				var op6 = easing6[3];
+				var easing7 = easing6[2];
+				switch(op6[1]) {
+				case 0:
+					var repeat2 = op6[2];
+					var func10 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing7);
+					tmp3 = function(rate14) {
+						var p2 = (0 * (1 - rate14) + repeat2 * rate14) / 1.0;
+						return func10(p2 - Math.floor(p2));
+					};
+					break;
+				case 1:
+					var to2 = op6[3];
+					var from2 = op6[2];
+					var func20 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing7);
+					tmp3 = function(rate15) {
+						var rate16 = func20(rate15);
+						return from2 * (1 - rate16) + to2 * rate16;
+					};
+					break;
+				case 2:
+					var max3 = op6[3];
+					var min3 = op6[2];
+					var func30 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing7);
+					tmp3 = function(rate17) {
+						var value6 = func30(rate17);
+						if(value6 <= min3) {
+							return min3;
+						} else if(max3 <= value6) {
+							return max3;
+						} else {
+							return value6;
+						}
+					};
+					break;
+				case 3:
+					switch(op6[2][1]) {
+					case 0:
+						var func33 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing7);
+						tmp3 = function(value7) {
+							return func33((value7 < 0.5?value7:1 - value7) * 2);
+						};
+						break;
+					case 1:
+						var func34 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing7);
+						tmp3 = function(value8) {
+							if(value8 < 0.5) {
+								return func34(value8 * 2);
+							} else {
+								return 1 - func34((value8 - 0.5) * 2);
+							}
+						};
+						break;
+					}
+					break;
+				case 4:
+					var op7 = op6[3];
+					var easing22 = op6[2];
+					switch(op7[1]) {
+					case 0:
+						var func113 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing7);
+						var func213 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing22);
+						tmp3 = function(rate18) {
+							return func113(func213(rate18));
+						};
+						break;
+					case 1:
+						var func114 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing7);
+						var func214 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing22);
+						tmp3 = function(rate19) {
+							return func114(rate19) * func214(rate19);
+						};
+						break;
+					case 2:
+						var strength2 = op7[2];
+						var func115 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing7);
+						var func215 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing22);
+						var a217 = func115;
+						var a38 = func215;
+						var a48 = strength2;
+						tmp3 = function(a117) {
+							return tweenxcore_FloatTools.mixEasing(a117,a217,a38,a48);
+						};
+						break;
+					case 3:
+						var switchValue2 = op7[3];
+						var switchTime4 = op7[2];
+						var func116 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing7);
+						var func216 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing22);
+						var a218 = func116;
+						var a39 = func216;
+						var a49 = switchTime4;
+						var a54 = switchValue2;
+						tmp3 = function(a118) {
+							return tweenxcore_FloatTools.connectEasing(a118,a218,a39,a49,a54);
+						};
+						break;
+					case 4:
+						var switchTime5 = op7[2];
+						var func117 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing7);
+						var func217 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing22);
+						var a219 = func117;
+						var a310 = func217;
+						var a410 = switchTime5;
+						tmp3 = function(a119) {
+							return tweenxcore_FloatTools.oneTwoEasing(a119,a219,a310,a410);
+						};
+						break;
+					case 5:
+						var op8 = op7[3];
+						var easing32 = op7[2];
+						var end2 = op8[3];
+						var start2 = op8[2];
+						var func118 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing7);
+						var func218 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing22);
+						var func35 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing32);
+						var a220 = func118;
+						var a311 = func218;
+						var a411 = func35;
+						var a55 = start2;
+						var a62 = end2;
+						tmp3 = function(a120) {
+							return tweenxcore_FloatTools.crossfadeEasing(a120,a220,a311,a411,a55,a62);
+						};
+						break;
+					}
+					break;
+				}
+				break;
+			}
+			var rate20 = tmp3(r2);
+			return 0 * (1 - rate20) + easingFunc(r2) * rate20;
+		}, color : 940731}], partations : [], scale : 0.45})]));
 	}
 	,__class__: component_ternaryOp_TernaryOpView
 });
@@ -2436,7 +4278,30 @@ component_unary_ClampView.__name__ = ["component","unary","ClampView"];
 component_unary_ClampView.__super__ = React.Component;
 component_unary_ClampView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Min), value : this.props.min, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Max), value : this.props.max, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context}));
+		var _gthis = this;
+		var tmp = react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Min), value : this.props.min, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context});
+		var tmp1 = react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Max), value : this.props.max, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context});
+		var kind = tweenxcore_expr_UnaryOpKind.Clamp(this.props.min,this.props.max);
+		var easing = this.props.easing;
+		var tmp2;
+		var max = kind[3];
+		var min = kind[2];
+		var func = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
+		tmp2 = function(rate) {
+			var value = func(rate);
+			if(value <= min) {
+				return min;
+			} else if(max <= value) {
+				return max;
+			} else {
+				return value;
+			}
+		};
+		return React.createElement("div",{ className : "param-group"},tmp,tmp1,react_ReactTools.createElement(component_basic_GraphView,{ lines : [{ easing : function(r) {
+			return _gthis.props.max;
+		}, color : 16737457},{ easing : function(r1) {
+			return _gthis.props.min;
+		}, color : 16737457},{ easing : tmp2, color : 940731}], partations : [], scale : 0.45}));
 	}
 	,__class__: component_unary_ClampView
 });
@@ -2448,7 +4313,24 @@ component_unary_LerpView.__name__ = ["component","unary","LerpView"];
 component_unary_LerpView.__super__ = React.Component;
 component_unary_LerpView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.From), value : this.props.from, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}),react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.To), value : this.props.to, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context}));
+		var _gthis = this;
+		var tmp = react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.From), value : this.props.from, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context});
+		var tmp1 = react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.To), value : this.props.to, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,1), context : this.props.context});
+		var kind = tweenxcore_expr_UnaryOpKind.Lerp(this.props.from,this.props.to);
+		var easing = this.props.easing;
+		var tmp2;
+		var to = kind[3];
+		var from = kind[2];
+		var func = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
+		tmp2 = function(rate) {
+			var rate1 = func(rate);
+			return from * (1 - rate1) + to * rate1;
+		};
+		return React.createElement("div",{ className : "param-group"},tmp,tmp1,react_ReactTools.createElement(component_basic_GraphView,{ lines : [{ easing : function(r) {
+			return _gthis.props.to;
+		}, color : 16737457},{ easing : function(r1) {
+			return _gthis.props.from;
+		}, color : 16737457},{ easing : tmp2, color : 940731}], partations : [], scale : 0.45}));
 	}
 	,__class__: component_unary_LerpView
 });
@@ -2460,7 +4342,22 @@ component_unary_RepeatView.__name__ = ["component","unary","RepeatView"];
 component_unary_RepeatView.__super__ = React.Component;
 component_unary_RepeatView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Repeat), value : this.props.repeat, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context}));
+		var tmp = react_ReactTools.createElement(component_basic_NumberInputView,{ name : this.props.context.localize.resource.common(core_localize_ResourceKey.Repeat), value : this.props.repeat, id : component_complex__$ComplexEasingId_ComplexEasingId_$Impl_$.numberInputId(this.props.id,0), context : this.props.context});
+		var kind = tweenxcore_expr_UnaryOpKind.Repeat(this.props.repeat);
+		var easing = this.props.easing;
+		var tmp1;
+		var repeat = kind[2];
+		var func = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
+		tmp1 = function(rate) {
+			var p = (0 * (1 - rate) + repeat * rate) / 1.0;
+			return func(p - Math.floor(p));
+		};
+		var tmp2 = [{ easing : tmp1, color : 940731}];
+		var _g = [];
+		var _g2 = 0;
+		var _g1 = Math.ceil(this.props.repeat - 1);
+		while(_g2 < _g1) _g.push((_g2++ + 1) / this.props.repeat);
+		return React.createElement("div",{ className : "param-group"},tmp,react_ReactTools.createElement(component_basic_GraphView,{ lines : tmp2, partations : _g, scale : 0.45}));
 	}
 	,__class__: component_unary_RepeatView
 });
@@ -2472,7 +4369,28 @@ component_unary_RoundTripView.__name__ = ["component","unary","RoundTripView"];
 component_unary_RoundTripView.__super__ = React.Component;
 component_unary_RoundTripView.prototype = $extend(React.Component.prototype,{
 	render: function() {
-		return null;
+		var kind = tweenxcore_expr_UnaryOpKind.RoundTrip(this.props.roundTrip);
+		var easing = this.props.easing;
+		var tmp;
+		switch(kind[2][1]) {
+		case 0:
+			var func = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
+			tmp = function(value) {
+				return func((value < 0.5?value:1 - value) * 2);
+			};
+			break;
+		case 1:
+			var func1 = tweenxcore_expr_ComplexEasingKindTools.toFunction(easing);
+			tmp = function(value1) {
+				if(value1 < 0.5) {
+					return func1(value1 * 2);
+				} else {
+					return 1 - func1((value1 - 0.5) * 2);
+				}
+			};
+			break;
+		}
+		return React.createElement("div",{ className : "param-group"},react_ReactTools.createElement(component_basic_GraphView,{ lines : [{ easing : tmp, color : 940731}], partations : [0.5], scale : 0.45}));
 	}
 	,__class__: component_unary_RoundTripView
 });
@@ -8529,9 +10447,10 @@ if(ArrayBuffer.prototype.slice == null) {
 var Uint8Array = $global.Uint8Array || js_html_compat_Uint8Array._new;
 Application.displayName = "Application";
 component_basic_DropdownButtonView.displayName = "DropdownButtonView";
-component_basic_GraphView.MARGIN = 30;
-component_basic_GraphView.WIDTH = 120;
-component_basic_GraphView.HEIGHT = 140;
+component_basic__$GraphColor_GraphColor_$Impl_$.Theme = 940731;
+component_basic__$GraphColor_GraphColor_$Impl_$.Sub = 16737457;
+component_basic_GraphView.WIDTH = 180;
+component_basic_GraphView.HEIGHT = 120;
 component_basic_GraphView.displayName = "GraphView";
 component_basic_NumberInputView.displayName = "NumberInputView";
 component_basic_NumberSliderView.WIDTH = 160;
