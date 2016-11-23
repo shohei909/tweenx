@@ -32,6 +32,7 @@ class Main {
         attach(HsvSample,             481, 151, ClickToPlay);
         attach(ImageSample,           96, 96, ClickToPlay);
         attach(MouseSample,           481, 151, ClickToPlay);
+        attach(ShakeSample,           481, 151, ClickToPlay);
         attach(EasingVisualizeSample, 800, 500, Direct);
         
         Browser.window.setInterval(onFrame, 16);

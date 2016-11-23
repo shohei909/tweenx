@@ -653,6 +653,7 @@ Main.main = function() {
 	Main.attach(HsvSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(ImageSample,96,96,PlayMode.ClickToPlay);
 	Main.attach(MouseSample,481,151,PlayMode.ClickToPlay);
+	Main.attach(ShakeSample,481,151,PlayMode.ClickToPlay);
 	Main.attach(EasingVisualizeSample,800,500,PlayMode.Direct);
 	window.setInterval(Main.onFrame,16);
 };
@@ -895,6 +896,80 @@ RepeatSample.prototype = $extend(sample_Sprite.prototype,{
 		this.square.x = 0 * (1 - rate) + 450 * rate;
 	}
 	,__class__: RepeatSample
+});
+var ShakeSample = function() {
+	sample_Sprite.call(this);
+	this.addChild(this.square1 = new sample_Square());
+	this.addChild(this.square2 = new sample_Square());
+	this.addChild(this.square3 = new sample_Square());
+	this.square1.y = this.square2.y = this.square3.y = 60;
+	this.square1.x = 90;
+	this.square2.x = 225;
+	this.square3.x = 360;
+};
+ShakeSample.__name__ = ["ShakeSample"];
+ShakeSample.random2 = function() {
+	var t = Math.random();
+	t *= 2;
+	if(t < 1) {
+		var tmp = 0.5 * t;
+		t *= t;
+		return tmp * t * t;
+	} else {
+		t -= 2;
+		var tmp1 = 0.5 * t;
+		t *= t;
+		return tmp1 * t * t + 1;
+	}
+};
+ShakeSample.random3 = function() {
+	var t = Math.random();
+	t = t * 2 - 1;
+	var tmp = t;
+	t *= t;
+	return 0.5 * (tmp * t * t + 1);
+};
+ShakeSample.__super__ = sample_Sprite;
+ShakeSample.prototype = $extend(sample_Sprite.prototype,{
+	update: function() {
+		var randomFunc = null;
+		if(randomFunc == null) {
+			randomFunc = Math.random;
+		}
+		var rate = randomFunc();
+		this.square1.x = 90 + (-3 * (1 - rate) + 3 * rate);
+		var randomFunc1 = null;
+		if(randomFunc1 == null) {
+			randomFunc1 = Math.random;
+		}
+		var rate1 = randomFunc1();
+		this.square1.y = 60 + (-3 * (1 - rate1) + 3 * rate1);
+		var randomFunc2 = ShakeSample.random2;
+		if(randomFunc2 == null) {
+			randomFunc2 = Math.random;
+		}
+		var rate2 = randomFunc2();
+		this.square2.x = 225 + (-3 * (1 - rate2) + 3 * rate2);
+		var randomFunc3 = ShakeSample.random2;
+		if(randomFunc3 == null) {
+			randomFunc3 = Math.random;
+		}
+		var rate3 = randomFunc3();
+		this.square2.y = 60 + (-3 * (1 - rate3) + 3 * rate3);
+		var randomFunc4 = ShakeSample.random3;
+		if(randomFunc4 == null) {
+			randomFunc4 = Math.random;
+		}
+		var rate4 = randomFunc4();
+		this.square3.x = 360 + (-3 * (1 - rate4) + 3 * rate4);
+		var randomFunc5 = ShakeSample.random3;
+		if(randomFunc5 == null) {
+			randomFunc5 = Math.random;
+		}
+		var rate5 = randomFunc5();
+		this.square3.y = 60 + (-3 * (1 - rate5) + 3 * rate5);
+	}
+	,__class__: ShakeSample
 });
 var SimplestSample = function() {
 	this.frameCount = 0;
@@ -3481,6 +3556,7 @@ MouseSample.TOTAL_FRAME = 16777215;
 OneTwoSample.TOTAL_FRAME = 40;
 PolarSample.TOTAL_FRAME = 40;
 RepeatSample.TOTAL_FRAME = 140;
+ShakeSample.TOTAL_FRAME = 400;
 SimplestSample.TOTAL_FRAME = 20;
 Style.SQUARE_SIZE = 15;
 Style.START_FRAME = 15;

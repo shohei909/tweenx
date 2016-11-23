@@ -689,6 +689,44 @@ square.y = rateY.yoyo(Easing.expoInOut).lerp(0, 120);
 `repeat` is a repeating function, which is the same as `inverseLerp` until converting a value from 0 to 400 from 0 to 1, but outside the specified interval such as a value less than 0 or a value greater than 400 Behavior is different.
 For example, `repeat` converts from 0 to 1 with values such as -400 to 0, 0 to 400, 400 to 800, 800 to 1200.
 
+=== Random
+
+==== Shake
+
+{{page.tweenxcore}} can make various expressions by using it together with random numbers. For example below, I created a effect to shake a square.
+
+{% include sample.asciidoc id="Shake"%}
+
+```haxe
+public function update():Void 
+{
+    var scale = 3;
+    square1.x = scale.shake( 90);
+    square1.y = scale.shake( 60);
+    
+    square2.x = scale.shake(225, random2);
+    square2.y = scale.shake( 60, random2);
+    
+    square3.x = scale.shake(360, random3);
+    square3.y = scale.shake( 60, random3);
+}
+
+private static function random2():Float
+{
+    // 0と1によせる
+    return Math.random().quintInOut();
+}
+
+private static function random3():Float
+{
+    // 0.5によせる
+    return Math.random().quintOutIn();
+}
+```
+
+``FloatTools.shake`` receives magnitude to shake as the first argument, center value as the second argument, and function to generate random number as the third argument.
+
+In the sample, by applying easing to the generated random numbers, I changed the way of shaking.
 
 
 ++++

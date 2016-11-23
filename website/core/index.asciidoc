@@ -707,6 +707,44 @@ square.y = rateY.yoyo(Easing.expoInOut).lerp(0, 120);
 つまり、``repeat``では-400から0、0から400、400から800、800から1200といった各値で0から1への変換がされます。
 
 
+=== ランダム
+
+==== ゆらす
+
+{{page.tweenxcore}}は、乱数と合わせて使うことでさまざまな表現を作ることができます。以下は、その一例として四角をゆらす演出をつくっています。
+
+{% include sample.asciidoc id="Shake"%}
+
+```haxe
+public function update():Void 
+{
+    var scale = 3;
+    square1.x = scale.shake( 90);
+    square1.y = scale.shake( 60);
+    
+    square2.x = scale.shake(225, random2);
+    square2.y = scale.shake( 60, random2);
+    
+    square3.x = scale.shake(360, random3);
+    square3.y = scale.shake( 60, random3);
+}
+
+private static function random2():Float
+{
+    // 0と1によせる
+    return Math.random().quintInOut();
+}
+
+private static function random3():Float
+{
+    // 0.5によせる
+    return Math.random().quintOutIn();
+}
+```
+
+``FloatTools.shake``は、第1引数に揺らす大きさ、第2引数に中心値、第3引数に乱数を生成する関数を取ります。
+
+サンプルでは生成する乱数にイージングをかけることで、揺れ方に変化をあたえています。
 
 ++++
 <script src="/js/Sample.js"></script>
