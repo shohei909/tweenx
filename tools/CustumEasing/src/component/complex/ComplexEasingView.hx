@@ -2,6 +2,7 @@ package component.complex;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
+import component.basic.GraphColor;
 import component.basic.PreviewView;
 import component.complex.ComplexEasingSelectView;
 import component.basic.GraphView;
@@ -13,6 +14,7 @@ import core.drag.DragStateKind;
 import haxe.ds.Option;
 import js.html.MouseEvent;
 import tweenxcore.expr.ComplexEasingKind;
+import tweenxcore.expr.ComplexEasingKindTools;
 using component.complex.ComplexEasingId;
 
 class ComplexEasingView extends ReactComponentOfProps<ComplexEasingProps>
@@ -51,8 +53,10 @@ class ComplexEasingView extends ReactComponentOfProps<ComplexEasingProps>
                 GraphView.createElement(
                     {
                         lines: [
-                            { easing: props.easing, color: GraphColor.Theme }
-                        ]
+                            { easing: ComplexEasingKindTools.toFunction(props.easing), color: GraphColor.Theme }
+                        ],
+                        partations: [],
+                        scale: 1,
                     }
                 ),
                 React.createElement(

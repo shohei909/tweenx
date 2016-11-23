@@ -2,12 +2,18 @@ package component.simple;
 import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactComponent.ReactComponentOfProps;
+import component.basic.GraphColor;
+import component.basic.GraphView;
 import component.basic.NumberInputView;
 import component.complex.ComplexEasingId;
 import core.RootCommand;
 import core.RootContext;
 import core.easing.EasingCommand;
+import tweenxcore.expr.ComplexEasingKind;
 import tweenxcore.expr.LineKind;
+import tweenxcore.expr.LineKindTools;
+import tweenxcore.expr.SimpleEasingKind;
+import tweenxcore.expr.SimpleEasingKindTools;
 import tweenxcore.geom.Point;
 
 class PolylineView extends ReactComponentOfProps<PolylineProps>
@@ -19,7 +25,19 @@ class PolylineView extends ReactComponentOfProps<PolylineProps>
     
     override public function render():ReactComponent
     {
-        return "div".createElement(
+        var lines = [
+            { easing: LineKindTools.toFunction(props.polyline, props.controls), color: GraphColor.Theme }
+        ];
+        
+        if (!props.polyline.match(LineKind.Polyline))
+        {
+            lines.unshift(
+                { easing: LineKindTools.toFunction(LineKind.Polyline, props.controls), color: GraphColor.Sub }
+            );
+        }
+        
+        return React.createElement(
+            "div",
             {
                 className: "param-group"
             }, 
@@ -66,7 +84,14 @@ class PolylineView extends ReactComponentOfProps<PolylineProps>
                         ]
                     );
                 }
-            ]
+            ],
+            GraphView.createElement(
+                {
+                    lines: lines,
+                    partations: [],
+                    scale: 0.45,
+                }
+            )
         );
     }
     
