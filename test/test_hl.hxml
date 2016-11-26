@@ -1,0 +1,16 @@
+#1. compile
+-main TestMain
+-hl output.hl
+-lib nanotest
+-cp ../src/tweenxcore
+-cp src
+-debug
+
+#2. execute
+--next
+-cmd hl "bin/test.hl" 1>bin/report_hl.txt
+
+#3. read
+--next
+-lib nanotest
+--macro nanotest.NanoTestRunner.readResult('bin/report_hl.txt', ['test', 'src'], 'HL')

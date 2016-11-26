@@ -7,5 +7,7 @@
   "version": "1.0.0",
   "releasenote": "major version release",
   "contributors": ["shohei909"],
-  "dependencies": {"tweenxcore"}
+  "dependencies": {
+    "tweenxcore": "1.0.0"
+  }
 }

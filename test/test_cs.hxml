@@ -4,11 +4,10 @@
 -lib nanotest
 -cp ../src/tweenxcore
 -cp src
--debug
 
 #2. exec
 --next
--cmd ""bin/cs/bin/TestMain-Debug.exe"" 1>bin/report_cs.txt
+-cmd ""bin/cs/bin/TestMain.exe"" 1>bin/report_cs.txt
 
 #3. read
 --next

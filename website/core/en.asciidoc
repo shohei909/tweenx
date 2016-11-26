@@ -235,14 +235,16 @@ Nothing is difficult.
 
 {{page.tweenxcore}} offers three things:
     
-* Function to convert values not in the range of 0.0 to 1.0 from 0.0 to 1.0. (e.g. `` FloatTools.inverseLerp`` function, `` FloatChange`` class)
-* Function to convert a number between 0.0 and 1.0 to a number between 0.0 and 1.0 with another curve. (e.g. `` Easing`` and custom easing functions)
-* Function to convert a number between 0.0 and 1.0 to various values. (e.g. `` FloatTools.lerp`` and `` Timeline`` class)
+1. Function to convert values not in the range of 0.0 to 1.0 from 0.0 to 1.0. (e.g. `` FloatTools.inverseLerp`` function, `` FloatChange`` class)
+2. Function to convert a number between 0.0 and 1.0 to a number between 0.0 and 1.0 with another curve. (e.g. `` Easing`` and custom easing functions)
+3. Function to convert a number between 0.0 and 1.0 to various values. (e.g. `` FloatTools.lerp`` and `` Timeline`` class)
+
+image::/images/overview.png[概要]
 
 If tween library has only these functions, you can freely create your own motions. The method will be explained in the tutorial.
 
 
-=== Can be used anywhere
+=== Portable
 
 {{page.tweenxcore}} can be used without being interfering with the platform, the framework used together, and the programming paradigm.
 

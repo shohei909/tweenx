@@ -110,7 +110,7 @@ strong{
 code {
     font-family: 'Source Han Code JP', Consolas, 'Courier New', Courier, Monaco, monospace;
     border: solid 1px #F5F1D0;
-    background-color: #FCFCF0;
+    background-color: #FDFCF0;
     margin: 0px 2px;
     padding: 0px 1px;
     font-size: 13px;
@@ -120,7 +120,7 @@ pre>code {
     display: block;
     width:900px;
     border: solid 1px #E5E1C0;
-    background-color: #FCFCF0;
+    background-color: #FDFCF0;
     margin-bottom: 1em;
     margin-right: 20px;
     padding: 5px;
@@ -195,6 +195,12 @@ a.image
         padding: 1px;
         border: dashed #0074BC 1px;
     }
+}
+
+div.imageblock
+{
+    margin-top: 32px;
+    margin-bottom: 32px;
 }
 
 div#header {
