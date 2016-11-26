@@ -6,16 +6,21 @@ class ExpoBenchCase extends NanoTestCase {
     private static inline var LN_2_10  = 6.931471805599453;
     
     public function testBench() {
+        #if cs
+        trace(".NET version: ", cs.system.Environment.Version);
+        #end
+        
         var p = [];
-        var p2 = [];
         var e = [];
         
         for (i in 0...10)
         {
             p.push(tracePow());
-            p2.push(tracePow2());
             e.push(traceExp());
         }
+        
+        trace("Pow M:" + mean(p) + " SD:" + standardDeviation(p));
+        trace("Exp M:" + mean(e) + " SD:" + standardDeviation(e));
     }
     
     public function standardDeviation(p:Array<Float>) {
