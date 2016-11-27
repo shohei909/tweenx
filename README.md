@@ -8,7 +8,7 @@ Cross platform tween library for Haxe
 ## Documentation
 
 * [TweenXCore](http://tweenx.spheresofa.net/core/en.html)
-* [TweenX](http://tweenx.spheresofa.netcore/en.html)
+* [TweenX](http://tweenx.spheresofa.net/core/en.html)
 
 ##License
 
