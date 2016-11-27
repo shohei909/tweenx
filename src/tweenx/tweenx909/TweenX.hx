@@ -199,6 +199,9 @@ class TweenX extends CommandX {
     public static function func(func:Void->Void, ?delay:Float, ?repeat:Int, ?interval:Float, ?posInfos:PosInfos) {
         return new TweenX(CALL(func), 0, EaseX.linear, delay, repeat, false, false, interval, false, posInfos);
     }
+    public static function run(func:Dynamic ,params:Array<Dynamic>, ?delay:Float,?repeat:Int, ?interval:Float, ?posInfos:PosInfos) {
+        return new TweenX(RUN(func, params), 0, EaseX.linear, delay, repeat, false, false, interval, false, posInfos);
+    }
 
 
     /*
@@ -813,6 +816,9 @@ class TweenX extends CommandX {
 
             case CALL(f):
                     if (t == 1) f();
+
+            case RUN(func, params):
+                    if (t == 1) Reflect.callMethod(null, func, params);
         }
     }
 
