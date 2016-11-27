@@ -4,10 +4,10 @@
   "license": "MIT",
   "tags": ["flash", "cpp", "js", "neko", "tween"],
   "description": "crossplatform tween library",
-  "version": "1.0.0",
-  "releasenote": "major version update",
+  "version": "1.0.1",
+  "releasenote": "fix for Haxe 3.2.1",
   "contributors": ["shohei909"],
   "dependencies": {
-    "tweenxcore": "1.0.0"
+    "tweenxcore": "1.0.1"
   }
 }

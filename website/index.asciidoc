@@ -71,7 +71,7 @@ haxelib install tweenx
 
 == Haxeバージョン
 
-TweenXの最新バージョン(1.0)でのサポート対象Haxe 3.1.3以降です。
+TweenXの最新バージョン(1.0)でのサポート対象Haxe 3.2.1以降です。
 
 == チュートリアル
 
