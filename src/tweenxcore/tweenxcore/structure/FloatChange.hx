@@ -3,6 +3,9 @@ import tweenxcore.structure.FloatChangeRepeatPart;
 import tweenxcore.structure.FloatChangeRepeatPart;
 using tweenxcore.Tools;
 
+/**
+ * Change of Float
+ */
 class FloatChange {
 
     // ===============
