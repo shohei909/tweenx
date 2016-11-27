@@ -7,4 +7,4 @@
 -swf dummy.swf
 
 --next
--cmd haxelib run dox -i xml -o website/core/api/ -in tweenx --title "TweenXCore API" -D source-path https://github.com/shohei909/tweenx/tree/master/src/tweenxcore -D themeColor "0x8C0327" -D textColor 0xFFFFFF  -D website "http://tweenx.spheresofa.net/core/" -D version "1.0.0"
+-cmd haxelib run dox -i xml -o website/core/api/ -in tweenx --title "TweenXCore API" -D source-path https://github.com/shohei909/tweenx/tree/master/src/tweenxcore -D themeColor "0x8C0327" -D textColor 0xFFFFFF  -D website "http://tweenx.spheresofa.net/core/en.html" -D version "1.0.0"
