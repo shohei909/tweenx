@@ -239,7 +239,7 @@ Nothing is difficult.
 2. Function to convert a number between 0.0 and 1.0 to a number between 0.0 and 1.0 with another curve. (e.g. `` Easing`` and custom easing functions)
 3. Function to convert a number between 0.0 and 1.0 to various values. (e.g. `` FloatTools.lerp`` and `` Timeline`` class)
 
-image::/images/overview.png[概要]
+image::/images/overview.png[Overview]
 
 If tween library has only these functions, you can freely create your own motions. The method will be explained in the tutorial.
 
@@ -249,7 +249,7 @@ If tween library has only these functions, you can freely create your own motion
 {{page.tweenxcore}} can be used without being interfering with the platform, the framework used together, and the programming paradigm.
 
 * The style that you are aiming is well matched with {{page.tweenxcore}} whether it is object oriented, procedural programming, or functional programming.
-* Whether the framework you use is OpenFL, React or Unity, it will work the same way.
+* Whether the framework you use is React, Unity, OpenFL, Kha or Heaps, it will work the same way.
 * It works on client side, server side, even at compile time.
 
 
@@ -373,7 +373,7 @@ image::/images/easing_editor.png[alt="Easing editor" class="large" link="./custo
 link:./custom/[Easing Editor | TweenXCore]
 
 
-=== Handle changes in Float (FloatChange)
+=== Handle changes of Float (FloatChange)
 
 Previous samples used only the current value, but you can make various actions by using both the previous value and the current value.
 
