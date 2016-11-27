@@ -16,7 +16,7 @@ class TernaryOpKindTools
                 var func1 = easing1.toFunction();
                 var func2 = easing2.toFunction();
                 var func3 = easing3.toFunction();
-                return FloatTools.crossfadeEasing.bind(_, func1, func2, func3, start, end);
+                FloatTools.crossfadeEasing.bind(_, func1, func2, func3, start, end);
         }
     }
     
