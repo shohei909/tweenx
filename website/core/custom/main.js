@@ -5545,10 +5545,10 @@ var core_output_OutputManager = function(context) {
 		if(js_Boot.__instanceof(data,core_output_OutputMode)) {
 			tmp = data;
 		} else {
-			tmp = core_output_OutputMode.Json;
+			tmp = core_output_OutputMode.Haxe;
 		}
 	} else {
-		tmp = core_output_OutputMode.Json;
+		tmp = core_output_OutputMode.Haxe;
 	}
 	this.mode = tmp;
 };
@@ -5559,11 +5559,11 @@ core_output_OutputManager.prototype = {
 		var easing = this.context.easing.current;
 		switch(this.mode[1]) {
 		case 0:
-			return JSON.stringify(tweenxcore_expr_ComplexEasingKindTools.toJsonable(easing),null);
-		case 1:
 			var print = new haxe_macro_Printer();
 			var bodyExpr = tweenxcore_expr_ComplexEasingKindTools.toExpr(easing,{ expr : haxe_macro_ExprDef.EConst(haxe_macro_Constant.CIdent("rate")), pos : { file : "src/core/output/OutputManager.hx", min : 1240, max : 1244}});
 			return print.printExpr({ expr : haxe_macro_ExprDef.EFunction("customEase",{ args : [{ name : "rate", opt : false, type : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []})}], ret : haxe_macro_ComplexType.TPath({ pack : [], name : "Float", params : []}), expr : { expr : haxe_macro_ExprDef.EBlock([{ expr : haxe_macro_ExprDef.EReturn(bodyExpr), pos : { file : "src/core/output/OutputManager.hx", min : 1394, max : 1410}}]), pos : { file : "src/core/output/OutputManager.hx", min : 1367, max : 1434}}, params : []}), pos : { file : "src/core/output/OutputManager.hx", min : 1308, max : 1434}});
+		case 1:
+			return JSON.stringify(tweenxcore_expr_ComplexEasingKindTools.toJsonable(easing),null);
 		case 2:
 			var func;
 			switch(easing[1]) {
@@ -5923,13 +5923,13 @@ core_output_OutputManager.prototype = {
 	}
 	,__class__: core_output_OutputManager
 };
-var core_output_OutputMode = $hxClasses["core.output.OutputMode"] = { __ename__ : ["core","output","OutputMode"], __constructs__ : ["Json","Haxe","Array"] };
-core_output_OutputMode.Json = ["Json",0];
-core_output_OutputMode.Json.toString = $estr;
-core_output_OutputMode.Json.__enum__ = core_output_OutputMode;
-core_output_OutputMode.Haxe = ["Haxe",1];
+var core_output_OutputMode = $hxClasses["core.output.OutputMode"] = { __ename__ : ["core","output","OutputMode"], __constructs__ : ["Haxe","Json","Array"] };
+core_output_OutputMode.Haxe = ["Haxe",0];
 core_output_OutputMode.Haxe.toString = $estr;
 core_output_OutputMode.Haxe.__enum__ = core_output_OutputMode;
+core_output_OutputMode.Json = ["Json",1];
+core_output_OutputMode.Json.toString = $estr;
+core_output_OutputMode.Json.__enum__ = core_output_OutputMode;
 core_output_OutputMode.Array = ["Array",2];
 core_output_OutputMode.Array.toString = $estr;
 core_output_OutputMode.Array.__enum__ = core_output_OutputMode;

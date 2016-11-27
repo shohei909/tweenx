@@ -22,7 +22,7 @@ class OutputManager
                 data;
                 
             case _:
-                OutputMode.Json;
+                OutputMode.Haxe;
         }
     }
     
