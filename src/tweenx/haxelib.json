@@ -5,7 +5,7 @@
   "tags": ["flash", "cpp", "js", "neko", "tween"],
   "description": "crossplatform tween library",
   "version": "1.0.0",
-  "releasenote": "major version release",
+  "releasenote": "major version update",
   "contributors": ["shohei909"],
   "dependencies": {
     "tweenxcore": "1.0.0"
