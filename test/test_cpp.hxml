@@ -1,0 +1,15 @@
+#1. compile
+-main TestMain
+-cpp bin/cpp
+-lib nanotest
+-cp ../src/tweenxcore
+-cp src
+
+#2. exec
+--next
+-cmd ""bin/cpp/TestMain.exe"" 1>bin/report_cpp.txt
+
+#3. read
+--next
+-lib nanotest
+--macro nanotest.NanoTestRunner.readResult('bin/report_cpp.txt', ['test', 'src'], 'C++')

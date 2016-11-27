@@ -23,6 +23,8 @@
     <class path="src" />
     <class path="..\src\tweenxcore" />
     <class path="src" />
+    <class path="..\src\tweenxcore" />
+    <class path="src" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -35,6 +37,7 @@
   </build>
   <!-- haxelib libraries -->
   <haxelib>
+    <library name="nanotest" />
     <library name="nanotest" />
     <library name="nanotest" />
     <library name="nanotest" />
