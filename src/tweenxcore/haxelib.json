@@ -4,8 +4,8 @@
   "license": "MIT",
   "tags": ["flash", "js", "neko", "cs", "cpp", "java", "cross", "tween", "motion"],
   "description": "lightweight motion library for haxe",
-  "version": "1.0.0",
-  "releasenote": "first stable release",
+  "version": "1.0.1",
+  "releasenote": "fix for haxe 3.2.1",
   "contributors": ["shohei909"],
   "dependencies": {}
 }
