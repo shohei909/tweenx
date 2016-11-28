@@ -697,7 +697,7 @@ For example, `repeat` converts from 0 to 1 with values such as -400 to 0, 0 to 4
 
 {{page.tweenxcore}} can make various expressions by using it together with random numbers. For example below, I created a effect to shake a square.
 
-{% include sample.asciidoc id="Shake"%}
+{% include sample.asciidoc lang="en" id="Shake"%}
 
 ```haxe
 public function update():Void {
