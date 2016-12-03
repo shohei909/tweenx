@@ -1,8 +1,6 @@
-test_cpp.hxml
 test_js.hxml
-test_cs.hxml
 test_java.hxml
+test_cs.hxml
 test_neko.hxml
-# test_hl.hxml
-
+test_cpp.hxml
 --times

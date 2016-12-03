@@ -1,0 +1,6 @@
+#1. compile
+-main TestMain
+-swf bin/test.swf
+-lib nanotest
+-cp ../src/tweenxcore
+-cp src

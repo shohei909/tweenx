@@ -23,6 +23,7 @@ class ExpoBenchCase extends NanoTestCase {
         
         trace("Pow M:" + mean(p) + " SD:" + standardDeviation(p));
         trace("Exp M:" + mean(e) + " SD:" + standardDeviation(e));
+        trace("Average Error:" + averageError());
     }
     
     public function test() {
@@ -53,6 +54,18 @@ class ExpoBenchCase extends NanoTestCase {
         }
         
         return v;
+    }
+    
+    public function averageError():Float
+    {
+        var data = 0.0;
+        var len = 1000000;
+        for (i in 0...len) {
+            var t = i / (len - 1);
+            data += Math.abs(Math.pow(2, 10 * (t - 1)) - Math.exp(LN_2_10 * (t - 1))) / len;
+        }
+        
+        return data;
     }
     
     public function tracePow():Float

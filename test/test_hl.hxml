@@ -1,6 +1,6 @@
 #1. compile
 -main TestMain
--hl output.hl
+-hl bin/test.hl
 -lib nanotest
 -cp ../src/tweenxcore
 -cp src

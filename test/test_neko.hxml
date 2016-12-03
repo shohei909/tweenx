@@ -4,7 +4,6 @@
 -lib nanotest
 -cp ../src/tweenxcore
 -cp src
--debug
 
 #2. execute
 --next
