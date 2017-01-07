@@ -8,6 +8,16 @@
 
 --next
 
+-swf bin/DeltaBench.swf
+-cp src
+-lib delta
+-swf-header 465:465:60:FFFFFF
+-main DeltaBench
+-D analyzer
+-dce full
+
+--next
+
 -swf bin/ActuateBench.swf
 -cp src
 -lib actuate
