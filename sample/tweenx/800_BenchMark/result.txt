@@ -2,6 +2,7 @@
 Chrome 54.0
 Flash Player: 23,0,0,207 
 
+
 Tweensy
 4.71
 4.69
@@ -27,6 +28,15 @@ TweenXCore
 58.08
 59.12
 
+= Chrome
+Chrome 55.0
+Flash Player: 24,0,0,186 
+
+Delta
+4.89
+4.98
+5.01
+
 = Firefox
 Firefox: 49.0, 50.0
 Flash Player: 23,0,0,207 
@@ -50,3 +60,11 @@ BetweenAS3
 TweenXCore
 36.40
 41.52
+
+= Firefox
+Firefox 50.1
+Flash Player: 24,0,0,186 
+
+Delta
+5.80
+6.01

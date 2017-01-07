@@ -47,6 +47,7 @@ The following is a comparison with each tween library on the Flash platform. I m
 image::/images/benchmark1.png[Result of benchmark]
 
 link:/sample/bench1/TweensyBench.swf?width=401&height=401[[Tweensy\]] +
+link:/sample/bench1/DeltaBench.swf?width=401&height=401[[Delta\]] +
 link:/sample/bench1/TweenXBench.swf?width=401&height=401[[TweenX\]] +
 link:/sample/bench1/ActuateBench.swf?width=401&height=401[[Actuate\]] +
 link:/sample/bench1/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]] +

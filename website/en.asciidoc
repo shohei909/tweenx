@@ -49,11 +49,12 @@ image::/images/benchmark1.png[result]
 
 It is faster to operate the object with {{page.tweenxcore}} alone than with TweenX.
 
-* link:sample/bench/TweensyBench.swf?width=401&height=401[[Tweensy\]]
-* link:sample/bench/TweenXBench.swf?width=401&height=401[[TweenX\]]
-* link:sample/bench/ActuateBench.swf?width=401&height=401[[Actuate\]]
-* link:sample/bench/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]]
-* link:sample/bench/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
+* link:sample/bench1/TweensyBench.swf?width=401&height=401[[Tweensy\]]
+* link:sample/bench1/DeltaBench.swf?width=401&height=401[[Delta\]]
+* link:sample/bench1/TweenXBench.swf?width=401&height=401[[TweenX\]]
+* link:sample/bench1/ActuateBench.swf?width=401&height=401[[Actuate\]]
+* link:sample/bench1/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]]
+* link:sample/bench1/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
 
 https://github.com/shohei909/tweenx/blob/master/sample/800_BenchMark/src?at=master[[Source\]]
 

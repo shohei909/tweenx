@@ -50,11 +50,12 @@ image::/images/benchmark1.png[ベンチマーク結果]
 
 TweenXを経由してオブジェクトを操作するより、{{page.tweenxcore}}のみでオブジェクトを操作した方が高速に動作します。
 
-* link:sample/bench/TweensyBench.swf?width=401&height=401[[Tweensy\]]
-* link:sample/bench/TweenXBench.swf?width=401&height=401[[TweenX\]]
-* link:sample/bench/ActuateBench.swf?width=401&height=401[[Actuate\]]
-* link:sample/bench/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]]
-* link:sample/bench/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
+* link:sample/bench1/TweensyBench.swf?width=401&height=401[[Tweensy\]]
+* link:sample/bench1/DeltaBench.swf?width=401&height=401[[Delta\]]
+* link:sample/bench1/TweenXBench.swf?width=401&height=401[[TweenX\]]
+* link:sample/bench1/ActuateBench.swf?width=401&height=401[[Actuate\]]
+* link:sample/bench1/BetweenAS3Bench.swf?width=401&height=401[[BetweenAS3\]]
+* link:sample/bench1/TweenXCoreBench.swf?width=401&height=401[[TweenXCore\]]
 
 https://github.com/shohei909/tweenx/blob/master/sample/800_BenchMark/src?at=master[[ソース\]]
 
