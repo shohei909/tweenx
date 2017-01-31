@@ -84,9 +84,9 @@ class FloatChange {
             var c = current.inverseLerp(firstPartFrom, firstPartTo);
 
             if ((0 < c && p < repeatLimit) || (0 < p && c < repeatLimit)) {
-                inline function update(previousValue:Float, currentValue:Float, index:Int, miner:Bool) {
+                inline function update(previousValue:Float, currentValue:Float, index:Int, minor:Bool) {
                     if (previousValue != currentValue) {
-                        updateRepeatPart(new FloatChangeRepeatPart(previousValue, currentValue, index, repeatLimit, miner));
+                        updateRepeatPart(new FloatChangeRepeatPart(previousValue, currentValue, index, repeatLimit, minor));
                     }
                 }
 
@@ -133,14 +133,14 @@ class FloatChange {
             var c = current.inverseLerp(timelineFrom, timelineTo);
             if ((0 < p && c < 1) || (0 < c && p < 1)) {
                 var length = updatePartTimeline.length;
-                inline function update(previousValue:Float, currentValue:Float, index:Int, isMiner:Bool) {
+                inline function update(previousValue:Float, currentValue:Float, index:Int, isMinor:Bool) {
                     var part = new FloatChangeTimelinePart(
                         previousValue,
                         currentValue,
                         index,
                         updatePartTimeline.rangeLeft(index),
                         updatePartTimeline.rangeRight(index),
-                        isMiner
+                        isMinor
                     );
                     updatePartTimeline.dataAt(index)(part);
                 }

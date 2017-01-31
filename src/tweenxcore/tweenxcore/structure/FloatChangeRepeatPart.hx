@@ -3,16 +3,23 @@ import haxe.ds.Option;
 
 class FloatChangeRepeatPart extends FloatChangePart
 {
-    public var isMinerChange(default, null):Bool;
+    @:deprecated("use isMinorChange")
+    @:noCompletion
+    public var isMinerChange(get, never):Bool;
+    private function get_isMinerChange():Bool {
+        return isMinorChange;
+    }
+    
+    public var isMinorChange(default, null):Bool;
     public var repeatIndex(default, null):Int;
     public var repeatLength(default, null):Int;
 
-    public inline function new (previousValue:Float, currentValue:Float, repeatIndex:Int, repeatLength:Int, isMinerChange:Bool)
+    public inline function new (previousValue:Float, currentValue:Float, repeatIndex:Int, repeatLength:Int, isMinorChange:Bool)
     {
         super(previousValue, currentValue);
         this.repeatIndex = repeatIndex;
         this.repeatLength = repeatLength;
-        this.isMinerChange = isMinerChange;
+        this.isMinorChange = isMinorChange;
     }
 
     public inline function isFirstEntrance():Bool {
