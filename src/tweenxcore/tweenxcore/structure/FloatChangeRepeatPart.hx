@@ -5,6 +5,7 @@ class FloatChangeRepeatPart extends FloatChangePart
 {
     @:deprecated("use isMinorChange")
     @:noCompletion
+    @:noDoc
     public var isMinerChange(get, never):Bool;
     private function get_isMinerChange():Bool {
         return isMinorChange;
