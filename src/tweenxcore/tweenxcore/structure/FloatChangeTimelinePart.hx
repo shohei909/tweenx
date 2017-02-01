@@ -5,13 +5,14 @@ class FloatChangeTimelinePart extends FloatChangePart
 {
     @:deprecated("use isMinorChange")
     @:noCompletion
+    @:noDoc
     public var isMinerChange(get, never):Bool;
     private function get_isMinerChange():Bool {
         return isMinorChange;
     }
     
     public var isMinorChange(default, null):Bool;
-    public var index(default, null):Float;
+    public var index(default, null):Int;
     public var rangeLeft(default, null):Float;
     public var rangeRight(default, null):Float;
 
