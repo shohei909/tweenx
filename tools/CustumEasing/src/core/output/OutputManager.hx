@@ -46,7 +46,14 @@ class OutputManager
                         return $bodyExpr;
                     }
                 );
-                
+            
+            case OutputMode.Unity:
+                var print = new CSharpPrinter();
+                var bodyExpr = ComplexEasingKindTools.toExpr(easing, macro rate);
+'public static float CustumEase(this float rate)
+{
+    return ${print.printExpr(bodyExpr)};
+}';
             case OutputMode.Array:
                 var func = ComplexEasingKindTools.toFunction(easing);
                 Json.stringify([for (i in 0...arrayLength) func(i / (arrayLength - 1))]);

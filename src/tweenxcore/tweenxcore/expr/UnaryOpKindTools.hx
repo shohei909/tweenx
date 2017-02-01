@@ -135,15 +135,11 @@ class UnaryOpKindTools
         {
             case UnaryOpKind.Clamp(min, max):
                 var expr = easing.toExpr(macro rate);
-                macro function (rate:Float) {
-                    return tweenxcore.Tools.FloatTools.clamp($expr, ${ExprMakeTools.floatToExpr(min)}, ${ExprMakeTools.floatToExpr(max)});
-                }
+                macro function (rate:Float) return tweenxcore.Tools.FloatTools.clamp($expr, ${ExprMakeTools.floatToExpr(min)}, ${ExprMakeTools.floatToExpr(max)});
                 
             case UnaryOpKind.Lerp(from, to):
                 var expr = easing.toExpr(macro rate);
-                macro function (rate:Float) {
-                    return tweenxcore.Tools.FloatTools.lerp($expr, ${ExprMakeTools.floatToExpr(from)}, ${ExprMakeTools.floatToExpr(to)});
-                }
+                macro function (rate:Float) return tweenxcore.Tools.FloatTools.lerp($expr, ${ExprMakeTools.floatToExpr(from)}, ${ExprMakeTools.floatToExpr(to)});
                 
             case UnaryOpKind.Repeat(repeat):
                 var repeatExpr = ExprMakeTools.floatToExpr(repeat);
@@ -151,10 +147,7 @@ class UnaryOpKindTools
                     tweenxcore.Tools.FloatTools.lerp(rate, 0, $repeatExpr), 0, 1
                 );
                 var expr = easing.toExpr(arg);
-                macro function (rate:Float):Float
-                {
-                    return $expr;
-                }
+                macro function (rate:Float):Float return $expr;
                 
             case UnaryOpKind.RoundTrip(roundTrip):
                 RoundTripKindTools.toFunctionExpr(roundTrip, easing);
