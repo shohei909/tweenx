@@ -6179,7 +6179,11 @@ core_localize_resource_EnglishResource.prototype = {
 		return itemId[0];
 	}
 	,outputMode: function(mode) {
-		return mode[0];
+		if(mode[1] == 3) {
+			return "Unity (TweenCore#)";
+		} else {
+			return mode[0];
+		}
 	}
 	,inOut: function(kind) {
 		return kind[0];
@@ -6313,7 +6317,11 @@ core_localize_resource_JapaneseResource.prototype = {
 		return text + "(" + this.english.easingItem(item) + ")";
 	}
 	,outputMode: function(mode) {
-		return mode[0];
+		if(mode[1] == 3) {
+			return "Unity (TweenCore#)";
+		} else {
+			return mode[0];
+		}
 	}
 	,inOut: function(kind) {
 		var text;

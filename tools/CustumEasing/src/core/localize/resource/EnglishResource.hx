@@ -18,7 +18,11 @@ class EnglishResource implements LocalizeResource
     
     public function outputMode(mode:OutputMode):String
     {
-        return EnumValueTools.getName(mode);
+        return switch(mode)
+        {
+            case OutputMode.Unity: "Unity (TweenCore#)";
+            case _: EnumValueTools.getName(mode);
+        }
     }
     
     public function inOut(kind:InOutKind):String
