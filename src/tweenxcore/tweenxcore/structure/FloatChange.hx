@@ -73,7 +73,7 @@ class FloatChange {
         }
     }
 
-    public function handleRepeatPart(
+    public inline function handleRepeatPart(
         firstPartFrom:Float,
         firstPartTo:Float,
         repeatLimit:Int,
