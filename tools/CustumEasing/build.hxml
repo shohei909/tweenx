@@ -1,6 +1,6 @@
 -cp src
 -cp ../../src/tweenxcore
--lib react
+-lib react:0.3.0
 -js ../../website/core/custom/main.js
 -main Application
 -D react_global
