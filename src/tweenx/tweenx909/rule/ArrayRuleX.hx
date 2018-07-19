@@ -64,5 +64,5 @@ class ArrayRuleX {
 }
 
 private typedef ErrorHandler = {
-    private function error(str:String):String;
+    function error(str:String):String;
 };

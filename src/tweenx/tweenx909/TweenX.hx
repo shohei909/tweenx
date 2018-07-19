@@ -522,7 +522,7 @@ class TweenX extends CommandX {
     #end
     public var id(default, null):Int;
     public static var idCounter:Int = 0;
-    function error(msg:String) {
+    public function error(msg:String) {
         var p = definedPosInfos;
         return msg + "(Tween_" + id + " was generated at " + p.className + "/" + p.methodName + "() [" + p.fileName + ":" + p.lineNumber + "])";
     }
