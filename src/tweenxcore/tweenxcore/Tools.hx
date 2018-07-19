@@ -67,15 +67,15 @@ class Easing {
      * QUAD EASING
      */
     /** 2-order */
-    public static inline inline function quadIn(t:Float):Float {
+    public static inline function quadIn(t:Float):Float {
         return t * t;
     }
     /** 2-order */
-    public static inline inline function quadOut(t:Float):Float {
+    public static inline function quadOut(t:Float):Float {
         return -t * (t - 2);
     }
     /** 2-order */
-    public static inline inline function quadInOut(t:Float):Float {
+    public static inline function quadInOut(t:Float):Float {
         return (t < 0.5) ? 2 * t * t : -2 * ((t -= 1) * t) + 1;
     }
     /** 2-order */
