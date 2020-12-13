@@ -12,6 +12,7 @@
     <movie minorVersion="0" />
     <movie platform="hxml" />
     <movie background="#FFFFFF" />
+    <movie preferredSDK="haxe3;3.4.7;" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
@@ -29,7 +30,7 @@
   </build>
   <!-- haxelib libraries -->
   <haxelib>
-    <library name="react" />
+    <library name="react:0.3.0" />
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>

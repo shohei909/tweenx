@@ -1,6 +1,7 @@
 package core.output;
 import core.ApplyResult;
 import core.storage.StorageKey;
+import haxe.EnumTools;
 import haxe.Json;
 import haxe.ds.Option;
 import haxe.macro.Printer;
@@ -46,6 +47,9 @@ class OutputManager
                         return $bodyExpr;
                     }
                 );
+				
+            case OutputMode.Enum:
+                Std.string(easing);
             
             case OutputMode.Unity:
                 var print = new CSharpPrinter();

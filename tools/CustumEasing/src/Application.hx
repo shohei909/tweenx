@@ -1,21 +1,14 @@
 package;
 
-import api.react.React;
 import api.react.ReactComponent;
 import api.react.ReactDOM;
-import component.basic.NumberInputView;
-import component.basic.RateId;
+import component.complex.ComplexEasingId;
 import component.complex.ComplexEasingView;
-import component.menu.HistoryView;
 import component.menu.MenuView;
 import component.output.OutputView;
+import core.RootContext;
 import core.localize.ResourceKey;
 import js.Browser;
-import js.Lib;
-import core.RootContext;
-import component.complex.ComplexEasingId;
-import tweenxcore.expr.ComplexEasingKind;
-import tweenxcore.expr.SimpleEasingKind;
 
 class Application extends ReactComponentOfProps<ApplicationProps>
 {

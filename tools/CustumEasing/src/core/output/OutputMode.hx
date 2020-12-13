@@ -5,5 +5,6 @@ enum OutputMode
     Haxe;
     Json;
     Array;
+	Enum;
     Unity;
 }

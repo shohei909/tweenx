@@ -1,16 +1,12 @@
 package core.easing;
-import component.basic.RateId;
 import component.complex.ComplexEasingId;
 import core.ApplyResult;
 import core.RootCommand;
 import core.RootContext;
 import core.easing.EasingManager;
-import haxe.Json;
 import haxe.ds.Option;
-import js.Browser;
 import tweenxcore.expr.BinaryOpKind;
 import tweenxcore.expr.ComplexEasingKind;
-import tweenxcore.expr.ComplexEasingKindTools;
 import tweenxcore.expr.InOutKind;
 import tweenxcore.expr.SimpleEasingKind;
 import tweenxcore.expr.TernaryOpKind;
