@@ -3,6 +3,7 @@ GEM
   specs:
     asciidoctor (1.5.5)
     colorator (1.1.0)
+    ffi (1.9.14)
     ffi (1.9.14-x64-mingw32)
     forwardable-extended (2.6.0)
     jekyll (3.2.1)
@@ -37,14 +38,14 @@ GEM
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
-    redcarpet (3.3.4)
+    redcarpet (3.5.1)
     rouge (1.11.1)
     safe_yaml (1.0.4)
     sass (3.4.22)
-    wdm (0.1.1)
     yajl-ruby (1.2.1)
 
 PLATFORMS
+  ruby
   x64-mingw32
 
 DEPENDENCIES
@@ -53,7 +54,6 @@ DEPENDENCIES
   jekyll-asciidoc
   pygments.rb
   redcarpet
-  wdm (~> 0.1.0)
 
 BUNDLED WITH
    1.13.6
