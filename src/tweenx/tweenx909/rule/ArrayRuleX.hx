@@ -13,12 +13,12 @@ class ArrayRuleX {
         return arr;
     }
     static private inline function _calc(_from:Dynamic, _to:Dynamic, t1:Float, t2:Float, tween:TweenX):Dynamic {
-        if (Std.is(_to, Float)) {
+        if (Std.isOfType(_to, Float)) {
             return _from * t2 + _to * t1;
         }else {
             var result:Dynamic = null, ok:Bool = false;
             for (r in TweenX.rules) {
-                if (Std.is(_to, r.inputClass)) {
+                if (Std.isOfType(_to, r.inputClass)) {
                     ok = true;
                     result = r.calc(_from, _to, t1, t2, tween);
                     break;
@@ -51,9 +51,9 @@ class ArrayRuleX {
     }
 
     static private function _defaultFrom(value:Dynamic, _to:Dynamic, tween:TweenX):Dynamic {
-        if (Std.is(_to, Float)) return value;
+        if (Std.isOfType(_to, Float)) return value;
         for (r in TweenX.rules) {
-            if (Std.is(_to, r.inputClass)) {
+            if (Std.isOfType(_to, r.inputClass)) {
                 return r.defaultFrom(value, _to, tween);
             }
         }

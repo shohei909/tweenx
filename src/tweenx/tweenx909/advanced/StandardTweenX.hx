@@ -34,7 +34,7 @@ class StandardTweenX<T> extends TweenX {
         if (! Reflect.hasField(target, key))
             throw error(Type.getClassName(Type.getClass(target)) + " does not have field '" + key + "'");
         #else
-        if (! Std.is(Reflect.field(target, key), Dynamic))
+        if (! Std.isOfType(Reflect.field(target, key), Dynamic))
             throw error(Type.getClassName(Type.getClass(target)) + " does not have field '" + key + "'");
         #end
     }
@@ -131,7 +131,7 @@ class StandardTweenX<T> extends TweenX {
     private inline function _initFrom(target, _from, _to) {
         var data = null;
         for (key0 in TweenX.fields(_to)) {
-            if (! Std.is(TweenX.field(_to, key0), Float)) _fastMode = false;
+            if (! Std.isOfType(TweenX.field(_to, key0), Float)) _fastMode = false;
 
             var relative     = (key0.substr(0, 4) == "$$$$");
             var key         = relative ?  key0.substr(4) : key0;
@@ -168,9 +168,9 @@ class StandardTweenX<T> extends TweenX {
     }
 
     private function _defaultFrom(value:Dynamic, _to:Dynamic):Dynamic {
-        if (Std.is(_to, Float)) return value;
+        if (Std.isOfType(_to, Float)) return value;
         for (r in TweenX._rules) {
-            if (Std.is(_to, r.inputClass)) {
+            if (Std.isOfType(_to, r.inputClass)) {
                 return r.defaultFrom(value, _to, this);
             }
         }

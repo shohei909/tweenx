@@ -369,7 +369,7 @@ class TweenX extends CommandX {
     }
 
     private static function isIterable(d:Dynamic) {
-        return (d != null && (Std.is(d, Array) || Reflect.hasField(d, "iterator") && Reflect.isFunction(d.iterator) && d.iterator() != null));
+        return (d != null && (Std.isOfType(d, Array) || Reflect.hasField(d, "iterator") && Reflect.isFunction(d.iterator) && d.iterator() != null));
     }
 
     /*
@@ -823,13 +823,13 @@ class TweenX extends CommandX {
     }
 
     private inline function _calc(_from:Dynamic, _to:Dynamic, t1:Float, t2:Float):Dynamic {
-        if (Std.is(_to, Float)) {
+        if (Std.isOfType(_to, Float)) {
             var d:Dynamic = _from * t2 + _to * t1;
             return d;
         }else {
             var i = 0, l = _rules.length, f:RuleX<Dynamic,Dynamic>, result:Dynamic = null, ok:Bool = false;
             while (i < l) {
-                if (Std.is(_to, (f = _rules[i++]).inputClass)) {
+                if (Std.isOfType(_to, (f = _rules[i++]).inputClass)) {
                     ok = true;
                     result = f.calc(_from, _to, t1, t2, this);
                     break;
