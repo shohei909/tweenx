@@ -4,7 +4,7 @@
   <output>
     <movie outputType="CustomBuild" />
     <movie input="" />
-    <movie path="test_neko.hxml" />
+    <movie path="test_hl.hxml" />
     <movie fps="0" />
     <movie width="0" />
     <movie height="0" />
@@ -25,7 +25,7 @@
     <option noInlineOnDebug="False" />
     <option mainClass="TestMain" />
     <option enabledebug="False" />
-    <option additional="" />
+    <option additional="-debug " />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

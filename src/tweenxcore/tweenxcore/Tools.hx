@@ -137,7 +137,8 @@ class Easing {
     }
     /** 5-order */
     public static inline function quintOut(t:Float):Float {
-        return (t = t - 1) * (t *= t) * t + 1;
+		var t = t - 1;
+        return t * (t *= t) * t + 1;
     }
     /** 5-order */
     public static inline function quintInOut(t:Float):Float {
