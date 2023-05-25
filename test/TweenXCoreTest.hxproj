@@ -4,7 +4,7 @@
   <output>
     <movie outputType="CustomBuild" />
     <movie input="" />
-    <movie path="test.hxml" />
+    <movie path="test_neko.hxml" />
     <movie fps="0" />
     <movie width="0" />
     <movie height="0" />
@@ -17,14 +17,6 @@
   <classpaths>
     <class path="..\src\tweenxcore" />
     <class path="src" />
-    <class path="..\src\tweenxcore" />
-    <class path="src" />
-    <class path="..\src\tweenxcore" />
-    <class path="src" />
-    <class path="..\src\tweenxcore" />
-    <class path="src" />
-    <class path="..\src\tweenxcore" />
-    <class path="src" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -33,14 +25,10 @@
     <option noInlineOnDebug="False" />
     <option mainClass="TestMain" />
     <option enabledebug="False" />
-    <option additional="--times " />
+    <option additional="" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
-    <library name="nanotest" />
-    <library name="nanotest" />
-    <library name="nanotest" />
-    <library name="nanotest" />
     <library name="nanotest" />
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->

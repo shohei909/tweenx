@@ -18,7 +18,7 @@ github_username:  shohei909
 
 # Build settings
 markdown: redcarpet
-highlighter: pygments
+highlighter: rouge
 sass:
     style: compressed
 gems:
@@ -26,6 +26,3 @@ gems:
 asciidoctor:
   attributes:
     - hardbreaks!
-    - source-highlighter=pygments
-    - pygments-css=class
-    - pygments-linenums-mode=table
