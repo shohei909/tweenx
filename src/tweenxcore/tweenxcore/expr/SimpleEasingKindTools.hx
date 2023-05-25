@@ -15,10 +15,10 @@ class SimpleEasingKindTools
             case SimpleEasingKind.Linear:
                 Easing.linear;
                 
-            case SimpleEasingKind.Standard(easing, inOut):
+            case SimpleEasingKind.Standard(easing, var inOut):
                 StandardEasingKindTools.toFunction(easing, inOut);
                 
-            case SimpleEasingKind.Line(polyline, controls):
+            case SimpleEasingKind.Line(var polyline, controls):
                 LineKindTools.toFunction(polyline, controls);
         }
     }    
@@ -30,7 +30,7 @@ class SimpleEasingKindTools
             case SimpleEasingKind.Linear:
                 "Linear";
                 
-            case SimpleEasingKind.Standard(easing, inOut):
+            case SimpleEasingKind.Standard(easing, var inOut):
                 ([
                     "Standard",
                     EnumValueTools.getName(easing),
@@ -48,7 +48,7 @@ class SimpleEasingKindTools
     
     public static function fromJsonable(data:Dynamic):SimpleEasingKind 
     {
-        return if (Std.is(data, String))
+        return if (Std.isOfType(data, String))
         {
             switch (data)
             {
@@ -88,10 +88,10 @@ class SimpleEasingKindTools
             case SimpleEasingKind.Linear:
                 macro tweenxcore.Tools.Easing.linear($valueExpr);
                 
-            case SimpleEasingKind.Standard(easing, inOut):
+            case SimpleEasingKind.Standard(easing, var inOut):
                 StandardEasingKindTools.toExpr(easing, inOut, valueExpr);
                 
-            case SimpleEasingKind.Line(polyline, controls):
+            case SimpleEasingKind.Line(var polyline, controls):
                 LineKindTools.toExpr(polyline, controls, valueExpr);
         }
     }
@@ -103,10 +103,10 @@ class SimpleEasingKindTools
             case SimpleEasingKind.Linear:
                 macro tweenxcore.Tools.Easing.linear;
                 
-            case SimpleEasingKind.Standard(easing, inOut):
+            case SimpleEasingKind.Standard(easing, var inOut):
                 StandardEasingKindTools.toFunctionExpr(easing, inOut);
                 
-            case SimpleEasingKind.Line(polyline, controls):
+            case SimpleEasingKind.Line(var polyline, controls):
                 LineKindTools.toFunctionExpr(polyline, controls);
         }
     }

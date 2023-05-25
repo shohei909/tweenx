@@ -78,7 +78,7 @@ class BinaryOpKindTools
     
     public static function fromJsonable(data:Dynamic):BinaryOpKind
     {
-        return if (Std.is(data, String))
+        return if (Std.isOfType(data, String))
         {
             switch (data)
             {
