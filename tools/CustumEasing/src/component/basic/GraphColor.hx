@@ -1,6 +1,6 @@
 package component.basic;
 
-@:enum
+#if (haxe_ver < 4.3) @:enum #else enum #end
 abstract GraphColor(Int) to Int
 {
 	var Theme = 0x0E5ABB;
